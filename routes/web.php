@@ -6,6 +6,8 @@ use App\Http\Controllers\questions_cont_admin;
 use App\Http\Middleware\isAdmin_middle;
 use Illuminate\Support\Facades\Route;
 
+Route::get('/test', [main_cont_user::class,'test_cont'] )->name('test_cont');
+
 Route::get('/', function () {
     return view('welcome');
 });
