@@ -25,7 +25,7 @@ return new class extends Migration {
             $table->id();
             $table->string('name');
             $table->string('slug')->unique();
-            $table->string('img')->nullable();
+            $table->string('image')->nullable();
             $table->foreignId('level_id')->constrained('levels')->onDelete('cascade');
             $table->foreignId('sub_level_id')->constrained('sub_levels')->onDelete('cascade');
             $table->timestamps();
@@ -39,6 +39,33 @@ return new class extends Migration {
             $table->foreignId('theme_id')->constrained('themes')->onDelete('cascade');
             $table->timestamps();
         });
+
+        Schema::create('questions', function (Blueprint $table) {
+            $table->id();
+            $table->longText('question');
+            $table->longText('image')->nullable();
+            $table->string('answer1');
+            $table->string('answer2');
+            $table->string('answer3');
+            $table->string('answer4');
+            $table->string('answer5');
+            $table->enum('correct_answer', ['answer1', 'answer2','answer3','answer4','answer5']);
+            $table->foreignId('exercises_id')->constrained('exercises')->onDelete('cascade');
+            $table->timestamps();
+        });
+
+        Schema::create('declarations', function (Blueprint $table) {
+            $table->id();
+            $table->string('title');
+            $table->string('slug')->unique();
+            $table->longText('contents')->nullable();
+            $table->longText('pdf')->nullable();
+            $table->longText('video')->nullable();
+            $table->longText('voice')->nullable();
+            $table->foreignId('theme_id')->constrained('themes')->onDelete('cascade')->unique();
+            $table->timestamps();
+        });
+
 
         /*         Schema::create('exams', function (Blueprint $table) {
                     $table->id();
@@ -119,12 +146,7 @@ return new class extends Migration {
         Schema::dropIfExists('levels');
         Schema::dropIfExists('sub_levels');
         Schema::dropIfExists('themes');
-        /*         Schema::dropIfExists('exams');
-                Schema::dropIfExists('questions');
-                Schema::dropIfExists('user_answers');
-                Schema::dropIfExists('user_results'); */
-        /*   Schema::dropIfExists('pages');
-           Schema::dropIfExists('admins');
-           Schema::dropIfExists('messages'); */
+        Schema::dropIfExists('exercises');
+        Schema::dropIfExists('declarations');
     }
 };

@@ -25,6 +25,10 @@ class model_themes extends Model
     }
     public function exercises()
     {
-        return $this->hasMany(model_exercises::class,'theme_id');
+        return $this->hasMany(model_exercises::class, 'theme_id');
+    }
+    public function declarations()
+    {
+        return $this->hasOne(model_declarations::class, 'theme_id');
     }
 }

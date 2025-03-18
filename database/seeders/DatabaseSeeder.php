@@ -1,7 +1,9 @@
 <?php
 
 namespace Database\Seeders;
+use App\Models\model_declarations;
 use App\Models\model_exercises;
+use App\Models\model_questions;
 use App\Models\User;
 use App\Models\model_levels;
 use App\Models\model_sub_levels;
@@ -11,9 +13,6 @@ use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
         $levels = ['Grammar', 'Vocabulary', 'Listening'];
@@ -47,11 +46,16 @@ class DatabaseSeeder extends Seeder
 
         model_themes::factory(50)->create();
         model_exercises::factory(100)->create();
+        model_questions::factory(1000)->create();
 
-        /*           User::factory(10)->create();
-                   exams_model::factory(10)->create();
-                   questions_model::factory(100)->create();
-                   answers_model::factory(1000)->create();
-                   results_model::factory(20)->create(); */
+        for ($i = 1; $i < 11; $i++) {
+            $title='DECLARATIONS_' . (string) $i;
+            model_declarations::insert([
+                'title' => $title,
+                'slug' => Str::slug($title),
+                'contents' => fake()->text(200),
+                'theme_id' => (string)$i
+            ]);
+        }
     }
 }

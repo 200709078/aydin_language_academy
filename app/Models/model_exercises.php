@@ -15,4 +15,8 @@ class model_exercises extends Model
         'description',
         'theme_id'
     ];
+    public function questions()
+    {
+        return $this->hasMany(model_questions::class,'exercises_id');
+    }
 }

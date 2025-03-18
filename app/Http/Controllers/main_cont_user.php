@@ -11,7 +11,7 @@ class main_cont_user extends Controller
 
     public function test_cont()
     {
-        $themes = model_themes::with('levels', 'sub_levels','exercises')->get('*');
+        $themes = model_themes::with('levels', 'sub_levels', 'declarations', 'exercises.questions')->get('*');
         return $themes;
     }
 
