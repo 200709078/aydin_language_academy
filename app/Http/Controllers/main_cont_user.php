@@ -2,8 +2,6 @@
 namespace App\Http\Controllers;
 use App\Models\answers_model;
 use App\Models\exams_model;
-use App\Models\model_levels;
-use App\Models\model_sub_levels;
 use App\Models\model_themes;
 use App\Models\results_model;
 use Illuminate\Http\Request;
@@ -13,10 +11,8 @@ class main_cont_user extends Controller
 
     public function test_cont()
     {
-        $levels = model_levels::all();
-        $sub_levels = model_sub_levels::all();
-        $themes = model_themes::all();
-        return [$levels, $sub_levels, $themes];
+        $themes = model_themes::with('levels', 'sub_levels','exercises')->get('*');
+        return $themes;
     }
 
     public function dashboard()

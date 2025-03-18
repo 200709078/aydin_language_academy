@@ -1,6 +1,7 @@
 <?php
 
 namespace Database\Seeders;
+use App\Models\model_exercises;
 use App\Models\User;
 use App\Models\model_levels;
 use App\Models\model_sub_levels;
@@ -15,7 +16,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $levels = ['Grammer', 'Vocabulary', 'Listening'];
+        $levels = ['Grammar', 'Vocabulary', 'Listening'];
         foreach ($levels as $level) {
             model_levels::insert([
                 'name' => $level,
@@ -44,7 +45,8 @@ class DatabaseSeeder extends Seeder
             'remember_token' => Str::random(10),
         ]);
 
-        model_themes::factory(10)->create();
+        model_themes::factory(50)->create();
+        model_exercises::factory(100)->create();
 
         /*           User::factory(10)->create();
                    exams_model::factory(10)->create();

@@ -11,6 +11,20 @@ class model_themes extends Model
     public $table = "themes";
     protected $fillable = [
         'name',
-        'slug'
+        'slug',
+        'level_id',
+        'sub_level_id'
     ];
+    public function levels()
+    {
+        return $this->belongsTo(model_levels::class, 'level_id');
+    }
+    public function sub_levels()
+    {
+        return $this->belongsTo(model_sub_levels::class, 'sub_level_id');
+    }
+    public function exercises()
+    {
+        return $this->hasMany(model_exercises::class,'theme_id');
+    }
 }

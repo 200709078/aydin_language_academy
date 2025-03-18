@@ -7,9 +7,9 @@ use Nette\Utils\Random;
 use Str;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\model_themes>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\model_exercises>
  */
-class model_themesFactory extends Factory
+class model_exercisesFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,12 +18,12 @@ class model_themesFactory extends Factory
      */
     public function definition(): array
     {
-        $name = fake()->text(200);
+        $name = fake()->text(50);
         return [
-            'name' => $name,
+            'title' => $name,
             'slug' => Str::slug($name),
-            'level_id' => rand(1,3),
-            'sub_level_id' => rand(1,3)
+            'description' => fake()->text(200),
+            'theme_id' => rand(1,50)
         ];
     }
 }

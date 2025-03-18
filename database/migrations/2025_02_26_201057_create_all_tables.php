@@ -26,6 +26,17 @@ return new class extends Migration {
             $table->string('name');
             $table->string('slug')->unique();
             $table->string('img')->nullable();
+            $table->foreignId('level_id')->constrained('levels')->onDelete('cascade');
+            $table->foreignId('sub_level_id')->constrained('sub_levels')->onDelete('cascade');
+            $table->timestamps();
+        });
+
+        Schema::create('exercises', function (Blueprint $table) {
+            $table->id();
+            $table->string('title');
+            $table->string('slug')->unique();
+            $table->longText('description')->nullable();
+            $table->foreignId('theme_id')->constrained('themes')->onDelete('cascade');
             $table->timestamps();
         });
 
@@ -107,6 +118,7 @@ return new class extends Migration {
     {
         Schema::dropIfExists('levels');
         Schema::dropIfExists('sub_levels');
+        Schema::dropIfExists('themes');
         /*         Schema::dropIfExists('exams');
                 Schema::dropIfExists('questions');
                 Schema::dropIfExists('user_answers');
