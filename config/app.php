@@ -65,7 +65,8 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    // 'timezone' => 'UTC', //ORIGINAL
+    'timezone' => 'Europe/Istanbul',
 
     /*
     |--------------------------------------------------------------------------
@@ -78,11 +79,14 @@ return [
     |
     */
 
-    'locale' => env('APP_LOCALE', 'en'),
+    //'locale' => env('APP_LOCALE', 'en'), //ORIGINAL
+    'locale' => env('APP_LOCALE', 'tr'),
 
-    'fallback_locale' => env('APP_FALLBACK_LOCALE', 'en'),
+    //'fallback_locale' => env('APP_FALLBACK_LOCALE', 'en'), //ORIGINAL
+    'fallback_locale' => env('APP_FALLBACK_LOCALE', 'tr'),
 
-    'faker_locale' => env('APP_FAKER_LOCALE', 'en_US'),
+    //'faker_locale' => env('APP_FAKER_LOCALE', 'en_US'), //ORIGINAL
+    'faker_locale' => env('APP_FAKER_LOCALE', 'tr_TR'),
 
     /*
     |--------------------------------------------------------------------------

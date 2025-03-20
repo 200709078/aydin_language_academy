@@ -1,16 +1,24 @@
 <?php
 
 use App\Http\Controllers\exams_cont_admin;
+use App\Http\Controllers\HomepageController;
 use App\Http\Controllers\main_cont_user;
 use App\Http\Controllers\questions_cont_admin;
 use App\Http\Middleware\isAdmin_middle;
 use Illuminate\Support\Facades\Route;
 
+Route::get('/',[HomepageController::class,'index'])->name('home');
+Route::get('/{level_id}/{sub_level_id}',[HomepageController::class,'levels'])->name('levels');
+
+
+//Route::get('/', [HomepageController::class, 'index'])->name('home');
+
 Route::get('/test', [main_cont_user::class,'test_cont'] )->name('test_cont');
 
-Route::get('/', function () {
-    return view('welcome');
-});
+/*
+Route::get('dbTest', [TestController::class, 'test_metodu'])->name('dbTest');
+
+ */
 
 /* Route::middleware([
     'auth:sanctum',
