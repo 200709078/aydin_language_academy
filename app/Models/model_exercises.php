@@ -10,13 +10,13 @@ class model_exercises extends Model
     use HasFactory;
     public $table = "exercises";
     protected $fillable = [
+        'theme_id',
         'title',
         'slug',
-        'description',
-        'theme_id'
+        'description'
     ];
     public function questions()
     {
-        return $this->hasMany(model_questions::class,'exercises_id');
+        return $this->hasMany(model_questions::class, 'exercises_id');
     }
 }

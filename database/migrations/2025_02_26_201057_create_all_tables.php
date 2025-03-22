@@ -23,25 +23,29 @@ return new class extends Migration {
 
         Schema::create('themes', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('level_id');
+            $table->unsignedBigInteger('sub_level_id');
             $table->string('name');
             $table->string('slug')->unique();
             $table->string('image')->nullable();
-            $table->foreignId('level_id')->constrained('levels')->onDelete('cascade');
-            $table->foreignId('sub_level_id')->constrained('sub_levels')->onDelete('cascade');
+            $table->foreign('level_id')->references('id')->on('levels')->onDelete('cascade');
+            $table->foreign('sub_level_id')->references('id')->on('sub_levels')->onDelete('cascade');
             $table->timestamps();
         });
 
         Schema::create('exercises', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('theme_id');
             $table->string('title');
             $table->string('slug')->unique();
             $table->longText('description')->nullable();
-            $table->foreignId('theme_id')->constrained('themes')->onDelete('cascade');
+            $table->foreign('theme_id')->references('id')->on('themes')->onDelete('cascade');
             $table->timestamps();
         });
 
         Schema::create('questions', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('exercises_id');
             $table->longText('question');
             $table->longText('image')->nullable();
             $table->string('answer1');
@@ -50,19 +54,20 @@ return new class extends Migration {
             $table->string('answer4');
             $table->string('answer5');
             $table->enum('correct_answer', ['answer1', 'answer2','answer3','answer4','answer5']);
-            $table->foreignId('exercises_id')->constrained('exercises')->onDelete('cascade');
+            $table->foreign('exercises_id')->references('id')->on('exercises')->onDelete('cascade');
             $table->timestamps();
         });
 
         Schema::create('declarations', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('theme_id');
             $table->string('title');
             $table->string('slug')->unique();
             $table->longText('contents')->nullable();
             $table->longText('pdf')->nullable();
             $table->longText('video')->nullable();
             $table->longText('voice')->nullable();
-            $table->foreignId('theme_id')->constrained('themes')->onDelete('cascade')->unique();
+            $table->foreign('theme_id')->references('id')->on('themes')->onDelete('cascade')->unique();
             $table->timestamps();
         });
 

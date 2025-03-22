@@ -7,9 +7,9 @@ class model_declarations extends Model
 {
     public $table = "declarations";
     protected $fillable = [
+        'theme_id',
         'title',
         'slug',
-        'content',
-        'theme_id'
+        'content'
     ];
 }

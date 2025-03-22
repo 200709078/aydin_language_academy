@@ -8,13 +8,6 @@ use Illuminate\Http\Request;
 
 class main_cont_user extends Controller
 {
-
-    public function test_cont()
-    {
-        $themes = model_themes::with('levels', 'sub_levels', 'declarations', 'exercises.questions')->get('*');
-        return $themes;
-    }
-
     public function dashboard()
     {
         $exams = exams_model::where('status', 'publish')->where(function ($query) {
