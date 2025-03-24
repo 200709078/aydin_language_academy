@@ -4,7 +4,7 @@
   <!-- Header Start -->
   <div class="container-fluid header bg-primary p-0 mb-5">
     <div class="row g-0 align-items-center flex-column-reverse flex-lg-row">
-    <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
+    <div class="col-lg-6">
       <div class="owl-carousel header-carousel">
       <div class="owl-carousel-item position-relative">
         <img class="img-fluid" src="{{ asset('front/') }}/img/slide1.png">
@@ -29,14 +29,14 @@
   <div class="container-xxl py-5">
     <div class="container">
     <div class="row g-5">
-      <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
+      <div class="col-lg-6">
       <div class="d-flex flex-column">
         <img class="img-fluid rounded w-75 align-self-end" src="{{ asset('front/') }}/img/about-1.jpg" alt="">
         <img class="img-fluid rounded w-50 bg-white pt-3 pe-3" src="{{ asset('front/') }}/img/about-2.jpg" alt=""
         style="margin-top: -25%;">
       </div>
       </div>
-      <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
+      <div class="col-lg-6">
       <p class="d-inline-block border rounded-pill py-1 px-4">About Us</p>
       <h1 class="mb-4">Why You Should Trust Us? Get Know About Us!</h1>
       <p>Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu diam amet diam et eos. Clita erat ipsum et
@@ -56,12 +56,12 @@
   <!-- Service Start -->
   <div class="container-xxl py-5">
     <div class="container">
-    <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
+    <div class="text-center mx-auto mb-5" style="max-width: 600px;">
       <p class="d-inline-block border rounded-pill py-1 px-4">Services</p>
       <h1>Health Care Solutions</h1>
     </div>
     <div class="row g-4">
-      <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+      <div class="col-lg-4 col-md-6">
       <div class="service-item bg-light rounded h-100 p-5">
         <div class="d-inline-flex align-items-center justify-content-center bg-white rounded-circle mb-4"
         style="width: 65px; height: 65px;">
@@ -73,7 +73,7 @@
         <a class="btn" href=""><i class="fa fa-plus text-primary me-3"></i>Read More</a>
       </div>
       </div>
-      <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
+      <div class="col-lg-4 col-md-6">
       <div class="service-item bg-light rounded h-100 p-5">
         <div class="d-inline-flex align-items-center justify-content-center bg-white rounded-circle mb-4"
         style="width: 65px; height: 65px;">
@@ -85,7 +85,7 @@
         <a class="btn" href=""><i class="fa fa-plus text-primary me-3"></i>Read More</a>
       </div>
       </div>
-      <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
+      <div class="col-lg-4 col-md-6">
       <div class="service-item bg-light rounded h-100 p-5">
         <div class="d-inline-flex align-items-center justify-content-center bg-white rounded-circle mb-4"
         style="width: 65px; height: 65px;">
@@ -97,7 +97,7 @@
         <a class="btn" href=""><i class="fa fa-plus text-primary me-3"></i>Read More</a>
       </div>
       </div>
-      <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+      <div class="col-lg-4 col-md-6">
       <div class="service-item bg-light rounded h-100 p-5">
         <div class="d-inline-flex align-items-center justify-content-center bg-white rounded-circle mb-4"
         style="width: 65px; height: 65px;">
@@ -109,7 +109,7 @@
         <a class="btn" href=""><i class="fa fa-plus text-primary me-3"></i>Read More</a>
       </div>
       </div>
-      <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
+      <div class="col-lg-4 col-md-6">
       <div class="service-item bg-light rounded h-100 p-5">
         <div class="d-inline-flex align-items-center justify-content-center bg-white rounded-circle mb-4"
         style="width: 65px; height: 65px;">
@@ -121,7 +121,7 @@
         <a class="btn" href=""><i class="fa fa-plus text-primary me-3"></i>Read More</a>
       </div>
       </div>
-      <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
+      <div class="col-lg-4 col-md-6">
       <div class="service-item bg-light rounded h-100 p-5">
         <div class="d-inline-flex align-items-center justify-content-center bg-white rounded-circle mb-4"
         style="width: 65px; height: 65px;">
@@ -143,7 +143,7 @@
   <div class="container-fluid bg-primary overflow-hidden my-5 px-lg-0">
     <div class="container feature px-lg-0">
     <div class="row g-0 mx-lg-0">
-      <div class="col-lg-6 feature-text py-5 wow fadeIn" data-wow-delay="0.1s">
+      <div class="col-lg-6 feature-text py-5">
       <div class="p-lg-5 ps-lg-0">
         <p class="d-inline-block border rounded-pill text-light py-1 px-4">Features</p>
         <h1 class="text-white mb-4">Why Choose Us</h1>
@@ -201,7 +201,7 @@
         </div>
       </div>
       </div>
-      <div class="col-lg-6 pe-lg-0 wow fadeIn" data-wow-delay="0.5s" style="min-height: 400px;">
+      <div class="col-lg-6 pe-lg-0" style="min-height: 400px;">
       <div class="position-relative h-100">
         <img class="position-absolute img-fluid w-100 h-100" src="{{ asset('front/') }}/img/feature.jpg"
         style="object-fit: cover;" alt="">
@@ -216,12 +216,12 @@
   <!-- Team Start -->
   <div class="container-xxl py-5">
     <div class="container">
-    <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
+    <div class="text-center mx-auto mb-5" style="max-width: 600px;">
       <p class="d-inline-block border rounded-pill py-1 px-4">Doctors</p>
       <h1>Our Experience Doctors</h1>
     </div>
     <div class="row g-4">
-      <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+      <div class="col-lg-3 col-md-6">
       <div class="team-item position-relative rounded overflow-hidden">
         <div class="overflow-hidden">
         <img class="img-fluid" src="{{ asset('front/') }}/img/team-1.jpg" alt="">
@@ -237,7 +237,7 @@
         </div>
       </div>
       </div>
-      <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
+      <div class="col-lg-3 col-md-6">
       <div class="team-item position-relative rounded overflow-hidden">
         <div class="overflow-hidden">
         <img class="img-fluid" src="{{ asset('front/') }}/img/team-2.jpg" alt="">
@@ -253,7 +253,7 @@
         </div>
       </div>
       </div>
-      <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
+      <div class="col-lg-3 col-md-6">
       <div class="team-item position-relative rounded overflow-hidden">
         <div class="overflow-hidden">
         <img class="img-fluid" src="{{ asset('front/') }}/img/team-3.jpg" alt="">
@@ -269,7 +269,7 @@
         </div>
       </div>
       </div>
-      <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.7s">
+      <div class="col-lg-3 col-md-6">
       <div class="team-item position-relative rounded overflow-hidden">
         <div class="overflow-hidden">
         <img class="img-fluid" src="{{ asset('front/') }}/img/team-4.jpg" alt="">
@@ -295,7 +295,7 @@
   <div class="container-xxl py-5">
     <div class="container">
     <div class="row g-5">
-      <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
+      <div class="col-lg-6">
       <p class="d-inline-block border rounded-pill py-1 px-4">Appointment</p>
       <h1 class="mb-4">Make An Appointment To Visit Our Doctor</h1>
       <p class="mb-4">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu diam amet diam et eos. Clita
@@ -321,7 +321,7 @@
         </div>
       </div>
       </div>
-      <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
+      <div class="col-lg-6">
       <div class="bg-light rounded h-100 d-flex align-items-center p-5">
         <form>
         <div class="row g-3">
@@ -373,11 +373,11 @@
   <!-- Testimonial Start -->
   <div class="container-xxl py-5">
     <div class="container">
-    <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
+    <div class="text-center mx-auto mb-5" style="max-width: 600px;">
       <p class="d-inline-block border rounded-pill py-1 px-4">Testimonial</p>
       <h1>What Say Our Patients!</h1>
     </div>
-    <div class="owl-carousel testimonial-carousel wow fadeInUp" data-wow-delay="0.1s">
+    <div class="owl-carousel testimonial-carousel">
       <div class="testimonial-item text-center">
       <img class="img-fluid bg-light rounded-circle p-2 mx-auto mb-4"
         src="{{ asset('front/') }}/img/testimonial-1.jpg" style="width: 100px; height: 100px;">

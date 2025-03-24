@@ -29,6 +29,6 @@ class model_themes extends Model
     }
     public function declarations()
     {
-        return $this->hasOne(model_declarations::class, 'theme_id');
+        return $this->hasMany(model_declarations::class, 'theme_id');
     }
 }

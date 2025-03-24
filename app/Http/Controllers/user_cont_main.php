@@ -44,13 +44,14 @@ class user_cont_main extends Controller
 
     public function tab1($theme_id)
     {
-        $theme = model_exercises::whereId($theme_id)->first() ?? abort(404, 'THEME NOT FOUND');
-        return view('front.theme_detail', compact('theme'));
+        $declarations = model_declarations::where('theme_id', '=', $theme_id)->paginate(1) ?? abort(404, 'THEME NOT FOUND');
+        $exercises = model_exercises::where('theme_id', '=', $theme_id)->paginate(1) ?? abort(404, 'THEME NOT FOUND');
+        return view('front.theme_detail', compact(['declarations','exercises','theme_id']));
     }
     public function tab2($theme_id)
     {
-        $theme = model_exercises::whereId($theme_id)->first() ?? abort(404, 'THEME NOT FOUND');
-        return view('front.theme_detail', compact('theme'));
+        $declarations = model_declarations::where('theme_id', '=', $theme_id)->paginate(1) ?? abort(404, 'THEME NOT FOUND');
+        $exercises = model_exercises::where('theme_id', '=', $theme_id)->paginate(1) ?? abort(404, 'THEME NOT FOUND');
+        return view('front.theme_detail', compact(['declarations','exercises','theme_id']));
     }
-
 }

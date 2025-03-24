@@ -46,16 +46,7 @@ class DatabaseSeeder extends Seeder
 
         model_themes::factory(50)->create();
         model_exercises::factory(100)->create();
+        model_declarations::factory(100)->create();
         model_questions::factory(1000)->create();
-
-        for ($i = 1; $i < 11; $i++) {
-            $title='DECLARATIONS_' . (string) $i;
-            model_declarations::insert([
-                'title' => $title,
-                'slug' => Str::slug($title),
-                'contents' => fake()->text(200),
-                'theme_id' => (string)$i
-            ]);
-        }
     }
 }

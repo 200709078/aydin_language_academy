@@ -35,18 +35,11 @@
 </head>
 
 <body>
-  <!-- Spinner Start -->
-  <div id="spinner"
-    class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-    <div class="spinner-grow text-primary" style="width: 3rem; height: 3rem;" role="status">
-      <span class="sr-only">Loading...</span>
-    </div>
-  </div>
-  <!-- Spinner End -->
+
 
 
   <!-- Topbar Start -->
-  <div class="container-fluid bg-light p-0 wow fadeIn" data-wow-delay="0.1s">
+  <div class="container-fluid bg-light p-0">
     <div class="row gx-0 d-none d-lg-flex">
       <div class="col-lg-7 px-5 text-start">
         <div class="h-100 d-inline-flex align-items-center py-3 me-4">
@@ -80,12 +73,12 @@
   </div>
   <!-- Topbar End -->
   <!-- Navbar Start -->
-  <nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top p-0 wow fadeIn" data-wow-delay="0.1s">
+  <nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top p-0">
     <a href="{{ route('home') }}" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
       <h1 class="m-0 text-success">
         <img class="img-fluid bg-light rounded-circle" src="{{ asset('front/') }}/img/favicon.png"
           alt="AYDIN LANGUAGE ACADEMY" style="width: 70px; height: 70px;">
-        AYDIN LANGUAGE ACADEMY {{ Request::segment(1).''.Request::segment(2)}}
+        AYDIN LANGUAGE ACADEMY
       </h1>
     </a>
     <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
@@ -93,20 +86,28 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarCollapse">
       <div class="navbar-nav ms-auto p-4 p-lg-0">
-        <a href="{{ route('home') }}" class="nav-item nav-link {{ Request::segment(1) === null ? 'active' : null }}">Home</a>
-        @foreach ($levels as $level)
-      <div class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">{{$level->name}}</a>
-        <div class="dropdown-menu rounded-0 rounded-bottom m-0">
-        @foreach ($sub_levels as $sub_level)
-      <a href="{{ route('levels', [$level->id, $sub_level->id]) }}"
-        class="dropdown-item">{{$sub_level->name}}</a>
-    @endforeach
-        </div>
-      </div>
-    @endforeach
-        <a href="{{ route('about') }}"  class="nav-item nav-link {{ Request::segment(1) === 'about' ? 'active' : null }}">About</a>
-        <a href="{{ route('contact') }}" class="nav-item nav-link {{ Request::segment(1) === 'contact' ? 'active' : null }}">Contact</a>
+        <a href="{{ route('home') }}"
+          class="nav-item nav-link {{ Request::segment(1) === null ? 'active' : null }}">Home</a>
+          @php $level_count=0 @endphp
+          @foreach ($levels as $level)
+          @php $level_count++ @endphp
+            <div class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle {{ Request::segment(1) == $level_count ? 'active' : null }}" data-bs-toggle="dropdown">{{$level->name}}</a>
+              <div class="dropdown-menu rounded-0 rounded-bottom m-0">
+              @php $sub_level_count=0 @endphp
+              @foreach ($sub_levels as $sub_level)
+              @php $sub_level_count++ @endphp
+                  <a href="{{ route('levels', [$level->id, $sub_level->id]) }}" 
+                  class="dropdown-item {{ Request::segment(1) == $level_count ? (Request::segment(2) == $sub_level_count ? 'active':null) : null }}">{{$sub_level->name}} </a>
+                @endforeach
+                @php $sub_level_count=0 @endphp
+              </div>
+            </div>
+          @endforeach
+        <a href="{{ route('about') }}"
+          class="nav-item nav-link {{ Request::segment(1) === 'about' ? 'active' : null }}">About</a>
+        <a href="{{ route('contact') }}"
+          class="nav-item nav-link {{ Request::segment(1) === 'contact' ? 'active' : null }}">Contact</a>
       </div>
 
       <!--       <a href="#" class="btn btn-primary rounded-0 py-4 px-lg-5 d-none d-lg-block">Appointment<i

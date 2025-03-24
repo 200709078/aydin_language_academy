@@ -6,19 +6,22 @@ use App\Http\Controllers\questions_cont_admin;
 use App\Http\Controllers\user_cont_exercises;
 use App\Http\Controllers\user_cont_main;
 use App\Http\Controllers\user_cont_themes;
-use App\Http\Controllers\user_cont_themes_details;
 use App\Http\Middleware\isAdmin_middle;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [user_cont_main::class, 'index'])->name('home');
 Route::get('about', [user_cont_main::class, 'about'])->name('about');
 Route::get('contact', [user_cont_main::class, 'contact'])->name('contact');
+
 Route::get('tab1/{theme_id}', [user_cont_main::class, 'tab1'])->name('tab1');
-Route::get('tab2/{declaration_id}', [user_cont_main::class, 'tab2'])->name('tab2');
+Route::get('tab2/{theme_id}', [user_cont_main::class, 'tab2'])->name('tab2');
+
+Route::get('{level_id}/{sub_level_id}', [user_cont_themes::class,'index'])->name('levels');
+Route::get('theme/{theme_id}/exercises', [user_cont_exercises::class,'index'])->name('exercises');
+
 //Route::get('theme/detail/{id}', [user_cont_main::class, 'theme_detail'])->name('theme.detail');
 
-Route::resource('/{level_id}/{sub_level_id}', user_cont_themes::class)->name('index', 'levels');
-Route::resource('/theme/{theme_id}/exercises', user_cont_exercises::class);
+
 
 /* Route::middleware([
     'auth:sanctum',
