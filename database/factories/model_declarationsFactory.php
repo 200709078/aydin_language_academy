@@ -23,6 +23,10 @@ class model_declarationsFactory extends Factory
             'title' => $title,
             'slug' => Str::slug($title),
             'contents' => fake()->text(200),
+            'image' => rand(0, 9).'.jpg',
+            'pdf' => 'deneme.pdf',
+            'video' => 'https://youtu.be/gAHzzHD-jVA',
+            'voice' => 'https://youtu.be/gAHzzHD-jVA',
             'theme_id' => rand(1,50)
         ];
     }

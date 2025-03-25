@@ -20,7 +20,7 @@ class model_questionsFactory extends Factory
         $faker = Faker::create();
         return [
             'question' => fake()->sentence(rand(3, 7)),
-            'image' => fake()->imageUrl(800, 400, 'cats', true, true),
+            'image' => rand(0, 9).'.jpg',
             'answer1' => fake()->sentence(rand(1, 3)),
             'answer2' => fake()->sentence(rand(1, 3)),
             'answer3' => fake()->sentence(rand(1, 3)),

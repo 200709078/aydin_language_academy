@@ -64,6 +64,7 @@ return new class extends Migration {
             $table->string('title');
             $table->string('slug')->unique();
             $table->longText('contents')->nullable();
+            $table->longText('image')->nullable();
             $table->longText('pdf')->nullable();
             $table->longText('video')->nullable();
             $table->longText('voice')->nullable();
@@ -71,6 +72,15 @@ return new class extends Migration {
             $table->timestamps();
         });
 
+        Schema::create('messages', function (Blueprint $table) {
+            $table->id();
+            $table->string('fullname');
+            $table->string('email');
+            $table->string('telephone');
+            $table->string('subject');
+            $table->string('message');
+            $table->timestamps();
+        });
 
         /*         Schema::create('exams', function (Blueprint $table) {
                     $table->id();
@@ -153,5 +163,6 @@ return new class extends Migration {
         Schema::dropIfExists('themes');
         Schema::dropIfExists('exercises');
         Schema::dropIfExists('declarations');
+        Schema::dropIfExists('messages');
     }
 };

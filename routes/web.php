@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [user_cont_main::class, 'index'])->name('home');
 Route::get('about', [user_cont_main::class, 'about'])->name('about');
 Route::get('contact', [user_cont_main::class, 'contact'])->name('contact');
+Route::post('/contactpost', [user_cont_main::class, 'contactpost'])->name('contactpost');
 
 Route::get('tab1/{theme_id}', [user_cont_main::class, 'tab1'])->name('tab1');
 Route::get('tab2/{theme_id}', [user_cont_main::class, 'tab2'])->name('tab2');
