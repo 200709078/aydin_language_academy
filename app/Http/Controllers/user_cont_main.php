@@ -18,6 +18,7 @@ class user_cont_main extends Controller
     {
         $data['levels'] = model_levels::all();
         $data['sub_levels'] = model_sub_levels::all();
+
         view()->share($data);
     }
     public function theme_detail($theme_id)
@@ -30,10 +31,14 @@ class user_cont_main extends Controller
         return view('front.home');
     }
 
-    public function levels($level_id, $sub_level_id)
+    public function themes($level_slug, $sub_level_slug)
     {
-        $themes = model_themes::with('levels', 'sub_levels', 'declarations', 'exercises.questions')->where('level_id', '=', $level_id)->where('sub_level_id', '=', $sub_level_id)->get('*');
-        return view('front.themes', compact('themes'));
+        $themes = model_themes::whereHas('levels', fn($l) => $l->where('slug', $level_slug))
+            ->whereHas('sub_levels', fn($sl) => $sl->where('slug', $sub_level_slug))
+            ->with(['levels', 'sub_levels'])
+            ->get();
+
+        return view('front.themes', ['themes' => $themes]);
     }
     public function about()
     {
@@ -44,7 +49,7 @@ class user_cont_main extends Controller
         return view('front.contact');
     }
 
-    
+
     public function contactpost(Request $request)
     {
         $newMessage = new model_messages();
@@ -53,27 +58,42 @@ class user_cont_main extends Controller
         $newMessage->telephone = $request->telephone;
         $newMessage->subject = $request->subject;
         $newMessage->message = $request->message;
-        $newMessage->save(); 
+        $newMessage->save();
 
-                 Mail::raw($request->message, function ($message) use ($request) {
-                    $message->from($request->email, $request->fullname);
-                    $message->to('ademvarol0808@hotmail.com', 'Adem VAROL');
-                    $message->subject($request->subject);
-                });  
+        Mail::raw($request->message, function ($message) use ($request) {
+            $message->from($request->email, $request->fullname);
+            $message->to('ademvarol0808@hotmail.com', 'Adem VAROL');
+            $message->subject($request->subject);
+        });
 
         return redirect('contact')->with('success', ' Teşekkürler mesajınız bize iletildi...');
     }
 
     public function tab1($theme_id)
     {
-        $declarations = model_declarations::where('theme_id', '=', $theme_id)->paginate(1) ?? abort(404, 'THEME NOT FOUND');
-        $exercises = model_exercises::where('theme_id', '=', $theme_id)->paginate(1) ?? abort(404, 'THEME NOT FOUND');
-        return view('front.theme_detail', compact(['declarations','exercises','theme_id']));
+        $declarations = model_declarations::where('theme_id', '=', $theme_id)->get() ?? abort(404, 'THEME NOT FOUND');
+        $exercises = model_exercises::where('theme_id', '=', $theme_id)->with('questions')->get() ?? abort(404, 'THEME NOT FOUND');
+        return view('front.theme_detail', compact(['declarations', 'exercises', 'theme_id']));
     }
     public function tab2($theme_id)
     {
-        $declarations = model_declarations::where('theme_id', '=', $theme_id)->paginate(1) ?? abort(404, 'THEME NOT FOUND');
-        $exercises = model_exercises::where('theme_id', '=', $theme_id)->paginate(1) ?? abort(404, 'THEME NOT FOUND');
-        return view('front.theme_detail', compact(['declarations','exercises','theme_id']));
+        $declarations = model_declarations::where('theme_id', '=', $theme_id)->get() ?? abort(404, 'THEME NOT FOUND');
+        $exercises = model_exercises::where('theme_id', '=', $theme_id)->with('questions')->get() ?? abort(404, 'THEME NOT FOUND');
+        return view('front.theme_detail', compact(['declarations', 'exercises', 'theme_id']));
+    }
+
+    public function exercises_result(Request $request, $theme_id)
+    {
+        //$declarations = model_declarations::where('theme_id', '=', $theme_id)->get() ?? abort(404, 'THEME NOT FOUND');
+        //$exercises = model_exercises::where('theme_id', '=', $theme_id)->with('questions')->get() ?? abort(404, 'THEME NOT FOUND');
+        //return view('front.theme_detail', compact(['declarations', 'exercises', 'theme_id', 'request']));
+        $exercises = model_exercises::with('questions')->whereId($theme_id)->get() ?? abort(404, 'EXAM NOT FOUND.');
+        return $exercises;
+        //return redirect($request->session()->previousUrl());
+    }
+    public function qq(string $theme_id)
+    {
+        $questions = model_exercises::where('theme_id', '=', $theme_id)->with('questions')->paginate(1);
+        return $questions;
     }
 }

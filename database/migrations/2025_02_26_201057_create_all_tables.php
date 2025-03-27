@@ -58,6 +58,8 @@ return new class extends Migration {
             $table->timestamps();
         });
 
+
+
         Schema::create('declarations', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('theme_id');
@@ -81,32 +83,6 @@ return new class extends Migration {
             $table->string('message');
             $table->timestamps();
         });
-
-        /*         Schema::create('exams', function (Blueprint $table) {
-                    $table->id();
-                    $table->string('title');
-                    $table->string('slug')->unique();
-                    $table->longText('description')->nullable();
-                    $table->enum('status', ['draft', 'publish', 'unpublish'])->default('draft');
-                    $table->timestamp('finished_at')->nullable();
-                    $table->softDeletes();
-                    $table->timestamps();
-                }); */
-        /*         Schema::create('questions', function (Blueprint $table) {
-                    $table->id();
-                    $table->unsignedBigInteger('exams_model_id');
-                    $table->longText('question');
-                    $table->longText('image')->nullable();
-                    $table->string('select1');
-                    $table->string('select2');
-                    $table->string('select3');
-                    $table->string('select4');
-                    $table->string('select5');
-                    $table->enum('correct_answer', ['select1', 'select2', 'select3', 'select4', 'select5']);
-                    $table->softDeletes();
-                    $table->timestamps();
-                    $table->foreign('exams_model_id')->references('id')->on('exams')->onDelete('cascade');
-                }); */
 
         /*         Schema::create('user_answers', function (Blueprint $table) {
                     $table->id();

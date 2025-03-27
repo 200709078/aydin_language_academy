@@ -12,16 +12,17 @@ class model_themes extends Model
     protected $fillable = [
         'name',
         'slug',
+        'image',
         'level_id',
         'sub_level_id'
     ];
     public function levels()
     {
-        return $this->belongsTo(model_levels::class, 'level_id');
+        return $this->belongsTo(model_levels::class,'level_id');
     }
     public function sub_levels()
     {
-        return $this->belongsTo(model_sub_levels::class, 'sub_level_id');
+        return $this->belongsTo(model_sub_levels::class,'sub_level_id');
     }
     public function exercises()
     {

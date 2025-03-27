@@ -5,7 +5,7 @@
   <div class="container-xxl py-5">
     <div class="container">
     <div class="text-center mx-auto mb-5" style="max-width: 600px;">
-      <h1>THEMES</h1>
+      <h1>{{strtoupper($themes->first()->levels->name . ' ' . $themes->first()->sub_levels->name) }} THEMES</h1>
     </div>
     <div class="row g-4">
       @foreach ($themes as $theme)
@@ -15,8 +15,8 @@
       {{Str::limit($theme->name, 20) }}
       </h4>
       <p class="mb-4">
-      <img class="img-fluid rounded align-self-end" src="{{ asset('photos/' . $theme->image) }}" style="height:120px"
-        class="img-responsive" />
+      <img class="img-fluid rounded align-self-end" src="{{ asset('photos/' . $theme->image) }}"
+        style="height:120px" class="img-responsive" />
       </p>
       <a class="btn" href="{{ route('tab1', $theme->id) }}"><i class="fa fa-plus text-primary me-3"></i>Details</a>
       </div>

@@ -13,15 +13,17 @@ Route::get('/', [user_cont_main::class, 'index'])->name('home');
 Route::get('about', [user_cont_main::class, 'about'])->name('about');
 Route::get('contact', [user_cont_main::class, 'contact'])->name('contact');
 Route::post('/contactpost', [user_cont_main::class, 'contactpost'])->name('contactpost');
+Route::post('exercises/{id}/result', [user_cont_main::class, 'exercises_result'])->name('exercises.result');
 
 Route::get('tab1/{theme_id}', [user_cont_main::class, 'tab1'])->name('tab1');
 Route::get('tab2/{theme_id}', [user_cont_main::class, 'tab2'])->name('tab2');
 
-Route::get('{level_id}/{sub_level_id}', [user_cont_themes::class,'index'])->name('levels');
+Route::get('test/{theme_id}', [user_cont_main::class, 'qq']);
+
+Route::get('{level_slug}/{sub_level_slug}', [user_cont_main::class,'themes'])->name('themes');
 Route::get('theme/{theme_id}/exercises', [user_cont_exercises::class,'index'])->name('exercises');
 
 //Route::get('theme/detail/{id}', [user_cont_main::class, 'theme_detail'])->name('theme.detail');
-
 
 
 /* Route::middleware([

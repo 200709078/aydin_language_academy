@@ -35,9 +35,6 @@
 </head>
 
 <body>
-
-
-
   <!-- Topbar Start -->
   <div class="container-fluid bg-light p-0">
     <div class="row gx-0 d-none d-lg-flex">
@@ -88,22 +85,19 @@
       <div class="navbar-nav ms-auto p-4 p-lg-0">
         <a href="{{ route('home') }}"
           class="nav-item nav-link {{ Request::segment(1) === null ? 'active' : null }}">Home</a>
-          @php $level_count=0 @endphp
-          @foreach ($levels as $level)
-          @php $level_count++ @endphp
-            <div class="nav-item dropdown">
-                <a href="#" class="nav-link dropdown-toggle {{ Request::segment(1) == $level_count ? 'active' : null }}" data-bs-toggle="dropdown">{{$level->name}}</a>
-              <div class="dropdown-menu rounded-0 rounded-bottom m-0">
-              @php $sub_level_count=0 @endphp
-              @foreach ($sub_levels as $sub_level)
-              @php $sub_level_count++ @endphp
-                  <a href="{{ route('levels', [$level->id, $sub_level->id]) }}" 
-                  class="dropdown-item {{ Request::segment(1) == $level_count ? (Request::segment(2) == $sub_level_count ? 'active':null) : null }}">{{$sub_level->name}} </a>
-                @endforeach
-                @php $sub_level_count=0 @endphp
-              </div>
-            </div>
-          @endforeach
+        @foreach ($levels as $level)
+      <div class="nav-item dropdown">
+        <a href="#"
+        class="nav-link dropdown-toggle @isset ($themes) {{$themes->first()->levels->slug === $level->slug ? 'active' : null}} @endisset"
+        data-bs-toggle="dropdown">{{$level->name}}</a>
+        <div class="dropdown-menu rounded-0 rounded-bottom m-0">
+        @foreach ($sub_levels as $sub_level)
+      <a href="{{ route('themes', [$level->slug, $sub_level->slug]) }}"
+        class="dropdown-item @isset ($themes){{$themes->first()->levels->slug === $level->slug ? ($themes->first()->sub_levels->slug === $sub_level->slug ? 'active' : null) : null}}@endisset">{{$sub_level->name}}</a>
+    @endforeach
+        </div>
+      </div>
+    @endforeach
         <a href="{{ route('about') }}"
           class="nav-item nav-link {{ Request::segment(1) === 'about' ? 'active' : null }}">About</a>
         <a href="{{ route('contact') }}"
