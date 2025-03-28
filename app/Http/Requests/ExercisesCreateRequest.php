@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ExamCreateRequest extends FormRequest
+class ExercisesCreateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,8 +23,7 @@ class ExamCreateRequest extends FormRequest
     {
         return [
             'title' => 'required|min:3|max:200|',
-            'description' => 'max:1000',
-            'finished_at' => 'nullable|after:' . now()
+            'description' => 'max:1000'
         ];
     }
     public function attributes()

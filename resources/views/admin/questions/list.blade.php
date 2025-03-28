@@ -1,11 +1,11 @@
 <x-app-layout>
-    <x-slot name="header">QUESTIONS LIST OF {{ $exam->title }}</x-slot>
+    <x-slot name="header">QUESTIONS LIST OF {{ $exercises->title }}</x-slot>
     <div class="card">
         <div class="card-body">
             <h5 class="card-title" >
-                <a href="{{ route('exams.index') }}" class="btn btn-sm btn-secondary" title="Back to Exam List"><i
-                        class="fa fa-arrow-left"></i> Back to Exam List</a>
-                <a href="{{ route('questions.create', $exam->id) }}" class="btn btn-sm btn-primary"
+                <a href="{{ route('exercises.index') }}" class="btn btn-sm btn-secondary" title="Back to Exercises List"><i
+                        class="fa fa-arrow-left"></i> Back to Exercises List</a>
+                <a href="{{ route('questions.create', $exercises->id) }}" class="btn btn-sm btn-primary"
                     title="Add Question"><i class="fa fa-plus"></i> Add Question</a>
             </h5>
             <table class="table table-striped">
@@ -13,17 +13,17 @@
                     <tr>
                         <th scope="col">QUESTIONS</th>
                         <th scope="col">PHOTO</th>
-                        <th scope="col">SELECT 1</th>
-                        <th scope="col">SELECT 2</th>
-                        <th scope="col">SELECT 3</th>
-                        <th scope="col">SELECT 4</th>
-                        <th scope="col">SELECT 5</th>
+                        <th scope="col">ANSWER 1</th>
+                        <th scope="col">ANSWER 2</th>
+                        <th scope="col">ANSWER 3</th>
+                        <th scope="col">ANSWER 4</th>
+                        <th scope="col">ANSWER 5</th>
                         <th scope="col">CORRECT ANSWER</th>
                         <th scope="col">OPERATIONS</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($exam->questions as $question)
+                    @foreach ($exercises->questions as $question)
                         <tr>
                             <th scope="row">{{ $question->question }}</th>
                             <td>
@@ -34,16 +34,16 @@
                                     <button type="button" class="btn btn-sm btn-light" disabled>No Image</button>
                                 @endif
                             </td>
-                            <td>{{ $question->select1 }}</td>
-                            <td>{{ $question->select2 }}</td>
-                            <td>{{ $question->select3 }}</td>
-                            <td>{{ $question->select4 }}</td>
-                            <td>{{ $question->select5 }}</td>
+                            <td>{{ $question->answer1 }}</td>
+                            <td>{{ $question->answer2 }}</td>
+                            <td>{{ $question->answer3 }}</td>
+                            <td>{{ $question->answer4 }}</td>
+                            <td>{{ $question->answer5 }}</td>
                             <td>{{ substr($question->correct_answer, -1) }}</td>
                             <td>
-                                <a href="{{ route('questions.edit', [$exam->id, $question->id]) }}"
+                                <a href="{{ route('questions.edit', [$exercises->id, $question->id]) }}"
                                     class="btn btn-sm btn-primary" title="Edit Question"><i class="fa fa-pen"></i></a>
-                                <a href="{{ route('questions.destroy', [$exam->id, $question->id]) }}"
+                                <a href="{{ route('questions.destroy', [$exercises->id, $question->id]) }}"
                                     class="btn btn-sm btn-danger" title="Delete Question"><i class="fa fa-times"></i></a>
                             </td>
                         </tr>

@@ -8,7 +8,7 @@ use App\Models\model_themes;
 use App\Models\model_levels;
 use App\Models\model_sub_levels;
 
-class user_cont_themes extends Controller
+class cont_themes extends Controller
 {
     public function __construct()
     {

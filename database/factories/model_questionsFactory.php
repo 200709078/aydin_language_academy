@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Faker\Factory as Faker;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\questions_model>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\model_questions>
  */
 class model_questionsFactory extends Factory
 {

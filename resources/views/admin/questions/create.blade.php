@@ -1,8 +1,8 @@
 <x-app-layout>
-    <x-slot name="header">CREATE NEW QUESTION FOR {{ $exam->title }}</x-slot>
+    <x-slot name="header">CREATE NEW QUESTION FOR {{ $exercises->title }}</x-slot>
     <div class="card">
         <div class="card-body">
-            <form method="POST" action="{{ route('questions.store',$exam->id) }}" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('questions.store',$exercises->id) }}" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group">
                     <label>Question</label>
@@ -15,43 +15,43 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label>Select 1</label>
-                            <textarea name="select1" class="form-control" rows="2">{{ old('select1') }}</textarea>
+                            <label>Answer 1</label>
+                            <textarea name="sanswer" class="form-control" rows="2">{{ old('answer1') }}</textarea>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label>Select 2</label>
-                            <textarea name="select2" class="form-control" rows="2">{{ old('select2') }}</textarea>
+                            <label>Answer 2</label>
+                            <textarea name="answer2" class="form-control" rows="2">{{ old('answer2') }}</textarea>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label>Select 3</label>
-                            <textarea name="select3" class="form-control" rows="2">{{ old('select3') }}</textarea>
+                            <label>Answer 3</label>
+                            <textarea name="answer3" class="form-control" rows="2">{{ old('answer3') }}</textarea>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label>Select 4</label>
-                            <textarea name="select4" class="form-control" rows="2">{{ old('select4') }}</textarea>
+                            <label>Answer 4</label>
+                            <textarea name="answer4" class="form-control" rows="2">{{ old('answer4') }}</textarea>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label>Select 5</label>
-                            <textarea name="select5" class="form-control" rows="2">{{ old('select5') }}</textarea>
+                            <label>Answer 5</label>
+                            <textarea name="answer5" class="form-control" rows="2">{{ old('answer5') }}</textarea>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Correct Answer</label>
                             <select name="correct_answer" class="form-control">
-                                <option @if (old('correct_answer')==='select1') selected @endif value="select1">Select 1</option>
-                                <option @if (old('correct_answer')==='select2') selected @endif value="select2">Select 2</option>
-                                <option @if (old('correct_answer')==='select3') selected @endif value="select3">Select 3</option>
-                                <option @if (old('correct_answer')==='select4') selected @endif value="select4">Select 4</option>
-                                <option @if (old('correct_answer')==='select5') selected @endif value="select5">Select 5</option>
+                                <option @if (old('correct_answer')==='answer1') selected @endif value="answer1">Answer 1</option>
+                                <option @if (old('correct_answer')==='answer2') selected @endif value="answer2">Answer 2</option>
+                                <option @if (old('correct_answer')==='answer3') selected @endif value="answer3">Answer 3</option>
+                                <option @if (old('correct_answer')==='answer4') selected @endif value="answer4">Answer 4</option>
+                                <option @if (old('correct_answer')==='answer5') selected @endif value="answer5">Answer 5</option>
                             </select>
                         </div>
                     </div>

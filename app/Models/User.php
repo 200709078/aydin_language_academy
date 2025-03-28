@@ -21,7 +21,7 @@ class User extends Authenticatable
     use TwoFactorAuthenticatable;
 
     public function results(){
-        return $this->hasMany(results_model::class,'user_id');
+        return $this->hasMany(model_results::class,'user_id');
     }
     /**
      * The attributes that are mass assignable.

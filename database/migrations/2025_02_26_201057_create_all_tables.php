@@ -53,12 +53,10 @@ return new class extends Migration {
             $table->string('answer3');
             $table->string('answer4');
             $table->string('answer5');
-            $table->enum('correct_answer', ['answer1', 'answer2','answer3','answer4','answer5']);
+            $table->enum('correct_answer', ['answer1', 'answer2', 'answer3', 'answer4', 'answer5']);
             $table->foreign('exercises_id')->references('id')->on('exercises')->onDelete('cascade');
             $table->timestamps();
         });
-
-
 
         Schema::create('declarations', function (Blueprint $table) {
             $table->id();
@@ -74,6 +72,27 @@ return new class extends Migration {
             $table->timestamps();
         });
 
+        Schema::create('user_answers', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('question_id');
+            $table->enum('user_answer', ['answer1', 'answer2', 'answer3', 'answer4', 'answer5']);
+            $table->timestamps();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('question_id')->references('id')->on('questions')->onDelete('cascade');
+        });
+        Schema::create('user_results', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('exercises_id');
+            $table->integer('point');
+            $table->integer('correct_number');
+            $table->integer('wrong_number');
+            $table->timestamps();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('exercises_id')->references('id')->on('exercises')->onDelete('cascade');
+        });
+
         Schema::create('messages', function (Blueprint $table) {
             $table->id();
             $table->string('fullname');
@@ -83,54 +102,6 @@ return new class extends Migration {
             $table->string('message');
             $table->timestamps();
         });
-
-        /*         Schema::create('user_answers', function (Blueprint $table) {
-                    $table->id();
-                    $table->unsignedBigInteger('user_id');
-                    $table->unsignedBigInteger('question_id');
-                    $table->enum('user_select', ['select1', 'select2', 'select3', 'select4', 'select5']);
-                    $table->timestamps();
-                    $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-                    $table->foreign('question_id')->references('id')->on('questions')->onDelete('cascade');
-                }); */
-        /*         Schema::create('user_results', function (Blueprint $table) {
-                    $table->id();
-                    $table->unsignedBigInteger('user_id');
-                    $table->unsignedBigInteger('exam_id');
-                    $table->integer('point');
-                    $table->integer('correct_number');
-                    $table->integer('wrong_number');
-                    $table->timestamps();
-                    $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-                    $table->foreign('exam_id')->references('id')->on('exams')->onDelete('cascade');
-                }); */
-
-        /*         Schema::create('pages', function (Blueprint $table) {
-                    $table->id();
-                    $table->string('name', 100);
-                    $table->string('slug', 100)->unique();
-                    $table->string('logo_path');
-                    $table->longText('content');
-                    $table->integer('queue')->default(0);
-                    $table->softDeletes();
-                    $table->timestamps();
-                }); */
-        /*         Schema::create('admins', function (Blueprint $table) {
-                    $table->id();
-                    $table->string('name');
-                    $table->string('email');
-                    $table->string('password');
-                    $table->timestamps();
-                }); */
-        /*         Schema::create('messages', function (Blueprint $table) {
-                    $table->id();
-                    $table->string('fullname');
-                    $table->string('email');
-                    $table->string('telephone');
-                    $table->string('subject');
-                    $table->longText('message');
-                    $table->timestamps();
-                }); */
     }
     public function down(): void
     {
@@ -138,7 +109,10 @@ return new class extends Migration {
         Schema::dropIfExists('sub_levels');
         Schema::dropIfExists('themes');
         Schema::dropIfExists('exercises');
+        Schema::dropIfExists('questions');
         Schema::dropIfExists('declarations');
+        Schema::dropIfExists('user_answers');
+        Schema::dropIfExists('user_results');
         Schema::dropIfExists('messages');
     }
 };

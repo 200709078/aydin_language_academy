@@ -4,6 +4,8 @@ namespace Database\Seeders;
 use App\Models\model_declarations;
 use App\Models\model_exercises;
 use App\Models\model_questions;
+use App\Models\model_results;
+use App\Models\model_user_answers;
 use App\Models\User;
 use App\Models\model_levels;
 use App\Models\model_sub_levels;
@@ -44,9 +46,12 @@ class DatabaseSeeder extends Seeder
             'remember_token' => Str::random(10),
         ]);
 
+        User::factory(9)->create();
         model_themes::factory(50)->create();
         model_exercises::factory(100)->create();
         model_declarations::factory(100)->create();
         model_questions::factory(1000)->create();
+        model_results::factory(1000)->create();
+        model_user_answers::factory(1000)->create();
     }
 }

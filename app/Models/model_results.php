@@ -5,13 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class results_model extends Model
+class model_results extends Model
 {
     use HasFactory;
     public $table = "user_results";
     protected $fillable = [
         'user_id',
-        'exam_id',
+        'exercises_id',
         'point',
         'correct_number',
         'wrong_number'
@@ -20,8 +20,8 @@ class results_model extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
-    public function exam()
+    public function exercises()
     {
-        return $this->belongsTo(exams_model::class, 'exam_id');
+        return $this->belongsTo(model_exercises::class, 'exercises_id');
     }
 }

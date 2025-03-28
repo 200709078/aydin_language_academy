@@ -4,8 +4,9 @@
 
   <div class="container-xxl py-5">
     <div class="container">
-    <div class="text-center mx-auto mb-5" style="max-width: 600px;">
-      <h1>{{strtoupper($themes->first()->levels->name . ' ' . $themes->first()->sub_levels->name) }} THEMES</h1>
+    <div class="text-center mx-auto">
+      <h4>{{strtoupper($themes->first()->levels->name)}} <i class="bi bi-arrow-right"></i>
+      {{ strtoupper($themes->first()->sub_levels->name)}} <i class="bi bi-arrow-right"></i> ALL THEMES</h4>
     </div>
     <div class="row g-4">
       @foreach ($themes as $theme)

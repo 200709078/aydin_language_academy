@@ -2,7 +2,7 @@
     <x-slot name="header">{{ $question->question }} EDIT</x-slot>
     <div class="card">
         <div class="card-body">
-             <form method="POST" action="{{ route('questions.update',[$question->exams_model_id,$question->id]) }}" enctype="multipart/form-data"> 
+             <form method="POST" action="{{ route('questions.update',[$question->exercises_model_id,$question->id]) }}" enctype="multipart/form-data"> 
                 @csrf
                 @method('PUT')
                 <div class="form-group">
@@ -19,43 +19,43 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label style="font-weight: bold;">Select 1</label>
-                            <textarea name="select1" class="form-control" rows="2">{{ $question->select1 }}</textarea>
+                            <label style="font-weight: bold;">Answer 1</label>
+                            <textarea name="answer1" class="form-control" rows="2">{{ $question->answer1 }}</textarea>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label style="font-weight: bold;">Select 2</label>
-                            <textarea name="select2" class="form-control" rows="2">{{ $question->select2 }}</textarea>
+                            <label style="font-weight: bold;">Answer 2</label>
+                            <textarea name="answer2" class="form-control" rows="2">{{ $question->answer2 }}</textarea>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label style="font-weight: bold;">Select 3</label>
-                            <textarea name="select3" class="form-control" rows="2">{{ $question->select3 }}</textarea>
+                            <label style="font-weight: bold;">Answer 3</label>
+                            <textarea name="answer3" class="form-control" rows="2">{{ $question->answer3 }}</textarea>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label style="font-weight: bold;">Select 4</label>
-                            <textarea name="select4" class="form-control" rows="2">{{ $question->select4 }}</textarea>
+                            <label style="font-weight: bold;">Answer 4</label>
+                            <textarea name="answer4" class="form-control" rows="2">{{ $question->answer4 }}</textarea>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label style="font-weight: bold;">Select 5</label>
-                            <textarea name="select5" class="form-control" rows="2">{{ $question->select5 }}</textarea>
+                            <label style="font-weight: bold;">Answer 5</label>
+                            <textarea name="answer5" class="form-control" rows="2">{{ $question->answer5 }}</textarea>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label style="font-weight: bold;">Correct Answer</label>
                             <select name="correct_answer" class="form-control">
-                                <option @if ($question->correct_answer==='select1') selected @endif value="select1">Select 1</option>
-                                <option @if ($question->correct_answer==='select2') selected @endif value="select2">Select 2</option>
-                                <option @if ($question->correct_answer==='select3') selected @endif value="select3">Select 3</option>
-                                <option @if ($question->correct_answer==='select4') selected @endif value="select4">Select 4</option>
-                                <option @if ($question->correct_answer==='select5') selected @endif value="select5">Select 5</option>
+                                <option @if ($question->correct_answer==='answer1') selected @endif value="answer1">Answer 1</option>
+                                <option @if ($question->correct_answer==='answer2') selected @endif value="answer2">Answer 2</option>
+                                <option @if ($question->correct_answer==='answer3') selected @endif value="answer3">Answer 3</option>
+                                <option @if ($question->correct_answer==='answer4') selected @endif value="answer4">Answer 4</option>
+                                <option @if ($question->correct_answer==='answer5') selected @endif value="answer5">Answer 5</option>
                             </select>
                         </div>
                     </div>
