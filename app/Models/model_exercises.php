@@ -6,19 +6,20 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 use Cviebrock\EloquentSluggable\Sluggable;
+use function Laravel\Prompts\alert;
 
 class model_exercises extends Model
 {
     use HasFactory, Sluggable;
     public $table = "exercises";
-    protected $fillable = [ 
+    protected $fillable = [
         'theme_id',
         'title',
         'slug',
         'description'
     ];
-    protected $appends = ['details'];
-    public function getMyRankAttribute()
+     protected $appends = ['details'];
+ /*   public function getMyRankAttribute()
     {
         $rank = 0;
         foreach ($this->results()->orderByDesc('point')->get() as $result) {
@@ -27,19 +28,24 @@ class model_exercises extends Model
                 return $rank;
             }
         }
-    }
+    } */
 
-    public function getDetailsAttribute()
+     public function getDetailsAttribute()
     {
-        if ($this->results()->count() > 0) {
+        /* if ($this->results()->count() > 0) { */
             return [
-                'average' => round($this->results()->avg('point'), 2),
-                'join_count' => $this->results()->count()
+/*                 'average' => round($this->results()->avg('point'), 2),
+                'join_count' => $this->results()->count(), */
+                'questions_count' => $this->questions()->count()
             ];
-        }
-        return null;
+       /*  }
+        return null; */
     } 
-    public function results()
+    public function questions()
+    {
+        return $this->hasMany(model_questions::class, 'exercises_id');
+    }
+/*     public function results()
     {
         return $this->hasMany(model_results::class, 'exercises_id');
     }
@@ -54,11 +60,7 @@ class model_exercises extends Model
     public function getFinishedAtAttribute($date)
     {
         return $date ? Carbon::parse($date) : null;
-    }
-    public function questions()
-    {
-        return $this->hasMany(model_questions::class, 'exercises_id');
-    }
+    } */
 
     public function sluggable(): array
     {

@@ -1,41 +1,43 @@
 <x-app-layout>
-    <x-slot name="header">LIST OF EXERCISES</x-slot>
+    <x-slot name="header">EXERCISES OF {{ Str::limit($theme->name,20) }} THEME</x-slot>
     <div class="card">
         <div class="card-body">
-            <h5 class="card-title float-right">
-                <a href="{{ route('exercises.create') }}" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> Create Exercises</a>
-            </h5>
+            <a href="{{ route('themes_list') }}" class="btn btn-sm btn-secondary" title="Back to Themes List"><i
+                    class="fa fa-arrow-left"></i> Back to Themes List</a>
+            <a href="#" class="btn btn-sm btn-primary float-right" title="Add New Level"><i class="fa fa-plus"></i> Add
+                New Exercises</a>
             <table class="table table-striped table-sm">
                 <thead>
                     <tr>
-                        <th scope="col">EXERCISES TITLE</th>
-                        <th scope="col">EXERCISES DESCRIPTION</th>
-                        <th scope="col">NUMBER OF QUESTION</th>
+                        <th scope="col">TITLE</th>
+                        <th scope="col">DESCRIPTION</th>
+                        <th scope="col">NUMBER OF QUESTIONS</th>
                         <th scope="col">OPERATIONS</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($exercises as $exer)
+                    @foreach ($theme->exercises as $exercise)
                         <tr class="align-middle">
-                            <th class="col-md-3" scope="row">{{ $exer->title }}</th>
-                            <td class="col-md-3">{{\Illuminate\Support\Str::limit($exer->description, 50, $end='...')}}</td>
-                            <td class="col-md-2">{{ $exer->questions_count}}</td>
+                            <th class="col-md-3" scope="row">{{ $exercise->title }}</th>
+                            <th class="col-md-3" scope="row">{{ Str::limit($exercise->description, 20) }}</th>
+                            <th class="col-md-3" scope="row">{{ $exercise->details['questions_count'] }}</th>
                             <td>
-                                <a href="{{ route('exercises.details',$exer->id) }}" @if($exer->questions_count==0) class="btn btn-sm btn-secondary disabled" @else class="btn btn-sm btn-secondary" @endif title="Show Detail">
+                                <!-- exercises.detail -->
+                                <a href="#" @if($exercise->details['questions_count']==0) class="btn btn-sm btn-secondary disabled" @else class="btn btn-sm btn-secondary" @endif title="Show Detail">
                                     <i class="fa fa-info w-4"></i>
                                 </a>
-                                <a href="{{ route('questions.index', $exer->id) }}" class="btn btn-sm btn-warning" title="List Questions"><i
-                                        class="fa fa-list w-4"></i></a>
-                                <a href="{{ route('exercises.edit', $exer->id) }}" class="btn btn-sm btn-primary" title="Edit Exercises"><i
-                                        class="fa fa-pen w-4"></i></a>
-                                <a href="{{ route('exercises.destroy', $exer->id) }}" class="btn btn-sm btn-danger" title="Delete Exercises"><i
-                                        class="fa fa-times w-4"></i></a>
+                                <!-- questions.index -->
+                                <a href="{{ route('questions_list',$exercise->id) }}" class="btn btn-sm btn-warning" title="List Questions">
+                                    <i class="fa fa-list w-4"></i></a>
+                                <a href="#" class="btn btn-sm btn-primary" title="Edit Exercises">
+                                    <i class="fa fa-pen w-4"></i></a>
+                                <a href="#" class="btn btn-sm btn-danger" title="Delete Exercises">
+                                    <i class="fa fa-trash w-4"></i></a>
                             </td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
-            {{ $exercises->withQueryString()->links() }}
         </div>
     </div>
 </x-app-layout>

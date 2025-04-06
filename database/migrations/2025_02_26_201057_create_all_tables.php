@@ -72,7 +72,7 @@ return new class extends Migration {
             $table->timestamps();
         });
 
-        Schema::create('user_answers', function (Blueprint $table) {
+/*         Schema::create('user_answers', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('question_id');
@@ -91,7 +91,7 @@ return new class extends Migration {
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('exercises_id')->references('id')->on('exercises')->onDelete('cascade');
-        });
+        }); */
 
         Schema::create('messages', function (Blueprint $table) {
             $table->id();
@@ -111,8 +111,8 @@ return new class extends Migration {
         Schema::dropIfExists('exercises');
         Schema::dropIfExists('questions');
         Schema::dropIfExists('declarations');
-        Schema::dropIfExists('user_answers');
-        Schema::dropIfExists('user_results');
+/*         Schema::dropIfExists('user_answers');
+        Schema::dropIfExists('user_results'); */
         Schema::dropIfExists('messages');
     }
 };

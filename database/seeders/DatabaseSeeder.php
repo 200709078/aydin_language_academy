@@ -51,7 +51,7 @@ class DatabaseSeeder extends Seeder
         model_exercises::factory(100)->create();
         model_declarations::factory(100)->create();
         model_questions::factory(1000)->create();
-        model_results::factory(1000)->create();
-        model_user_answers::factory(1000)->create();
+/*         model_results::factory(1000)->create();
+        model_user_answers::factory(1000)->create(); */
     }
 }

@@ -34,7 +34,7 @@
           <a class="border-bottom" href="{{ route('home') }}">AYDIN LANGUAGE ACADEMY</a>, All Right Reserved.
         </div>
         <div class="col-md-6 text-center text-md-end">
-          <a class="border-none" href="{{ route('dashboard') }}">&copy; </a>
+          <a class="border-none" href="{{ route('levels_list') }}">&copy; </a>
           Designed By <a class="border-bottom" href="http://www.madematik.com" target="_blank">mADEMatik</a>
         </div>
       </div>

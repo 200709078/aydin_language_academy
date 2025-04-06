@@ -14,8 +14,14 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
+                    <x-nav-link href="{{ route('levels_list') }}" :active="request()->routeIs('levels_list')">
+                        {{ __('Levels') }}
+                    </x-nav-link>
+                    <x-nav-link href="{{ route('sub_levels_list') }}" :active="request()->routeIs('sub_levels_list')">
+                        {{ __('Sub Levels') }}
+                    </x-nav-link>
+                    <x-nav-link href="{{ route('themes_list') }}" :active="request()->routeIs('themes_list')">
+                        {{ __('Themes') }}
                     </x-nav-link>
                 </div>
             </div>
@@ -95,14 +101,6 @@
                         </x-slot>
 
                         <x-slot name="content">
-                            @if (auth()->user()->type=='admin')
-                            <div class="block px-4 py-2 text-xs text-gray-400">
-                                Admin Operations
-                            </div>
-                            <x-dropdown-link href="{{ route('exercises.index') }}">
-                                Exercises
-                            </x-dropdown-link>
-                            @endif
                             <!-- Account Management -->
                             <div class="block px-4 py-2 text-xs text-gray-400">
                                 {{ __('Manage Account') }}
@@ -149,8 +147,14 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
+            <x-responsive-nav-link href="{{ route('levels_list') }}" :active="request()->routeIs('levels_list')">
+                {{ __('Levels') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link href="{{ route('sub_levels_list') }}" :active="request()->routeIs('sub_levels_list')">
+                {{ __('Sub Levels') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link href="{{ route('themes_list') }}" :active="request()->routeIs('themes_list')">
+                {{ __('Themes') }}
             </x-responsive-nav-link>
         </div>
 

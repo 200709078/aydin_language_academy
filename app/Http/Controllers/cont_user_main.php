@@ -7,14 +7,13 @@ use App\Models\model_declarations;
 use App\Models\model_exercises;
 use App\Models\model_levels;
 use App\Models\model_messages;
-use App\Models\model_results;
+use App\Models\model_questions;
 use App\Models\model_sub_levels;
 use App\Models\model_themes;
-use App\Models\model_user_answers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
-class user_cont_main extends Controller
+class cont_user_main extends Controller
 {
     public function __construct()
     {
@@ -130,12 +129,41 @@ class user_cont_main extends Controller
 
     /*  */
 
-    public function dashboard()
+    public function levels_list()
     {
-        $exercises = model_exercises::withCount('questions')->paginate(5);
-        $my_results = auth()->user()->results;
-        return view("dashboard", compact('exercises', 'my_results'));
+        /*         $exercises = model_exercises::withCount('questions')->paginate(5);
+                $my_results = auth()->user()->results;
+                return view("dashboard", compact('exercises', 'my_results')); */
+        $levels = model_levels::all();
+        return view("admin.levels.list", compact('levels'));
     }
+    public function sub_levels_list()
+    {
+        $sub_levels = model_sub_levels::all();
+        return view("admin.sub_levels.list", compact('sub_levels'));
+    }
+    public function themes_list()
+    {
+        $themes = model_themes::with(['levels', 'sub_levels'])->get();
+        return  view("admin.themes.list", compact('themes'));
+    }
+
+    public function declarations_list($theme_id)
+    {
+        $theme = model_themes::whereId($theme_id)->with('declarations')->first();
+        return view("admin.declarations.list", compact('theme'));
+    }
+    public function exercises_list($theme_id)
+    {
+        $theme = model_themes::whereId($theme_id)->with('exercises')->first();
+        return view("admin.exercises.list", compact('theme'));
+    }
+    public function questions_list($exercise_id)
+    {
+        $exercise = model_exercises::whereId($exercise_id)->with('questions')->first();
+        return view("admin.questions.list", compact('exercise'));
+    }
+
 
     public function exercises_join($slug)
     {

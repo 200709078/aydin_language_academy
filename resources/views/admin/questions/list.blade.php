@@ -1,11 +1,11 @@
 <x-app-layout>
-    <x-slot name="header">QUESTIONS LIST OF {{ $exercises->title }}</x-slot>
+    <x-slot name="header">QUESTIONS LIST OF {{ $exercise->title }}</x-slot>
     <div class="card">
         <div class="card-body">
             <h5 class="card-title" >
-                <a href="{{ route('exercises.index') }}" class="btn btn-sm btn-secondary" title="Back to Exercises List"><i
+                <a href="{{ route('exercises_list',$exercise->theme_id) }}" class="btn btn-sm btn-secondary" title="Back to Exercises List"><i
                         class="fa fa-arrow-left"></i> Back to Exercises List</a>
-                <a href="{{ route('questions.create', $exercises->id) }}" class="btn btn-sm btn-primary"
+                <a href="#" class="btn btn-sm btn-primary"
                     title="Add Question"><i class="fa fa-plus"></i> Add Question</a>
             </h5>
             <table class="table table-striped">
@@ -23,7 +23,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($exercises->questions as $question)
+                    @foreach ($exercise->questions as $question)
                         <tr>
                             <th scope="row">{{ $question->question }}</th>
                             <td>
@@ -41,10 +41,8 @@
                             <td>{{ $question->answer5 }}</td>
                             <td>{{ substr($question->correct_answer, -1) }}</td>
                             <td>
-                                <a href="{{ route('questions.edit', [$exercises->id, $question->id]) }}"
-                                    class="btn btn-sm btn-primary" title="Edit Question"><i class="fa fa-pen"></i></a>
-                                <a href="{{ route('questions.destroy', [$exercises->id, $question->id]) }}"
-                                    class="btn btn-sm btn-danger" title="Delete Question"><i class="fa fa-times"></i></a>
+                                <a href="#" class="btn btn-sm btn-primary" title="Edit Question"><i class="fa fa-pen"></i></a>
+                                <a href="#" class="btn btn-sm btn-danger" title="Delete Question"><i class="fa fa-times"></i></a>
                             </td>
                         </tr>
                     @endforeach

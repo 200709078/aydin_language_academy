@@ -16,11 +16,17 @@ class cont_themes extends Controller
         $data['sub_levels'] = model_sub_levels::all();
         view()->share($data);
     }
-    public function index($level_id, $sub_level_id)
+
+    public function index()
+    {
+        $themes = model_themes::get();
+        return $themes;// view("front.themes", compact("themes"));
+    }
+/*     public function index($level_id, $sub_level_id)
     {
         $themes = model_themes::where('level_id', '=', $level_id)->where('sub_level_id', '=', $sub_level_id)->get();
         return view("front.themes", compact("themes"));
-    }
+    } */
 
     public function create()
     {
