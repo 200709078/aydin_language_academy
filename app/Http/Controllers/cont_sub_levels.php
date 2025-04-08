@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\SubLevelCreateRequest;
 use App\Models\model_sub_levels;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class cont_sub_levels extends Controller
 {
@@ -16,12 +18,17 @@ class cont_sub_levels extends Controller
 
     public function create()
     {
-        //
+        return view('admin.sub_levels.create');
     }
 
-    public function store(Request $request)
+    public function store(SubLevelCreateRequest $request)
     {
-        //
+        $request->merge([
+            'slug' => Str::slug($request->name),
+        ]);
+
+        model_sub_levels::create($request->post());
+        return redirect()->route('sub_levels_list')->with('success', 'NEW SUB LEVELS ADD SUCCESSFULLY...');
     }
 
     public function show(string $id)

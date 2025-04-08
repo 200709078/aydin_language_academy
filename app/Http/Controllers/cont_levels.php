@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\LevelCreateRequest;
 use Illuminate\Http\Request;
 use App\Models\model_levels;
+use Illuminate\Support\Str;
 
 class cont_levels extends Controller
 {
@@ -16,12 +18,17 @@ class cont_levels extends Controller
 
     public function create()
     {
-        //
+        return view('admin.levels.create');
     }
 
-    public function store(Request $request)
+    public function store(LevelCreateRequest $request)
     {
-        //
+        $request->merge([
+            'slug' => Str::slug($request->name),
+        ]);
+
+        model_levels::create($request->post());
+        return redirect()->route('levels_list')->with('success', 'NEW LEVELS ADD SUCCESSFULLY...');
     }
 
     public function show(string $id)

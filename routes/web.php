@@ -17,6 +17,7 @@ Route::group(['middleware' => 'auth'], function () {
 });
 
 Route::group(['middleware' => ['auth', isAdmin_middle::class], 'prefix' => 'admin'], function () {
+
     Route::get('levels_list', [cont_user_main::class, 'levels_list'])->name('levels_list');
     Route::get('sub_levels_list', [cont_user_main::class, 'sub_levels_list'])->name('sub_levels_list');
     Route::get('themes_list', [cont_user_main::class, 'themes_list'])->name('themes_list');
@@ -32,6 +33,13 @@ Route::group(['middleware' => ['auth', isAdmin_middle::class], 'prefix' => 'admi
     Route::get('level/{level_id}', [cont_levels::class, 'destroy'])->whereNumber('level_id')->name('level_destroy');
     Route::get('sub_level/{sub_level_id}', [cont_sub_levels::class, 'destroy'])->whereNumber('sub_level_id')->name('sub_level_destroy');
 
+    Route::post('level', [cont_levels::class, 'store'])->name('level_store');
+    Route::post('sub_level', [cont_sub_levels::class, 'store'])->name('sub_level_store');
+
+
+    Route::resource('levels', cont_levels::class);
+    Route::resource('sub_levels', cont_sub_levels::class);
+    
     /*Route::get('exercises/{id}/details', [cont_exercises::class, 'show'])->whereNumber('id')->name('exercises.details');
 
          Route::resource('exercises', cont_exercises::class);
