@@ -28,7 +28,7 @@
                                     <i class="fa fa-list w-4"></i></a>
                                 <a href="#" class="btn btn-sm btn-primary" title="Edit Theme">
                                     <i class="fa fa-pen w-4"></i></a>
-                                <a href="#" class="btn btn-sm btn-danger" title="Delete Theme">
+                                <a href="{{ route('theme_destroy',$theme->id) }}" class="btn btn-sm btn-danger" title="Delete Theme">
                                     <i class="fa fa-trash w-4"></i></a>
                             </td>
                         </tr>

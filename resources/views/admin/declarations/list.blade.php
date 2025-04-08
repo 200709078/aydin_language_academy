@@ -1,5 +1,5 @@
 <x-app-layout>
-    <x-slot name="header">DECLARATIONS OF {{ Str::limit($theme->name,20) }} THEME</x-slot>
+    <x-slot name="header">DECLARATIONS OF {{ Str::limit($theme->name, 20) }} THEME</x-slot>
     <div class="card">
         <div class="card-body">
             <a href="{{ route('themes_list') }}" class="btn btn-sm btn-secondary" title="Back to Themes List"><i
@@ -30,8 +30,8 @@
                             <td>
                                 <a href="#" class="btn btn-sm btn-primary" title="Edit Declaration"><i
                                         class="fa fa-pen w-4"></i></a>
-                                <a href="#" class="btn btn-sm btn-danger" title="Delete Declaration"><i
-                                        class="fa fa-trash w-4"></i></a>
+                                <a href="{{ route('declaration_destroy', $declaration->id) }}" class="btn btn-sm btn-danger"
+                                    title="Delete Declaration"><i class="fa fa-trash w-4"></i></a>
                             </td>
                         </tr>
                     @endforeach

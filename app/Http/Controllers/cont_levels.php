@@ -39,8 +39,9 @@ class cont_levels extends Controller
         //
     }
 
-    public function destroy(string $id)
+    public function destroy(string $level_id)
     {
-        //
+        model_levels::find($level_id)->whereId($level_id)->delete();
+        return redirect()->back()->with('success', 'LEVEL DELETE SUCCESSFULLY...');
     }
 }

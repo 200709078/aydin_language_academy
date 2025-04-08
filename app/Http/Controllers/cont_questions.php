@@ -57,9 +57,9 @@ class cont_questions extends Controller
         model_questions::where('id', $question_id)->update($request->except(['_method', '_token']));
         return redirect()->route('questions.index', $exercises_id)->with('success', 'QUESTION UPDATE SUCCESSFULLY...');
     }
-    public function destroy(string $exercises_id, string $question_id)
+    public function destroy(string $exercise_id, string $question_id)
     {
-        model_exercises::find($exercises_id)->questions()->whereId($question_id)->delete();
-        return redirect()->route('questions.index', $exercises_id)->with('success', 'QUESTION DELETE SUCCESSFULLY...');
+        model_exercises::find($exercise_id)->questions()->whereId($question_id)->delete();
+        return redirect()->route('questions_list', $exercise_id)->with('success', 'QUESTION DELETE SUCCESSFULLY...');
     }
 }

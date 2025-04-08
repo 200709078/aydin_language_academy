@@ -61,8 +61,7 @@ class cont_exercises extends Controller
     }
     public function destroy(string $id)
     {
-        $exercises = model_exercises::find($id) ?? abort(404, 'EXERCISES NOT FOUND');
-        $exercises->delete();
-        return redirect()->route('exercises.index')->with('success', 'EXERCISES DELETE SUCCESSFULLY...');
+        $exercises = model_exercises::find($id)->delete();
+        return redirect()->back()->with('success', 'EXERCISES DELETE SUCCESSFULLY...');
     }
 }

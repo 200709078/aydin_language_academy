@@ -5,15 +5,16 @@
     <div class="container mt-5">
         <div class="container">
             <div class="text-center mx-auto">
-                <h4>{{strtoupper($themes->first()->levels->name)}} <i class="bi bi-arrow-right"></i>
+                <h4>{{ strtoupper($themes->first()->levels->name)}} <i class="bi bi-arrow-right"></i>
                     {{ strtoupper($themes->first()->sub_levels->name)}} <i class="bi bi-arrow-right"></i> THEME
-                    {{strtoupper(Str::limit($themes->first()->name, 20))}}
-                    @if (Request::segment(1)=='tab1')
-                    <i class="bi bi-arrow-right"></i> ALL DECLARATIONS </h4>
+                    {{ strtoupper(Str::limit($themes->first()->name, 20))}}
+                    @if (Request::segment(1) == 'tab1')
+                            <i class="bi bi-arrow-right"></i> ALL DECLARATIONS
+                        </h4>
                     @endif
-                    @if (Request::segment(1)=='tab2')
+                @if (Request::segment(1) == 'tab2')
                     <i class="bi bi-arrow-right"></i> ALL EXERCISES </h4>
-                    @endif
+                @endif
             </div>
             <ul class="nav nav-tabs" role="tablist">
                 <li class="nav-item">

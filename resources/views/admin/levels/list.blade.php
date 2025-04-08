@@ -19,7 +19,7 @@
                                 <a href="#" class="btn btn-sm btn-primary"
                                     title="Edit {{ucfirst(Str::lower($level->name))  }} Level"><i
                                         class="fa fa-pen w-4"></i></a>
-                                <a href="#" class="btn btn-sm btn-danger"
+                                <a href="{{ route('level_destroy',$level->id) }}" class="btn btn-sm btn-danger"
                                     title="Delete {{ucfirst(Str::lower($level->name))  }} Level"><i
                                         class="fa fa-trash w-4"></i></a>
                             </td>

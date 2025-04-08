@@ -121,13 +121,6 @@ class cont_user_main extends Controller
         return $exercises;
         //return redirect($request->session()->previousUrl());
     }
-    public function qq(string $theme_id)
-    {
-        $questions = model_exercises::where('theme_id', '=', $theme_id)->with('questions')->paginate(1);
-        return $questions;
-    }
-
-    /*  */
 
     public function levels_list()
     {
@@ -147,7 +140,6 @@ class cont_user_main extends Controller
         $themes = model_themes::with(['levels', 'sub_levels'])->get();
         return  view("admin.themes.list", compact('themes'));
     }
-
     public function declarations_list($theme_id)
     {
         $theme = model_themes::whereId($theme_id)->with('declarations')->first();
@@ -163,7 +155,6 @@ class cont_user_main extends Controller
         $exercise = model_exercises::whereId($exercise_id)->with('questions')->first();
         return view("admin.questions.list", compact('exercise'));
     }
-
 
     public function exercises_join($slug)
     {

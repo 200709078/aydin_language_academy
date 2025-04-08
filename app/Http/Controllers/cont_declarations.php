@@ -10,8 +10,7 @@ class cont_declarations extends Controller
 {
     public function index()
     {
-        $declarations = model_declarations::get();
-        return $declarations;// view("front.themes", compact("themes"));
+        //
     }
 
     public function create()
@@ -39,8 +38,9 @@ class cont_declarations extends Controller
         //
     }
 
-    public function destroy(string $id)
+    public function destroy(string $declaration_id)
     {
-        //
+        model_declarations::find($declaration_id)->whereId($declaration_id)->delete();
+        return redirect()->back()->with('success', 'DECLARATION DELETE SUCCESSFULLY...');
     }
 }

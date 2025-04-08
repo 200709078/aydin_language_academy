@@ -53,8 +53,9 @@ class cont_themes extends Controller
         //
     }
 
-    public function destroy(string $id)
+    public function destroy(string $theme_id)
     {
-        //
+        model_themes::find($theme_id)->whereId($theme_id)->delete();
+        return redirect()->back()->with('success', 'THEME DELETE SUCCESSFULLY...');
     }
 }
