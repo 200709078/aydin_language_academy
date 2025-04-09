@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ThemeRequest;
 use Illuminate\Http\Request;
 use App\Models\model_themes;
 use App\Models\model_levels;
 use App\Models\model_sub_levels;
+use Illuminate\Support\Str;
 
 class cont_themes extends Controller
 {
@@ -19,23 +21,33 @@ class cont_themes extends Controller
 
     public function index()
     {
-        $themes = model_themes::get();
-        return $themes;// view("front.themes", compact("themes"));
+        /* $themes = model_themes::get();
+        return $themes;// view("front.themes", compact("themes")); */
     }
-/*     public function index($level_id, $sub_level_id)
-    {
-        $themes = model_themes::where('level_id', '=', $level_id)->where('sub_level_id', '=', $sub_level_id)->get();
-        return view("front.themes", compact("themes"));
-    } */
 
     public function create()
     {
-        //
+        return view('admin.themes.create');
     }
 
     public function store(Request $request)
     {
-        //
+        //$request->except(['_token', '_method']);
+        $fileName = null;
+        if ($request->hasFile('image')) {
+            $fileName = Str::slug($request->name) . '.' . $request->image->extension();
+            $fileNamePath = 'photos/' . $fileName;
+            $request->image->move(public_path('photos'), $fileNamePath);
+        }
+        model_themes::create([
+            'level_id' => $request->level_id,
+            'sub_level_id' => $request->sub_level_id,
+            'name' => $request->name,
+            'slug' => Str::slug($request->name),
+            'image' => $fileName,
+        ]);
+        
+        return redirect()->route('themes_list')->with('success', 'THEME ADD SUCCESSFULLY...');
     }
 
     public function show(string $id)

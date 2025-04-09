@@ -35,10 +35,12 @@ Route::group(['middleware' => ['auth', isAdmin_middle::class], 'prefix' => 'admi
 
     Route::post('level', [cont_levels::class, 'store'])->name('level_store');
     Route::post('sub_level', [cont_sub_levels::class, 'store'])->name('sub_level_store');
+    Route::post('theme', [cont_themes::class, 'store'])->name('theme_store');
 
 
     Route::resource('levels', cont_levels::class);
     Route::resource('sub_levels', cont_sub_levels::class);
+    Route::resource('themes', cont_themes::class);
     
     /*Route::get('exercises/{id}/details', [cont_exercises::class, 'show'])->whereNumber('id')->name('exercises.details');
 

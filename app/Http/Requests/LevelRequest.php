@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class QuestionCreateRequest extends FormRequest
+class LevelRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,14 +22,17 @@ class QuestionCreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'question' => 'required|min:3',
-            'image' => 'image|nullable|max:1024|mimes:jpg,jpeg,png',
-            'select1' => 'required|min:1',
-            'select2' => 'required|min:1',
-            'select3' => 'required|min:1',
-            'select4' => 'required|min:1',
-            'select5' => 'required|min:1',
-            'correct_answer' => 'required'
+            'name' => 'required|min:3|max:200|'
+        ];
+    }
+    public function attributes()
+    {
+        //KOLON İSİMLERİ GÜNCELLEME
+        return [
+            /* 
+            'title' => 'BAŞLIK',
+            'description' => 'AÇIKLAMA'
+            */
         ];
     }
 }

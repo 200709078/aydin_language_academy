@@ -23,7 +23,20 @@
                         <tr class="align-middle">
                             <th class="col-md-3" scope="row">{{ $declaration->title }}</th>
                             <th class="col-md-3" scope="row">{{ Str::limit($declaration->contents, 20) }}</th>
-                            <th class="col-md-3" scope="row">{{ $declaration->image }}</th>
+                            <th class="col-md-3" scope="row">
+                                @if($declaration->image)
+                                    <a href="{{ asset('photos/' . $declaration->image) }}" target="_blank">
+                                        <img class="img-fluid rounded align-self-end"
+                                            src="{{ asset('photos/' . $declaration->image) }}" style="width:120px"
+                                            class="img-responsive">
+                                    </a>
+                                @else
+                                    <a href="{{ asset('photos/noimage.jpg') }}" target="_blank">
+                                        <img class="img-fluid rounded align-self-end" src="{{ asset('photos/noimage.jpg') }}"
+                                            style="width:120px" class="img-responsive">
+                                    </a>
+                                @endif
+                            </th>
                             <th class="col-md-3" scope="row">{{ $declaration->pdf }}</th>
                             <th class="col-md-3" scope="row">{{ $declaration->video }}</th>
                             <th class="col-md-3" scope="row">{{ $declaration->voice }}</th>

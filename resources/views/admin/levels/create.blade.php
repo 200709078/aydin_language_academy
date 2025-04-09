@@ -12,7 +12,7 @@
                     <label>LEVEL NAME</label>
                     <input type="text" name="name" class="form-control">
                 </div>
-                <div class="form-group">
+                <div class="form-group mt-2">
                     <button type="submit" class="btn btn-success btn-sm btn-block">LEVEL CREATE</button>
                 </div>
             </form>

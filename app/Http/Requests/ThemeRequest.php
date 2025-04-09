@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class LevelCreateRequest extends FormRequest
+class ThemeRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,17 +22,8 @@ class LevelCreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|min:3|max:200|'
-        ];
-    }
-    public function attributes()
-    {
-        //KOLON İSİMLERİ GÜNCELLEME
-        return [
-            /* 
-            'title' => 'BAŞLIK',
-            'description' => 'AÇIKLAMA'
-            */
+            'name' => 'required|min:3|max:200|',
+            'image' => 'image|nullable|max:1024|mimes:jpg,jpeg,png',
         ];
     }
 }

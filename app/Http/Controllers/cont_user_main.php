@@ -127,17 +127,17 @@ class cont_user_main extends Controller
         /*         $exercises = model_exercises::withCount('questions')->paginate(5);
                 $my_results = auth()->user()->results;
                 return view("dashboard", compact('exercises', 'my_results')); */
-        $levels = model_levels::all();
+        $levels = model_levels::orderBy('created_at', 'desc')->get();
         return view("admin.levels.list", compact('levels'));
     }
     public function sub_levels_list()
     {
-        $sub_levels = model_sub_levels::all();
+        $sub_levels = model_sub_levels::orderBy('created_at', 'desc')->get();
         return view("admin.sub_levels.list", compact('sub_levels'));
     }
     public function themes_list()
     {
-        $themes = model_themes::with(['levels', 'sub_levels'])->get();
+        $themes = model_themes::with(['levels', 'sub_levels'])->orderBy('created_at', 'desc')->paginate(5);
         return  view("admin.themes.list", compact('themes'));
     }
     public function declarations_list($theme_id)

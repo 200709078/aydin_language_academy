@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\LevelCreateRequest;
+use App\Http\Requests\LevelRequest;
 use Illuminate\Http\Request;
 use App\Models\model_levels;
 use Illuminate\Support\Str;
@@ -12,8 +12,7 @@ class cont_levels extends Controller
 {
     public function index()
     {
-        $levels = model_levels::get();
-        return $levels;// view("front.themes", compact("themes"));
+        //
     }
 
     public function create()
@@ -21,14 +20,21 @@ class cont_levels extends Controller
         return view('admin.levels.create');
     }
 
-    public function store(LevelCreateRequest $request)
+    public function store(LevelRequest $request)
     {
         $request->merge([
             'slug' => Str::slug($request->name),
         ]);
 
         model_levels::create($request->post());
-        return redirect()->route('levels_list')->with('success', 'NEW LEVELS ADD SUCCESSFULLY...');
+
+/*         flash()
+            ->option('position', 'top-center')  // Position on the screen
+            ->option('timeout', 5000)           // How long to display (milliseconds)
+            ->success('Your changes have been saved!')
+            ->setTitle('SSSSS'); */
+
+        return redirect()->route('levels_list')->with('success','LEVEL ADD SUCCESSFULLY...');
     }
 
     public function show(string $id)

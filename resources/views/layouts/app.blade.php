@@ -46,12 +46,12 @@
                     </div>
                 @endif
 
-                @if (session('success'))
+<!--                  @if (session('success'))
                     <div class="alert alert-success">
                         <i class="fa fa-check"></i>
                         {{session('success')}}
                     </div>
-                @endif
+                @endif  -->
 
                 {{ $slot }}
             </div>
