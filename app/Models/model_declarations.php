@@ -12,6 +12,10 @@ class model_declarations extends Model
         'theme_id',
         'title',
         'slug',
-        'content'
+        'contents',
+        'image',
+        'pdf',
+        'video',
+        'voice'
     ];
 }

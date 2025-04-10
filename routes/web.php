@@ -33,14 +33,15 @@ Route::group(['middleware' => ['auth', isAdmin_middle::class], 'prefix' => 'admi
     Route::get('level/{level_id}', [cont_levels::class, 'destroy'])->whereNumber('level_id')->name('level_destroy');
     Route::get('sub_level/{sub_level_id}', [cont_sub_levels::class, 'destroy'])->whereNumber('sub_level_id')->name('sub_level_destroy');
 
+    Route::get('levels/create', [cont_levels::class,'create'])->name('level_create');
+    Route::get('sub_levels/create', [cont_sub_levels::class,'create'])->name('sub_level_create');
+    Route::get('themes/create', [cont_themes::class,'create'])->name('theme_create');
+    Route::get('declaration/{theme_id}/create', [cont_declarations::class,'create'])->whereNumber('theme_id')->name('declaration_create');
+
     Route::post('level', [cont_levels::class, 'store'])->name('level_store');
     Route::post('sub_level', [cont_sub_levels::class, 'store'])->name('sub_level_store');
     Route::post('theme', [cont_themes::class, 'store'])->name('theme_store');
-
-
-    Route::resource('levels', cont_levels::class);
-    Route::resource('sub_levels', cont_sub_levels::class);
-    Route::resource('themes', cont_themes::class);
+    Route::post('declaration/{theme_id}/store', [cont_declarations::class, 'store'])->whereNumber('theme_id')->name('declaration_store');
     
     /*Route::get('exercises/{id}/details', [cont_exercises::class, 'show'])->whereNumber('id')->name('exercises.details');
 

@@ -4,8 +4,9 @@
         <div class="card-body">
             <a href="{{ route('themes_list') }}" class="btn btn-sm btn-secondary" title="Back to Themes List"><i
                     class="fa fa-arrow-left"></i> Back to Themes List</a>
-            <a href="#" class="btn btn-sm btn-primary float-right" title="Add New Level"><i class="fa fa-plus"></i> Add
-                New declarations</a>
+            <a href="{{ route('declaration_create',$theme->id) }}" class="btn btn-sm btn-primary float-right"
+                title="Add New Level"><i class="fa fa-plus">
+                </i> Add New Declarations</a>
             <table class="table table-striped table-sm">
                 <thead>
                     <tr>

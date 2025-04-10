@@ -21,8 +21,7 @@ class cont_themes extends Controller
 
     public function index()
     {
-        /* $themes = model_themes::get();
-        return $themes;// view("front.themes", compact("themes")); */
+        //
     }
 
     public function create()
@@ -30,7 +29,7 @@ class cont_themes extends Controller
         return view('admin.themes.create');
     }
 
-    public function store(Request $request)
+    public function store(ThemeRequest $request)
     {
         //$request->except(['_token', '_method']);
         $fileName = null;

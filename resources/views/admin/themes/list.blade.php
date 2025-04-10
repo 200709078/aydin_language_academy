@@ -2,7 +2,7 @@
     <x-slot name="header">THEMES</x-slot>
     <div class="card">
         <div class="card-body">
-            <a href="{{ route('themes.create') }}" class="btn btn-sm btn-primary float-right" title="Add New Theme">
+            <a href="{{ route('theme_create') }}" class="btn btn-sm btn-primary float-right" title="Add New Theme">
                 <i class="fa fa-plus"></i> Add New Theme</a>
             <table class="table table-striped table-sm">
                 <thead>
