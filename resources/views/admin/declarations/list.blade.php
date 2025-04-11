@@ -4,7 +4,7 @@
         <div class="card-body">
             <a href="{{ route('themes_list') }}" class="btn btn-sm btn-secondary" title="Back to Themes List"><i
                     class="fa fa-arrow-left"></i> Back to Themes List</a>
-            <a href="{{ route('declaration_create',$theme->id) }}" class="btn btn-sm btn-primary float-right"
+            <a href="{{ route('declaration_create', $theme->id) }}" class="btn btn-sm btn-primary float-right"
                 title="Add New Level"><i class="fa fa-plus">
                 </i> Add New Declarations</a>
             <table class="table table-striped table-sm">
@@ -42,8 +42,8 @@
                             <th class="col-md-3" scope="row">{{ $declaration->video }}</th>
                             <th class="col-md-3" scope="row">{{ $declaration->voice }}</th>
                             <td>
-                                <a href="#" class="btn btn-sm btn-primary" title="Edit Declaration"><i
-                                        class="fa fa-pen w-4"></i></a>
+                                <a href="{{ route('declaration_edit', $declaration->id) }}" class="btn btn-sm btn-primary"
+                                    title="Edit Declaration"><i class="fa fa-pen w-4"></i></a>
                                 <a href="{{ route('declaration_destroy', $declaration->id) }}" class="btn btn-sm btn-danger"
                                     title="Delete Declaration"><i class="fa fa-trash w-4"></i></a>
                             </td>

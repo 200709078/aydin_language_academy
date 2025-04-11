@@ -47,7 +47,7 @@
                             <td>{{ $question->answer5 }}</td>
                             <td>{{ substr($question->correct_answer, -1) }}</td>
                             <td>
-                                <a href="#" class="btn btn-sm btn-primary" title="Edit Question"><i
+                                <a href="{{ route('question_edit',$question->id) }}" class="btn btn-sm btn-primary" title="Edit Question"><i
                                         class="fa fa-pen"></i></a>
                                 <a href="{{ route('question_destroy', [$exercise->id, $question->id]) }}"
                                     class="btn btn-sm btn-danger" title="Delete Question"><i class="fa fa-times"></i></a>

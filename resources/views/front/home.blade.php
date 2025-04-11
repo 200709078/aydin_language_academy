@@ -2,7 +2,7 @@
 @section('title', 'AYDIN LANGUAGE ACADEMY - MAIN PAGE')
 @section('middle_section')
   <!-- Header Start -->
-  <div class="container-fluid header bg-primary p-0 mb-5">
+<!--   <div class="container-fluid header bg-primary p-0 mb-5">
     <div class="row g-0 align-items-center flex-column-reverse flex-lg-row">
     <div class="col-lg-6">
       <div class="owl-carousel header-carousel">
@@ -21,7 +21,7 @@
       </div>
     </div>
     </div>
-  </div>
+  </div> -->
   <!-- Header End -->
 
 

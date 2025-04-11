@@ -52,14 +52,19 @@ class cont_declarations extends Controller
         //
     }
 
-    public function edit(string $id)
+    public function edit(string $declaration_id)
     {
-        //
+        $declaration = model_declarations::find($declaration_id);
+        return $declaration;// view('admin.declarations.edit', compact('declaration'));
     }
 
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $declaration_id)
     {
-        //
+        /*         model_declarations::where('id', $declaration_id)->update([
+                    'name' => ucwords(Str::lower($request->name)),
+                    'slug' => Str::slug($request->name)
+                ]); */
+        return $declaration_id;// redirect()->route('declarations_list')->with('success', 'DECLARATION UPDATE SUCCESSFULLY...');
     }
 
     public function destroy(string $declaration_id)

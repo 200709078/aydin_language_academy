@@ -45,7 +45,7 @@ class cont_themes extends Controller
             'slug' => Str::slug($request->name),
             'image' => $fileName,
         ]);
-        
+
         return redirect()->route('themes_list')->with('success', 'THEME ADD SUCCESSFULLY...');
     }
 
@@ -54,14 +54,19 @@ class cont_themes extends Controller
         //
     }
 
-    public function edit(string $id)
+    public function edit(string $theme_id)
     {
-        //
+        $theme = model_themes::find($theme_id);
+        return $theme;// view('admin.themes.edit', compact('theme'));
     }
 
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $theme_id)
     {
-        //
+        /*         model_themes::where('id', $theme_id)->update([
+                    'name' => ucwords(Str::lower($request->name)),
+                    'slug' => Str::slug($request->name)
+                ]); */
+        return $theme_id;// redirect()->route('themes_list')->with('success', 'THEME UPDATE SUCCESSFULLY...');
     }
 
     public function destroy(string $theme_id)

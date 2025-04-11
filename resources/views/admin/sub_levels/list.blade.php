@@ -16,7 +16,7 @@
                         <tr class="align-middle">
                             <th class="col-md-3" scope="row">{{ $sub_level->name }}</th>
                             <td>
-                                <a href="#" class="btn btn-sm btn-primary"
+                                <a href="{{ route('sub_level_edit',$sub_level->id) }}" class="btn btn-sm btn-primary"
                                     title="Edit {{ucfirst(Str::lower($sub_level->name))  }} Sub Level"><i
                                         class="fa fa-pen w-4"></i></a>
                                 <a href="{{ route('sub_level_destroy',$sub_level->id) }}" class="btn btn-sm btn-danger"

@@ -29,7 +29,7 @@
                                 <!-- questions.index -->
                                 <a href="{{ route('questions_list',$exercise->id) }}" class="btn btn-sm btn-warning" title="List Questions">
                                     <i class="fa fa-list w-4"></i></a>
-                                <a href="#" class="btn btn-sm btn-primary" title="Edit Exercises">
+                                <a href="{{ route('exercise_edit',$exercise->id) }}" class="btn btn-sm btn-primary" title="Edit Exercises">
                                     <i class="fa fa-pen w-4"></i></a>
                                 <a href="{{ route('exercises_destroy',$exercise->id) }}" class="btn btn-sm btn-danger" title="Delete Exercises">
                                     <i class="fa fa-trash w-4"></i></a>

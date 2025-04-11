@@ -28,13 +28,13 @@ class cont_levels extends Controller
 
         model_levels::create($request->post());
 
-/*         flash()
-            ->option('position', 'top-center')  // Position on the screen
-            ->option('timeout', 5000)           // How long to display (milliseconds)
-            ->success('Your changes have been saved!')
-            ->setTitle('SSSSS'); */
+        /*         flash()
+                    ->option('position', 'top-center')  // Position on the screen
+                    ->option('timeout', 5000)           // How long to display (milliseconds)
+                    ->success('Your changes have been saved!')
+                    ->setTitle('SSSSS'); */
 
-        return redirect()->route('levels_list')->with('success','LEVEL ADD SUCCESSFULLY...');
+        return redirect()->route('levels_list')->with('success', 'LEVEL ADD SUCCESSFULLY...');
     }
 
     public function show(string $id)
@@ -42,14 +42,19 @@ class cont_levels extends Controller
         //
     }
 
-    public function edit(string $id)
+    public function edit(string $level_id)
     {
-        //
+        $level = model_levels::find($level_id);
+        return view('admin.levels.edit', compact('level'));
     }
 
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $level_id)
     {
-        //
+        model_levels::where('id', $level_id)->update([
+            'name'=>ucwords(Str::lower($request->name)),
+            'slug'=>Str::slug($request->name)
+            ]);
+        return redirect()->route('levels_list')->with('success', 'LEVEL UPDATE SUCCESSFULLY...'); 
     }
 
     public function destroy(string $level_id)

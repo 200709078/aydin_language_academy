@@ -41,7 +41,7 @@
                                 <a href="{{ route('exercises_list', $theme->id) }}" class="btn btn-sm btn-warning"
                                     title="Exercises List">
                                     <i class="fa fa-list w-4"></i></a>
-                                <a href="#" class="btn btn-sm btn-primary" title="Edit Theme">
+                                <a href="{{ route('theme_edit',$theme->id) }}" class="btn btn-sm btn-primary" title="Edit Theme">
                                     <i class="fa fa-pen w-4"></i></a>
                                 <a href="{{ route('theme_destroy', $theme->id) }}" class="btn btn-sm btn-danger"
                                     title="Delete Theme">

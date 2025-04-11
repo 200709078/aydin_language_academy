@@ -25,7 +25,7 @@ class cont_exercises extends Controller
 
 
         //$theme=model_themes::whereId( $theme_id )->with('exercises')->first()??abort(404,'EXERCISES NOT FOUND');
-        return view("admin.exercises.list",compact("exercises"));
+        return view("admin.exercises.list", compact("exercises"));
     }
     public function create($theme_id)
     {
@@ -40,7 +40,7 @@ class cont_exercises extends Controller
             'title' => $request->title,
             'slug' => Str::slug($request->title),
             'description' => $request->description
-        ]); 
+        ]);
         return redirect()->route('exercises_list', $theme_id)->with('success', 'EXERCISES ADD SUCCESSFULLY...');
     }
 
@@ -51,20 +51,36 @@ class cont_exercises extends Controller
     }
 
 
-    public function edit(string $id)
+    /*     public function edit(string $id)
+        {
+            $exercises = model_exercises::withCount('questions')->find($id) ?? abort(404, 'EXERCISES NOT FOUND');
+            return view('admin.exercises.edit', compact('exercises'));
+        }
+        public function update(ExercisesUpdateRequest $request, string $id)
+        {
+            $request->merge([
+                'slug' => Str::slug($request->title),
+            ]);
+            model_exercises::find($id) ?? abort(404, 'EXERCISES NOT FOUND');
+            model_exercises::where('id', $id)->update($request->except(['_method', '_token']));
+            return redirect()->route('exercises.index')->with('success', 'EXERCISES UPDATE SUCCESSFULLY...');
+        } */
+
+    public function edit(string $exercise_id)
     {
-        $exercises = model_exercises::withCount('questions')->find($id) ?? abort(404, 'EXERCISES NOT FOUND');
-        return view('admin.exercises.edit', compact('exercises'));
+        $exercise = model_exercises::find($exercise_id);
+        return $exercise;// view('admin.exercises.edit', compact('exercise'));
     }
-    public function update(ExercisesUpdateRequest $request, string $id)
+
+    public function update(Request $request, string $exercise_id)
     {
-        $request->merge([
-            'slug' => Str::slug($request->title),
-        ]);
-        model_exercises::find($id) ?? abort(404, 'EXERCISES NOT FOUND');
-        model_exercises::where('id', $id)->update($request->except(['_method', '_token']));
-        return redirect()->route('exercises.index')->with('success', 'EXERCISES UPDATE SUCCESSFULLY...');
+        /*         model_exercises::where('id', $exercise_id)->update([
+                    'name' => ucwords(Str::lower($request->name)),
+                    'slug' => Str::slug($request->name)
+                ]); */
+        return $exercise_id;// redirect()->route('exercises_list')->with('success', 'EXERCISES UPDATE SUCCESSFULLY...');
     }
+
     public function destroy(string $id)
     {
         $exercises = model_exercises::find($id)->delete();

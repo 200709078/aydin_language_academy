@@ -35,14 +35,19 @@ class cont_sub_levels extends Controller
         //
     }
 
-    public function edit(string $id)
+    public function edit(string $sub_level_id)
     {
-        //
+        $sub_level = model_sub_levels::find($sub_level_id);
+        return view('admin.sub_levels.edit', compact('sub_level'));
     }
 
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $sub_level_id)
     {
-        //
+        model_sub_levels::where('id', $sub_level_id)->update([
+            'name'=>ucwords(Str::lower($request->name)),
+            'slug'=>Str::slug($request->name)
+            ]);
+        return redirect()->route('sub_levels_list')->with('success', 'SUB LEVEL UPDATE SUCCESSFULLY...'); 
     }
 
     public function destroy(string $sub_level_id)
