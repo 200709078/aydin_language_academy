@@ -2,7 +2,7 @@
     <x-slot name="header">LEVELS</x-slot>
     <div class="card">
         <div class="card-body">
-            <a href="{{ route('levels.create') }}" class="btn btn-sm btn-primary float-right" title="Add New Level">
+            <a href="{{ route('level_create') }}" class="btn btn-sm btn-primary float-right" title="Add New Level">
                 <i class="fa fa-plus"></i> Add New Level</a>
             <table class="table table-striped table-sm">
                 <thead>

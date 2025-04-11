@@ -2,11 +2,11 @@
     <x-slot name="header">QUESTIONS LIST OF {{ $exercise->title }} EXERCISES</x-slot>
     <div class="card">
         <div class="card-body">
-            <h5 class="card-title" >
-                <a href="{{ route('exercises_list',$exercise->theme_id) }}" class="btn btn-sm btn-secondary" title="Back to Exercises List"><i
-                        class="fa fa-arrow-left"></i> Back to Exercises List</a>
-                <a href="#" class="btn btn-sm btn-primary"
-                    title="Add Question"><i class="fa fa-plus"></i> Add Question</a>
+            <h5 class="card-title">
+                <a href="{{ route('exercises_list', $exercise->theme_id) }}" class="btn btn-sm btn-secondary"
+                    title="Back to Exercises List"><i class="fa fa-arrow-left"></i> Back to Exercises List</a>
+                <a href="{{ route('question_create', $exercise->id) }}" class="btn btn-sm btn-primary float-right"
+                    title="Add Question"><i class="fa fa-plus"></i> Add New Question</a>
             </h5>
             <table class="table table-striped">
                 <thead>
@@ -27,11 +27,17 @@
                         <tr>
                             <th scope="row">{{ $question->question }}</th>
                             <td>
-                                @if ($question->image)
-                                    <a href="{{ asset($question->image) }}" target="_blank" class=" btn btn-sm btn-light">Show
-                                        Image</a>
+                                @if($question->image)
+                                    <a href="{{ asset('photos/' . $question->image) }}" target="_blank">
+                                        <img class="img-fluid rounded align-self-end"
+                                            src="{{ asset('photos/' . $question->image) }}" style="width:120px"
+                                            class="img-responsive">
+                                    </a>
                                 @else
-                                    <button type="button" class="btn btn-sm btn-light" disabled>No Image</button>
+                                    <a href="{{ asset('photos/noimage.jpg') }}" target="_blank">
+                                        <img class="img-fluid rounded align-self-end" src="{{ asset('photos/noimage.jpg') }}"
+                                            style="width:120px" class="img-responsive">
+                                    </a>
                                 @endif
                             </td>
                             <td>{{ $question->answer1 }}</td>
@@ -41,8 +47,10 @@
                             <td>{{ $question->answer5 }}</td>
                             <td>{{ substr($question->correct_answer, -1) }}</td>
                             <td>
-                                <a href="#" class="btn btn-sm btn-primary" title="Edit Question"><i class="fa fa-pen"></i></a>
-                                <a href="{{ route('question_destroy',[$exercise->id,$question->id]) }}" class="btn btn-sm btn-danger" title="Delete Question"><i class="fa fa-times"></i></a>
+                                <a href="#" class="btn btn-sm btn-primary" title="Edit Question"><i
+                                        class="fa fa-pen"></i></a>
+                                <a href="{{ route('question_destroy', [$exercise->id, $question->id]) }}"
+                                    class="btn btn-sm btn-danger" title="Delete Question"><i class="fa fa-times"></i></a>
                             </td>
                         </tr>
                     @endforeach

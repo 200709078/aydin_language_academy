@@ -138,21 +138,39 @@ class cont_user_main extends Controller
     public function themes_list()
     {
         $themes = model_themes::with(['levels', 'sub_levels'])->orderBy('created_at', 'desc')->paginate(5);
-        return  view("admin.themes.list", compact('themes'));
+        return view("admin.themes.list", compact('themes'));
     }
     public function declarations_list($theme_id)
     {
-        $theme = model_themes::whereId($theme_id)->with('declarations')->first();
+        $theme = model_themes::whereId($theme_id)->with(
+            [
+                'declarations' => function ($query) {
+                    $query->orderBy('created_at', 'desc');
+                }
+            ]
+        )->first();
         return view("admin.declarations.list", compact('theme'));
     }
     public function exercises_list($theme_id)
     {
-        $theme = model_themes::whereId($theme_id)->with('exercises')->first();
+        $theme = model_themes::whereId($theme_id)->with(
+            [
+                'exercises' => function ($query) {
+                    $query->orderBy('created_at', 'desc');
+                }
+            ]
+        )->first();
         return view("admin.exercises.list", compact('theme'));
     }
     public function questions_list($exercise_id)
     {
-        $exercise = model_exercises::whereId($exercise_id)->with('questions')->first();
+        $exercise = model_exercises::whereId($exercise_id)->with(
+            [
+                'questions' => function ($query) {
+                    $query->orderBy('created_at', 'desc');
+                }
+            ]
+        )->first();
         return view("admin.questions.list", compact('exercise'));
     }
 

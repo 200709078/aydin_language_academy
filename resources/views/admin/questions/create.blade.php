@@ -1,8 +1,8 @@
 <x-app-layout>
-    <x-slot name="header">CREATE NEW QUESTION FOR {{ $exercises->title }}</x-slot>
+    <x-slot name="header">CREATE NEW QUESTION FOR {{ $exercise->title }}</x-slot>
     <div class="card">
         <div class="card-body">
-            <form method="POST" action="{{ route('questions.store',$exercises->id) }}" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('question_store',$exercise->id) }}" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group">
                     <label>Question</label>
@@ -16,7 +16,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Answer 1</label>
-                            <textarea name="sanswer" class="form-control" rows="2">{{ old('answer1') }}</textarea>
+                            <textarea name="answer1" class="form-control" rows="2">{{ old('answer1') }}</textarea>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -57,7 +57,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <button type="submit" class="btn btn-success btn-sm btn-block">ADD QUESTION</button>
+                    <button type="submit" class="btn btn-success btn-sm btn-block mt-3">ADD QUESTION</button>
                 </div>
             </form>
         </div>

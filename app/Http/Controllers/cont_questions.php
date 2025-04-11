@@ -5,6 +5,7 @@ use App\Models\model_exercises;
 use App\Models\model_questions;
 use App\Http\Requests\QuestionCreateRequest;
 use App\Http\Requests\QuestionUpdateRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 class cont_questions extends Controller
 {
@@ -13,23 +14,31 @@ class cont_questions extends Controller
         $exercises = model_exercises::whereId($id)->with('questions')->first() ?? abort(404, 'QUIZ NOT FOUND');
         return view('admin.questions.list', compact('exercises'));
     }
-    public function create($id)
+    public function create($exercises_id)
     {
-        $exercises = model_exercises::find($id);
-        return view('admin.questions.create', compact('exercises'));
+        $exercise = model_exercises::find($exercises_id);
+        return view('admin.questions.create', compact('exercise'));
     }
-    public function store(QuestionCreateRequest $request, $id)
+    public function store(Request $request, $exercises_id)
     {
+        $imageFileName = null;
         if ($request->hasFile('image')) {
-            $fileName = Str::slug($request->question) . '.' . $request->image->extension();
-            $fileNamePath = 'questions_photo/' . $fileName;
-            $request->image->move(public_path('questions_photo'), $fileNamePath);
-            $request->merge([
-                'image' => $fileNamePath,
-            ]);
+            $imageFileName = time() . '.' . $request->image->extension();
+            $request->image->move(public_path('photos'), $imageFileName);
         }
-        model_exercises::find($id)->questions()->create($request->post());
-        return redirect()->route('questions.index', $id)->with('success', 'QUESTION ADD SUCCESSFULLY');
+
+        model_questions::create([
+            'exercises_id' => $exercises_id,
+            'question' => $request->question,
+            'image' => $imageFileName,
+            'answer1' => $request->answer1,
+            'answer2' => $request->answer2,
+            'answer3' => $request->answer3,
+            'answer4' => $request->answer4,
+            'answer5' => $request->answer5,
+            'correct_answer' => $request->correct_answer
+        ]);
+        return redirect()->route('questions_list', $exercises_id)->with('success', 'QUESTION ADD SUCCESSFULLY');
     }
     public function show(string $id)
     {

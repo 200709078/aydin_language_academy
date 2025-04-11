@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ExercisesCreateRequest;
 use App\Http\Requests\ExercisesUpdateRequest;
 use App\Models\model_exercises;
 use Illuminate\Http\Request;
@@ -28,14 +27,21 @@ class cont_exercises extends Controller
         //$theme=model_themes::whereId( $theme_id )->with('exercises')->first()??abort(404,'EXERCISES NOT FOUND');
         return view("admin.exercises.list",compact("exercises"));
     }
-    public function create()
-    { 
-        return view('admin.exercises.create');
-    }
-    public function store(ExercisesCreateRequest $request)
+    public function create($theme_id)
     {
-        model_exercises::create($request->post());
-        return redirect()->route('exercises.index')->with('success', 'NEW EXERCISES ADD SUCCESSFULLY...');
+        $theme = model_themes::find($theme_id);
+        return view('admin.exercises.create', compact('theme'));
+    }
+
+    public function store(Request $request, $theme_id)
+    {
+        model_exercises::create([
+            'theme_id' => $theme_id,
+            'title' => $request->title,
+            'slug' => Str::slug($request->title),
+            'description' => $request->description
+        ]); 
+        return redirect()->route('exercises_list', $theme_id)->with('success', 'EXERCISES ADD SUCCESSFULLY...');
     }
 
     public function show(string $id)

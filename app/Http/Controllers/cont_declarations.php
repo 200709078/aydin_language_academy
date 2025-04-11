@@ -21,21 +21,19 @@ class cont_declarations extends Controller
         return view('admin.declarations.create', compact('theme'));
     }
 
-    public function store(Request $request,$theme_id)
+    public function store(Request $request, $theme_id)
     {
         $imageFileName = null;
         if ($request->hasFile('image')) {
             $imageFileName = Str::slug($request->title) . '.' . $request->image->extension();
-            $fileNamePath = 'photos/' . $imageFileName;
-            $request->image->move(public_path('photos'), $fileNamePath);
+            $request->image->move(public_path('photos'), $imageFileName);
         }
         $pdfFileName = null;
         if ($request->hasFile('pdf')) {
             $pdfFileName = Str::slug($request->title) . '.' . $request->pdf->extension();
-            $fileNamePath = 'pdfs/' . $pdfFileName;
-            $request->image->move(public_path('pdfs'), $fileNamePath);
+            $request->pdf->move(public_path('pdfs'), $pdfFileName);
         }
-        
+
         model_declarations::create([
             'theme_id' => $theme_id,
             'title' => $request->title,
@@ -44,9 +42,9 @@ class cont_declarations extends Controller
             'image' => $imageFileName,
             'pdf' => $pdfFileName,
             'video' => $request->video,
-            'voice' => $request->voice,
+            'voice' => $request->voice
         ]);
-        return redirect()->route('declarations_list',$theme_id)->with('success', 'DECLARATIONS ADD SUCCESSFULLY...');
+        return redirect()->route('declarations_list', $theme_id)->with('success', 'DECLARATIONS ADD SUCCESSFULLY...');
     }
 
     public function show(string $id)
