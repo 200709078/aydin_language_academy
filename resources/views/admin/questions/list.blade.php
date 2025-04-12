@@ -34,10 +34,8 @@
                                             class="img-responsive">
                                     </a>
                                 @else
-                                    <a href="{{ asset('photos/noimage.jpg') }}" target="_blank">
                                         <img class="img-fluid rounded align-self-end" src="{{ asset('photos/noimage.jpg') }}"
                                             style="width:120px" class="img-responsive">
-                                    </a>
                                 @endif
                             </td>
                             <td>{{ $question->answer1 }}</td>

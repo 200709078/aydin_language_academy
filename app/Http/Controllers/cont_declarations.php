@@ -55,16 +55,34 @@ class cont_declarations extends Controller
     public function edit(string $declaration_id)
     {
         $declaration = model_declarations::find($declaration_id);
-        return $declaration;// view('admin.declarations.edit', compact('declaration'));
+        return view('admin.declarations.edit', compact('declaration'));
     }
 
     public function update(Request $request, string $declaration_id)
     {
-        /*         model_declarations::where('id', $declaration_id)->update([
-                    'name' => ucwords(Str::lower($request->name)),
-                    'slug' => Str::slug($request->name)
-                ]); */
-        return $declaration_id;// redirect()->route('declarations_list')->with('success', 'DECLARATION UPDATE SUCCESSFULLY...');
+        $imageFileName = null;
+        if ($request->hasFile('image')) {
+            $imageFileName = Str::slug($request->title) . '.' . $request->image->extension();
+            $request->image->move(public_path('photos'), $imageFileName);
+        }
+        $pdfFileName = null;
+        if ($request->hasFile('pdf')) {
+            $pdfFileName = Str::slug($request->title) . '.' . $request->pdf->extension();
+            $request->pdf->move(public_path('pdfs'), $pdfFileName);
+        }
+
+        $declaration = model_declarations::find($declaration_id);
+
+        model_declarations::where('id', $declaration_id)->update([
+            'title' => $request->title,
+            'slug' => Str::slug($request->title),
+            'contents' => $request->contents,
+            'image' => $imageFileName,
+            'pdf' => $pdfFileName,
+            'video' => $request->video,
+            'voice' => $request->voice
+        ]);
+        return redirect()->route('declarations_list', $declaration->theme_id)->with('success', 'DECLARATIONS ADD SUCCESSFULLY...');
     }
 
     public function destroy(string $declaration_id)

@@ -2,6 +2,10 @@
     <x-slot name="header">UPDATE QUESTION FOR {{ $exercise->title }}</x-slot>
     <div class="card">
         <div class="card-body">
+        <h5 class="card-title">
+                <a href="{{ url()->previous() }}" class="btn btn-sm btn-secondary" title="CANCEL">
+                    <i class="fa fa-arrow-left"></i> CANCEL</a>
+            </h5>
             <form method="POST" action="{{ route('question_update',$question->id) }}" enctype="multipart/form-data">
                 @method('PUT')
                 @csrf

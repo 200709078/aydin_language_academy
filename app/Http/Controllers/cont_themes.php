@@ -57,16 +57,26 @@ class cont_themes extends Controller
     public function edit(string $theme_id)
     {
         $theme = model_themes::find($theme_id);
-        return $theme;// view('admin.themes.edit', compact('theme'));
+        return view('admin.themes.edit', compact('theme'));
     }
 
     public function update(Request $request, string $theme_id)
     {
-        /*         model_themes::where('id', $theme_id)->update([
-                    'name' => ucwords(Str::lower($request->name)),
-                    'slug' => Str::slug($request->name)
-                ]); */
-        return $theme_id;// redirect()->route('themes_list')->with('success', 'THEME UPDATE SUCCESSFULLY...');
+        $imageFileName = null;
+        if ($request->hasFile('image')) {
+            $imageFileName = Str::slug($request->name) . '.' . $request->image->extension();
+            $fileNamePath = 'photos/' . $imageFileName;
+            $request->image->move(public_path('photos'), $fileNamePath);
+        }
+
+        model_themes::where('id', $theme_id)->update([
+            'level_id' => $request->level_id,
+            'sub_level_id' => $request->sub_level_id,
+            'name' => ucwords(Str::lower($request->name)),
+            'slug' => Str::slug($request->name),
+            'image' => $imageFileName
+        ]);
+        return redirect()->route('themes_list')->with('success', 'THEME UPDATE SUCCESSFULLY...');
     }
 
     public function destroy(string $theme_id)

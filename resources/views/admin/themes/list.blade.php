@@ -17,7 +17,7 @@
                 <tbody>
                     @foreach ($themes as $theme)
                         <tr class="align-middle">
-                            <th class="col-md-3" scope="row">{{ $theme->levels->name }}</th>
+                            <td class="col-md-3" scope="row">{{ $theme->levels->name }}</td>
                             <td>{{ $theme->sub_levels->name}}</td>
                             <td>{{ Str::limit($theme->name, 20) }}</td>
                             <td>
@@ -28,10 +28,8 @@
                                             class="img-responsive">
                                     </a>
                                 @else
-                                    <a href="{{ asset('photos/noimage.jpg') }}" target="_blank">
-                                        <img class="img-fluid rounded align-self-end" src="{{ asset('photos/noimage.jpg') }}"
-                                            style="width:120px" class="img-responsive">
-                                    </a>
+                                    <img class="img-fluid rounded align-self-end" src="{{ asset('photos/noimage.jpg') }}"
+                                        style="width:120px" class="img-responsive">
                                 @endif
                             </td>
                             <td>
@@ -41,7 +39,8 @@
                                 <a href="{{ route('exercises_list', $theme->id) }}" class="btn btn-sm btn-warning"
                                     title="Exercises List">
                                     <i class="fa fa-list w-4"></i></a>
-                                <a href="{{ route('theme_edit',$theme->id) }}" class="btn btn-sm btn-primary" title="Edit Theme">
+                                <a href="{{ route('theme_edit', $theme->id) }}" class="btn btn-sm btn-primary"
+                                    title="Edit Theme">
                                     <i class="fa fa-pen w-4"></i></a>
                                 <a href="{{ route('theme_destroy', $theme->id) }}" class="btn btn-sm btn-danger"
                                     title="Delete Theme">
