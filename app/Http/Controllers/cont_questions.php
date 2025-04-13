@@ -44,42 +44,54 @@ class cont_questions extends Controller
     {
         //
     }
-/*     public function edit(string $exercises_id, string $question_id)
-    {
-        $question = model_exercises::find($exercises_id)->questions()->whereId($question_id)->first() ?? abort(404, 'EXERCISES OR QUESTION NOT FOUND.');
-        return view('admin.questions.edit', compact('question'));
-    }
-    public function update(QuestionUpdateRequest $request, string $exercises_id, string $question_id)
-    {
-        //$request->except(['_token', '_method']);
-        if ($request->hasFile('image')) {
-            $fileName = Str::slug($request->question) . '.' . $request->image->extension();
-            $fileNamePath = 'questions_photo/' . $fileName;
-            $request->image->move(public_path('questions_photo'), $fileNamePath);
-            $request->merge([
-                'image' => $fileNamePath,
-            ]);
+    /*     public function edit(string $exercises_id, string $question_id)
+        {
+            $question = model_exercises::find($exercises_id)->questions()->whereId($question_id)->first() ?? abort(404, 'EXERCISES OR QUESTION NOT FOUND.');
+            return view('admin.questions.edit', compact('question'));
         }
+        public function update(QuestionUpdateRequest $request, string $exercises_id, string $question_id)
+        {
+            //$request->except(['_token', '_method']);
+            if ($request->hasFile('image')) {
+                $fileName = Str::slug($request->question) . '.' . $request->image->extension();
+                $fileNamePath = 'questions_photo/' . $fileName;
+                $request->image->move(public_path('questions_photo'), $fileNamePath);
+                $request->merge([
+                    'image' => $fileNamePath,
+                ]);
+            }
 
-        model_exercises::find($exercises_id) ?? abort(404, 'EXERCISES NOT FOUND');
-        model_questions::find($question_id) ?? abort(404, 'QUESTION NOT FOUND');
-        model_questions::where('id', $question_id)->update($request->except(['_method', '_token']));
-        return redirect()->route('questions.index', $exercises_id)->with('success', 'QUESTION UPDATE SUCCESSFULLY...');
-    } */
+            model_exercises::find($exercises_id) ?? abort(404, 'EXERCISES NOT FOUND');
+            model_questions::find($question_id) ?? abort(404, 'QUESTION NOT FOUND');
+            model_questions::where('id', $question_id)->update($request->except(['_method', '_token']));
+            return redirect()->route('questions.index', $exercises_id)->with('success', 'QUESTION UPDATE SUCCESSFULLY...');
+        } */
 
     public function edit(string $question_id)
     {
         $question = model_questions::find($question_id);
-        return $question;// view('admin.exercises.edit', compact('question'));
+        return view('admin.questions.edit', compact('question'));
     }
 
     public function update(Request $request, string $question_id)
     {
-        /*         model_questions::where('id', $question_id)->update([
-                    'name' => ucwords(Str::lower($request->name)),
-                    'slug' => Str::slug($request->name)
-                ]); */
-        return $question_id;// redirect()->route('exercises_list')->with('success', 'EXERCISES UPDATE SUCCESSFULLY...');
+        $imageFileName = null;
+        if ($request->hasFile('image')) {
+            $imageFileName = time() . '.' . $request->image->extension();
+            $request->image->move(public_path('photos'), $imageFileName);
+        }
+        model_questions::where('id', $question_id)->update([
+            'question' => $request->question,
+            'image' => $imageFileName,
+            'answer1' => $request->answer1,
+            'answer2' => $request->answer2,
+            'answer3' => $request->answer3,
+            'answer4' => $request->answer4,
+            'answer5' => $request->answer5,
+            'correct_answer' => $request->correct_answer
+        ]);
+        $question = model_questions::find($question_id);
+        return redirect()->route('questions_list', $question->exercises_id)->with('success', 'EXERCISES UPDATE SUCCESSFULLY...');
     }
     public function destroy(string $exercise_id, string $question_id)
     {

@@ -23,9 +23,9 @@
                             <th class="col-md-3" scope="row">{{ $exercise->details['questions_count'] }}</th>
                             <td>
                                 <!-- exercises.detail -->
-                                <a href="#" @if($exercise->details['questions_count']==0) class="btn btn-sm btn-secondary disabled" @else class="btn btn-sm btn-secondary" @endif title="Show Detail">
+<!--                                 <a href="#" @if($exercise->details['questions_count']==0) class="btn btn-sm btn-secondary disabled" @else class="btn btn-sm btn-secondary" @endif title="Show Detail">
                                     <i class="fa fa-info w-4"></i>
-                                </a>
+                                </a> -->
                                 <!-- questions.index -->
                                 <a href="{{ route('questions_list',$exercise->id) }}" class="btn btn-sm btn-warning" title="List Questions">
                                     <i class="fa fa-list w-4"></i></a>

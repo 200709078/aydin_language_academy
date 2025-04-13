@@ -50,35 +50,22 @@ class cont_exercises extends Controller
         return 'GELDİM';//  view('admin.exercises.show', compact('exercises'));
     }
 
-
-    /*     public function edit(string $id)
-        {
-            $exercises = model_exercises::withCount('questions')->find($id) ?? abort(404, 'EXERCISES NOT FOUND');
-            return view('admin.exercises.edit', compact('exercises'));
-        }
-        public function update(ExercisesUpdateRequest $request, string $id)
-        {
-            $request->merge([
-                'slug' => Str::slug($request->title),
-            ]);
-            model_exercises::find($id) ?? abort(404, 'EXERCISES NOT FOUND');
-            model_exercises::where('id', $id)->update($request->except(['_method', '_token']));
-            return redirect()->route('exercises.index')->with('success', 'EXERCISES UPDATE SUCCESSFULLY...');
-        } */
-
     public function edit(string $exercise_id)
     {
         $exercise = model_exercises::find($exercise_id);
-        return $exercise;// view('admin.exercises.edit', compact('exercise'));
+        return view('admin.exercises.edit', compact('exercise'));
     }
 
     public function update(Request $request, string $exercise_id)
     {
-        /*         model_exercises::where('id', $exercise_id)->update([
-                    'name' => ucwords(Str::lower($request->name)),
-                    'slug' => Str::slug($request->name)
-                ]); */
-        return $exercise_id;// redirect()->route('exercises_list')->with('success', 'EXERCISES UPDATE SUCCESSFULLY...');
+        $exercise = model_exercises::find($exercise_id);
+
+        model_exercises::where('id', $exercise_id)->update([
+            'title' => $request->title,
+            'slug' => Str::slug($request->title),
+            'description' => $request->description
+        ]);
+        return redirect()->route('exercises_list', $exercise->theme_id)->with('success', 'EXERCISES ADD SUCCESSFULLY...');
     }
 
     public function destroy(string $id)

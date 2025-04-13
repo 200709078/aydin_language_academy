@@ -65,7 +65,7 @@ class cont_user_main extends Controller
             $message->subject($request->subject);
         });
 
-        return redirect('contact')->with('success', ' Teşekkürler mesajınız bize iletildi...');
+        return redirect('contact')->with('success', 'THANKS. YOUR MESSAGE SENDED...');
     }
 
     public function tab1($theme_id)
@@ -127,17 +127,17 @@ class cont_user_main extends Controller
         /*         $exercises = model_exercises::withCount('questions')->paginate(5);
                 $my_results = auth()->user()->results;
                 return view("dashboard", compact('exercises', 'my_results')); */
-        $levels = model_levels::orderBy('created_at', 'desc')->get();
+        $levels = model_levels::orderBy('updated_at', 'desc')->get();
         return view("admin.levels.list", compact('levels'));
     }
     public function sub_levels_list()
     {
-        $sub_levels = model_sub_levels::orderBy('created_at', 'desc')->get();
+        $sub_levels = model_sub_levels::orderBy('updated_at', 'desc')->get();
         return view("admin.sub_levels.list", compact('sub_levels'));
     }
     public function themes_list()
     {
-        $themes = model_themes::with(['levels', 'sub_levels'])->orderBy('created_at', 'desc')->paginate(5);
+        $themes = model_themes::with(['levels', 'sub_levels'])->orderBy('updated_at', 'desc')->paginate(5);
         return view("admin.themes.list", compact('themes'));
     }
     public function declarations_list($theme_id)
@@ -145,7 +145,7 @@ class cont_user_main extends Controller
         $theme = model_themes::whereId($theme_id)->with(
             [
                 'declarations' => function ($query) {
-                    $query->orderBy('created_at', 'desc');
+                    $query->orderBy('updated_at', 'desc');
                 }
             ]
         )->first();
@@ -156,7 +156,7 @@ class cont_user_main extends Controller
         $theme = model_themes::whereId($theme_id)->with(
             [
                 'exercises' => function ($query) {
-                    $query->orderBy('created_at', 'desc');
+                    $query->orderBy('updated_at', 'desc');
                 }
             ]
         )->first();
@@ -167,7 +167,7 @@ class cont_user_main extends Controller
         $exercise = model_exercises::whereId($exercise_id)->with(
             [
                 'questions' => function ($query) {
-                    $query->orderBy('created_at', 'desc');
+                    $query->orderBy('updated_at', 'desc');
                 }
             ]
         )->first();

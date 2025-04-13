@@ -43,7 +43,7 @@
                             <td>{{ $question->answer3 }}</td>
                             <td>{{ $question->answer4 }}</td>
                             <td>{{ $question->answer5 }}</td>
-                            <td>{{ substr($question->correct_answer, -1) }}</td>
+                            <td>{{ $question->correct_answer }}</td>
                             <td>
                                 <a href="{{ route('question_edit',$question->id) }}" class="btn btn-sm btn-primary" title="Edit Question"><i
                                         class="fa fa-pen"></i></a>
