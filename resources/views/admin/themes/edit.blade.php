@@ -41,7 +41,7 @@
                                         <img class="img-fluid rounded align-self-end" src="{{ asset('photos/noimage.jpg') }}"
                                             style="width:120px" class="img-responsive">
                                 @endif
-                    <input type="file" name="image" class="form-control">
+                    <input type="file" name="image" class="form-control mt-2">
                 </div>
                 <div class="form-group mt-2">
                     <button type="submit" class="btn btn-success btn-sm btn-block">THEME UPDATE</button>

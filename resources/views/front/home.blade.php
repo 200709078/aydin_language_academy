@@ -53,7 +53,7 @@
   </div>
   <!-- About End -->
 
-  <!-- Service Start -->
+  <!-- Service Start
   <div class="container-xxl py-5">
     <div class="container">
     <div class="text-center mx-auto mb-5" style="max-width: 600px;">
@@ -136,7 +136,7 @@
     </div>
     </div>
   </div>
-  <!-- Service End -->
+  Service End -->
 
 
   <!-- Feature Start -->

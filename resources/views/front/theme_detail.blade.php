@@ -6,7 +6,7 @@
         <div class="container">
             <div class="text-center mx-auto">
                 <h4>{{ strtoupper($themes->first()->levels->name)}} <i class="bi bi-arrow-right"></i>
-                    {{ strtoupper($themes->first()->sub_levels->name)}} <i class="bi bi-arrow-right"></i> THEME
+                    {{ strtoupper($themes->first()->sub_levels->name)}} <i class="bi bi-arrow-right"></i>
                     {{ strtoupper(Str::limit($themes->first()->name, 20))}}
                     @if (Request::segment(1) == 'tab1')
                             <i class="bi bi-arrow-right"></i> ALL DECLARATIONS
@@ -52,11 +52,11 @@
                                         @endif
                                     </p>
                                     @if ($declaration->video)
-                                        <a href="{{$declaration->video}}" class="btn btn-primary"><i class="fab fa-youtube"></i>
+                                        <a href="{{$declaration->video}}" class="btn btn-primary" target="_blank"><i class="fab fa-youtube"></i>
                                             Video</a>
                                     @endif
                                     @if ($declaration->voice)
-                                        <a href="{{$declaration->voice}}" class="btn btn-primary"><i class="fab fa-youtube"></i>
+                                        <a href="{{$declaration->voice}}" class="btn btn-primary" target="_blank"><i class="fab fa-youtube"></i>
                                             Voice</a>
                                     @endif
                                 </div>
@@ -127,7 +127,6 @@
 
                         @endforeach
                     <!-- <div class="mt-2"> { $exercises->links('pagination::bootstrap-4') }</div> -->
-
                     </p>
                 </div>
             </div>

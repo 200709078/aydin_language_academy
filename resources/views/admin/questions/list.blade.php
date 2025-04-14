@@ -48,7 +48,7 @@
                                 <a href="{{ route('question_edit',$question->id) }}" class="btn btn-sm btn-primary" title="Edit Question"><i
                                         class="fa fa-pen"></i></a>
                                 <a href="{{ route('question_destroy', [$exercise->id, $question->id]) }}"
-                                    class="btn btn-sm btn-danger" title="Delete Question"><i class="fa fa-times"></i></a>
+                                    class="btn btn-sm btn-danger" title="Delete Question"><i class="fa fa-trash"></i></a>
                             </td>
                         </tr>
                     @endforeach

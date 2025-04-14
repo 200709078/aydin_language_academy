@@ -22,11 +22,10 @@ class cont_sub_levels extends Controller
 
     public function store(SubLevelRequest $request)
     {
-        $request->merge([
-            'slug' => Str::slug($request->name),
+        model_sub_levels::create([
+            'name' => ucwords(Str::lower($request->name)),
+            'slug' => Str::slug($request->name)
         ]);
-
-        model_sub_levels::create($request->post());
         return redirect()->route('sub_levels_list')->with('success', 'SUB LEVEL ADD SUCCESSFULLY...');
     }
 
@@ -44,10 +43,10 @@ class cont_sub_levels extends Controller
     public function update(Request $request, string $sub_level_id)
     {
         model_sub_levels::where('id', $sub_level_id)->update([
-            'name'=>ucwords(Str::lower($request->name)),
-            'slug'=>Str::slug($request->name)
-            ]);
-        return redirect()->route('sub_levels_list')->with('success', 'SUB LEVEL UPDATE SUCCESSFULLY...'); 
+            'name' => ucwords(Str::lower($request->name)),
+            'slug' => Str::slug($request->name)
+        ]);
+        return redirect()->route('sub_levels_list')->with('success', 'SUB LEVEL UPDATE SUCCESSFULLY...');
     }
 
     public function destroy(string $sub_level_id)

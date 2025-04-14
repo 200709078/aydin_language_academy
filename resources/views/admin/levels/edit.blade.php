@@ -14,7 +14,7 @@
                     <input type="text" name="name" class="form-control" value="{{ $level->name }}">
                 </div>
         </div>
-        <div class="form-group mt-2">
+        <div class="form-group ml-3 mb-3">
             <button type="submit" class="btn btn-success btn-sm btn-block">LEVEL UPDATE</button>
         </div>
         </form>

@@ -22,11 +22,10 @@ class cont_levels extends Controller
 
     public function store(LevelRequest $request)
     {
-        $request->merge([
-            'slug' => Str::slug($request->name),
+        model_levels::create([
+            'name' => ucwords(Str::lower($request->name)),
+            'slug' => Str::slug($request->name)
         ]);
-
-        model_levels::create($request->post());
 
         /*         flash()
                     ->option('position', 'top-center')  // Position on the screen

@@ -39,10 +39,11 @@ class DatabaseSeeder extends Seeder
 
         User::insert([
             'name' => 'Adem VAROL',
-            'email' => 'aaa@mail.com',
+            'email' => 'adem@ala.com',
             'email_verified_at' => now(),
             'type' => 'admin',
-            'password' => '$2y$12$Sj8XJ5vfQBpW6opvmlrgTuvnbOKWHBDvg.6o1ZTuKSJPuOzI7oEzu',
+            //'password' => '$2y$12$Sj8XJ5vfQBpW6opvmlrgTuvnbOKWHBDvg.6o1ZTuKSJPuOzI7oEzu',
+            'password' => '$2y$12$pVyMOcbht5SoAL1D1Kp3E.eocQcfKXufYbvOcOgQZ7S2RmbzBeXau',
             'remember_token' => Str::random(10),
         ]);
 

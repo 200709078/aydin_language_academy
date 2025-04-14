@@ -29,9 +29,8 @@ class cont_themes extends Controller
         return view('admin.themes.create');
     }
 
-    public function store(ThemeRequest $request)
+    public function store(Request $request)
     {
-        //$request->except(['_token', '_method']);
         $fileName = null;
         if ($request->hasFile('image')) {
             $fileName = Str::slug($request->name) . '.' . $request->image->extension();
