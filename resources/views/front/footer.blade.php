@@ -16,7 +16,7 @@
           <a class="btn btn-outline-light btn-social rounded-circle" href="#"><i class="fab fa-twitter"></i></a>
           <a class="btn btn-outline-light btn-social rounded-circle" href="#"><i class="fab fa-facebook-f"></i></a>
           <a class="btn btn-outline-light btn-social rounded-circle" href="#"><i class="fab fa-youtube"></i></a>
-          <a class="btn btn-outline-light btn-social rounded-circle" href="https://wa.me/905326666549?text=Selamlar"><i
+          <a class="btn btn-outline-light btn-social rounded-circle" href="https://wa.me/905326666549?text=Selamlar" target="_blank"><i
               class="bi bi-whatsapp"></i></a>
         </div>
       </div>
@@ -34,7 +34,7 @@
           <a class="border-bottom" href="{{ route('home') }}">AYDIN LANGUAGE ACADEMY</a>, All Right Reserved.
         </div>
         <div class="col-md-6 text-center text-md-end">
-          <a class="border-none" href="{{ route('levels_list') }}">&copy; </a>
+          <a class="border-none" href="{{ route('levels_list') }}" target="_blank">&copy; </a>
           Designed By <a class="border-bottom" href="http://www.madematik.com" target="_blank">mADEMatik</a>
         </div>
       </div>

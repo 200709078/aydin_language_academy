@@ -70,16 +70,16 @@ class cont_user_main extends Controller
 
     public function tab1($theme_id)
     {
-        $declarations = model_declarations::where('theme_id', '=', $theme_id)->get() ?? abort(404, 'THEME NOT FOUND');
-        $exercises = model_exercises::where('theme_id', '=', $theme_id)->with('questions')->get() ?? abort(404, 'THEME NOT FOUND');
-        $themes = model_themes::whereId($theme_id)->with(['levels', 'sub_levels'])->get();
+        $declarations = model_declarations::where('theme_id', '=', $theme_id)->paginate(1) ?? abort(404, 'DECLARATION NOT FOUND');
+        $exercises = model_exercises::where('theme_id', '=', $theme_id)->with('questions')->paginate(1) ?? abort(404, 'EXERCISE NOT FOUND');
+        $themes = model_themes::whereId($theme_id)->with(['levels', 'sub_levels'])->get() ?? abort(404, 'THEME NOT FOUND');
         return view('front.theme_detail', compact(['declarations', 'exercises', 'themes']));
     }
     public function tab2($theme_id)
     {
-        $declarations = model_declarations::where('theme_id', '=', $theme_id)->get() ?? abort(404, 'THEME NOT FOUND');
-        $exercises = model_exercises::where('theme_id', '=', $theme_id)->with('questions')->get() ?? abort(404, 'THEME NOT FOUND');
-        $themes = model_themes::whereId($theme_id)->with(['levels', 'sub_levels'])->get();
+        $declarations = model_declarations::where('theme_id', '=', $theme_id)->paginate(1) ?? abort(404, 'DECLARATION NOT FOUND');
+        $exercises = model_exercises::where('theme_id', '=', $theme_id)->with('questions')->paginate(1) ?? abort(404, 'EXERCISE NOT FOUND');
+        $themes = model_themes::whereId($theme_id)->with(['levels', 'sub_levels'])->get() ?? abort(404, 'THEME NOT FOUND');
         return view('front.theme_detail', compact(['declarations', 'exercises', 'themes']));
     }
 
@@ -117,7 +117,7 @@ class cont_user_main extends Controller
         //$declarations = model_declarations::where('theme_id', '=', $theme_id)->get() ?? abort(404, 'THEME NOT FOUND');
         //$exercises = model_exercises::where('theme_id', '=', $theme_id)->with('questions')->get() ?? abort(404, 'THEME NOT FOUND');
         //return view('front.theme_detail', compact(['declarations', 'exercises', 'theme_id', 'request']));
-        $exercises = model_exercises::with('questions')->whereId($theme_id)->get() ?? abort(404, 'EXERCISES NOT FOUND.');
+        $exercises = model_exercises::with('questions')->whereId($theme_id)->first() ?? abort(404, 'EXERCISES NOT FOUND.');
         return $exercises;
         //return redirect($request->session()->previousUrl());
     }
