@@ -64,7 +64,7 @@ Route::get('/', [cont_user_main::class, 'index'])->name('home');
 Route::get('about', [cont_user_main::class, 'about'])->name('about');
 Route::get('contact', [cont_user_main::class, 'contact'])->name('contact');
 Route::post('/contactpost', [cont_user_main::class, 'contactpost'])->name('contactpost');
-Route::post('exercises/{id}/result', [cont_user_main::class, 'exercises_result'])->name('exercises.result');
+/* Route::post('exercises/{id}/result', [cont_user_main::class, 'exercises_result'])->name('exercises.result'); */
 
 Route::get('tab1/{theme_id}', [cont_user_main::class, 'tab1'])->name('tab1');
 Route::get('tab2/{theme_id}', [cont_user_main::class, 'tab2'])->name('tab2');
