@@ -23,16 +23,9 @@ class cont_levels extends Controller
     public function store(LevelRequest $request)
     {
         model_levels::create([
-            'name' => ucwords(Str::lower($request->name)),
+            'name' => ucwords(Str::upper($request->name)),
             'slug' => Str::slug($request->name)
         ]);
-
-        /*         flash()
-                    ->option('position', 'top-center')  // Position on the screen
-                    ->option('timeout', 5000)           // How long to display (milliseconds)
-                    ->success('Your changes have been saved!')
-                    ->setTitle('SSSSS'); */
-
         return redirect()->route('levels_list')->with('success', 'LEVEL ADD SUCCESSFULLY...');
     }
 
@@ -50,7 +43,7 @@ class cont_levels extends Controller
     public function update(Request $request, string $level_id)
     {
         model_levels::where('id', $level_id)->update([
-            'name'=>ucwords(Str::lower($request->name)),
+            'name'=>ucwords(Str::upper($request->name)),
             'slug'=>Str::slug($request->name)
             ]);
         return redirect()->route('levels_list')->with('success', 'LEVEL UPDATE SUCCESSFULLY...'); 

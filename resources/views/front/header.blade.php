@@ -71,13 +71,13 @@
   <!-- Topbar End -->
   <!-- Navbar Start -->
   <nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top p-0">
-    <a href="{{ route('home') }}" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
+<!--     <a href="{{ route('home') }}" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
       <h2 class="m-0 text-success">
         <img class="img-fluid bg-light rounded-circle" src="{{ asset('front/') }}/img/favicon.png"
           alt="AYDIN LANGUAGE ACADEMY" style="width: 70px; height: 70px;">
-        AYDIN LANGUAGE ACADEMY
+        ALA
       </h2>
-    </a>
+    </a> -->
     <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -88,12 +88,12 @@
         @foreach ($levels as $level)
       <div class="nav-item dropdown">
         <a href="#"
-        class="nav-link dropdown-toggle @isset ($themes) {{$themes->first()->levels->slug === $level->slug ? 'active' : null}} @endisset"
+        class="nav-link dropdown-toggle @isset ($themes) @if ($themes->first()!=null) {{$themes->first()->levels->slug === $level->slug ? 'active' : null}} @endif @endisset"
         data-bs-toggle="dropdown">{{$level->name}}</a>
         <div class="dropdown-menu rounded-0 rounded-bottom m-0">
         @foreach ($sub_levels as $sub_level)
       <a href="{{ route('themes', [$level->slug, $sub_level->slug]) }}"
-        class="dropdown-item @isset ($themes){{$themes->first()->levels->slug === $level->slug ? ($themes->first()->sub_levels->slug === $sub_level->slug ? 'active' : null) : null}}@endisset">{{$sub_level->name}}</a>
+        class="dropdown-item @isset ($themes) @if ($themes->first()!=null) {{$themes->first()->levels->slug === $level->slug ? ($themes->first()->sub_levels->slug === $sub_level->slug ? 'active' : null) : null}} @endif @endisset">{{$sub_level->name}}</a>
     @endforeach
         </div>
       </div>
@@ -106,7 +106,6 @@
 
       <!--       <a href="#" class="btn btn-primary rounded-0 py-4 px-lg-5 d-none d-lg-block">Appointment<i
           class="fa fa-arrow-right ms-3"></i></a> -->
-
 
     </div>
   </nav>

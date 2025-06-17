@@ -26,7 +26,7 @@
 
 
   <!-- About Start -->
-  <div class="container-xxl py-5">
+<!--   <div class="container-xxl py-5">
     <div class="container">
     <div class="row g-5">
       <div class="col-lg-6">
@@ -50,7 +50,7 @@
       </div>
     </div>
     </div>
-  </div>
+  </div> -->
   <!-- About End -->
 
   <!-- Service Start
@@ -140,7 +140,7 @@
 
 
   <!-- Feature Start -->
-  <div class="container-fluid bg-primary overflow-hidden my-5 px-lg-0">
+<!--   <div class="container-fluid bg-primary overflow-hidden my-5 px-lg-0">
     <div class="container feature px-lg-0">
     <div class="row g-0 mx-lg-0">
       <div class="col-lg-6 feature-text py-5">
@@ -209,12 +209,12 @@
       </div>
     </div>
     </div>
-  </div>
+  </div> -->
   <!-- Feature End -->
 
 
   <!-- Team Start -->
-  <div class="container-xxl py-5">
+<!--   <div class="container-xxl py-5">
     <div class="container">
     <div class="text-center mx-auto mb-5" style="max-width: 600px;">
       <p class="d-inline-block border rounded-pill py-1 px-4">Doctors</p>
@@ -287,12 +287,12 @@
       </div>
     </div>
     </div>
-  </div>
+  </div> -->
   <!-- Team End -->
 
 
   <!-- Appointment Start -->
-  <div class="container-xxl py-5">
+<!--   <div class="container-xxl py-5">
     <div class="container">
     <div class="row g-5">
       <div class="col-lg-6">
@@ -366,12 +366,12 @@
       </div>
     </div>
     </div>
-  </div>
+  </div> -->
   <!-- Appointment End -->
 
 
   <!-- Testimonial Start -->
-  <div class="container-xxl py-5">
+<!--   <div class="container-xxl py-5">
     <div class="container">
     <div class="text-center mx-auto mb-5" style="max-width: 600px;">
       <p class="d-inline-block border rounded-pill py-1 px-4">Testimonial</p>
@@ -410,6 +410,6 @@
       </div>
     </div>
     </div>
-  </div>
+  </div> -->
   <!-- Testimonial End -->
 @endsection

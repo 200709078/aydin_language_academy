@@ -65,7 +65,7 @@
                                 </div>
                             </div>
                         @endforeach
-                        <div class="mt-2"> {{ $exercises->links('pagination::bootstrap-4') }}</div>
+                        <div class="mt-2"> {{ $declarations->links('pagination::bootstrap-4') }}</div>
                     </p>
                 </div>
                 <div class="tab-pane p-3 {{ Request::segment(1) === 'tab2' ? 'active' : null }}" id="tabs-2"
