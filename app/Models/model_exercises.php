@@ -16,7 +16,10 @@ class model_exercises extends Model
         'theme_id',
         'title',
         'slug',
-        'description'
+        'image',
+        'voice',
+        'video',
+        'qtext'
     ];
      protected $appends = ['details'];
  /*   public function getMyRankAttribute()

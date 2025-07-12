@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        $levels = ['Grammar', 'Vocabulary', 'LISTENING'];
+        $levels = ['GRAMMAR', 'VOCABULARY', 'LISTENING'];
         foreach ($levels as $level) {
             model_levels::insert([
                 'name' => $level,
@@ -27,7 +27,7 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-        $sub_levels = ['Elemantary', 'Intermediate', 'Pre-Intermediate'];
+        $sub_levels = ['ELEMENTARY', 'INTERMEDIATE', 'PRE-INTERMEDIATE'];
         foreach ($sub_levels as $sub_level) {
             model_sub_levels::insert([
                 'name' => $sub_level,

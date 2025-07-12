@@ -4,17 +4,23 @@
 
     <div class="container mt-5">
         <div class="container">
+            @if ($themes->first())
             <div class="text-center mx-auto">
-                <h4>{{ strtoupper($themes->first()->levels->name)}} <i class="bi bi-arrow-right"></i>
-                    {{ strtoupper($themes->first()->sub_levels->name)}} <i class="bi bi-arrow-right"></i>
-                    {{ strtoupper(Str::limit($themes->first()->name, 20))}}
-                    @if (Request::segment(1) == 'tab1')
-                            <i class="bi bi-arrow-right"></i> ALL DECLARATIONS
-                        </h4>
-                    @endif
-                @if (Request::segment(1) == 'tab2')
-                    <i class="bi bi-arrow-right"></i> ALL EXERCISES </h4>
-                @endif
+                    <h4>
+                        {{ strtoupper($themes->first()->levels->name)}} <i class="bi bi-arrow-right"></i>
+                            {{ strtoupper($themes->first()->sub_levels->name)}} <i class="bi bi-arrow-right"></i>
+                            {{ strtoupper(Str::limit($themes->first()->name, 20))}}
+                        @if (Request::segment(1) == 'tab1')
+                                    <i class="bi bi-arrow-right"></i> ALL DECLARATIONS
+                    </h4>
+                        @endif
+
+                        @if (Request::segment(1) == 'tab2')
+                        <i class="bi bi-arrow-right"></i> ALL EXERCISES
+                    </h4>
+                        @endif
+
+                
             </div>
             <ul class="nav nav-tabs" role="tablist">
                 <li class="nav-item">
@@ -52,12 +58,19 @@
                                         @endif
                                     </p>
                                     @if ($declaration->video)
-                                        <a href="{{$declaration->video}}" class="btn btn-primary" target="_blank"><i class="fab fa-youtube"></i>
+                                        <a href="{{$declaration->video}}" class="btn btn-primary" target="_blank"><i
+                                                class="fab fa-youtube"></i>
                                             Video</a>
                                     @endif
                                     @if ($declaration->voice)
-                                        <a href="{{$declaration->voice}}" class="btn btn-primary" target="_blank"><i class="fab fa-youtube"></i>
+                                        <a href="{{$declaration->voice}}" class="btn btn-primary" target="_blank"><i
+                                                class="fab fa-youtube"></i>
                                             Voice</a>
+                                    @endif
+                                    @if ($declaration->answerkey)
+                                        <a href="{{asset('pdfs/' . $declaration->answerkey) }}" class="btn btn-primary"
+                                            target="_blank"><i class="fab fa-adobe"></i>
+                                            Answer Key</a>
                                     @endif
                                 </div>
                                 <div class="card-footer text-muted">
@@ -65,16 +78,30 @@
                                 </div>
                             </div>
                         @endforeach
-                        <div class="mt-2"> {{ $declarations->links('pagination::bootstrap-4') }}</div>
+                    <div class="mt-2"> {{ $declarations->links('pagination::bootstrap-4') }}</div>
                     </p>
                 </div>
                 <div class="tab-pane p-3 {{ Request::segment(1) === 'tab2' ? 'active' : null }}" id="tabs-2"
                     role="tabpanel">
                     <p>
                         @foreach ($exercises as $exercise)
-
                             <div class="card">
                                 <div class="card-body">
+                                    @if ($exercise->image)
+                                        <img src="{{ asset('photos/' . $exercise->image) }}" style="width:20%"
+                                            class="img-responsive"><br>
+                                    @endif
+                                    @if($exercise->qtext) {{ $exercise->qtext }}<br> @endif
+                                    @if ($exercise->video)
+                                        <a href="{{$exercise->video}}" class="btn btn-primary" target="_blank"><i
+                                                class="fab fa-youtube"></i>
+                                            Video</a>
+                                    @endif
+                                    @if ($exercise->voice)
+                                        <a href="{{$exercise->voice}}" class="btn btn-primary" target="_blank"><i
+                                                class="fab fa-youtube"></i>
+                                            Voice</a>
+                                    @endif
                                     <form method="POST" action="{{ route('exercises.result', $exercise->id) }}">
                                         @csrf
                                         @foreach ($exercise->questions as $question)
@@ -130,6 +157,8 @@
                     <div class="mt-2"> {{ $exercises->links('pagination::bootstrap-4') }}</div>
                     </p>
                 </div>
+
+                @endif
             </div>
         </div>
 @endsection

@@ -6,15 +6,29 @@
                 <a href="{{ route('exercises_list', $theme->id) }}" class="btn btn-sm btn-secondary" title="CANCEL">
                     <i class="fa fa-arrow-left"></i> CANCEL</a>
             </h5>
-            <form method="POST" action="{{ route('exercise_store', $theme->id)}}">
+            <form method="POST" action="{{ route('exercise_store', $theme->id)}}" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group">
                     <label>TITLE</label>
                     <input type="text" name="title" class="form-control">
                 </div>
                 <div class="form-group">
-                    <label>DESCRIPTION</label>
-                    <input type="text" name="description" class="form-control">
+                    <label>TEXT OF QUESTIONS</label>
+                    <textarea name="qtext" class="form-control" rows="4"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>IMAGE</label>
+                    <input type="file" name="image" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label>VIDEO LINK</label>
+                    <input type="text" name="video" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>VOICE LINK</label>
+                    <input type="text" name="voice" class="form-control">
                 </div>
                 <div class="form-group mt-2">
                     <button type="submit" class="btn btn-success btn-sm btn-block">EXERCISES CREATE</button>

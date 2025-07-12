@@ -16,6 +16,7 @@ class model_declarations extends Model
         'image',
         'pdf',
         'video',
-        'voice'
+        'voice',
+        'answerkey'
     ];
 }

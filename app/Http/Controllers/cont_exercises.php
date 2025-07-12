@@ -35,13 +35,22 @@ class cont_exercises extends Controller
 
     public function store(Request $request, $theme_id)
     {
-        model_exercises::create([
+        $imageFileName = null;
+        if ($request->hasFile('image')) {
+            $imageFileName = Str::slug($request->title) . '.' . $request->image->extension();
+            $request->image->move(public_path('photos'), $imageFileName);
+        }
+         model_exercises::create([
             'theme_id' => $theme_id,
             'title' => $request->title,
             'slug' => Str::slug($request->title),
-            'description' => $request->description
+            'qtext' => $request->qtext,
+            'image' => $imageFileName,
+            'video' => $request->video,
+            'voice' => $request->voice
+
         ]);
-        return redirect()->route('exercises_list', $theme_id)->with('success', 'EXERCISES ADD SUCCESSFULLY...');
+        return redirect()->route('exercises_list', $theme_id)->with('success', 'EXERCISES ADD SUCCESSFULLY...'); 
     }
 
     public function show(string $id)
@@ -58,12 +67,20 @@ class cont_exercises extends Controller
 
     public function update(Request $request, string $exercise_id)
     {
-        $exercise = model_exercises::find($exercise_id);
+        $imageFileName = null;
+        if ($request->hasFile('image')) {
+            $imageFileName = Str::slug($request->title) . '.' . $request->image->extension();
+            $request->image->move(public_path('photos'), $imageFileName);
+        }
 
+        $exercise = model_exercises::find($exercise_id);
         model_exercises::where('id', $exercise_id)->update([
             'title' => $request->title,
             'slug' => Str::slug($request->title),
-            'description' => $request->description
+            'qtext' => $request->qtext,
+            'image' => $imageFileName,
+            'video' => $request->video,
+            'voice' => $request->voice
         ]);
         return redirect()->route('exercises_list', $exercise->theme_id)->with('success', 'EXERCISES ADD SUCCESSFULLY...');
     }

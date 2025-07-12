@@ -23,7 +23,7 @@ class cont_sub_levels extends Controller
     public function store(SubLevelRequest $request)
     {
         model_sub_levels::create([
-            'name' => ucwords(Str::lower($request->name)),
+            'name' => ucwords(Str::upper($request->name)),
             'slug' => Str::slug($request->name)
         ]);
         return redirect()->route('sub_levels_list')->with('success', 'SUB LEVEL ADD SUCCESSFULLY...');

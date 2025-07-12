@@ -27,6 +27,7 @@ class model_declarationsFactory extends Factory
             'pdf' => 'deneme.pdf',
             'video' => 'https://youtu.be/gAHzzHD-jVA',
             'voice' => 'https://youtu.be/gAHzzHD-jVA',
+            'answerkey' => 'answers.pdf',
             'theme_id' => rand(1,50)
         ];
     }

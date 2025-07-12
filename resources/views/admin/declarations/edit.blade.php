@@ -19,7 +19,6 @@
                 </div>
                 <div class="form-group">
                     <label>IMAGE</label>
-
                     @if($declaration->image)
                             <a href="{{ asset('photos/' . $declaration->image) }}" target="_blank">
                             <img class="img-fluid rounded align-self-end"

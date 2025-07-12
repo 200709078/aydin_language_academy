@@ -10,7 +10,10 @@
                 <thead>
                     <tr>
                         <th scope="col">TITLE</th>
-                        <th scope="col">DESCRIPTION</th>
+                        <th scope="col">TEXT OF QUESTIONS</th>
+                        <th scope="col">IMAGE</th>
+                        <th scope="col">VIDEO</th>
+                        <th scope="col">VOICE</th>
                         <th scope="col">NUMBER OF QUESTIONS</th>
                         <th scope="col">OPERATIONS</th>
                     </tr>
@@ -18,10 +21,24 @@
                 <tbody>
                     @foreach ($theme->exercises as $exercise)
                         <tr class="align-middle">
-                            <th class="col-md-3" scope="row">{{ $exercise->title }}</th>
-                            <th class="col-md-3" scope="row">{{ Str::limit($exercise->description, 20) }}</th>
-                            <th class="col-md-3" scope="row">{{ $exercise->details['questions_count'] }}</th>
-                            <td>
+                            <th class="col-md-2" scope="row">{{ $exercise->title }}</th>
+                            <th class="col-md-2" scope="row">{{ Str::limit($exercise->qtext, 20) }}</th>
+                            <th class="col-md-2" scope="row">
+                                @if($exercise->image)
+                                    <a href="{{ asset('photos/' . $exercise->image) }}" target="_blank">
+                                        <img class="img-fluid rounded align-self-end"
+                                            src="{{ asset('photos/' . $exercise->image) }}" style="width:120px"
+                                            class="img-responsive">
+                                    </a>
+                                @else
+                                    <img class="img-fluid rounded align-self-end" src="{{ asset('photos/noimage.jpg') }}"
+                                        style="width:120px" class="img-responsive">
+                                @endif
+                            </th>
+                            <th class="col-md-2" scope="row">{{ $exercise->video }}</th>
+                            <th class="col-md-2" scope="row">{{ $exercise->voice }}</th>
+                            <th class="col-md-2" scope="row">{{ $exercise->details['questions_count'] }}</th>
+                            <th>
                                 <!-- exercises.detail -->
 <!--                                 <a href="#" @if($exercise->details['questions_count']==0) class="btn btn-sm btn-secondary disabled" @else class="btn btn-sm btn-secondary" @endif title="Show Detail">
                                     <i class="fa fa-info w-4"></i>
@@ -33,7 +50,7 @@
                                     <i class="fa fa-pen w-4"></i></a>
                                 <a href="{{ route('exercises_destroy',$exercise->id) }}" class="btn btn-sm btn-danger" title="Delete Exercises">
                                     <i class="fa fa-trash w-4"></i></a>
-                            </td>
+                            </th>
                         </tr>
                     @endforeach
                 </tbody>

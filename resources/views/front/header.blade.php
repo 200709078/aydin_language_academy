@@ -36,7 +36,7 @@
 
 <body>
   <!-- Topbar Start -->
-  <div class="container-fluid bg-light p-0">
+<!--   <div class="container-fluid bg-light p-0">
     <div class="row gx-0 d-none d-lg-flex">
       <div class="col-lg-7 px-5 text-start">
         <div class="h-100 d-inline-flex align-items-center py-3 me-4">
@@ -67,7 +67,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
   <!-- Topbar End -->
   <!-- Navbar Start -->
   <nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top p-0">

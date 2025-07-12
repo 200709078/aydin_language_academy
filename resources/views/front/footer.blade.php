@@ -10,12 +10,11 @@
           Ortaca/Muğla</p>
         <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>Dalaman: (530) 828 4884</p>
         <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>Ortaca: (546) 828 4884</p>
-        <p class="mb-2"><i class="fa fa-envelope me-3"></i>aydindilakademisi@gmail.com</p>
+        <p class="mb-2"><i class="fa fa-envelope me-3"></i>learnenglishwithala@gmail.com</p>
 
         <div class="d-flex pt-2">
-          <a class="btn btn-outline-light btn-social rounded-circle" href="#"><i class="fab fa-twitter"></i></a>
-          <a class="btn btn-outline-light btn-social rounded-circle" href="#"><i class="fab fa-facebook-f"></i></a>
-          <a class="btn btn-outline-light btn-social rounded-circle" href="#"><i class="fab fa-youtube"></i></a>
+          <a class="btn btn-outline-light btn-social rounded-circle" href="https://www.instagram.com/aydindilakademisidalaman?igsh=MTVjaXl2eDJ2MjJwYg==" target="_blank"><i class="fab fa-instagram"></i></a>
+          <a class="btn btn-outline-light btn-social rounded-circle" href="https://www.youtube.com/@AydınLanguageAcademy" target="_blank"><i class="fab fa-youtube"></i></a>
           <a class="btn btn-outline-light btn-social rounded-circle" href="https://wa.me/905326666549?text=Selamlar" target="_blank"><i
               class="bi bi-whatsapp"></i></a>
         </div>

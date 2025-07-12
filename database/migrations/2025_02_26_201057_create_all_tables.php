@@ -36,9 +36,12 @@ return new class extends Migration {
         Schema::create('exercises', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('theme_id');
-            $table->string('title');
+            $table->string('title')->nullable();
             $table->string('slug')->unique();
-            $table->longText('description')->nullable();
+            $table->longText('image')->nullable();
+            $table->longText('voice')->nullable();
+            $table->longText('video')->nullable();
+            $table->longText('qtext')->nullable();
             $table->foreign('theme_id')->references('id')->on('themes')->onDelete('cascade');
             $table->timestamps();
         });
@@ -68,6 +71,7 @@ return new class extends Migration {
             $table->longText('pdf')->nullable();
             $table->longText('video')->nullable();
             $table->longText('voice')->nullable();
+            $table->longText('answerkey')->nullable();
             $table->foreign('theme_id')->references('id')->on('themes')->onDelete('cascade')->unique();
             $table->timestamps();
         });
@@ -105,14 +109,17 @@ return new class extends Migration {
     }
     public function down(): void
     {
+        Schema::dropIfExists('messages');
+        Schema::dropIfExists('questions');
+        Schema::dropIfExists('exercises');
+        Schema::dropIfExists('declarations');
+        Schema::dropIfExists('themes');
         Schema::dropIfExists('levels');
         Schema::dropIfExists('sub_levels');
-        Schema::dropIfExists('themes');
-        Schema::dropIfExists('exercises');
-        Schema::dropIfExists('questions');
-        Schema::dropIfExists('declarations');
+        
+        
 /*         Schema::dropIfExists('user_answers');
         Schema::dropIfExists('user_results'); */
-        Schema::dropIfExists('messages');
+        
     }
 };
