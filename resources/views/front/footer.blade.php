@@ -3,12 +3,22 @@
   <div class="container py-5">
     <div class="row g-5">
       <div class="col-lg-3 col-md-6">
-        <h5 class="text-light mb-4">Addresses</h5>
+        <h5 class="text-light mb-4">Addresses - 1</h5>
         <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>Karaçalı Mahallesi Şehit Hamza Atakul Caddesi No:39-A
           Dalaman/Muğla</p>
+        <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>Dalaman: (530) 828 4884</p>
+        <p class="mb-2"><i class="fa fa-envelope me-3"></i>learnenglishwithala@gmail.com</p>
+        <div class="d-flex pt-2">
+          <a class="btn btn-outline-light btn-social rounded-circle" href="https://www.instagram.com/aydindilakademisidalaman?igsh=MTVjaXl2eDJ2MjJwYg==" target="_blank"><i class="fab fa-instagram"></i></a>
+          <a class="btn btn-outline-light btn-social rounded-circle" href="https://www.youtube.com/@AydınLanguageAcademy" target="_blank"><i class="fab fa-youtube"></i></a>
+          <a class="btn btn-outline-light btn-social rounded-circle" href="https://wa.me/905326666549?text=Selamlar" target="_blank"><i
+              class="bi bi-whatsapp"></i></a>
+        </div>
+      </div>
+            <div class="col-lg-3 col-md-6">
+        <h5 class="text-light mb-4">Addresses - 2</h5>
         <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>Atatürk Mahallesi Postane Karşısı No:39-A
           Ortaca/Muğla</p>
-        <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>Dalaman: (530) 828 4884</p>
         <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>Ortaca: (546) 828 4884</p>
         <p class="mb-2"><i class="fa fa-envelope me-3"></i>learnenglishwithala@gmail.com</p>
 
@@ -34,7 +44,7 @@
         </div>
         <div class="col-md-6 text-center text-md-end">
           <a class="border-none" href="{{ route('levels_list') }}" target="_blank">&copy; </a>
-          Designed By <a class="border-bottom" href="http://www.madematik.com" target="_blank">mADEMatik</a>
+          Designed By <a class="border-bottom" href="https://www.madematik.com" target="_blank">mADEMatik</a>
         </div>
       </div>
     </div>
@@ -45,7 +55,6 @@
 
 <!-- Back to Top -->
 <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
-
 
 <!-- JavaScript Libraries -->
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>

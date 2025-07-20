@@ -35,49 +35,15 @@
 </head>
 
 <body>
-  <!-- Topbar Start -->
-<!--   <div class="container-fluid bg-light p-0">
-    <div class="row gx-0 d-none d-lg-flex">
-      <div class="col-lg-7 px-5 text-start">
-        <div class="h-100 d-inline-flex align-items-center py-3 me-4">
-          <small class="fa fa-map-marker-alt text-primary me-2"></small>
-          <small>Karaçalı Mahallesi Şehit Hamza Atakul Caddesi No:39-A Dalaman/Muğla</small>
-        </div>
-        <div class="h-100 d-inline-flex align-items-center py-3">
-          <small class="far fa-clock text-primary me-2"></small>
-          <small>Mon-Sun: 09.00 AM - 19.00 PM</small>
-        </div>
-      </div>
-      <div class="col-lg-5 px-5 text-end">
-        <div class="h-100 d-inline-flex align-items-center py-3 me-4">
-          <small class="fa fa-phone-alt text-primary me-2"></small>
-          <small>Dalaman: (530) 828 4884 &nbsp;</small>
-          <small class="fa fa-phone-alt text-primary me-2"></small>
-          <small>Ortaca: (546) 828 4884</small>
-        </div>
-        <div class="h-100 d-inline-flex align-items-center">
-          <a class="btn btn-sm-square rounded-circle bg-white text-primary me-1" href="#"><i
-              class="fab fa-facebook-f"></i></a>
-          <a class="btn btn-sm-square rounded-circle bg-white text-primary me-1" href="#"><i
-              class="fab fa-twitter"></i></a>
-          <a class="btn btn-sm-square rounded-circle bg-white text-primary me-1" href="#"><i
-              class="fab fa-linkedin-in"></i></a>
-          <a class="btn btn-sm-square rounded-circle bg-white text-primary me-0" href="#"><i
-              class="fab fa-instagram"></i></a>
-        </div>
-      </div>
-    </div>
-  </div> -->
-  <!-- Topbar End -->
   <!-- Navbar Start -->
   <nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top p-0">
-<!--     <a href="{{ route('home') }}" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
-      <h2 class="m-0 text-success">
+  <a href="{{ route('home') }}" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
+      <h2 class="m-0" style="color:#25bebc;">
         <img class="img-fluid bg-light rounded-circle" src="{{ asset('front/') }}/img/favicon.png"
-          alt="AYDIN LANGUAGE ACADEMY" style="width: 70px; height: 70px;">
+          alt="AYDIN LANGUAGE ACADEMY" style="width: 70px; height: 70px; color:'#25bebc'">
         ALA
       </h2>
-    </a> -->
+    </a>
     <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
       <span class="navbar-toggler-icon"></span>
     </button>

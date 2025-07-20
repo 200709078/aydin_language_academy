@@ -118,7 +118,8 @@ class cont_user_main extends Controller
         //$exercises = model_exercises::where('theme_id', '=', $theme_id)->with('questions')->get() ?? abort(404, 'THEME NOT FOUND');
         //return view('front.theme_detail', compact(['declarations', 'exercises', 'theme_id', 'request']));
         $exercises = model_exercises::with('questions')->whereId($theme_id)->first() ?? abort(404, 'EXERCISES NOT FOUND.');
-        return $exercises;
+        //return $exercises;
+        return 'COMING SOON';
         //return redirect($request->session()->previousUrl());
     }
 
