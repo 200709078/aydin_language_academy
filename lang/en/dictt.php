@@ -1,0 +1,20 @@
+<?php
+return [
+    'levels' => 'Levels',
+    'sublevels' => 'Sub Levels',
+    'themes' => 'Themes',
+    'home' => 'Home',
+    'about' => 'About',
+    'contact' => 'Contact',
+    'ala' => 'AYDIN LANGUAGE ACADEMY',
+    'allrightreserved.' => 'All right reserved.',
+    'links' => 'Links',
+    'address' => 'Address',
+    'ourcourses' => 'Our Courses',
+    'fullname' => 'Fullname',
+    'email' => 'E-Mail',
+    'phone' => 'Phone',
+    'subject' => 'Subject',
+    'message' => 'Message',
+    'send'=>'Send',
+];

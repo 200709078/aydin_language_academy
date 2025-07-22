@@ -1,5 +1,5 @@
 <x-app-layout>
-    <x-slot name="header">THEMES</x-slot>
+    <x-slot name="header">{{ __('dictt.themes') }}</x-slot>
     <div class="card">
         <div class="card-body">
             <a href="{{ route('theme_create') }}" class="btn btn-sm btn-primary float-right" title="Add New Theme">

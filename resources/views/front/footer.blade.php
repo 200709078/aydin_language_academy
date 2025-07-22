@@ -3,7 +3,7 @@
   <div class="container py-5">
     <div class="row g-5">
       <div class="col-lg-3 col-md-6">
-        <h5 class="text-light mb-4">Addresses - 1</h5>
+        <h5 class="text-light mb-4">{{ __('dictt.address') }} - 1</h5>
         <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>Karaçalı Mahallesi Şehit Hamza Atakul Caddesi No:39-A
           Dalaman/Muğla</p>
         <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>Dalaman: (530) 828 4884</p>
@@ -16,7 +16,7 @@
         </div>
       </div>
             <div class="col-lg-3 col-md-6">
-        <h5 class="text-light mb-4">Addresses - 2</h5>
+        <h5 class="text-light mb-4">{{ __('dictt.address') }} - 2</h5>
         <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>Atatürk Mahallesi Postane Karşısı No:39-A
           Ortaca/Muğla</p>
         <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>Ortaca: (546) 828 4884</p>
@@ -30,9 +30,9 @@
         </div>
       </div>
       <div class="col-lg-3 col-md-6">
-        <h5 class="text-light mb-4">Quick Links</h5>
-        <a class="btn btn-link" href="{{ Route('about') }}">About Us</a>
-        <a class="btn btn-link" href="{{ Route('contact') }}">Contact Us</a>
+        <h5 class="text-light mb-4">{{ __('dictt.links') }}</h5>
+        <a class="btn btn-link" href="{{ Route('about') }}">{{ __('dictt.about') }}</a>
+        <a class="btn btn-link" href="{{ Route('contact') }}">{{ __('dictt.contact') }}</a>
       </div>
     </div>
   </div>
@@ -40,7 +40,7 @@
     <div class="copyright">
       <div class="row">
         <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-          <a class="border-bottom" href="{{ route('home') }}">AYDIN LANGUAGE ACADEMY</a>, All Right Reserved.
+          <a class="border-bottom" href="{{ route('home') }}">{{ __('dictt.ala') }}</a>, {{ __('dictt.allrightreserved.') }}
         </div>
         <div class="col-md-6 text-center text-md-end">
           <a class="border-none" href="{{ route('levels_list') }}" target="_blank">&copy; </a>

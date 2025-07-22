@@ -1,38 +1,11 @@
 @extends('front.master')
-@section('title', 'AYDIN LANGUAGE ACADEMY - MAIN PAGE')
+@section('title', "AYDIN LANGUAGE ACADEMY")
 @section('middle_section')
 
   <!-- Appointment Start -->
   <div class="container-xxl py-5">
-
-    <!-- Slider Start - ->
-    <div class="container-xxl py-5">
     <div class="container">
-      <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
-<!- -       <p class="d-inline-block border rounded-pill py-1 px-4">Kampanyalarımız</p> -- >
-      <h1>COMMING SOON</h1>
-      </div>
-      <div class="owl-carousel testimonial-carousel wow fadeInUp" data-wow-delay="0.1s">
-      <div class="testimonial-item text-center">
-        <img class="img-fluid bg-light rounded-circle p-2 mx-auto mb-4" src="{{ asset('front/') }}/img/slide1.png"
-        style="width: 600px; height: 400px;">
-      </div>
-      <div class="testimonial-item text-center">
-        <img class="img-fluid bg-light rounded-circle p-2 mx-auto mb-4" src="{{ asset('front/') }}/img/koycegiz-1.png"
-        style="width: 600px; height: 400px;">
-      </div>
-      <div class="testimonial-item text-center">
-        <img class="img-fluid bg-light rounded-circle p-2 mx-auto mb-4" src="{{ asset('front/') }}/img/koycegiz-2.png"
-        style="width: 600px; height: 400px;">
-      </div>
-      </div>
-    </div>
-    </div>
-    <!- - Slider End -->
-
-
-    <div class="container">
-    <h5>OUR COURSES</h5>
+    <h5>{{Str::upper(__('dictt.ourcourses'))}}</h5>
     <div class="card mb-4">
       <div class="card-header">
       <h6>

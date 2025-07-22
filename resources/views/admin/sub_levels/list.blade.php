@@ -1,5 +1,5 @@
 <x-app-layout>
-    <x-slot name="header">SUB LEVELS</x-slot>
+    <x-slot name="header">{{ __('dictt.sublevels') }}</x-slot>
     <div class="card">
         <div class="card-body">
         <a href="{{ route('sub_level_create') }}" class="btn btn-sm btn-primary float-right" title="Add New Sub Level">

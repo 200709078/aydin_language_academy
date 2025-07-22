@@ -1,0 +1,20 @@
+<?php
+return [
+    'levels' => 'Seviyeler',
+    'sublevels' => 'Alt Seviyeler',
+    'themes' => 'Temalar',
+    'home' => 'Ana Sayfa',
+    'about' => 'Hakkımızda',
+    'contact' => 'İletişim',
+    'ala' => 'AYDIN DİL AKADEMİSİ',
+    'allrightreserved.' => 'Tüm hakları saklıdır.',
+    'links' => 'Linkler',
+    'address' => 'Adres',
+    'ourcourses' => 'Kurslarımız',
+    'fullname' => 'Ad, Soyad',
+    'email' => 'E-Mail',
+    'phone' => 'Tel',
+    'subject' => 'Konu',
+    'message' => 'Mesaj',
+    'send'=>'Gönder',
+];

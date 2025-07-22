@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\cont_declarations;
 use App\Http\Controllers\cont_exercises;
+use App\Http\Controllers\cont_language;
 use App\Http\Controllers\cont_levels;
 use App\Http\Controllers\cont_questions;
 use App\Http\Controllers\cont_sub_levels;
@@ -61,6 +62,9 @@ Route::group(['middleware' => ['auth', isAdmin_middle::class], 'prefix' => 'admi
 });
 
 Route::get('/', [cont_user_main::class, 'index'])->name('home');
+
+Route::get('changeLanguage/{lang?}',[cont_language::class,'changeLanguage'])->name('changeLanguage');
+
 Route::get('about', [cont_user_main::class, 'about'])->name('about');
 Route::get('contact', [cont_user_main::class, 'contact'])->name('contact');
 Route::post('/contactpost', [cont_user_main::class, 'contactpost'])->name('contactpost');
@@ -71,3 +75,4 @@ Route::get('tab2/{theme_id}', [cont_user_main::class, 'tab2'])->name('tab2');
 
 Route::get('{level_slug}/{sub_level_slug}', [cont_user_main::class, 'themes'])->name('themes');
 Route::get('theme/{theme_id}/exercises', [cont_exercises::class, 'index'])->name('exercises');
+

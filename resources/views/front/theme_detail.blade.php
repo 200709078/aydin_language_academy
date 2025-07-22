@@ -1,5 +1,5 @@
 @extends('front.master')
-@section('title', 'AYDIN LANGUAGE ACADEMY - THEME DETAIL')
+@section('title', "AYDIN LANGUAGE ACADEMY")
 @section('middle_section')
 
     <div class="container mt-5">

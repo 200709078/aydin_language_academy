@@ -1,5 +1,5 @@
 <x-app-layout>
-    <x-slot name="header">LEVELS</x-slot>
+    <x-slot name="header">{{ __('dictt.levels') }}</x-slot>
     <div class="card">
         <div class="card-body">
             <a href="{{ route('level_create') }}" class="btn btn-sm btn-primary float-right" title="Add New Level">
