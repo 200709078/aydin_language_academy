@@ -2,13 +2,13 @@
     <x-slot name="header">{{ __('dictt.sublevels') }}</x-slot>
     <div class="card">
         <div class="card-body">
-        <a href="{{ route('sub_level_create') }}" class="btn btn-sm btn-primary float-right" title="Add New Sub Level">
-            <i class="fa fa-plus"></i> Add New Sub Level</a>
+        <a href="{{ route('sub_level_create') }}" class="btn btn-sm btn-primary float-right" title="{{ __('dictt.addnewsublevel') }}">
+            <i class="fa fa-plus"></i> {{ __('dictt.addnewsublevel') }}</a>
             <table class="table table-striped table-sm">
                 <thead>
                     <tr>
-                        <th scope="col">SUB LEVEL NAME</th>
-                        <th scope="col">OPERATIONS</th>
+                        <th scope="col">{{ __('dictt.sublevelname') }}</th>
+                        <th scope="col">{{ __('dictt.operations') }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -17,10 +17,10 @@
                             <th class="col-md-3" scope="row">{{ $sub_level->name }}</th>
                             <td>
                                 <a href="{{ route('sub_level_edit',$sub_level->id) }}" class="btn btn-sm btn-primary"
-                                    title="Edit {{ucfirst(Str::lower($sub_level->name))  }} Sub Level"><i
+                                    title="{{ __('dictt.edit') }} {{ucfirst(Str::lower($sub_level->name))  }}"><i
                                         class="fa fa-pen w-4"></i></a>
                                 <a href="{{ route('sub_level_destroy',$sub_level->id) }}" class="btn btn-sm btn-danger"
-                                    title="Delete {{ucfirst(Str::lower($sub_level->name))  }} Sub Level"><i
+                                    title="{{ __('dictt.delete') }} {{ucfirst(Str::lower($sub_level->name))  }}"><i
                                         class="fa fa-trash w-4"></i></a>
                             </td>
                         </tr>
