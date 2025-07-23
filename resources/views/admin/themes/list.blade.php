@@ -2,16 +2,16 @@
     <x-slot name="header">{{ __('dictt.themes') }}</x-slot>
     <div class="card">
         <div class="card-body">
-            <a href="{{ route('theme_create') }}" class="btn btn-sm btn-primary float-right" title="Add New Theme">
-                <i class="fa fa-plus"></i> Add New Theme</a>
+            <a href="{{ route('theme_create') }}" class="btn btn-sm btn-primary float-right" title="{{ __('dictt.addnewtheme') }}">
+                <i class="fa fa-plus"></i> {{ __('dictt.addnewtheme') }}</a>
             <table class="table table-striped table-sm">
                 <thead>
                     <tr>
-                        <th scope="col">LEVEL</th>
-                        <th scope="col">SUB LEVEL</th>
-                        <th scope="col">NAME</th>
-                        <th scope="col">IMAGE</th>
-                        <th scope="col">OPERATIONS</th>
+                        <th scope="col">{{ __('dictt.levelname') }}</th>
+                        <th scope="col">{{ __('dictt.sublevelname') }}</th>
+                        <th scope="col">{{ __('dictt.title') }}</th>
+                        <th scope="col">{{ __('dictt.image') }}</th>
+                        <th scope="col">{{ __('dictt.operations') }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -34,16 +34,16 @@
                             </td>
                             <td>
                                 <a href="{{ route('declarations_list', $theme->id) }}" class="btn btn-sm btn-primary"
-                                    title="Declarations List">
+                                    title="{{ __('dictt.declarationslist') }}">
                                     <i class="fa fa-list w-4"></i></a>
                                 <a href="{{ route('exercises_list', $theme->id) }}" class="btn btn-sm btn-warning"
-                                    title="Exercises List">
+                                    title="{{ __('dictt.exerciseslist') }}">
                                     <i class="fa fa-list w-4"></i></a>
                                 <a href="{{ route('theme_edit', $theme->id) }}" class="btn btn-sm btn-primary"
-                                    title="Edit Theme">
+                                    title="{{ __('dictt.edit') }}">
                                     <i class="fa fa-pen w-4"></i></a>
                                 <a href="{{ route('theme_destroy', $theme->id) }}" class="btn btn-sm btn-danger"
-                                    title="Delete Theme">
+                                    title="{{ __('dictt.delete') }}">
                                     <i class="fa fa-trash w-4"></i></a>
                             </td>
                         </tr>

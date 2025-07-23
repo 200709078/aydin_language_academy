@@ -1,22 +1,22 @@
 <x-app-layout>
-    <x-slot name="header">DECLARATIONS OF {{ Str::limit($theme->name, 20) }} THEME</x-slot>
+    <x-slot name="header">{{ __('dictt.declarations') }} - {{ Str::limit($theme->name, 20) }}</x-slot>
     <div class="card">
         <div class="card-body">
-            <a href="{{ route('themes_list') }}" class="btn btn-sm btn-secondary" title="Back to Themes List"><i
-                    class="fa fa-arrow-left"></i> Back to Themes List</a>
+            <a href="{{ route('themes_list') }}" class="btn btn-sm btn-secondary" title="{{ __('dictt.backtothemeslist') }}"><i
+                    class="fa fa-arrow-left"></i> {{ __('dictt.backtothemeslist') }}</a>
             <a href="{{ route('declaration_create', $theme->id) }}" class="btn btn-sm btn-primary float-right"
-                title="Add New Level"><i class="fa fa-plus">
-                </i> Add New Declarations</a>
+                title="{{ __('dictt.addnewdeclaration') }}"><i class="fa fa-plus">
+                </i> {{ __('dictt.addnewdeclaration') }}</a>
             <table class="table table-striped table-sm">
                 <thead>
                     <tr>
-                        <th scope="col">TITLE</th>
-                        <th scope="col">CONTENTS</th>
-                        <th scope="col">IMAGE</th>
-                        <th scope="col">PDF</th>
-                        <th scope="col">VIDEO</th>
-                        <th scope="col">VOICE</th>
-                        <th scope="col">OPERATIONS</th>
+                        <th scope="col">{{ __('dictt.title') }}</th>
+                        <th scope="col">{{ __('dictt.content') }}</th>
+                        <th scope="col">{{ __('dictt.image') }}</th>
+                        <th scope="col">{{ __('dictt.pdffile') }}</th>
+                        <th scope="col">{{ __('dictt.videolink') }}</th>
+                        <th scope="col">{{ __('dictt.voicelink') }}</th>
+                        <th scope="col">{{ __('dictt.operations') }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -41,9 +41,9 @@
                             <th class="col-md-3" scope="row">{{ $declaration->voice }}</th>
                             <td>
                                 <a href="{{ route('declaration_edit', $declaration->id) }}" class="btn btn-sm btn-primary"
-                                    title="Edit Declaration"><i class="fa fa-pen w-4"></i></a>
+                                    title="{{ __('dictt.edit') }}"><i class="fa fa-pen w-4"></i></a>
                                 <a href="{{ route('declaration_destroy', $declaration->id) }}" class="btn btn-sm btn-danger"
-                                    title="Delete Declaration"><i class="fa fa-trash w-4"></i></a>
+                                    title="{{ __('dictt.delete') }}"><i class="fa fa-trash w-4"></i></a>
                             </td>
                         </tr>
                     @endforeach

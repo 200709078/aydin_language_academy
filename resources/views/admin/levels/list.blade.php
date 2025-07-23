@@ -7,7 +7,7 @@
             <table class="table table-striped table-sm">
                 <thead>
                     <tr>
-                        <th scope="col">{{ __('dictt.levels') }}</th>
+                        <th scope="col">{{ __('dictt.levelname') }}</th>
                         <th scope="col">{{ __('dictt.operations') }}</th>
                     </tr>
                 </thead>
