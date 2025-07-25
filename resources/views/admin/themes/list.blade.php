@@ -2,7 +2,7 @@
     <x-slot name="header">{{ __('dictt.themes') }}</x-slot>
     <div class="card">
         <div class="card-body">
-            <a href="{{ route('theme_create') }}" class="btn btn-sm btn-primary float-right" title="{{ __('dictt.addnewtheme') }}">
+            <a href="{{ route('theme_create') }}" class="btn btn-sm btn-primary float-right">
                 <i class="fa fa-plus"></i> {{ __('dictt.addnewtheme') }}</a>
             <table class="table table-striped table-sm">
                 <thead>

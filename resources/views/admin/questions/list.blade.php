@@ -1,25 +1,25 @@
 <x-app-layout>
-    <x-slot name="header">QUESTIONS LIST OF {{ $exercise->title }} EXERCISES</x-slot>
+    <x-slot name="header">{{ __('dictt.questionslist') }} - {{ $exercise->title }} </x-slot>
     <div class="card">
         <div class="card-body">
             <h5 class="card-title">
-                <a href="{{ route('exercises_list', $exercise->theme_id) }}" class="btn btn-sm btn-secondary"
-                    title="Back to Exercises List"><i class="fa fa-arrow-left"></i> Back to Exercises List</a>
-                <a href="{{ route('question_create', $exercise->id) }}" class="btn btn-sm btn-primary float-right"
-                    title="Add Question"><i class="fa fa-plus"></i> Add New Question</a>
+                <a href="{{ route('exercises_list', $exercise->theme_id) }}" class="btn btn-sm btn-secondary">
+                    <i class="fa fa-arrow-left"></i> {{ __('dictt.backtoexerciseslist') }}</a>
+                <a href="{{ route('question_create', $exercise->id) }}" class="btn btn-sm btn-primary float-right">
+                    <i class="fa fa-plus"></i> {{ __('dictt.addnewquestion') }}</a>
             </h5>
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th scope="col">QUESTIONS</th>
-                        <th scope="col">PHOTO</th>
-                        <th scope="col">ANSWER 1</th>
-                        <th scope="col">ANSWER 2</th>
-                        <th scope="col">ANSWER 3</th>
-                        <th scope="col">ANSWER 4</th>
-                        <th scope="col">ANSWER 5</th>
-                        <th scope="col">CORRECT ANSWER</th>
-                        <th scope="col">OPERATIONS</th>
+                        <th scope="col">{{ __('dictt.questions') }}</th>
+                        <th scope="col">{{ __('dictt.image') }}</th>
+                        <th scope="col">{{ __('dictt.answer') }} 1</th>
+                        <th scope="col">{{ __('dictt.answer') }} 2</th>
+                        <th scope="col">{{ __('dictt.answer') }} 3</th>
+                        <th scope="col">{{ __('dictt.answer') }} 4</th>
+                        <th scope="col">{{ __('dictt.answer') }} 5</th>
+                        <th scope="col">{{ __('dictt.correctanswer') }}</th>
+                        <th scope="col">{{ __('dictt.operations') }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -45,10 +45,10 @@
                             <td>{{ $question->answer5 }}</td>
                             <td>{{ $question->correct_answer }}</td>
                             <td>
-                                <a href="{{ route('question_edit',$question->id) }}" class="btn btn-sm btn-primary" title="Edit Question"><i
+                                <a href="{{ route('question_edit',$question->id) }}" class="btn btn-sm btn-primary" title="{{ __('dictt.edit') }}"><i
                                         class="fa fa-pen"></i></a>
                                 <a href="{{ route('question_destroy', [$exercise->id, $question->id]) }}"
-                                    class="btn btn-sm btn-danger" title="Delete Question"><i class="fa fa-trash"></i></a>
+                                    class="btn btn-sm btn-danger" title="{{ __('dictt.delete') }}"><i class="fa fa-trash"></i></a>
                             </td>
                         </tr>
                     @endforeach

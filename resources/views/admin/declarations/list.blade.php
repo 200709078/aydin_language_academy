@@ -2,11 +2,10 @@
     <x-slot name="header">{{ __('dictt.declarations') }} - {{ Str::limit($theme->name, 20) }}</x-slot>
     <div class="card">
         <div class="card-body">
-            <a href="{{ route('themes_list') }}" class="btn btn-sm btn-secondary" title="{{ __('dictt.backtothemeslist') }}"><i
+            <a href="{{ route('themes_list') }}" class="btn btn-sm btn-secondary"><i
                     class="fa fa-arrow-left"></i> {{ __('dictt.backtothemeslist') }}</a>
-            <a href="{{ route('declaration_create', $theme->id) }}" class="btn btn-sm btn-primary float-right"
-                title="{{ __('dictt.addnewdeclaration') }}"><i class="fa fa-plus">
-                </i> {{ __('dictt.addnewdeclaration') }}</a>
+            <a href="{{ route('declaration_create', $theme->id) }}" class="btn btn-sm btn-primary float-right">
+                <i class="fa fa-plus"></i> {{ __('dictt.addnewdeclaration') }}</a>
             <table class="table table-striped table-sm">
                 <thead>
                     <tr>

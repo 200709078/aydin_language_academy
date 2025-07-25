@@ -17,7 +17,7 @@
       </div>
             <div class="col-lg-3 col-md-6">
         <h5 class="text-light mb-4">{{ __('dictt.address') }} - 2</h5>
-        <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>Atatürk Mahallesi Postane Karşısı No:39-A
+        <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>Atatürk Mahallesi Eski Postane Karşısı No:10
           Ortaca/Muğla</p>
         <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>Ortaca: (546) 828 4884</p>
         <p class="mb-2"><i class="fa fa-envelope me-3"></i>learnenglishwithala@gmail.com</p>
