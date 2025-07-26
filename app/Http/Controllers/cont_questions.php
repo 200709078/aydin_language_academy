@@ -3,10 +3,9 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\model_exercises;
 use App\Models\model_questions;
-use App\Http\Requests\QuestionCreateRequest;
-use App\Http\Requests\QuestionUpdateRequest;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Lang;
+
 class cont_questions extends Controller
 {
     public function index($id)
@@ -38,7 +37,7 @@ class cont_questions extends Controller
             'answer5' => $request->answer5,
             'correct_answer' => $request->correct_answer
         ]);
-        return redirect()->route('questions_list', $exercises_id)->with('success', 'QUESTION ADD SUCCESSFULLY');
+        return redirect()->route('questions_list', $exercises_id)->with('success', Lang::get('dictt.questionaddsuccess'));
     }
     public function show(string $id)
     {
@@ -91,11 +90,11 @@ class cont_questions extends Controller
             'correct_answer' => $request->correct_answer
         ]);
         $question = model_questions::find($question_id);
-        return redirect()->route('questions_list', $question->exercises_id)->with('success', 'EXERCISES UPDATE SUCCESSFULLY...');
+        return redirect()->route('questions_list', $question->exercises_id)->with('success', Lang::get('dictt.questionupdatesuccess'));
     }
     public function destroy(string $exercise_id, string $question_id)
     {
         model_exercises::find($exercise_id)->questions()->whereId($question_id)->delete();
-        return redirect()->route('questions_list', $exercise_id)->with('success', 'QUESTION DELETE SUCCESSFULLY...');
+        return redirect()->route('questions_list', $exercise_id)->with('success', Lang::get('dictt.questiondeletesuccess'));
     }
 }

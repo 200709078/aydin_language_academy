@@ -7,11 +7,11 @@ use App\Models\model_declarations;
 use App\Models\model_exercises;
 use App\Models\model_levels;
 use App\Models\model_messages;
-use App\Models\model_questions;
 use App\Models\model_sub_levels;
 use App\Models\model_themes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Lang;
 
 class cont_user_main extends Controller
 {
@@ -24,7 +24,7 @@ class cont_user_main extends Controller
     }
     public function theme_detail($theme_id)
     {
-        $theme = model_themes::whereId($theme_id)->first() ?? abort(404, "THEME NOT FOUND.");
+        $theme = model_themes::whereId($theme_id)->first() ?? abort(404, Lang::get('dictt.themenotfound'));
         return view("front.theme_detail", compact('theme'));
     }
     public function index()
@@ -65,21 +65,21 @@ class cont_user_main extends Controller
             $message->subject($request->subject);
         });
 
-        return redirect('contact')->with('success', 'THANKS. YOUR MESSAGE SENDED...');
+        return redirect('contact')->with('success', Lang::get('dictt.messagesended'));
     }
 
     public function tab1($theme_id)
     {
         $declarations = model_declarations::where('theme_id', '=', $theme_id)->paginate(1) ?? abort(404, 'DECLARATION NOT FOUND');
         $exercises = model_exercises::where('theme_id', '=', $theme_id)->with('questions')->paginate(1) ?? abort(404, 'EXERCISE NOT FOUND');
-        $themes = model_themes::whereId($theme_id)->with(['levels', 'sub_levels'])->get() ?? abort(404, 'THEME NOT FOUND');
+        $themes = model_themes::whereId($theme_id)->with(['levels', 'sub_levels'])->get() ?? abort(404, Lang::get('dictt.themenotfound'));
         return view('front.theme_detail', compact(['declarations', 'exercises', 'themes']));
     }
     public function tab2($theme_id)
     {
         $declarations = model_declarations::where('theme_id', '=', $theme_id)->paginate(1) ?? abort(404, 'DECLARATION NOT FOUND');
         $exercises = model_exercises::where('theme_id', '=', $theme_id)->with('questions')->paginate(1) ?? abort(404, 'EXERCISE NOT FOUND');
-        $themes = model_themes::whereId($theme_id)->with(['levels', 'sub_levels'])->get() ?? abort(404, 'THEME NOT FOUND');
+        $themes = model_themes::whereId($theme_id)->with(['levels', 'sub_levels'])->get() ?? abort(404, Lang::get('dictt.themenotfound'));
         return view('front.theme_detail', compact(['declarations', 'exercises', 'themes']));
     }
 
@@ -117,9 +117,9 @@ class cont_user_main extends Controller
         //$declarations = model_declarations::where('theme_id', '=', $theme_id)->get() ?? abort(404, 'THEME NOT FOUND');
         //$exercises = model_exercises::where('theme_id', '=', $theme_id)->with('questions')->get() ?? abort(404, 'THEME NOT FOUND');
         //return view('front.theme_detail', compact(['declarations', 'exercises', 'theme_id', 'request']));
-        $exercises = model_exercises::with('questions')->whereId($theme_id)->first() ?? abort(404, 'EXERCISES NOT FOUND.');
+        $exercises = model_exercises::with('questions')->whereId($theme_id)->first() ?? abort(404, Lang::get('dictt.exercisesnotfound'));
         //return $exercises;
-        return 'COMING SOON';
+        return Lang::get('dictt.commingsoon');
         //return redirect($request->session()->previousUrl());
     }
 
@@ -177,7 +177,7 @@ class cont_user_main extends Controller
 
     public function exercises_join($slug)
     {
-        $exercises = model_exercises::whereSlug($slug)->with('questions.my_answer', 'my_result')->first() ?? abort(404, 'EXERCISES NOT FOUND.');
+        $exercises = model_exercises::whereSlug($slug)->with('questions.my_answer', 'my_result')->first() ?? abort(404, Lang::get('dictt.exercisesnotfound'));
         if ($exercises->my_result != null) {
             return view('exercises_result', compact('exercises'));
         }
@@ -185,7 +185,7 @@ class cont_user_main extends Controller
     }
     public function exercises_detail($slug)
     {
-        $exercises = model_exercises::whereSlug($slug)->with('my_result', 'topTen.user')->withCount('questions')->first() ?? abort(404, "EXERCISES NOT FOUND.");
+        $exercises = model_exercises::whereSlug($slug)->with('my_result', 'topTen.user')->withCount('questions')->first() ?? abort(404, Lang::get('dictt.exercisesnotfound'));
         return view("exercises_detail", compact('exercises'));
     }
 

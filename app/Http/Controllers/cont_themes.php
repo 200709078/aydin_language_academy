@@ -3,12 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ThemeRequest;
 use Illuminate\Http\Request;
 use App\Models\model_themes;
 use App\Models\model_levels;
 use App\Models\model_sub_levels;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Lang;
 
 class cont_themes extends Controller
 {
@@ -45,7 +45,7 @@ class cont_themes extends Controller
             'image' => $fileName,
         ]);
 
-        return redirect()->route('themes_list')->with('success', 'THEME ADD SUCCESSFULLY...');
+        return redirect()->route('themes_list')->with('success', Lang::get('dictt.themeaddsuccess'));
     }
 
     public function show(string $id)
@@ -75,12 +75,12 @@ class cont_themes extends Controller
             'slug' => Str::slug($request->name),
             'image' => $imageFileName
         ]);
-        return redirect()->route('themes_list')->with('success', 'THEME UPDATE SUCCESSFULLY...');
+        return redirect()->route('themes_list')->with('success', Lang::get('dictt.themeupdatesuccess'));
     }
 
     public function destroy(string $theme_id)
     {
         model_themes::find($theme_id)->whereId($theme_id)->delete();
-        return redirect()->back()->with('success', 'THEME DELETE SUCCESSFULLY...');
+        return redirect()->back()->with('success', Lang::get('dictt.themedeletesuccess'));
     }
 }

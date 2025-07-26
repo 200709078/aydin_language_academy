@@ -11,25 +11,24 @@
                             {{ strtoupper($themes->first()->sub_levels->name)}} <i class="bi bi-arrow-right"></i>
                             {{ strtoupper(Str::limit($themes->first()->name, 20))}}
                         @if (Request::segment(1) == 'tab1')
-                                    <i class="bi bi-arrow-right"></i> ALL DECLARATIONS
+                                    <i class="bi bi-arrow-right"></i> {{strtoupper( __('dictt.declarations')) }}
                     </h4>
                         @endif
 
                         @if (Request::segment(1) == 'tab2')
-                        <i class="bi bi-arrow-right"></i> ALL EXERCISES
+                        <i class="bi bi-arrow-right"></i> {{strtoupper( __('dictt.exercises')) }}
                     </h4>
                         @endif
 
-                
             </div>
             <ul class="nav nav-tabs" role="tablist">
                 <li class="nav-item">
                     <a class="nav-link {{ Request::segment(1) === 'tab1' ? 'active' : null }}" data-toggle="tab"
-                        href="{{route('tab1', $themes->first()->id) }}" role="tab">DECLARATIONS</a>
+                        href="{{route('tab1', $themes->first()->id) }}" role="tab">{{strtoupper( __('dictt.declarations')) }}</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ Request::segment(1) === 'tab2' ? 'active' : null }}" data-toggle="tab"
-                        href="{{route('tab2', $themes->first()->id)}}" role="tab">EXECISES</a>
+                        href="{{route('tab2', $themes->first()->id)}}" role="tab">{{strtoupper( __('dictt.exercises')) }}</a>
                 </li>
             </ul>
             <!-- Tab panes -->
@@ -60,17 +59,17 @@
                                     @if ($declaration->video)
                                         <a href="{{$declaration->video}}" class="btn btn-primary" target="_blank"><i
                                                 class="fab fa-youtube"></i>
-                                            Video</a>
+                                            {{__('dictt.video') }}</a>
                                     @endif
                                     @if ($declaration->voice)
                                         <a href="{{$declaration->voice}}" class="btn btn-primary" target="_blank"><i
                                                 class="fab fa-youtube"></i>
-                                            Voice</a>
+                                            {{ __('dictt.voice') }}</a>
                                     @endif
                                     @if ($declaration->answerkey)
                                         <a href="{{asset('pdfs/' . $declaration->answerkey) }}" class="btn btn-primary"
                                             target="_blank"><i class="fab fa-adobe"></i>
-                                            Answer Key</a>
+                                            {{ __('dictt.answerkey') }}</a>
                                     @endif
                                 </div>
                                 <div class="card-footer text-muted">
@@ -95,12 +94,12 @@
                                     @if ($exercise->video)
                                         <a href="{{$exercise->video}}" class="btn btn-primary" target="_blank"><i
                                                 class="fab fa-youtube"></i>
-                                            Video</a>
+                                            {{ __('dictt.video') }}</a>
                                     @endif
                                     @if ($exercise->voice)
                                         <a href="{{$exercise->voice}}" class="btn btn-primary" target="_blank"><i
                                                 class="fab fa-youtube"></i>
-                                            Voice</a>
+                                            {{ __('dictt.voice') }}</a>
                                     @endif
                                     <form method="POST" action="{{ route('exercises.result', $exercise->id) }}">
                                         @csrf
@@ -147,8 +146,7 @@
                                             </div>
                                             <hr>
                                         @endforeach
-                                        <button type="SUBMIT" class="btn btn-success btn-sm btn-block" style="width: 100%;">Check
-                                            Exercises</button>
+                                        <button type="SUBMIT" class="btn btn-success btn-sm btn-block" style="width: 100%;">{{ __('dictt.check') }}</button>
                                     </form>
                                 </div>
                             </div>

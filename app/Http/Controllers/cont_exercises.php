@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ExercisesUpdateRequest;
 use App\Models\model_exercises;
 use Illuminate\Http\Request;
 use App\Models\model_themes;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Lang;
 
 class cont_exercises extends Controller
 {
@@ -50,7 +50,7 @@ class cont_exercises extends Controller
             'voice' => $request->voice
 
         ]);
-        return redirect()->route('exercises_list', $theme_id)->with('success', 'EXERCISES ADD SUCCESSFULLY...'); 
+        return redirect()->route('exercises_list', $theme_id)->with('success', Lang::get('dictt.exercisesaddsuccess')); 
     }
 
     public function show(string $id)
@@ -82,12 +82,12 @@ class cont_exercises extends Controller
             'video' => $request->video,
             'voice' => $request->voice
         ]);
-        return redirect()->route('exercises_list', $exercise->theme_id)->with('success', 'EXERCISES ADD SUCCESSFULLY...');
+        return redirect()->route('exercises_list', $exercise->theme_id)->with('success', Lang::get('dictt.exercisesupdatesuccess'));
     }
 
     public function destroy(string $id)
     {
         $exercises = model_exercises::find($id)->delete();
-        return redirect()->back()->with('success', 'EXERCISES DELETE SUCCESSFULLY...');
+        return redirect()->back()->with('success', Lang::get('dictt.exercisesdeletesuccess'));
     }
 }

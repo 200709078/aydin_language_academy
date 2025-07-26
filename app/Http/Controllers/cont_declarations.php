@@ -7,6 +7,7 @@ use App\Models\model_declarations;
 use App\Models\model_themes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Lang;
 
 class cont_declarations extends Controller
 {
@@ -44,7 +45,7 @@ class cont_declarations extends Controller
             'video' => $request->video,
             'voice' => $request->voice
         ]);
-        return redirect()->route('declarations_list', $theme_id)->with('success', 'DECLARATIONS ADD SUCCESSFULLY...');
+        return redirect()->route('declarations_list', $theme_id)->with('success', Lang::get('dictt.declarationaddsuccess'));
     }
 
     public function show(string $id)
@@ -82,12 +83,12 @@ class cont_declarations extends Controller
             'video' => $request->video,
             'voice' => $request->voice
         ]);
-        return redirect()->route('declarations_list', $declaration->theme_id)->with('success', 'DECLARATIONS ADD SUCCESSFULLY...');
+        return redirect()->route('declarations_list', $declaration->theme_id)->with('success', Lang::get('dictt.declarationupdatesuccess'));
     }
 
     public function destroy(string $declaration_id)
     {
         model_declarations::find($declaration_id)->whereId($declaration_id)->delete();
-        return redirect()->back()->with('success', 'DECLARATION DELETE SUCCESSFULLY...');
+        return redirect()->back()->with('success', Lang::get('dictt.declarationdeletesuccess'));
     }
 }
