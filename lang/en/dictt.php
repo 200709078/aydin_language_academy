@@ -136,4 +136,7 @@ return [
     'maxcharacter_name'=>'The name field must be at most 200 characters.',
     'required_name'=>'The name field is required.',
     /* VALIDATIONS END */
+    'confirmsuredelete' => "Are you sure to delete?",
+    'leveldeleted' => "Level Deleted",
+    'subleveldeleted' => "Sub Level Deleted",
 ];

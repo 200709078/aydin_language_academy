@@ -16,12 +16,24 @@
                         <tr class="align-middle">
                             <th class="col-md-3" scope="row">{{ $level->name }}</th>
                             <td>
-                                <a href="{{ route('level_edit',$level->id) }}" class="btn btn-sm btn-primary"
+                                <a href="{{ route('level_edit', $level->id) }}" class="btn btn-sm btn-primary"
                                     title="{{ __('dictt.edit') }}">
                                     <i class="fa fa-pen w-4"></i></a>
-                                <a href="{{ route('level_destroy', $level->id) }}" class="btn btn-sm btn-danger"
-                                    title="{{ __('dictt.delete') }}">
-                                    <i class="fa fa-trash w-4"></i></a>
+
+                                <!--                                 <a href="{{ route('level_destroy', $level->id) }}" class="btn btn-sm btn-danger"
+                                        title="{{ __('dictt.delete') }}">
+                                        <i class="fa fa-trash w-4"></i></a> -->
+
+                                <form method="POST" action="{{ route('level_destroy', $level->id) }}" style="display:inline"
+                                    onsubmit="return confirm('{{ __('dictt.confirmsuredelete') }}');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-danger" title="{{ __('dictt.delete') }}">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </form>
+
+
                             </td>
                         </tr>
                     @endforeach

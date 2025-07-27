@@ -136,4 +136,7 @@ return [
     'maxcharacter_name'=>'Ad alanı en fazla 200 karakter olmalıdır.',
     'required_name'=>'Ad alanı zorunludur.',
     /* VALIDATIONS END */
+    'confirmsuredelete' => "Silmek istediğinize emin misiniz?",
+    'leveldeleted' => "Seviye Silindi!!!",
+    'subleveldeleted' => "Alt Seviye Silindi!!!",
 ];

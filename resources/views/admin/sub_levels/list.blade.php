@@ -2,8 +2,8 @@
     <x-slot name="header">{{ __('dictt.sublevels') }}</x-slot>
     <div class="card">
         <div class="card-body">
-        <a href="{{ route('sub_level_create') }}" class="btn btn-sm btn-primary float-right">
-            <i class="fa fa-plus"></i> {{ __('dictt.addnewsublevel') }}</a>
+            <a href="{{ route('sub_level_create') }}" class="btn btn-sm btn-primary float-right">
+                <i class="fa fa-plus"></i> {{ __('dictt.addnewsublevel') }}</a>
             <table class="table table-striped table-sm">
                 <thead>
                     <tr>
@@ -16,12 +16,23 @@
                         <tr class="align-middle">
                             <th class="col-md-3" scope="row">{{ $sub_level->name }}</th>
                             <td>
-                                <a href="{{ route('sub_level_edit',$sub_level->id) }}" class="btn btn-sm btn-primary"
-                                    title="{{ __('dictt.edit') }}"><i
-                                        class="fa fa-pen w-4"></i></a>
-                                <a href="{{ route('sub_level_destroy',$sub_level->id) }}" class="btn btn-sm btn-danger"
-                                    title="{{ __('dictt.delete') }}"><i
-                                        class="fa fa-trash w-4"></i></a>
+                                <a href="{{ route('sub_level_edit', $sub_level->id) }}" class="btn btn-sm btn-primary"
+                                    title="{{ __('dictt.edit') }}"><i class="fa fa-pen w-4"></i></a>
+
+                                <!--                                 <a href="{{ route('sub_level_destroy',$sub_level->id) }}" class="btn btn-sm btn-danger"
+                                        title="{{ __('dictt.delete') }}"><i
+                                            class="fa fa-trash w-4"></i></a> -->
+
+                                <form method="POST" action="{{ route('sub_level_destroy', $sub_level->id) }}" style="display:inline"
+                                    onsubmit="return confirm('{{ __('dictt.confirmsuredelete') }}');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-danger" title="{{ __('dictt.delete') }}">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </form>
+
+                                
                             </td>
                         </tr>
                     @endforeach

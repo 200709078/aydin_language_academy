@@ -29,8 +29,12 @@ Route::group(['middleware' => ['auth', isAdmin_middle::class], 'prefix' => 'admi
     Route::get('exercise/{exercise_id}', [cont_exercises::class, 'destroy'])->whereNumber('exercise_id')->name('exercises_destroy');
     Route::get('declaration/{declaration_id}', [cont_declarations::class, 'destroy'])->whereNumber('declaration_id')->name('declaration_destroy');
     Route::get('theme/{theme_id}', [cont_themes::class, 'destroy'])->whereNumber('theme_id')->name('theme_destroy');
-    Route::get('level/{level_id}', [cont_levels::class, 'destroy'])->whereNumber('level_id')->name('level_destroy');
-    Route::get('sub_level/{sub_level_id}', [cont_sub_levels::class, 'destroy'])->whereNumber('sub_level_id')->name('sub_level_destroy');
+    
+    // Route::get('level/{level_id}', [cont_levels::class, 'destroy'])->whereNumber('level_id')->name('level_destroy');
+    Route::delete('level/{level_id}', [cont_levels::class, 'destroy'])->name('level_destroy');
+    
+    //Route::get('sub_level/{sub_level_id}', [cont_sub_levels::class, 'destroy'])->whereNumber('sub_level_id')->name('sub_level_destroy');
+    Route::delete('sub_level/{sub_level_id}', [cont_sub_levels::class, 'destroy'])->name('sub_level_destroy');
 
     Route::get('level/create', [cont_levels::class,'create'])->name('level_create');
     Route::get('sub_level/create', [cont_sub_levels::class,'create'])->name('sub_level_create');
