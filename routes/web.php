@@ -26,29 +26,26 @@ Route::group(['middleware' => ['auth', isAdmin_middle::class], 'prefix' => 'admi
     Route::get('exercise/{exercise_id}/questions_list', [cont_user_main::class, 'questions_list'])->name('questions_list');
 
     Route::get('exercise/{exercise_id}/question/{question_id}', [cont_questions::class, 'destroy'])->whereNumber('question_id')->name('question_destroy');
-    Route::get('exercise/{exercise_id}', [cont_exercises::class, 'destroy'])->whereNumber('exercise_id')->name('exercises_destroy');
-    Route::get('declaration/{declaration_id}', [cont_declarations::class, 'destroy'])->whereNumber('declaration_id')->name('declaration_destroy');
-    Route::get('theme/{theme_id}', [cont_themes::class, 'destroy'])->whereNumber('theme_id')->name('theme_destroy');
-    
-    // Route::get('level/{level_id}', [cont_levels::class, 'destroy'])->whereNumber('level_id')->name('level_destroy');
+
     Route::delete('level/{level_id}', [cont_levels::class, 'destroy'])->name('level_destroy');
-    
-    //Route::get('sub_level/{sub_level_id}', [cont_sub_levels::class, 'destroy'])->whereNumber('sub_level_id')->name('sub_level_destroy');
     Route::delete('sub_level/{sub_level_id}', [cont_sub_levels::class, 'destroy'])->name('sub_level_destroy');
+    Route::delete('theme/{theme_id}', [cont_themes::class, 'destroy'])->name('theme_destroy');
+    Route::delete('declaration/{declaration_id}', [cont_declarations::class, 'destroy'])->name('declaration_destroy');
+    Route::delete('exercise/{exercise_id}', [cont_exercises::class, 'destroy'])->name('exercise_destroy');
 
     Route::get('level/create', [cont_levels::class,'create'])->name('level_create');
     Route::get('sub_level/create', [cont_sub_levels::class,'create'])->name('sub_level_create');
     Route::get('theme/create', [cont_themes::class,'create'])->name('theme_create');
     Route::get('declaration/{theme_id}/create', [cont_declarations::class,'create'])->whereNumber('theme_id')->name('declaration_create');
     Route::get('exercise/{theme_id}/create', [cont_exercises::class,'create'])->whereNumber('theme_id')->name('exercise_create');
-    Route::get('question/{exercises_id}/create', [cont_questions::class,'create'])->whereNumber('exercises_id')->name('question_create');
+    Route::get('question/{exercise_id}/create', [cont_questions::class,'create'])->whereNumber('exercise_id')->name('question_create');
 
     Route::post('level', [cont_levels::class, 'store'])->name('level_store');
     Route::post('sub_level', [cont_sub_levels::class, 'store'])->name('sub_level_store');
     Route::post('theme', [cont_themes::class, 'store'])->name('theme_store');
     Route::post('declaration/{theme_id}/store', [cont_declarations::class, 'store'])->whereNumber('theme_id')->name('declaration_store');
     Route::post('exercise/{theme_id}/store', [cont_exercises::class, 'store'])->whereNumber('theme_id')->name('exercise_store');
-    Route::post('question/{exercises_id}/store', [cont_questions::class, 'store'])->whereNumber('exercises_id')->name('question_store');
+    Route::post('question/{exercise_id}/store', [cont_questions::class, 'store'])->whereNumber('exercise_id')->name('question_store');
     
     Route::get('level/{level_id}/edit', [cont_levels::class,'edit'])->name('level_edit');
     Route::get('sub_level/{sub_level_id}/edit', [cont_sub_levels::class,'edit'])->name('sub_level_edit');

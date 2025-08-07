@@ -11,7 +11,7 @@ class model_questions extends Model
     public $table = "questions";
     
     protected $fillable = [
-        'exercises_id',
+        'exercise_id',
         'question',
         'image',
         'answer1',

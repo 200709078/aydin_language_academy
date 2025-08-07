@@ -36,7 +36,7 @@ return new class extends Migration {
         Schema::create('exercises', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('theme_id');
-            $table->string('title')->nullable();
+            $table->string('title');
             $table->string('slug')->unique();
             $table->longText('image')->nullable();
             $table->longText('voice')->nullable();
@@ -48,7 +48,7 @@ return new class extends Migration {
 
         Schema::create('questions', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('exercises_id');
+            $table->unsignedBigInteger('exercise_id');
             $table->longText('question');
             $table->longText('image')->nullable();
             $table->string('answer1');
@@ -57,7 +57,7 @@ return new class extends Migration {
             $table->string('answer4');
             $table->string('answer5');
             $table->enum('correct_answer', ['answer1', 'answer2', 'answer3', 'answer4', 'answer5']);
-            $table->foreign('exercises_id')->references('id')->on('exercises')->onDelete('cascade');
+            $table->foreign('exercise_id')->references('id')->on('exercises')->onDelete('cascade');
             $table->timestamps();
         });
 
@@ -66,7 +66,7 @@ return new class extends Migration {
             $table->unsignedBigInteger('theme_id');
             $table->string('title');
             $table->string('slug')->unique();
-            $table->longText('contents')->nullable();
+            $table->longText('context');
             $table->longText('image')->nullable();
             $table->longText('pdf')->nullable();
             $table->longText('video')->nullable();
@@ -88,13 +88,13 @@ return new class extends Migration {
         Schema::create('user_results', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('exercises_id');
+            $table->unsignedBigInteger('exercise_id');
             $table->integer('point');
             $table->integer('correct_number');
             $table->integer('wrong_number');
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('exercises_id')->references('id')->on('exercises')->onDelete('cascade');
+            $table->foreign('exercise_id')->references('id')->on('exercises')->onDelete('cascade');
         }); */
 
         Schema::create('messages', function (Blueprint $table) {

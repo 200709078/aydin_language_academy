@@ -26,7 +26,7 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>{{ __('dictt.title') }}</label>
+                    <label>{{ __('dictt.themename') }}</label>
                     <input type="text" name="name" class="form-control" value="{{ $theme->name }}">
                 </div>
                 <div class="form-group">

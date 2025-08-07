@@ -23,18 +23,23 @@ class cont_levels extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|min:3|max:200|'
+            'name' => 'required|min:3|max:255|'
         ], [
             'name.required' => Lang::get('dictt.required_name'),
             'name.min' => Lang::get('dictt.mincharacter_name'),
             'name.max' => Lang::get('dictt.maxcharacter_name'),
         ]);
 
-        model_levels::create([
+        $level = model_levels::create([
             'name' => Str::upper($request->name),
             'slug' => Str::slug($request->name)
         ]);
-        return redirect()->route('levels_list')->with('success', Lang::get('dictt.leveladdsuccess'));
+
+        $modalSuccessTitle = __('dictt.savesuccesstitle', ['type' => __('dictt.level')]);
+        $modalSuccessContent = __('dictt.savesuccesscontent', ['type' => Str::lower(__('dictt.level')), 'name' => $level->name]);
+        return redirect()->route('levels_list')
+            ->with('modalSuccessTitle', $modalSuccessTitle)
+            ->with('modalSuccessContent', $modalSuccessContent);
     }
 
     public function show(string $id)
@@ -51,18 +56,24 @@ class cont_levels extends Controller
     public function update(Request $request, string $level_id)
     {
         $request->validate([
-            'name' => 'required|min:3|max:200|'
+            'name' => 'required|min:3|max:255|'
         ], [
             'name.required' => Lang::get('dictt.required_name'),
             'name.min' => Lang::get('dictt.mincharacter_name'),
             'name.max' => Lang::get('dictt.maxcharacter_name'),
         ]);
 
-        model_levels::where('id', $level_id)->update([
-            'name' => Str::upper($request->name),
-            'slug' => Str::slug($request->name)
-        ]);
-        return redirect()->route('levels_list')->with('success', Lang::get('dictt.levelupdatesuccess'));
+        $level = model_levels::find($level_id);
+
+        $level->name = Str::upper($request->name);
+        $level->slug = Str::slug($request->name);
+        $level->save();
+        
+        $modalSuccessTitle = __('dictt.updatesuccesstitle', ['type' => __('dictt.level')]);
+        $modalSuccessContent = __('dictt.updatesuccesscontent', ['type' => Str::lower(__('dictt.level')), 'name' => $level->name]);
+        return redirect()->route('levels_list')
+            ->with('modalSuccessTitle', $modalSuccessTitle)
+            ->with('modalSuccessContent', $modalSuccessContent);
     }
 
     public function destroy(string $level_id)
@@ -70,8 +81,5 @@ class cont_levels extends Controller
         model_levels::findOrFail($level_id)->delete();
         return redirect()->route('levels_list')
             ->with('success', Lang::get('dictt.leveldeletesuccess'));
-
-        /*         model_levels::find($level_id)->whereId($level_id)->delete();
-                return redirect()->back()->with('success', Lang::get('dictt.leveldeletesuccess')); */
     }
 }

@@ -18,7 +18,7 @@ class model_resultsFactory extends Factory
     {
         return [
             'user_id'=>rand(2,10),
-            'exercises_id'=>rand(1,100),
+            'exercise_id'=>rand(1,100),
             'point'=>rand(1,100),
             'correct_number'=>rand(1,20),
             'wrong_number'=>rand(1,10)

@@ -46,11 +46,11 @@ class model_exercises extends Model
     } 
     public function questions()
     {
-        return $this->hasMany(model_questions::class, 'exercises_id');
+        return $this->hasMany(model_questions::class, 'exercise_id');
     }
 /*     public function results()
     {
-        return $this->hasMany(model_results::class, 'exercises_id');
+        return $this->hasMany(model_results::class, 'exercise_id');
     }
     public function topTen()
     {

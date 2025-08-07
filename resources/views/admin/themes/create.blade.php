@@ -9,24 +9,24 @@
             <form method="POST" action="{{ route('theme_store')}}" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group">
-                        <label>{{ __('dictt.level') }}</label>
-                        <select name="level_id" class="form-control">
-                            @foreach ($levels as $level )
+                    <label>{{ __('dictt.levelname') }}</label>
+                    <select name="level_id" class="form-control">
+                        @foreach ($levels as $level)
                             <option value="{{ $level->id}}">{{ $level->name }}</option>
-                            @endforeach
-                        </select>
+                        @endforeach
+                    </select>
                 </div>
                 <div class="form-group">
-                        <label>{{ __('dictt.sublevel') }}</label>
-                        <select name="sub_level_id" class="form-control">
-                            @foreach ($sub_levels as $sub_level )
+                    <label>{{ __('dictt.sublevelname') }}</label>
+                    <select name="sub_level_id" class="form-control">
+                        @foreach ($sub_levels as $sub_level)
                             <option value="{{ $sub_level->id}}">{{ $sub_level->name }}</option>
-                            @endforeach
-                        </select>
+                        @endforeach
+                    </select>
                 </div>
                 <div class="form-group">
-                    <label>{{ __('dictt.title') }}</label>
-                    <input type="text" name="name" class="form-control">
+                    <label>{{ __('dictt.themename') }}</label>
+                    <input type="text" name="name" class="form-control" value="{{ old('name') }}">
                 </div>
                 <div class="form-group">
                     <label>{{ __('dictt.image') }}</label>

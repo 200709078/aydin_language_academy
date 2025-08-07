@@ -4,7 +4,9 @@ use App\Http\Controllers\Controller;
 use App\Models\model_exercises;
 use App\Models\model_questions;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Lang;
+
 
 class cont_questions extends Controller
 {
@@ -18,16 +20,38 @@ class cont_questions extends Controller
         $exercise = model_exercises::find($exercises_id);
         return view('admin.questions.create', compact('exercise'));
     }
-    public function store(Request $request, $exercises_id)
+    public function store(Request $request, $exercise_id)
     {
+        $request->validate([
+            'question' => 'required|min:3|',
+            'answer1' => 'required|min:3|',
+            'answer2' => 'required|min:3|',
+            'answer3' => 'required|min:3|',
+            'answer4' => 'required|min:3|',
+            'answer5' => 'required|min:3|'
+        ], [
+            'question.required' => Lang::get('dictt.required_question'),
+            'question.min' => Lang::get('dictt.mincharacter_question'),
+            'answer1.required' => Lang::get('dictt.required_answer1'),
+            'answer1.min' => Lang::get('dictt.mincharacter_answer1'),
+            'answer2.required' => Lang::get('dictt.required_answer2'),
+            'answer2.min' => Lang::get('dictt.mincharacter_answer2'),
+            'answer3.required' => Lang::get('dictt.required_answer3'),
+            'answer3.min' => Lang::get('dictt.mincharacter_answer3'),
+            'answer4.required' => Lang::get('dictt.required_answer4'),
+            'answer4.min' => Lang::get('dictt.mincharacter_answer4'),
+            'answer5.required' => Lang::get('dictt.required_answer5'),
+            'answer5.min' => Lang::get('dictt.mincharacter_answer5'),
+
+        ]);
         $imageFileName = null;
         if ($request->hasFile('image')) {
             $imageFileName = time() . '.' . $request->image->extension();
             $request->image->move(public_path('photos'), $imageFileName);
         }
 
-        model_questions::create([
-            'exercises_id' => $exercises_id,
+        $question = model_questions::create([
+            'exercise_id' => $exercise_id,
             'question' => $request->question,
             'image' => $imageFileName,
             'answer1' => $request->answer1,
@@ -37,7 +61,12 @@ class cont_questions extends Controller
             'answer5' => $request->answer5,
             'correct_answer' => $request->correct_answer
         ]);
-        return redirect()->route('questions_list', $exercises_id)->with('success', Lang::get('dictt.questionaddsuccess'));
+        $modalSuccessTitle = __('dictt.savesuccesstitle', ['type' => __('dictt.question')]);
+        $modalSuccessContent = __('dictt.savesuccesscontent', ['type' => Str::lower(__('dictt.question')), 'name' => $question->question]);
+
+        return redirect()->route('questions_list', ['exercise_id' => $exercise_id])
+            ->with('modalSuccessTitle', $modalSuccessTitle)
+            ->with('modalSuccessContent', $modalSuccessContent);
     }
     public function show(string $id)
     {
@@ -74,11 +103,39 @@ class cont_questions extends Controller
 
     public function update(Request $request, string $question_id)
     {
+        $request->validate([
+            'question' => 'required|min:3|',
+            'answer1' => 'required|min:3|',
+            'answer2' => 'required|min:3|',
+            'answer3' => 'required|min:3|',
+            'answer4' => 'required|min:3|',
+            'answer5' => 'required|min:3|'
+        ], [
+            'question.required' => Lang::get('dictt.required_question'),
+            'question.min' => Lang::get('dictt.mincharacter_question'),
+            'answer1.required' => Lang::get('dictt.required_answer1'),
+            'answer1.min' => Lang::get('dictt.mincharacter_answer1'),
+            'answer2.required' => Lang::get('dictt.required_answer2'),
+            'answer2.min' => Lang::get('dictt.mincharacter_answer2'),
+            'answer3.required' => Lang::get('dictt.required_answer3'),
+            'answer3.min' => Lang::get('dictt.mincharacter_answer3'),
+            'answer4.required' => Lang::get('dictt.required_answer4'),
+            'answer4.min' => Lang::get('dictt.mincharacter_answer4'),
+            'answer5.required' => Lang::get('dictt.required_answer5'),
+            'answer5.min' => Lang::get('dictt.mincharacter_answer5'),
+
+        ]);
         $imageFileName = null;
         if ($request->hasFile('image')) {
             $imageFileName = time() . '.' . $request->image->extension();
             $request->image->move(public_path('photos'), $imageFileName);
         }
+        $imageFileName = null;
+        if ($request->hasFile('image')) {
+            $imageFileName = time() . '.' . $request->image->extension();
+            $request->image->move(public_path('photos'), $imageFileName);
+        }
+        $question = model_questions::find($question_id);
         model_questions::where('id', $question_id)->update([
             'question' => $request->question,
             'image' => $imageFileName,
@@ -89,12 +146,17 @@ class cont_questions extends Controller
             'answer5' => $request->answer5,
             'correct_answer' => $request->correct_answer
         ]);
-        $question = model_questions::find($question_id);
-        return redirect()->route('questions_list', $question->exercises_id)->with('success', Lang::get('dictt.questionupdatesuccess'));
+        $modalSuccessTitle = __('dictt.updatesuccesstitle', ['type' => __('dictt.question')]);
+        $modalSuccessContent = __('dictt.updatesuccesscontent', ['type' => Str::lower(__('dictt.question')), 'name' => $question->question]);
+
+        return redirect()->route('questions_list', ['exercise_id' => $question->exercise_id])
+            ->with('modalSuccessTitle', $modalSuccessTitle)
+            ->with('modalSuccessContent', $modalSuccessContent);
     }
     public function destroy(string $exercise_id, string $question_id)
     {
-        model_exercises::find($exercise_id)->questions()->whereId($question_id)->delete();
-        return redirect()->route('questions_list', $exercise_id)->with('success', Lang::get('dictt.questiondeletesuccess'));
+        model_questions::findOrFail($question_id)->delete();
+        return redirect()->route('questions_list')
+            ->with('success', Lang::get('dictt.declarationdeletesuccess'));
     }
 }

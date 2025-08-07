@@ -10,7 +10,7 @@
                 @csrf
                 <div class="form-group">
                     <label>{{ __('dictt.sublevelname') }}</label>
-                    <input type="text" name="name" class="form-control">
+                    <input type="text" name="name" class="form-control" value="{{ old('name') }}">
                 </div>
                 <div class="form-group mt-2">
                     <button type="submit" class="btn btn-success btn-sm btn-block">{{ __('dictt.add') }}</button>

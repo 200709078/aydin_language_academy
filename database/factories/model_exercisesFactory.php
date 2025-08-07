@@ -22,11 +22,11 @@ class model_exercisesFactory extends Factory
         return [
             'title' => $name,
             'slug' => Str::slug($name),
-/*             'image' => rand(0, 9).'.jpg',
-            'voice'=>'https://youtu.be/mGOPSuKx8uU',
-            'video'=>'https://youtu.be/mGOPSuKx8uU',
-            'qtext' => fake()->text(600), */
-            'theme_id' => rand(1,50)
+            'image' => rand(0, 9) . '.jpg',
+            'voice' => 'https://youtu.be/mGOPSuKx8uU',
+            'video' => 'https://youtu.be/mGOPSuKx8uU',
+            'qtext' => fake()->text(600),
+            'theme_id' => rand(1, 50)
         ];
     }
 }

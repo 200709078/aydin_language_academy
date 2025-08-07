@@ -41,21 +41,30 @@
 
         <div class="py-6">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <!-- Errors Start -->
                 @if ($errors->any())
-                    <div class="alert alert-danger">
-                        @foreach ($errors->all() as $error)
-                            <li>{{$error}}</li>
-                        @endforeach
+                    <div class="relative bg-red-100 text-red-800 px-6 py-4 rounded-lg shadow mb-6 w-full max-w-full">
+                        <div
+                            class="absolute bottom-[-10px] left-10 w-0 h-0 border-l-[10px] border-l-transparent border-r-[10px] border-r-transparent border-t-[10px] border-t-red-100">
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <h2 class="text-lg font-semibold flex items-center">
+                                <i class="fas fa-times-circle mr-2"></i>
+                                {{__('dictt.errors')}}
+                            </h2>
+                            <button onclick="this.parentElement.parentElement.remove()"
+                                class="text-gray-500 hover:text-red-600 ml-4">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <div class="mt-2 text-sm">
+                            @foreach ($errors->all() as $error)
+                                <li>{{$error}}</li>
+                            @endforeach
+                        </div>
                     </div>
                 @endif
-
-                @if (session('success'))
-                    <div class="alert alert-success">
-                        <i class="fa fa-check"></i>
-                        {{session('success')}}
-                    </div>
-                @endif
-
+                <!-- Errors End -->
                 {{ $slot }}
             </div>
         </div>

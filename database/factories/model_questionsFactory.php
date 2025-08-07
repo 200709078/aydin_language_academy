@@ -27,7 +27,7 @@ class model_questionsFactory extends Factory
             'answer4' => fake()->sentence(rand(1, 3)),
             'answer5' => fake()->sentence(rand(1, 3)),
             'correct_answer' => 'answer' . rand(1, 5),
-            'exercises_id' => rand(1, 100)
+            'exercise_id' => rand(1, 100)
         ];
     }
 }

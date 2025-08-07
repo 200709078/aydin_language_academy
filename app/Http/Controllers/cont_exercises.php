@@ -35,12 +35,20 @@ class cont_exercises extends Controller
 
     public function store(Request $request, $theme_id)
     {
+        $request->validate([
+            'title' => 'required|min:3|max:200|',
+        ], [
+            'title.required' => Lang::get('dictt.required_title'),
+            'title.min' => Lang::get('dictt.mincharacter_title'),
+            'title.max' => Lang::get('dictt.maxcharacter_title')
+
+        ]);
         $imageFileName = null;
         if ($request->hasFile('image')) {
             $imageFileName = Str::slug($request->title) . '.' . $request->image->extension();
             $request->image->move(public_path('photos'), $imageFileName);
         }
-         model_exercises::create([
+        $exercise = model_exercises::create([
             'theme_id' => $theme_id,
             'title' => $request->title,
             'slug' => Str::slug($request->title),
@@ -50,13 +58,18 @@ class cont_exercises extends Controller
             'voice' => $request->voice
 
         ]);
-        return redirect()->route('exercises_list', $theme_id)->with('success', Lang::get('dictt.exercisesaddsuccess')); 
+        $modalSuccessTitle = __('dictt.savesuccesstitle', ['type' => __('dictt.exercise')]);
+        $modalSuccessContent = __('dictt.savesuccesscontent', ['type' => Str::lower(__('dictt.exercise')), 'name' => $exercise->title]);
+
+        return redirect()->route('exercises_list', ['theme_id' => $theme_id])
+            ->with('modalSuccessTitle', $modalSuccessTitle)
+            ->with('modalSuccessContent', $modalSuccessContent);
     }
 
     public function show(string $id)
     {
         $exercises = model_exercises::with('topTen.user', 'results.user')->withCount('questions')->find($id) ?? abort(404, "EXERCISES NOT FOUND.");
-        return 'GELDİM';//  view('admin.exercises.show', compact('exercises'));
+        return 'GELDİM'; //  view('admin.exercises.show', compact('exercises'));
     }
 
     public function edit(string $exercise_id)
@@ -67,6 +80,14 @@ class cont_exercises extends Controller
 
     public function update(Request $request, string $exercise_id)
     {
+        $request->validate([
+            'title' => 'required|min:3|max:200|',
+        ], [
+            'title.required' => Lang::get('dictt.required_title'),
+            'title.min' => Lang::get('dictt.mincharacter_title'),
+            'title.max' => Lang::get('dictt.maxcharacter_title')
+
+        ]);
         $imageFileName = null;
         if ($request->hasFile('image')) {
             $imageFileName = Str::slug($request->title) . '.' . $request->image->extension();
@@ -82,12 +103,23 @@ class cont_exercises extends Controller
             'video' => $request->video,
             'voice' => $request->voice
         ]);
-        return redirect()->route('exercises_list', $exercise->theme_id)->with('success', Lang::get('dictt.exercisesupdatesuccess'));
+
+        $modalSuccessTitle = __('dictt.updatesuccesstitle', ['type' => __('dictt.exercise')]);
+        $modalSuccessContent = __('dictt.updatesuccesscontent', ['type' => Str::lower(__('dictt.exercise')), 'name' => $exercise->title]);
+
+        return redirect()->route('exercises_list', ['theme_id' => $exercise->theme_id])
+            ->with('modalSuccessTitle', $modalSuccessTitle)
+            ->with('modalSuccessContent', $modalSuccessContent);
+
+
+
+        //return redirect()->route('exercises_list', $exercise->theme_id)->with('success', Lang::get('dictt.exercisesupdatesuccess'));
     }
 
-    public function destroy(string $id)
+    public function destroy(string $exercise_id)
     {
-        $exercises = model_exercises::find($id)->delete();
-        return redirect()->back()->with('success', Lang::get('dictt.exercisesdeletesuccess'));
+        model_exercises::findOrFail($exercise_id)->delete();
+        return redirect()->route('exercises_list')
+            ->with('success', Lang::get('dictt.exercisesdeletesuccess'));
     }
 }

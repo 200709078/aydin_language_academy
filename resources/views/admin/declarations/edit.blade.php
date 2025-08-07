@@ -15,7 +15,7 @@
                 </div>
                 <div class="form-group">
                     <label>{{ __('dictt.content') }}</label>
-                    <input type="text" name="contents" class="form-control" value="{{ $declaration->contents }}">
+                    <input type="text" name="context" class="form-control" value="{{ $declaration->context }}">
                 </div>
                 <div class="form-group">
                     <label>{{ __('dictt.image') }}</label>

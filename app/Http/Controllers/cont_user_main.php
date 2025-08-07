@@ -125,9 +125,6 @@ class cont_user_main extends Controller
 
     public function levels_list()
     {
-        /*         $exercises = model_exercises::withCount('questions')->paginate(5);
-                $my_results = auth()->user()->results;
-                return view("dashboard", compact('exercises', 'my_results')); */
         $levels = model_levels::orderBy('updated_at', 'desc')->get();
         return view("admin.levels.list", compact('levels'));
     }
@@ -150,7 +147,8 @@ class cont_user_main extends Controller
                 }
             ]
         )->first();
-        return view("admin.declarations.list", compact('theme'));
+
+        return view("admin.declarations.list", compact('theme_id'))->with('theme', $theme);
     }
     public function exercises_list($theme_id)
     {
@@ -161,18 +159,21 @@ class cont_user_main extends Controller
                 }
             ]
         )->first();
-        return view("admin.exercises.list", compact('theme'));
+
+        return view("admin.exercises.list", compact('theme_id'))
+            ->with('theme', $theme);
     }
     public function questions_list($exercise_id)
     {
-        $exercise = model_exercises::whereId($exercise_id)->with(
-            [
-                'questions' => function ($query) {
-                    $query->orderBy('updated_at', 'desc');
-                }
-            ]
-        )->first();
-        return view("admin.questions.list", compact('exercise'));
+
+        $exercise = model_exercises::with([
+            'questions' => function ($query) {
+                $query->orderBy('updated_at', 'desc');
+            }
+        ])->findOrFail($exercise_id);
+        $theme_id = $exercise->theme_id;
+
+        return view("admin.questions.list", compact('exercise_id', 'exercise', 'theme_id'));
     }
 
     public function exercises_join($slug)

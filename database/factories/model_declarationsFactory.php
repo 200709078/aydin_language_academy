@@ -22,7 +22,7 @@ class model_declarationsFactory extends Factory
         return [
             'title' => $title,
             'slug' => Str::slug($title),
-            'contents' => fake()->text(200),
+            'context' => fake()->text(200),
             'image' => rand(0, 9).'.jpg',
             'pdf' => 'deneme.pdf',
             'video' => 'https://youtu.be/gAHzzHD-jVA',

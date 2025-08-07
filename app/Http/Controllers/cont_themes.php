@@ -31,13 +31,21 @@ class cont_themes extends Controller
 
     public function store(Request $request)
     {
+        $request->validate([
+            'name' => 'required|min:3|max:255|'
+        ], [
+            'name.required' => Lang::get('dictt.required_name'),
+            'name.min' => Lang::get('dictt.mincharacter_name'),
+            'name.max' => Lang::get('dictt.maxcharacter_name'),
+        ]);
+
         $fileName = null;
         if ($request->hasFile('image')) {
             $fileName = Str::slug($request->name) . '.' . $request->image->extension();
             $fileNamePath = 'photos/' . $fileName;
             $request->image->move(public_path('photos'), $fileNamePath);
         }
-        model_themes::create([
+        $theme = model_themes::create([
             'level_id' => $request->level_id,
             'sub_level_id' => $request->sub_level_id,
             'name' => $request->name,
@@ -45,7 +53,11 @@ class cont_themes extends Controller
             'image' => $fileName,
         ]);
 
-        return redirect()->route('themes_list')->with('success', Lang::get('dictt.themeaddsuccess'));
+        $modalSuccessTitle = __('dictt.savesuccesstitle', ['type' => __('dictt.theme')]);
+        $modalSuccessContent = __('dictt.savesuccesscontent', ['type' => Str::lower(__('dictt.theme')), 'name' => $theme->name]);
+        return redirect()->route('themes_list')
+            ->with('modalSuccessTitle', $modalSuccessTitle)
+            ->with('modalSuccessContent', $modalSuccessContent);
     }
 
     public function show(string $id)
@@ -61,6 +73,14 @@ class cont_themes extends Controller
 
     public function update(Request $request, string $theme_id)
     {
+        $request->validate([
+            'name' => 'required|min:3|max:255|'
+        ], [
+            'name.required' => Lang::get('dictt.required_name'),
+            'name.min' => Lang::get('dictt.mincharacter_name'),
+            'name.max' => Lang::get('dictt.maxcharacter_name'),
+        ]);
+
         $imageFileName = null;
         if ($request->hasFile('image')) {
             $imageFileName = Str::slug($request->name) . '.' . $request->image->extension();
@@ -68,19 +88,26 @@ class cont_themes extends Controller
             $request->image->move(public_path('photos'), $fileNamePath);
         }
 
-        model_themes::where('id', $theme_id)->update([
-            'level_id' => $request->level_id,
-            'sub_level_id' => $request->sub_level_id,
-            'name' => ucwords(Str::lower($request->name)),
-            'slug' => Str::slug($request->name),
-            'image' => $imageFileName
-        ]);
-        return redirect()->route('themes_list')->with('success', Lang::get('dictt.themeupdatesuccess'));
+        $theme = model_themes::find($theme_id);
+
+        $theme->level_id = $request->level_id;
+        $theme->sub_level_id = $request->sub_level_id;
+        $theme->name = ucwords(Str::lower($request->name));
+        $theme->slug = Str::slug($request->name);
+        $theme->image = $imageFileName;
+        $theme->save();
+
+        $modalSuccessTitle = __('dictt.updatesuccesstitle', ['type' => __('dictt.theme')]);
+        $modalSuccessContent = __('dictt.updatesuccesscontent', ['type' => Str::lower(__('dictt.theme')), 'name' => $theme->name]);
+        return redirect()->route('themes_list')
+            ->with('modalSuccessTitle', $modalSuccessTitle)
+            ->with('modalSuccessContent', $modalSuccessContent);
     }
 
     public function destroy(string $theme_id)
     {
-        model_themes::find($theme_id)->whereId($theme_id)->delete();
-        return redirect()->back()->with('success', Lang::get('dictt.themedeletesuccess'));
+        model_themes::findOrFail($theme_id)->delete();
+        return redirect()->route('themes_list')
+            ->with('success', Lang::get('dictt.themedeletesuccess'));
     }
 }

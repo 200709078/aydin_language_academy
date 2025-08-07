@@ -10,11 +10,11 @@
                 @csrf
                 <div class="form-group">
                     <label>{{ __('dictt.title') }}</label>
-                    <input type="text" name="title" class="form-control">
+                    <input type="text" name="title" class="form-control" value="{{ old('title') }}">
                 </div>
                 <div class="form-group">
                     <label>{{ __('dictt.content') }}</label>
-                    <input type="text" name="contents" class="form-control">
+                    <input type="text" name="context" class="form-control" value="{{ old('context') }}">
                 </div>
                 <div class="form-group">
                     <label>{{ __('dictt.image') }}</label>
@@ -26,11 +26,11 @@
                 </div>
                 <div class="form-group">
                     <label>{{ __('dictt.videolink') }}</label>
-                    <input type="text" name="video" class="form-control">
+                    <input type="text" name="video" class="form-control" value="{{ old('video') }}">
                 </div>
                 <div class="form-group">
                     <label>{{ __('dictt.voicelink') }}</label>
-                    <input type="text" name="voice" class="form-control">
+                    <input type="text" name="voice" class="form-control" value="{{ old('voice') }}">
                 </div>
                 <div class="form-group mt-2">
                     <button type="submit" class="btn btn-success btn-sm btn-block">{{ __('dictt.add') }}</button>

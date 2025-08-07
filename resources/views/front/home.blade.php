@@ -1,5 +1,5 @@
 @extends('front.master')
-@section('title', "AYDIN LANGUAGE ACADEMY")
+@section('title', __('dictt.ala') . ' - ' . __('dictt.home'))
 @section('middle_section')
 
   <!-- Appointment Start -->

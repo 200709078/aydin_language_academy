@@ -12,7 +12,7 @@ class model_declarations extends Model
         'theme_id',
         'title',
         'slug',
-        'contents',
+        'context',
         'image',
         'pdf',
         'video',

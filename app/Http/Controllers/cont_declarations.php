@@ -24,6 +24,17 @@ class cont_declarations extends Controller
 
     public function store(Request $request, $theme_id)
     {
+        $request->validate([
+            'title' => 'required|min:3|max:200|',
+            'context' => 'required|min:3|'
+        ], [
+            'title.required' => Lang::get('dictt.required_title'),
+            'title.min' => Lang::get('dictt.mincharacter_title'),
+            'title.max' => Lang::get('dictt.maxcharacter_title'),
+            'context.required' => Lang::get('dictt.required_context'),
+            'context.min' => Lang::get('dictt.mincharacter_context')
+        ]);
+
         $imageFileName = null;
         if ($request->hasFile('image')) {
             $imageFileName = Str::slug($request->title) . '.' . $request->image->extension();
@@ -35,17 +46,22 @@ class cont_declarations extends Controller
             $request->pdf->move(public_path('pdfs'), $pdfFileName);
         }
 
-        model_declarations::create([
+        $declaration = model_declarations::create([
             'theme_id' => $theme_id,
             'title' => $request->title,
             'slug' => Str::slug($request->title),
-            'contents' => $request->contents,
+            'context' => $request->context,
             'image' => $imageFileName,
             'pdf' => $pdfFileName,
             'video' => $request->video,
             'voice' => $request->voice
         ]);
-        return redirect()->route('declarations_list', $theme_id)->with('success', Lang::get('dictt.declarationaddsuccess'));
+        $modalSuccessTitle = __('dictt.savesuccesstitle', ['type' => __('dictt.declaration')]);
+        $modalSuccessContent = __('dictt.savesuccesscontent', ['type' => Str::lower(__('dictt.declaration')), 'name' => $declaration->title]);
+
+        return redirect()->route('declarations_list', ['theme_id' => $theme_id])
+            ->with('modalSuccessTitle', $modalSuccessTitle)
+            ->with('modalSuccessContent', $modalSuccessContent);
     }
 
     public function show(string $id)
@@ -61,6 +77,18 @@ class cont_declarations extends Controller
 
     public function update(Request $request, string $declaration_id)
     {
+        $request->validate([
+            'title' => 'required|min:3|max:200|',
+            'context' => 'required|min:3|'
+        ], [
+            'title.required' => Lang::get('dictt.required_title'),
+            'title.min' => Lang::get('dictt.mincharacter_title'),
+            'title.max' => Lang::get('dictt.maxcharacter_title'),
+            'context.required' => Lang::get('dictt.required_context'),
+            'context.min' => Lang::get('dictt.mincharacter_context')
+
+        ]);
+
         $imageFileName = null;
         if ($request->hasFile('image')) {
             $imageFileName = Str::slug($request->title) . '.' . $request->image->extension();
@@ -73,22 +101,27 @@ class cont_declarations extends Controller
         }
 
         $declaration = model_declarations::find($declaration_id);
-
         model_declarations::where('id', $declaration_id)->update([
             'title' => $request->title,
             'slug' => Str::slug($request->title),
-            'contents' => $request->contents,
+            'context' => $request->context,
             'image' => $imageFileName,
             'pdf' => $pdfFileName,
             'video' => $request->video,
             'voice' => $request->voice
         ]);
-        return redirect()->route('declarations_list', $declaration->theme_id)->with('success', Lang::get('dictt.declarationupdatesuccess'));
+        $modalSuccessTitle = __('dictt.updatesuccesstitle', ['type' => __('dictt.declaration')]);
+        $modalSuccessContent = __('dictt.updatesuccesscontent', ['type' => Str::lower(__('dictt.declaration')), 'name' => $declaration->title]);
+
+        return redirect()->route('declarations_list', ['theme_id' => $declaration->theme_id])
+            ->with('modalSuccessTitle', $modalSuccessTitle)
+            ->with('modalSuccessContent', $modalSuccessContent);
     }
 
     public function destroy(string $declaration_id)
     {
-        model_declarations::find($declaration_id)->whereId($declaration_id)->delete();
-        return redirect()->back()->with('success', Lang::get('dictt.declarationdeletesuccess'));
+        model_declarations::findOrFail($declaration_id)->delete();
+        return redirect()->route('declarations_list')
+            ->with('success', Lang::get('dictt.declarationdeletesuccess'));
     }
 }
