@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\cont_courses;
 use App\Http\Controllers\cont_declarations;
 use App\Http\Controllers\cont_exercises;
 use App\Http\Controllers\cont_language;
@@ -63,6 +64,8 @@ Route::group(['middleware' => ['auth', isAdmin_middle::class], 'prefix' => 'admi
 });
 
 Route::get('/', [cont_user_main::class, 'index'])->name('home');
+Route::get('courses',[cont_courses::class,'index'])->name('courses_list');
+Route::get('/course/{id}', [cont_courses::class, 'show'])->name('course_detail');
 
 Route::get('changeLanguage/{lang?}',[cont_language::class,'changeLanguage'])->name('changeLanguage');
 

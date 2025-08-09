@@ -2,65 +2,68 @@
 @section('title', __('dictt.ala') . ' - ' . __('dictt.contact'))
 @section('middle_section')
 
-  <div class="container-xxl py-5">
-    <div class="container">
-    <div class="text-center mx-auto mb-5" style="max-width: 600px;">
-      <h1>{{ __('dictt.contact') }}</h1>
-    </div>
-    <div class="row g-4">
-        @if(session('success'))
-            <div class="alert alert-success">
-                {{session('success')}}
-            </div>
-        @else
-            <div class="alert alert-success">
-                {{ __('dictt.contact') }}
-            </div>
-        @endif
-        <div class="my-5">
-            <form method="post" action="{{route('contactpost')}}" id="contactForm">
-                @csrf
-                <div class="form-floating mb-2">
-                    <input class="form-control" name="fullname" type="text"
-                           placeholder="Fullname..." required/>
-                    <label>{{ __('dictt.fullname') }} :</label>
-                </div>
-                <div class="form-floating mb-2">
-                    <input class="form-control" name="email" type="email" placeholder="E-Mail..." required/>
-                    <label>{{ __('dictt.email') }} :</label>
-                </div>
-                <div class="form-floating mb-2">
-                    <input class="form-control" name="telephone" type="tel" placeholder="Phone number..."/>
-                    <label>{{ __('dictt.phone') }} :</label>
-                </div>
-                <div class="form-floating mb-2">
-                    <input class="form-control" name="subject" type="text" placeholder="Subject..." required/>
-                    <label>{{ __('dictt.subject') }} :</label>
-                </div>
-                <div class="form-floating">
-                    <textarea class="form-control" name="message" placeholder="Message..."
-                              style="height: 12rem" required></textarea>
-                    <label>{{ __('dictt.message') }} :</label>
-                </div>
-                <br/>
-                <button class="btn btn-primary text-uppercase" type="submit">{{ __('dictt.send') }}</button>
-            </form>
+    <!-- Page Header Start -->
+    <div class="container-fluid page-header py-5 mb-5 wow fadeIn" data-wow-delay="0.1s">
+        <div class="container py-5">
+            <h1 class="display-3 text-white mb-3 animated slideInDown">{{__('dictt.contact')}}</h1>
         </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
     </div>
+    <!-- Page Header End -->
+
+    <div class="container-xxl py-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="card-header">
+                    <h6>
+                        {{ __('dictt.contactus') }}
+                    </h6>
+                </div>
+                <div class="my-5">
+                    <form method="post" action="{{route('contactpost')}}" id="contactForm">
+                        @csrf
+                        <div class="form-floating mb-2">
+                            <input class="form-control" name="fullname" type="text" placeholder="{{ __('dictt.fullname') }}"
+                                required />
+                            <label>{{ __('dictt.fullname') }} :</label>
+                        </div>
+                        <div class="form-floating mb-2">
+                            <input class="form-control" name="email" type="email" placeholder="{{ __('dictt.email') }}"
+                                required />
+                            <label>{{ __('dictt.email') }} :</label>
+                        </div>
+                        <div class="form-floating mb-2">
+                            <input class="form-control" name="telephone" type="tel" placeholder="{{ __('dictt.phone') }}" />
+                            <label>{{ __('dictt.phone') }} :</label>
+                        </div>
+                        <div class="form-floating mb-2">
+                            <input class="form-control" name="subject" type="text" placeholder="{{ __('dictt.subject') }}"
+                                required />
+                            <label>{{ __('dictt.subject') }} :</label>
+                        </div>
+                        <div class="form-floating">
+                            <textarea class="form-control" name="message" placeholder="{{ __('dictt.message') }}"
+                                style="height: 12rem" required></textarea>
+                            <label>{{ __('dictt.message') }} :</label>
+                        </div>
+                        <br />
+                        <button class="btn btn-primary text-uppercase" type="submit">{{ __('dictt.send') }}</button>
+                    </form>
+                </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+            </div>
+        </div>
     </div>
-  </div>
 
 @endsection

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\model_courses;
 use App\Models\model_declarations;
 use App\Models\model_exercises;
 use App\Models\model_levels;
@@ -29,7 +30,8 @@ class cont_user_main extends Controller
     }
     public function index()
     {
-        return view('front.home');
+        $courses = model_courses::orderBy('created_at', 'desc')->paginate(6);
+        return view('front.home', compact('courses'));
     }
 
     public function themes($level_slug, $sub_level_slug)

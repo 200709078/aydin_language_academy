@@ -145,4 +145,6 @@ return [
     'required_answer3' => 'The answer3 field is required.',
     'required_answer4' => 'The answer4 field is required.',
     'required_answer5' => 'The answer5 field is required.',
+    'course_detail' => 'Course Detail',
+    'contactus' => 'Contact Us',
 ];

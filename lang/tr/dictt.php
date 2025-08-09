@@ -145,4 +145,6 @@ return [
     'required_answer3' => 'Cevap 3 alanı zorunludur.',
     'required_answer4' => 'Cevap 4 alanı zorunludur.',
     'required_answer5' => 'Cevap 5 alanı zorunludur.',
+    'course_detail' => 'Kurs Detayı',
+    'contactus' => 'Bizimle İletişime Geçin',
 ];

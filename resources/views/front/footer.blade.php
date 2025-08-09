@@ -9,13 +9,16 @@
         <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>Dalaman: (530) 828 4884</p>
         <p class="mb-2"><i class="fa fa-envelope me-3"></i>learnenglishwithala@gmail.com</p>
         <div class="d-flex pt-2">
-          <a class="btn btn-outline-light btn-social rounded-circle" href="https://www.instagram.com/aydindilakademisidalaman?igsh=MTVjaXl2eDJ2MjJwYg==" target="_blank"><i class="fab fa-instagram"></i></a>
-          <a class="btn btn-outline-light btn-social rounded-circle" href="https://www.youtube.com/@AydınLanguageAcademy" target="_blank"><i class="fab fa-youtube"></i></a>
-          <a class="btn btn-outline-light btn-social rounded-circle" href="https://wa.me/905326666549?text=Selamlar" target="_blank"><i
-              class="bi bi-whatsapp"></i></a>
+          <a class="btn btn-outline-light btn-social rounded-circle"
+            href="https://www.instagram.com/aydindilakademisidalaman?igsh=MTVjaXl2eDJ2MjJwYg==" target="_blank"><i
+              class="fab fa-instagram"></i></a>
+          <a class="btn btn-outline-light btn-social rounded-circle"
+            href="https://www.youtube.com/@AydınLanguageAcademy" target="_blank"><i class="fab fa-youtube"></i></a>
+          <a class="btn btn-outline-light btn-social rounded-circle" href="https://wa.me/905326666549?text=Selamlar"
+            target="_blank"><i class="bi bi-whatsapp"></i></a>
         </div>
       </div>
-            <div class="col-lg-3 col-md-6">
+      <div class="col-lg-3 col-md-6">
         <h5 class="text-light mb-4">{{ __('dictt.address') }} - 2</h5>
         <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>Atatürk Mahallesi Eski Postane Karşısı No:10
           Ortaca/Muğla</p>
@@ -23,14 +26,18 @@
         <p class="mb-2"><i class="fa fa-envelope me-3"></i>learnenglishwithala@gmail.com</p>
 
         <div class="d-flex pt-2">
-          <a class="btn btn-outline-light btn-social rounded-circle" href="https://www.instagram.com/aydindilakademisidalaman?igsh=MTVjaXl2eDJ2MjJwYg==" target="_blank"><i class="fab fa-instagram"></i></a>
-          <a class="btn btn-outline-light btn-social rounded-circle" href="https://www.youtube.com/@AydınLanguageAcademy" target="_blank"><i class="fab fa-youtube"></i></a>
-          <a class="btn btn-outline-light btn-social rounded-circle" href="https://wa.me/905326666549?text=Selamlar" target="_blank"><i
-              class="bi bi-whatsapp"></i></a>
+          <a class="btn btn-outline-light btn-social rounded-circle"
+            href="https://www.instagram.com/aydindilakademisidalaman?igsh=MTVjaXl2eDJ2MjJwYg==" target="_blank"><i
+              class="fab fa-instagram"></i></a>
+          <a class="btn btn-outline-light btn-social rounded-circle"
+            href="https://www.youtube.com/@AydınLanguageAcademy" target="_blank"><i class="fab fa-youtube"></i></a>
+          <a class="btn btn-outline-light btn-social rounded-circle" href="https://wa.me/905326666549?text=Selamlar"
+            target="_blank"><i class="bi bi-whatsapp"></i></a>
         </div>
       </div>
       <div class="col-lg-3 col-md-6">
         <h5 class="text-light mb-4">{{ __('dictt.links') }}</h5>
+        <a class="btn btn-link" href="{{ Route('home') }}">{{ __('dictt.home') }}</a>
         <a class="btn btn-link" href="{{ Route('about') }}">{{ __('dictt.about') }}</a>
         <a class="btn btn-link" href="{{ Route('contact') }}">{{ __('dictt.contact') }}</a>
       </div>
@@ -40,7 +47,8 @@
     <div class="copyright">
       <div class="row">
         <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-          <a class="border-bottom" href="{{ route('home') }}">{{ __('dictt.ala') }}</a>, {{ __('dictt.allrightreserved.') }}
+          <a class="border-bottom" href="{{ route('home') }}">{{ __('dictt.ala') }}</a>,
+          {{ __('dictt.allrightreserved.') }}
         </div>
         <div class="col-md-6 text-center text-md-end">
           <a class="border-none" href="{{ route('levels_list') }}" target="_blank">&copy; </a>
