@@ -35,7 +35,7 @@ class ExerciseList extends Component
         if ($this->exerciseToDelete) {
             $exercise = $this->exerciseToDelete;
             $this->exerciseToDelete->delete();
-            $this->exercises = model_exercises::all();
+            $this->exercises = model_exercises::orderBy('updated_at', 'desc')->get();
             $this->modalSuccessTitle = __('dictt.deletesuccesstitle', ['type' => __('dictt.exercise')]);
             $this->modalSuccessContent = __('dictt.deletesuccesscontent', ['type' => Str::lower(__('dictt.exercise')), 'name' => $exercise->title]);
             $this->confirmingDelete = false;
@@ -45,7 +45,7 @@ class ExerciseList extends Component
     public function render()
     {
         $exercises = model_exercises::where('theme_id', $this->theme_id)
-            ->orderBy('created_at', 'desc')
+            ->orderBy('updated_at', 'desc')
             ->get();
         return view('livewire.exercise-list', [
             'exercises' => $exercises

@@ -25,14 +25,17 @@ class cont_declarations extends Controller
     public function store(Request $request, $theme_id)
     {
         $request->validate([
-            'title' => 'required|min:3|max:200|',
-            'context' => 'required|min:3|'
+            'title' => 'required|min:3|max:255|',
+            'context' => 'required|min:3|',
+            'image' => 'image|nullable|max:1024|mimes:jpg,jpeg,png',
         ], [
-            'title.required' => Lang::get('dictt.required_title'),
-            'title.min' => Lang::get('dictt.mincharacter_title'),
-            'title.max' => Lang::get('dictt.maxcharacter_title'),
-            'context.required' => Lang::get('dictt.required_context'),
-            'context.min' => Lang::get('dictt.mincharacter_context')
+            'title.required' => __('dictt.required_item', ['name' => __('dictt.title')]),
+            'title.min' => __('dictt.mincharacter_item', ['name' => __('dictt.title'), 'number' => 3]),
+            'title.max' => __('dictt.maxcharacter_item', ['name' => __('dictt.title'), 'number' => 255]),
+            'context.required' => __('dictt.required_item', ['name' => __('dictt.content')]),
+            'context.min' => __('dictt.mincharacter_item', ['name' => __('dictt.content'), 'number' => 3]),
+            'image.max' => __('dictt.imagemaxsize'),
+            'image.mimes' => __('dictt.imagemimes'),
         ]);
 
         $imageFileName = null;
@@ -57,7 +60,7 @@ class cont_declarations extends Controller
             'voice' => $request->voice
         ]);
         $modalSuccessTitle = __('dictt.savesuccesstitle', ['type' => __('dictt.declaration')]);
-        $modalSuccessContent = __('dictt.savesuccesscontent', ['type' => Str::lower(__('dictt.declaration')), 'name' => $declaration->title]);
+        $modalSuccessContent = __('dictt.savesuccesscontent', ['type' => __('dictt.declaration'), 'name' => $declaration->title]);
 
         return redirect()->route('declarations_list', ['theme_id' => $theme_id])
             ->with('modalSuccessTitle', $modalSuccessTitle)
@@ -78,15 +81,17 @@ class cont_declarations extends Controller
     public function update(Request $request, string $declaration_id)
     {
         $request->validate([
-            'title' => 'required|min:3|max:200|',
-            'context' => 'required|min:3|'
+            'title' => 'required|min:3|max:255|',
+            'context' => 'required|min:3|',
+            'image' => 'image|nullable|max:1024|mimes:jpg,jpeg,png',
         ], [
-            'title.required' => Lang::get('dictt.required_title'),
-            'title.min' => Lang::get('dictt.mincharacter_title'),
-            'title.max' => Lang::get('dictt.maxcharacter_title'),
-            'context.required' => Lang::get('dictt.required_context'),
-            'context.min' => Lang::get('dictt.mincharacter_context')
-
+            'title.required' => __('dictt.required_item', ['name' => __('dictt.title')]),
+            'title.min' => __('dictt.mincharacter_item', ['name' => __('dictt.title'), 'number' => 3]),
+            'title.max' => __('dictt.maxcharacter_item', ['name' => __('dictt.title'), 'number' => 255]),
+            'context.required' => __('dictt.required_item', ['name' => __('dictt.content')]),
+            'context.min' => __('dictt.mincharacter_item', ['name' => __('dictt.content'), 'number' => 3]),
+            'image.max' => __('dictt.imagemaxsize'),
+            'image.mimes' => __('dictt.imagemimes'),
         ]);
 
         $imageFileName = null;
@@ -120,8 +125,6 @@ class cont_declarations extends Controller
 
     public function destroy(string $declaration_id)
     {
-        model_declarations::findOrFail($declaration_id)->delete();
-        return redirect()->route('declarations_list')
-            ->with('success', Lang::get('dictt.declarationdeletesuccess'));
+        //
     }
 }

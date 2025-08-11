@@ -17,7 +17,7 @@ class LevelList extends Component
     public $modalSuccessContent;
     public function mount()
     {
-        $this->levels = model_levels::all();
+        $this->levels = model_levels::orderBy('updated_at', 'desc')->get();
     }
 
     public function confirmDelete($id)
@@ -34,7 +34,7 @@ class LevelList extends Component
         if ($this->levelToDelete) {
             $level = $this->levelToDelete;
             $this->levelToDelete->delete();
-            $this->levels = model_levels::all();
+            $this->levels = model_levels::orderBy('updated_at', 'desc')->get();
             $this->modalSuccessTitle = __('dictt.deletesuccesstitle', ['type' => __('dictt.level')]);
             $this->modalSuccessContent = __('dictt.deletesuccesscontent', ['type' => Str::lower(__('dictt.level')), 'name' => $level->name]);
             $this->confirmingDelete = false;

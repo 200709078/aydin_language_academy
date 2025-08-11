@@ -32,11 +32,14 @@ class cont_themes extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|min:3|max:255|'
+            'name' => 'required|min:3|max:255|',
+            'image' => 'image|nullable|max:1024|mimes:jpg,jpeg,png',
         ], [
-            'name.required' => Lang::get('dictt.required_name'),
-            'name.min' => Lang::get('dictt.mincharacter_name'),
-            'name.max' => Lang::get('dictt.maxcharacter_name'),
+            'name.required' => __('dictt.required_item', ['name' => __('dictt.themename')]),
+            'name.min' => __('dictt.mincharacter_item', ['name' => __('dictt.themename'), 'number' => 3]),
+            'name.max' => __('dictt.maxcharacter_item', ['name' => __('dictt.themename'), 'number' => 255]),
+            'image.max' => __('dictt.imagemaxsize'),
+            'image.mimes' => __('dictt.imagemimes'),
         ]);
 
         $fileName = null;
@@ -54,7 +57,7 @@ class cont_themes extends Controller
         ]);
 
         $modalSuccessTitle = __('dictt.savesuccesstitle', ['type' => __('dictt.theme')]);
-        $modalSuccessContent = __('dictt.savesuccesscontent', ['type' => Str::lower(__('dictt.theme')), 'name' => $theme->name]);
+        $modalSuccessContent = __('dictt.savesuccesscontent', ['type' => __('dictt.theme'), 'name' => $theme->name]);
         return redirect()->route('themes_list')
             ->with('modalSuccessTitle', $modalSuccessTitle)
             ->with('modalSuccessContent', $modalSuccessContent);
@@ -74,11 +77,14 @@ class cont_themes extends Controller
     public function update(Request $request, string $theme_id)
     {
         $request->validate([
-            'name' => 'required|min:3|max:255|'
+            'name' => 'required|min:3|max:255|',
+            'image' => 'image|nullable|max:1024|mimes:jpg,jpeg,png',
         ], [
-            'name.required' => Lang::get('dictt.required_name'),
-            'name.min' => Lang::get('dictt.mincharacter_name'),
-            'name.max' => Lang::get('dictt.maxcharacter_name'),
+            'name.required' => __('dictt.required_item', ['name' => __('dictt.themename')]),
+            'name.min' => __('dictt.mincharacter_item', ['name' => __('dictt.themename'), 'number' => 3]),
+            'name.max' => __('dictt.maxcharacter_item', ['name' => __('dictt.themename'), 'number' => 255]),
+            'image.max' => __('dictt.imagemaxsize'),
+            'image.mimes' => __('dictt.imagemimes'),
         ]);
 
         $imageFileName = null;
@@ -89,16 +95,17 @@ class cont_themes extends Controller
         }
 
         $theme = model_themes::find($theme_id);
-
         $theme->level_id = $request->level_id;
         $theme->sub_level_id = $request->sub_level_id;
         $theme->name = ucwords(Str::lower($request->name));
         $theme->slug = Str::slug($request->name);
-        $theme->image = $imageFileName;
+        if ($request->hasFile('image')) {
+            $theme->image = $imageFileName;
+        }
         $theme->save();
 
         $modalSuccessTitle = __('dictt.updatesuccesstitle', ['type' => __('dictt.theme')]);
-        $modalSuccessContent = __('dictt.updatesuccesscontent', ['type' => Str::lower(__('dictt.theme')), 'name' => $theme->name]);
+        $modalSuccessContent = __('dictt.updatesuccesscontent', ['type' => __('dictt.theme'), 'name' => $theme->name]);
         return redirect()->route('themes_list')
             ->with('modalSuccessTitle', $modalSuccessTitle)
             ->with('modalSuccessContent', $modalSuccessContent);
@@ -106,8 +113,6 @@ class cont_themes extends Controller
 
     public function destroy(string $theme_id)
     {
-        model_themes::findOrFail($theme_id)->delete();
-        return redirect()->route('themes_list')
-            ->with('success', Lang::get('dictt.themedeletesuccess'));
+        //
     }
 }

@@ -125,14 +125,25 @@ class cont_user_main extends Controller
         //return redirect($request->session()->previousUrl());
     }
 
+    public function settings_list()
+    {
+        return 'SETTINGS E GELDİN...';
+        /*         $levels = model_levels::orderBy('updated_at', 'desc')->get();
+                return view("admin.levels.list", compact('levels')); */
+    }
+    public function courses_list()
+    {
+        $courses = model_courses::get();
+        return view("admin.courses.list", compact('courses'));
+    }
     public function levels_list()
     {
-        $levels = model_levels::orderBy('updated_at', 'desc')->get();
+        $levels = model_levels::get();
         return view("admin.levels.list", compact('levels'));
     }
     public function sub_levels_list()
     {
-        $sub_levels = model_sub_levels::orderBy('updated_at', 'desc')->get();
+        $sub_levels = model_sub_levels::get();
         return view("admin.sub_levels.list", compact('sub_levels'));
     }
     public function themes_list()

@@ -20,6 +20,9 @@
 
     <!-- Styles -->
     @livewireStyles
+
+    <!-- My Styles -->
+    <link rel="stylesheet" href="{{ asset('css/myStyles.css') }}">
 </head>
 
 <body class="font-sans antialiased">

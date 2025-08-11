@@ -1,0 +1,10 @@
+table td,
+table th {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.table {
+    table-layout: fixed;
+    width: 100%;
+}

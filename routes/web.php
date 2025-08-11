@@ -19,6 +19,10 @@ Route::group(['middleware' => 'auth'], function () {
 });
 
 Route::group(['middleware' => ['auth', isAdmin_middle::class], 'prefix' => 'admin'], function () {
+
+    Route::get('settings_list', [cont_user_main::class, 'settings_list'])->name('settings_list');
+
+    Route::get('courses_list', [cont_user_main::class, 'courses_list'])->name('courses_list');
     Route::get('levels_list', [cont_user_main::class, 'levels_list'])->name('levels_list');
     Route::get('sub_levels_list', [cont_user_main::class, 'sub_levels_list'])->name('sub_levels_list');
     Route::get('themes_list', [cont_user_main::class, 'themes_list'])->name('themes_list');
@@ -28,12 +32,14 @@ Route::group(['middleware' => ['auth', isAdmin_middle::class], 'prefix' => 'admi
 
     Route::get('exercise/{exercise_id}/question/{question_id}', [cont_questions::class, 'destroy'])->whereNumber('question_id')->name('question_destroy');
 
+/*     Route::delete('course/{course_id}', [cont_courses::class, 'destroy'])->name('course_destroy');
     Route::delete('level/{level_id}', [cont_levels::class, 'destroy'])->name('level_destroy');
     Route::delete('sub_level/{sub_level_id}', [cont_sub_levels::class, 'destroy'])->name('sub_level_destroy');
     Route::delete('theme/{theme_id}', [cont_themes::class, 'destroy'])->name('theme_destroy');
     Route::delete('declaration/{declaration_id}', [cont_declarations::class, 'destroy'])->name('declaration_destroy');
     Route::delete('exercise/{exercise_id}', [cont_exercises::class, 'destroy'])->name('exercise_destroy');
-
+ */
+    Route::get('course/create', [cont_courses::class,'create'])->name('course_create');
     Route::get('level/create', [cont_levels::class,'create'])->name('level_create');
     Route::get('sub_level/create', [cont_sub_levels::class,'create'])->name('sub_level_create');
     Route::get('theme/create', [cont_themes::class,'create'])->name('theme_create');
@@ -41,6 +47,7 @@ Route::group(['middleware' => ['auth', isAdmin_middle::class], 'prefix' => 'admi
     Route::get('exercise/{theme_id}/create', [cont_exercises::class,'create'])->whereNumber('theme_id')->name('exercise_create');
     Route::get('question/{exercise_id}/create', [cont_questions::class,'create'])->whereNumber('exercise_id')->name('question_create');
 
+    Route::post('course', [cont_courses::class, 'store'])->name('course_store');
     Route::post('level', [cont_levels::class, 'store'])->name('level_store');
     Route::post('sub_level', [cont_sub_levels::class, 'store'])->name('sub_level_store');
     Route::post('theme', [cont_themes::class, 'store'])->name('theme_store');
@@ -48,6 +55,7 @@ Route::group(['middleware' => ['auth', isAdmin_middle::class], 'prefix' => 'admi
     Route::post('exercise/{theme_id}/store', [cont_exercises::class, 'store'])->whereNumber('theme_id')->name('exercise_store');
     Route::post('question/{exercise_id}/store', [cont_questions::class, 'store'])->whereNumber('exercise_id')->name('question_store');
     
+    Route::get('course/{course_id}/edit', [cont_courses::class,'edit'])->name('course_edit');
     Route::get('level/{level_id}/edit', [cont_levels::class,'edit'])->name('level_edit');
     Route::get('sub_level/{sub_level_id}/edit', [cont_sub_levels::class,'edit'])->name('sub_level_edit');
     Route::get('theme/{theme_id}/edit', [cont_themes::class,'edit'])->name('theme_edit');
@@ -55,6 +63,7 @@ Route::group(['middleware' => ['auth', isAdmin_middle::class], 'prefix' => 'admi
     Route::get('exercise/{exercise_id}/edit', [cont_exercises::class,'edit'])->name('exercise_edit');
     Route::get('question/{question_id}/edit', [cont_questions::class,'edit'])->name('question_edit');
 
+    Route::put('course/{course_id}/update', [cont_courses::class, 'update'])->name('course_update');
     Route::put('level/{level_id}/update', [cont_levels::class, 'update'])->name('level_update');
     Route::put('sub_level/{sub_level_id}/update', [cont_sub_levels::class, 'update'])->name('sub_level_update');
     Route::put('theme/{theme_id}/update', [cont_themes::class, 'update'])->name('theme_update');
@@ -64,7 +73,7 @@ Route::group(['middleware' => ['auth', isAdmin_middle::class], 'prefix' => 'admi
 });
 
 Route::get('/', [cont_user_main::class, 'index'])->name('home');
-Route::get('courses',[cont_courses::class,'index'])->name('courses_list');
+/* Route::get('courses',[cont_courses::class,'index'])->name('courses_list'); */
 Route::get('/course/{id}', [cont_courses::class, 'show'])->name('course_detail');
 
 Route::get('changeLanguage/{lang?}',[cont_language::class,'changeLanguage'])->name('changeLanguage');

@@ -6,19 +6,19 @@
     <div class="container-xxl py-5">
         <div class="container">
             <h5>
-                @if (Session::get('locale') == 'en')
+                @if ((Session::get('locale') == 'en') || (Session::get('locale') == null))
                     {{$course->slogan_en}}
-                    @else
+                @else
                     {{$course->slogan_tr}}
-                    @endif
+                @endif
             </h5>
             <div class="card mb-4">
                 <div class="card-header">
                     <h6>
-                        @if (Session::get('locale') == 'en')
-                        {{$course->title_en}}
+                        @if ((Session::get('locale') == 'en') || (Session::get('locale') == null))
+                            {{$course->title_en}}
                         @else
-                        {{$course->title_tr}}
+                            {{$course->title_tr}}
                         @endif
                     </h6>
                 </div>
@@ -28,11 +28,11 @@
                             <img class="img-fluid" src="{{ asset('photos/' . $course->image) }}" style="width: 40%;">
                         </div>
                         <p>
-                        @if (Session::get('locale') == 'en')
-                            {{$course->description_en}}
-                        @else
-                            {{$course->description_tr}}
-                        @endif
+                            @if ((Session::get('locale') == 'en') || (Session::get('locale') == null))
+                                {{$course->description_en}}
+                            @else
+                                {{$course->description_tr}}
+                            @endif
                         </p>
                     </blockquote>
                 </div>

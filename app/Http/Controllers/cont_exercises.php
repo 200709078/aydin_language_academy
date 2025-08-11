@@ -36,13 +36,16 @@ class cont_exercises extends Controller
     public function store(Request $request, $theme_id)
     {
         $request->validate([
-            'title' => 'required|min:3|max:200|',
+            'title' => 'required|min:3|max:255|',
+            'image' => 'image|nullable|max:1024|mimes:jpg,jpeg,png',
         ], [
-            'title.required' => Lang::get('dictt.required_title'),
-            'title.min' => Lang::get('dictt.mincharacter_title'),
-            'title.max' => Lang::get('dictt.maxcharacter_title')
-
+            'title.required' => __('dictt.required_item', ['name' => __('dictt.title')]),
+            'title.min' => __('dictt.mincharacter_item', ['name' => __('dictt.title'), 'number' => 3]),
+            'title.max' => __('dictt.maxcharacter_item', ['name' => __('dictt.title'), 'number' => 255]),
+            'image.max' => __('dictt.imagemaxsize'),
+            'image.mimes' => __('dictt.imagemimes'),
         ]);
+
         $imageFileName = null;
         if ($request->hasFile('image')) {
             $imageFileName = Str::slug($request->title) . '.' . $request->image->extension();
@@ -59,7 +62,7 @@ class cont_exercises extends Controller
 
         ]);
         $modalSuccessTitle = __('dictt.savesuccesstitle', ['type' => __('dictt.exercise')]);
-        $modalSuccessContent = __('dictt.savesuccesscontent', ['type' => Str::lower(__('dictt.exercise')), 'name' => $exercise->title]);
+        $modalSuccessContent = __('dictt.savesuccesscontent', ['type' => __('dictt.exercise'), 'name' => $exercise->title]);
 
         return redirect()->route('exercises_list', ['theme_id' => $theme_id])
             ->with('modalSuccessTitle', $modalSuccessTitle)
@@ -81,13 +84,16 @@ class cont_exercises extends Controller
     public function update(Request $request, string $exercise_id)
     {
         $request->validate([
-            'title' => 'required|min:3|max:200|',
+            'title' => 'required|min:3|max:255|',
+            'image' => 'image|nullable|max:1024|mimes:jpg,jpeg,png',
         ], [
-            'title.required' => Lang::get('dictt.required_title'),
-            'title.min' => Lang::get('dictt.mincharacter_title'),
-            'title.max' => Lang::get('dictt.maxcharacter_title')
-
+            'title.required' => __('dictt.required_item', ['name' => __('dictt.title')]),
+            'title.min' => __('dictt.mincharacter_item', ['name' => __('dictt.title'), 'number' => 3]),
+            'title.max' => __('dictt.maxcharacter_item', ['name' => __('dictt.title'), 'number' => 255]),
+            'image.max' => __('dictt.imagemaxsize'),
+            'image.mimes' => __('dictt.imagemimes'),
         ]);
+
         $imageFileName = null;
         if ($request->hasFile('image')) {
             $imageFileName = Str::slug($request->title) . '.' . $request->image->extension();
@@ -95,17 +101,18 @@ class cont_exercises extends Controller
         }
 
         $exercise = model_exercises::find($exercise_id);
-        model_exercises::where('id', $exercise_id)->update([
-            'title' => $request->title,
-            'slug' => Str::slug($request->title),
-            'qtext' => $request->qtext,
-            'image' => $imageFileName,
-            'video' => $request->video,
-            'voice' => $request->voice
-        ]);
+        $exercise->title = $request->title;
+        $exercise->slug = Str::slug($request->title);
+        $exercise->qtext = $request->qtext;
+        if ($request->hasFile('image')) {
+            $exercise->image = $imageFileName;
+        }
+        $exercise->video = $request->video;
+        $exercise->voice = $request->voice;
+        $exercise->save();
 
         $modalSuccessTitle = __('dictt.updatesuccesstitle', ['type' => __('dictt.exercise')]);
-        $modalSuccessContent = __('dictt.updatesuccesscontent', ['type' => Str::lower(__('dictt.exercise')), 'name' => $exercise->title]);
+        $modalSuccessContent = __('dictt.updatesuccesscontent', ['type' => __('dictt.exercise'), 'name' => $exercise->title]);
 
         return redirect()->route('exercises_list', ['theme_id' => $exercise->theme_id])
             ->with('modalSuccessTitle', $modalSuccessTitle)
@@ -118,8 +125,6 @@ class cont_exercises extends Controller
 
     public function destroy(string $exercise_id)
     {
-        model_exercises::findOrFail($exercise_id)->delete();
-        return redirect()->route('exercises_list')
-            ->with('success', Lang::get('dictt.exercisesdeletesuccess'));
+        //
     }
 }

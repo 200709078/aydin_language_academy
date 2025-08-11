@@ -17,7 +17,7 @@ class SubLevelList extends Component
     public $modalSuccessContent;
     public function mount()
     {
-        $this->sublevels = model_sub_levels::all();
+        $this->sublevels = model_sub_levels::orderBy('updated_at', 'desc')->get();
     }
 
     public function confirmDelete($id)
@@ -33,7 +33,7 @@ class SubLevelList extends Component
     {
         $sublevel = $this->sublevelToDelete;
         $this->sublevelToDelete->delete();
-        $this->sublevels = model_sub_levels::all();
+        $this->sublevels = model_sub_levels::orderBy('updated_at', 'desc')->get();
         $this->modalSuccessTitle = __('dictt.deletesuccesstitle', ['type' => __('dictt.sublevel')]);
         $this->modalSuccessContent = __('dictt.deletesuccesscontent', ['type' => Str::lower(__('dictt.sublevel')), 'name' => $sublevel->name]);
         $this->confirmingDelete = false;

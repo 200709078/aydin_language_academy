@@ -30,20 +30,20 @@ class cont_questions extends Controller
             'answer4' => 'required|min:3|',
             'answer5' => 'required|min:3|'
         ], [
-            'question.required' => Lang::get('dictt.required_question'),
-            'question.min' => Lang::get('dictt.mincharacter_question'),
-            'answer1.required' => Lang::get('dictt.required_answer1'),
-            'answer1.min' => Lang::get('dictt.mincharacter_answer1'),
-            'answer2.required' => Lang::get('dictt.required_answer2'),
-            'answer2.min' => Lang::get('dictt.mincharacter_answer2'),
-            'answer3.required' => Lang::get('dictt.required_answer3'),
-            'answer3.min' => Lang::get('dictt.mincharacter_answer3'),
-            'answer4.required' => Lang::get('dictt.required_answer4'),
-            'answer4.min' => Lang::get('dictt.mincharacter_answer4'),
-            'answer5.required' => Lang::get('dictt.required_answer5'),
-            'answer5.min' => Lang::get('dictt.mincharacter_answer5'),
-
+            'question.required' => __('dictt.required_item', ['name' => __('dictt.question')]),
+            'question.min' => __('dictt.mincharacter_item', ['name' => __('dictt.question'), 'number' => 3]),
+            'answer1.required' => __('dictt.required_item', ['name' => __('dictt.answer') . '1']),
+            'answer1.min' => __('dictt.mincharacter_item', ['name' => __('dictt.answer') . '1', 'number' => 3]),
+            'answer2.required' => __('dictt.required_item', ['name' => __('dictt.answer') . '2']),
+            'answer2.min' => __('dictt.mincharacter_item', ['name' => __('dictt.answer') . '2', 'number' => 3]),
+            'answer3.required' => __('dictt.required_item', ['name' => __('dictt.answer') . '3']),
+            'answer3.min' => __('dictt.mincharacter_item', ['name' => __('dictt.answer') . '3', 'number' => 3]),
+            'answer4.required' => __('dictt.required_item', ['name' => __('dictt.answer') . '4']),
+            'answer4.min' => __('dictt.mincharacter_item', ['name' => __('dictt.answer') . '4', 'number' => 3]),
+            'answer5.required' => __('dictt.required_item', ['name' => __('dictt.answer') . '5']),
+            'answer6.min' => __('dictt.mincharacter_item', ['name' => __('dictt.answer') . '5', 'number' => 3]),
         ]);
+
         $imageFileName = null;
         if ($request->hasFile('image')) {
             $imageFileName = time() . '.' . $request->image->extension();
@@ -62,7 +62,7 @@ class cont_questions extends Controller
             'correct_answer' => $request->correct_answer
         ]);
         $modalSuccessTitle = __('dictt.savesuccesstitle', ['type' => __('dictt.question')]);
-        $modalSuccessContent = __('dictt.savesuccesscontent', ['type' => Str::lower(__('dictt.question')), 'name' => $question->question]);
+        $modalSuccessContent = __('dictt.savesuccesscontent', ['type' => __('dictt.question'), 'name' => $question->question]);
 
         return redirect()->route('questions_list', ['exercise_id' => $exercise_id])
             ->with('modalSuccessTitle', $modalSuccessTitle)
@@ -111,43 +111,40 @@ class cont_questions extends Controller
             'answer4' => 'required|min:3|',
             'answer5' => 'required|min:3|'
         ], [
-            'question.required' => Lang::get('dictt.required_question'),
-            'question.min' => Lang::get('dictt.mincharacter_question'),
-            'answer1.required' => Lang::get('dictt.required_answer1'),
-            'answer1.min' => Lang::get('dictt.mincharacter_answer1'),
-            'answer2.required' => Lang::get('dictt.required_answer2'),
-            'answer2.min' => Lang::get('dictt.mincharacter_answer2'),
-            'answer3.required' => Lang::get('dictt.required_answer3'),
-            'answer3.min' => Lang::get('dictt.mincharacter_answer3'),
-            'answer4.required' => Lang::get('dictt.required_answer4'),
-            'answer4.min' => Lang::get('dictt.mincharacter_answer4'),
-            'answer5.required' => Lang::get('dictt.required_answer5'),
-            'answer5.min' => Lang::get('dictt.mincharacter_answer5'),
+            'question.required' => __('dictt.required_item', ['name' => __('dictt.question')]),
+            'question.min' => __('dictt.mincharacter_item', ['name' => __('dictt.question'), 'number' => 3]),
+            'answer1.required' => __('dictt.required_item', ['name' => __('dictt.answer') . '1']),
+            'answer1.min' => __('dictt.mincharacter_item', ['name' => __('dictt.answer') . '1', 'number' => 3]),
+            'answer2.required' => __('dictt.required_item', ['name' => __('dictt.answer') . '2']),
+            'answer2.min' => __('dictt.mincharacter_item', ['name' => __('dictt.answer') . '2', 'number' => 3]),
+            'answer3.required' => __('dictt.required_item', ['name' => __('dictt.answer') . '3']),
+            'answer3.min' => __('dictt.mincharacter_item', ['name' => __('dictt.answer') . '3', 'number' => 3]),
+            'answer4.required' => __('dictt.required_item', ['name' => __('dictt.answer') . '4']),
+            'answer4.min' => __('dictt.mincharacter_item', ['name' => __('dictt.answer') . '4', 'number' => 3]),
+            'answer5.required' => __('dictt.required_item', ['name' => __('dictt.answer') . '5']),
+            'answer6.min' => __('dictt.mincharacter_item', ['name' => __('dictt.answer') . '5', 'number' => 3]),
+        ]);
 
-        ]);
         $imageFileName = null;
         if ($request->hasFile('image')) {
-            $imageFileName = time() . '.' . $request->image->extension();
+            $imageFileName = Str::slug($request->title) . '.' . $request->image->extension();
             $request->image->move(public_path('photos'), $imageFileName);
         }
-        $imageFileName = null;
+        $question = model_questions::findOrFail($question_id);
+        $question->question = $request->question;
         if ($request->hasFile('image')) {
-            $imageFileName = time() . '.' . $request->image->extension();
-            $request->image->move(public_path('photos'), $imageFileName);
+            $question->image = $imageFileName;
         }
-        $question = model_questions::find($question_id);
-        model_questions::where('id', $question_id)->update([
-            'question' => $request->question,
-            'image' => $imageFileName,
-            'answer1' => $request->answer1,
-            'answer2' => $request->answer2,
-            'answer3' => $request->answer3,
-            'answer4' => $request->answer4,
-            'answer5' => $request->answer5,
-            'correct_answer' => $request->correct_answer
-        ]);
+        $question->answer1 = $request->answer1;
+        $question->answer2 = $request->answer2;
+        $question->answer3 = $request->answer3;
+        $question->answer4 = $request->answer4;
+        $question->answer5 = $request->answer5;
+        $question->correct_answer = $request->correct_answer;
+        $question->save();
+
         $modalSuccessTitle = __('dictt.updatesuccesstitle', ['type' => __('dictt.question')]);
-        $modalSuccessContent = __('dictt.updatesuccesscontent', ['type' => Str::lower(__('dictt.question')), 'name' => $question->question]);
+        $modalSuccessContent = __('dictt.updatesuccesscontent', ['type' => __('dictt.question'), 'name' => $question->question]);
 
         return redirect()->route('questions_list', ['exercise_id' => $question->exercise_id])
             ->with('modalSuccessTitle', $modalSuccessTitle)
@@ -155,8 +152,6 @@ class cont_questions extends Controller
     }
     public function destroy(string $exercise_id, string $question_id)
     {
-        model_questions::findOrFail($question_id)->delete();
-        return redirect()->route('questions_list')
-            ->with('success', Lang::get('dictt.declarationdeletesuccess'));
+        //
     }
 }

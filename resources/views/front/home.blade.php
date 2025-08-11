@@ -4,7 +4,7 @@
   <!-- Page Header Start -->
   <div class="container-fluid page-header py-5 mb-5 wow fadeIn" data-wow-delay="0.1s">
     <div class="container py-5">
-    <h1 class="display-3 text-white mb-3 animated slideInDown">{{__('dictt.home')}}</h1>
+    <h1 class="display-3 mb-3 animated slideInDown" style="color: #25bebc;">{{__('dictt.home')}}</h1>
     {{--
     <nav aria-label="breadcrumb animated slideInDown">
       <ol class="breadcrumb text-uppercase mb-0">
@@ -34,13 +34,14 @@
                             <img class="img-fluid" src="{{ asset('photos/' . $course->image) }}">
                         </div>
                         <div class="team-text bg-light text-center p-2">
-                          @if (Session::get('locale') == 'en')
+                          @if ((Session::get('locale') == 'en')||(Session::get('locale') == null))
                           <h5>{{ $course->title_en }}</h5>
                             <p class="text-primary">{{$course->slogan_en}}</p>
-                          @else
+                          @endif
+                          @if ((Session::get('locale') == 'tr'))
                           <h5>{{ $course->title_tr }}</h5>
                             <p class="text-primary">{{$course->slogan_tr}}</p>
-                          @endif
+                          @endif 
                             <div class="team-social text-center">
                                 <a class="btn btn-square rounded-pill py-3 px-5" href="{{ route('course_detail', $course->id) }}">{{ __('dictt.details') }}</i></a>
                             </div>
