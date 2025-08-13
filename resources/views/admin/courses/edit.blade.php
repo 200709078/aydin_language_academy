@@ -1,5 +1,5 @@
 <x-app-layout>
-    <x-slot name="header">{{ __('dictt.course') }} {{ __('dictt.edit') }} - {{ $course->title_tr }}</x-slot>
+    <x-slot name="header">{{ __('dictt.course') }} {{ __('dictt.edit') }} - {{ $course->title_en }}</x-slot>
     <div class="card">
         <div class="card-body">
             <h5 class="card-title">

@@ -30,7 +30,7 @@ class cont_user_main extends Controller
     }
     public function index()
     {
-        $courses = model_courses::orderBy('created_at', 'desc')->paginate(6);
+        $courses = model_courses::orderBy('created_at', 'desc')->get();
         return view('front.home', compact('courses'));
     }
 
