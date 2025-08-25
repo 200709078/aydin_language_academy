@@ -5,9 +5,12 @@
   <meta charset="utf-8">
   <title>@yield('title')</title>
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <meta content="" name="keywords">
-  <meta content="" name="description">
-
+  <meta name="keywords"
+    content="Aydın Dil Akademisi, Aydın İngilizce Kursu, İngilizce Kursu, YDS Kursu, YÖKDİL Kursu, TOEFL Kursu, IELTS Kursu, İngilizce Özel Ders, Yabancı Dil Kursu, Çocuklar için İngilizce, Online İngilizce Kursu, Aydın Almanca Kursu, Aydın Fransızca Kursu, Dil Okulu, Aydın İngilizce Eğitim, İngilizce Konuşma Kursu">
+  <meta name="keywords"
+    content="Aydın Language Academy, English Course, Learn English, TOEFL Course, IELTS Course, Cambridge English, Online English Classes, English for Kids, Private English Lessons, Language School, German Course, French Course, English Speaking Course, Foreign Language School">
+  <meta name="description"
+    content="Aydın Dil Akademisi - İngilizce, Almanca, Fransızca ve diğer yabancı dillerde kurslar. IELTS, TOEFL, YDS, YÖKDİL hazırlık. Online ve yüz yüze dersler. | Aydın Language Academy - English, German, French and more. IELTS, TOEFL, Cambridge prep. Online & in-class courses.">
   <!-- Favicon -->
   <link href="{{ asset('front/') }}/img/favicon.png" rel="icon">
 
@@ -32,6 +35,9 @@
 
   <!-- Template Stylesheet -->
   <link href="{{ asset('front/') }}/css/style.css" rel="stylesheet">
+
+  <!-- Google Verification Code -->
+  <meta name="google-site-verification" content="7NXy3461XMWn-gz3KPrBYvZEuokcmRnxDXoevfjsBpg" />
 </head>
 
 <body>

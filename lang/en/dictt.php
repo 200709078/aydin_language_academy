@@ -7,7 +7,7 @@ return [
     'home' => 'Home',
     'about' => 'About',
     'contact' => 'Contact',
-    'ala' => 'AYDIN LANGUAGE ACADEMY',
+    'ala' => 'AYDIN LANGUAGE ACADEMY | English Classes for Kids & Adults',
     'allrightreserved.' => 'All right reserved.',
     'links' => 'Links',
     'address' => 'Address',

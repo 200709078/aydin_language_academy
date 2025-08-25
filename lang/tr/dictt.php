@@ -7,7 +7,7 @@ return [
     'home' => 'Ana Sayfa',
     'about' => 'Hakkımızda',
     'contact' => 'İletişim',
-    'ala' => 'AYDIN DİL AKADEMİSİ',
+    'ala' => 'AYDIN DİL AKADEMİSİ | Çocuklar ve Yetişkinler için İngilizce Kursu', 
     'allrightreserved.' => 'Tüm hakları saklıdır.',
     'links' => 'Linkler',
     'address' => 'Adres',
