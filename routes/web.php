@@ -72,20 +72,16 @@ Route::group(['middleware' => ['auth', isAdmin_middle::class], 'prefix' => 'admi
     Route::put('question/{question_id}/update', [cont_questions::class, 'update'])->name('question_update');
 });
 
-Route::get('/', [cont_user_main::class, 'index'])->name('home');
-/* Route::get('courses',[cont_courses::class,'index'])->name('courses_list'); */
-Route::get('/course/{id}', [cont_courses::class, 'show'])->name('course_detail');
-
+Route::get('/', [cont_user_main::class, 'index'])->name('home'); //add
+Route::get('/course/{course_id}', [cont_courses::class, 'show'])->name('course_detail');
 Route::get('changeLanguage/{lang?}',[cont_language::class,'changeLanguage'])->name('changeLanguage');
-
-Route::get('about', [cont_user_main::class, 'about'])->name('about');
-Route::get('contact', [cont_user_main::class, 'contact'])->name('contact');
+Route::get('about', [cont_user_main::class, 'about'])->name('about'); //add
+Route::get('contact', [cont_user_main::class, 'contact'])->name('contact'); //add
 Route::post('/contactpost', [cont_user_main::class, 'contactpost'])->name('contactpost');
-/* Route::post('exercises/{id}/result', [cont_user_main::class, 'exercises_result'])->name('exercises.result'); */
+Route::get('tab1/{theme_id}', [cont_user_main::class, 'tab1'])->name('tab1'); //add
+Route::get('tab2/{theme_id}', [cont_user_main::class, 'tab2'])->name('tab2'); //add
+Route::get('{level_slug}/{sub_level_slug}', [cont_user_main::class, 'themes'])->name('themes'); //add
 
-Route::get('tab1/{theme_id}', [cont_user_main::class, 'tab1'])->name('tab1');
-Route::get('tab2/{theme_id}', [cont_user_main::class, 'tab2'])->name('tab2');
-
-Route::get('{level_slug}/{sub_level_slug}', [cont_user_main::class, 'themes'])->name('themes');
-Route::get('theme/{theme_id}/exercises', [cont_exercises::class, 'index'])->name('exercises');
+// Route::get('theme/{theme_id}/exercises', [cont_exercises::class, 'index'])->name('exercises'); 
+// Route::post('exercises/{id}/result', [cont_user_main::class, 'exercises_result'])->name('exercises.result'); 
 

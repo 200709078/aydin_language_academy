@@ -77,9 +77,9 @@ class cont_courses extends Controller
             ->with('modalSuccessContent', $modalSuccessContent);
     }
 
-    public function show(string $id)
+    public function show(string $course_id)
     {
-        $course = model_courses::findOrFail($id);
+        $course = model_courses::findOrFail($course_id);
         return view('front.course_detail', compact('course'));
     }
 
