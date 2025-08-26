@@ -77,6 +77,13 @@ class GenerateSitemap extends Command
                 ->setPriority(0.4));
         });
 
+/*         model_courses::all()->each(function (model_courses $course) use ($sitemap) {
+            $sitemap->add(Url::create(route('course_detail', $course->id))
+                ->setLastModificationDate($course->updated_at)
+                ->setChangeFrequency(url::CHANGE_FREQUENCY_WEEKLY)
+                ->setPriority(0.4));
+        }); */
+
         $sitemap->writeToFile(public_path('sitemap.xml'));
 
         $this->info('Generated sitemap...');

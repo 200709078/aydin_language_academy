@@ -13,6 +13,8 @@ use App\Models\model_themes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Lang;
+use Illuminate\Mail\Mailables\Content;
+use Illuminate\Mail\Mailables\Headers;
 
 class cont_user_main extends Controller
 {
@@ -49,10 +51,34 @@ class cont_user_main extends Controller
     }
     public function contact()
     {
-        return view('front.contact');
+        $modalSuccessTitle = null;
+        $modalSuccessContent = null;
+        return view('front.contact', compact(['modalSuccessTitle', 'modalSuccessContent']));
     }
     public function contactpost(Request $request)
     {
+
+        $request->validate([
+            'fullname' => 'required|min:3|max:100|',
+            'email' => 'required|email|',
+            'telephone' => 'digits:10|',
+            'subject' => 'required|min:3|max:150|',
+            'message' => 'required|min:10|max:2000|',
+        ], [
+            'fullname.required' => __('dictt.required_item', ['name' => __('dictt.fullname')]),
+            'fullname.min' => __('dictt.mincharacter_item', ['name' => __('dictt.fullname'), 'number' => 3]),
+            'fullname.max' => __('dictt.maxcharacter_item', ['name' => __('dictt.fullname'), 'number' => 100]),
+            'email.required' => __('dictt.required_item', ['name' => __('dictt.email')]),
+            'email.email' => __('dictt.emailvalidation_item', ['name' => __('dictt.email')]),
+            'telephone.digits' => __('dictt.digit_character_item', ['name' => __('dictt.phone'), 'number' => 10]),
+            'subject.required' => __('dictt.required_item', ['name' => __('dictt.subject')]),
+            'subject.min' => __('dictt.mincharacter_item', ['name' => __('dictt.subject'), 'number' => 3]),
+            'subject.max' => __('dictt.maxcharacter_item', ['name' => __('dictt.subject'), 'number' => 150]),
+            'message.required' => __('dictt.required_item', ['name' => __('dictt.message')]),
+            'message.min' => __('dictt.mincharacter_item', ['name' => __('dictt.message'), 'number' => 10]),
+            'message.max' => __('dictt.maxcharacter_item', ['name' => __('dictt.message'), 'number' => 2000]),
+        ]);
+
         $newMessage = new model_messages();
         $newMessage->fullname = $request->fullname;
         $newMessage->email = $request->email;
@@ -61,13 +87,41 @@ class cont_user_main extends Controller
         $newMessage->message = $request->message;
         $newMessage->save();
 
-        Mail::raw($request->message, function ($message) use ($request) {
-            $message->from($request->email, $request->fullname);
-            $message->to('ademvarol0808@hotmail.com', 'Adem VAROL');
-            $message->subject($request->subject);
+        Mail::send([], [], function ($message) use ($request) {
+            $message->to('learnenglishwithala@gmail.com', 'Adem VAROL')
+                ->subject($request->subject)
+                ->html(
+                    "<b>Ad Soyad:</b> {$request->fullname}<br>
+             <b>Email:</b> {$request->email}<br>
+             <b>Telefon:</b> {$request->telephone}<br><br>
+             <b>Mesaj:</b><br>" . nl2br(e($request->message))
+                );
         });
 
-        return redirect('contact')->with('success', Lang::get('dictt.messagesended'));
+        /*         Mail::send([], [], function ($message) use ($request) {
+                    $message->to('learnenglishwithala@gmail.com', 'Adem VAROL')
+                        ->subject($request->subject)
+                        ->setBody(
+                            "<b>Ad Soyad:</b> {$request->fullname}<br>
+                             <b>Email:</b> {$request->email}<br>
+                             <b>Telefon:</b> {$request->telephone}<br><br>
+                             <b>Mesaj:</b><br>" . nl2br(e($request->message)),
+                            'text/html'
+                        );
+                }); */
+
+        /*         Mail::raw($request->message, function ($message) use ($request) {
+                    $message->from($request->email, $request->fullname);
+                    $message->to('ademvarol0808@hotmail.com', 'Adem VAROL');
+                    $message->subject($request->subject);
+                }); */
+
+        $modalSuccessTitle = __('dictt.sendmessagesuccesstitle');
+        $modalSuccessContent = __('dictt.sendmessagesuccesscontent');
+
+        return redirect()->route('contact')
+            ->with('modalSuccessTitle', $modalSuccessTitle)
+            ->with('modalSuccessContent', $modalSuccessContent);
     }
 
     public function tab1($theme_id)
