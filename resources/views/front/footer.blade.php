@@ -14,7 +14,7 @@
               class="fab fa-instagram"></i></a>
           <a class="btn btn-outline-light btn-social rounded-circle"
             href="https://www.youtube.com/@AydınLanguageAcademy" target="_blank"><i class="fab fa-youtube"></i></a>
-          <a class="btn btn-outline-light btn-social rounded-circle" href="https://wa.me/905326666549?text=Selamlar"
+          <a class="btn btn-outline-light btn-social rounded-circle" href="https://wa.me/905059296191?text=Selamlar"
             target="_blank"><i class="bi bi-whatsapp"></i></a>
         </div>
       </div>
@@ -31,7 +31,7 @@
               class="fab fa-instagram"></i></a>
           <a class="btn btn-outline-light btn-social rounded-circle"
             href="https://www.youtube.com/@AydınLanguageAcademy" target="_blank"><i class="fab fa-youtube"></i></a>
-          <a class="btn btn-outline-light btn-social rounded-circle" href="https://wa.me/905326666549?text=Selamlar"
+          <a class="btn btn-outline-light btn-social rounded-circle" href="https://wa.me/905439106322?text=Selamlar"
             target="_blank"><i class="bi bi-whatsapp"></i></a>
         </div>
       </div>
