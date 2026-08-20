@@ -34,8 +34,7 @@ Seviye Tespit Sınavı
 Dökümanlar
 
 İlk dört sayfa public'tir. Seviye Tespit Sınavı ve Dökümanlar login gerektirir.
-
-Tasarım muhtemelen Lingua template'ini temel alacaktır; ancak kullanıcı başka template seçebilir. Template yalnızca görsel/tasarım kaynağıdır.
+Klinik Template yalnızca görsel/tasarım kaynağıdır. Mümkün olduğunca template ini eğitim template ine uyarla.
 
 4. Authentication akışı
 Public frontend
@@ -65,7 +64,7 @@ resources/views/frontend/
 ├── home.blade.php
 ├── achievements.blade.php
 ├── campaigns.blade.php
-├── trainigns.blade.php
+├── trainings.blade.php
 └── branches.blade.php
 
 public/frontend/

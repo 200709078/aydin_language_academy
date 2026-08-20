@@ -13,6 +13,7 @@ use App\Http\Middleware\isAdmin_middle;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => 'auth'], function () {
+    Route::view('/dashboard', 'dashboard')->name('dashboard');
     Route::get('exercises/detail/{slug}', [cont_user_main::class, 'exercises_detail'])->name('exercises.detail');
     Route::get('exercises/{slug}', [cont_user_main::class, 'exercises_join'])->name('exercises.join');
     Route::post('exercises/{slug}/result', [cont_user_main::class, 'exercises_result'])->name('exercises.result');
