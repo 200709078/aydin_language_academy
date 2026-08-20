@@ -26,7 +26,7 @@ Yeni ziyaretçi sitesi mevcut uygulamadan izole geliştirilecektir.
 
 Ana menü:
 Ana Sayfa
-Eğitimlerimiz
+Kurslarımız
 Başarılarımız
 Kampanyalarımız
 Şubelerimiz
@@ -126,7 +126,7 @@ Gereksiz over-engineering yapma.
 Hedef yaklaşık olarak:
 /                       → yeni public ana sayfa
 /basarilarimiz          → public
-/kurslarımız            → public
+/kurslarimiz            → public
 /kampanyalarimiz        → public
 /subelerimiz            → public
 /seviye-tespit-sinavi   → auth gerekli
