@@ -9,6 +9,7 @@ use App\Http\Controllers\cont_sub_levels;
 use App\Http\Controllers\cont_themes;
 use App\Http\Controllers\cont_user_main;
 use App\Http\Middleware\isAdmin_middle;
+use App\Support\FrontendReturnRoutes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -91,32 +92,19 @@ Route::view('/basarilarimiz', 'frontend.achievements')->name('frontend.achieveme
 Route::view('/kampanyalarimiz', 'frontend.campaigns')->name('frontend.campaigns');
 /*
 |--------------------------------------------------------------------------
-| Yeni Public Frontend — Üyelik Formu Önizlemesi
+| Yeni Public Frontend — Üyelik Formu
 |--------------------------------------------------------------------------
 |
-| Bu rota yalnızca yeni üyelik formunun görsel önizlemesini sunar.
-| Form gönderimi ve kullanıcı verisi kaydı bu aşamada etkin değildir.
-|
-*/
-Route::view('/uye-ol', 'frontend.register-preview')->name('frontend.register.preview');
-/*
-|--------------------------------------------------------------------------
-| Yeni Public Frontend — Üyelik Formu Önizlemesi Sonu
-|--------------------------------------------------------------------------
-*/
-/*
-|--------------------------------------------------------------------------
-| Yeni Public Frontend — Giriş Formu Önizlemesi
-|--------------------------------------------------------------------------
-|
-| Bu rota yalnızca yeni giriş formunun görsel önizlemesini sunar.
-| Mevcut /login ve Fortify giriş işlemi bu aşamada değiştirilmez.
+| /uye-ol, mevcut Fortify kayıt ekranıyla aynı üyelik görünümünü sunar.
+| Form gönderimi mevcut /register rotası üzerinden yapılır.
 |
 */
-Route::view('/giris-onizleme', 'frontend.login-preview')->name('frontend.login.preview');
+Route::view('/uye-ol', 'frontend.auth.register')
+    ->middleware('guest')
+    ->name('frontend.register');
 /*
 |--------------------------------------------------------------------------
-| Yeni Public Frontend — Giriş Formu Önizlemesi Sonu
+| Yeni Public Frontend — Üyelik Formu Sonu
 |--------------------------------------------------------------------------
 */
 /*
@@ -176,26 +164,10 @@ Route::get('/giris', function (Request $request) {
         return redirect()->route('home');
     }
 
-    $returnRoute = $request->query('return');
-    $publicRoutes = [
-        'home' => 'home',
-        'frontend.achievements' => 'frontend.achievements',
-        'frontend.campaigns' => 'frontend.campaigns',
-        'frontend.register.preview' => 'frontend.register.preview',
-        'frontend.login.preview' => 'frontend.login.preview',
-        'frontend.trainings.preschool' => 'frontend.trainings.preschool',
-        'frontend.trainings.primary-school' => 'frontend.trainings.primary-school',
-        'frontend.trainings.middle-school' => 'frontend.trainings.middle-school',
-        'frontend.trainings.high-school' => 'frontend.trainings.high-school',
-        'frontend.trainings.adults' => 'frontend.trainings.adults',
-        'frontend.branches.ortaca' => 'frontend.branches.ortaca',
-        'frontend.branches.dalaman' => 'frontend.branches.dalaman',
-        'frontend.branches.koycegiz' => 'frontend.branches.koycegiz',
-        'frontend.preview.home' => 'frontend.preview.home',
-    ];
+    $returnRoute = FrontendReturnRoutes::resolve($request->query('return'));
 
-    if (is_string($returnRoute) && array_key_exists($returnRoute, $publicRoutes)) {
-        $request->session()->put('url.intended', route($publicRoutes[$returnRoute], absolute: false));
+    if ($returnRoute) {
+        $request->session()->put('url.intended', route($returnRoute, absolute: false));
     }
 
     return redirect()->route('login');

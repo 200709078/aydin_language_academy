@@ -36,7 +36,7 @@
 <body>
     @include('frontend.partials.header')
 
-    <!-- Registration Preview Start -->
+    <!-- Registration Start -->
     <div class="container-xxl py-5">
         <div class="container">
             <div class="row g-5 align-items-center">
@@ -49,40 +49,65 @@
                 <div class="col-lg-7 wow fadeInUp" data-wow-delay="0.5s">
                     <div class="bg-light rounded h-100 p-5">
                         <h4 class="mb-4">Üyelik Bilgileri</h4>
-                        <div role="group" aria-describedby="registration-preview-note">
+
+                        @if (isset($errors) && $errors->any())
+                            <div class="alert alert-danger" role="alert">
+                                <ul class="mb-0 ps-3">
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+
+                        <form method="POST" action="{{ route('register') }}">
+                            @csrf
+
                             <div class="row g-3">
                                 <div class="col-12">
                                     <label class="form-label" for="name">Ad Soyad</label>
-                                    <input id="name" class="form-control border-0" type="text" name="name" autocomplete="name" style="height: 55px;">
+                                    <input id="name" class="form-control border-0" type="text" name="name" value="{{ old('name') }}" required autofocus autocomplete="name" style="height: 55px;">
                                 </div>
                                 <div class="col-12">
                                     <label class="form-label" for="email">E-posta Adresi</label>
-                                    <input id="email" class="form-control border-0" type="email" name="email" autocomplete="email" style="height: 55px;">
+                                    <input id="email" class="form-control border-0" type="email" name="email" value="{{ old('email') }}" required autocomplete="username" style="height: 55px;">
                                 </div>
                                 <div class="col-12">
                                     <label class="form-label" for="phone">Telefon Numarası</label>
-                                    <input id="phone" class="form-control border-0" type="tel" name="phone" autocomplete="tel" style="height: 55px;">
+                                    <input id="phone" class="form-control border-0" type="tel" name="phone" value="{{ old('phone') }}" required autocomplete="tel" inputmode="tel" maxlength="32" style="height: 55px;">
                                 </div>
                                 <div class="col-12 col-sm-6">
                                     <label class="form-label" for="password">Şifre</label>
-                                    <input id="password" class="form-control border-0" type="password" name="password" autocomplete="new-password" style="height: 55px;">
+                                    <input id="password" class="form-control border-0" type="password" name="password" required autocomplete="new-password" style="height: 55px;">
                                 </div>
                                 <div class="col-12 col-sm-6">
                                     <label class="form-label" for="password_confirmation">Şifre Tekrarı</label>
-                                    <input id="password_confirmation" class="form-control border-0" type="password" name="password_confirmation" autocomplete="new-password" style="height: 55px;">
+                                    <input id="password_confirmation" class="form-control border-0" type="password" name="password_confirmation" required autocomplete="new-password" style="height: 55px;">
                                 </div>
+                                @if (Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())
+                                    <div class="col-12">
+                                        <div class="form-check">
+                                            <input id="terms" class="form-check-input" type="checkbox" name="terms" required>
+                                            <label class="form-check-label" for="terms">
+                                                <a href="{{ route('terms.show') }}" target="_blank">Kullanım Koşulları</a> ve
+                                                <a href="{{ route('policy.show') }}" target="_blank">Gizlilik Politikası</a> metinlerini kabul ediyorum.
+                                            </label>
+                                        </div>
+                                    </div>
+                                @endif
                                 <div class="col-12">
-                                    <button class="btn btn-primary w-100 py-3" type="button">Üye Ol</button>
+                                    <button class="btn btn-primary w-100 py-3" type="submit">Üye Ol</button>
                                 </div>
                             </div>
-                        </div>
-                        <p id="registration-preview-note" class="small text-muted mb-0 mt-3">Bu önizleme aşamasında bilgiler kaydedilmez.</p>
+                        </form>
+
+                        <p class="text-center mb-0 mt-3">Hesabın var mı? <a href="{{ route('login') }}">Giriş Yap</a></p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- Registration Preview End -->
+    <!-- Registration End -->
 
     @include('frontend.partials.footer')
 
