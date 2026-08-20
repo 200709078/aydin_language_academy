@@ -17,6 +17,11 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'admin' => isAdmin_middle::class
         ]);
+        $middleware->redirectUsersTo(function () {
+            return auth()->user()?->type === 'admin'
+                ? route('admin')
+                : route('home');
+        });
         $middleware->web(append: [
             mid_language::class
         ]);

@@ -177,10 +177,19 @@ Kaynak paketi ile repository çelişirse çalışan mevcut uygulamayı koru ve �
 3. Kurslarımız
 4. Kampanyalarımız
 5. Şubelerimiz
-6. Seviye Tespit Sınavı - giriş/auth akışı
+6. Seviye Tespit Sınavları - giriş/auth akışı
 7. Dökümanlar - giriş/auth akışı
 
+Sayfaları teker teker oluştur ve oluşturulan sayfanın kullanıcı tarafından teyit edilmesini bekle. Teyit edildikten sonra kullanıcı onay vermeden veya talep etmeden diğer sayfayı oluşturmaya geçme.
 Mevcut Level/Sub Level/Theme/Exercise/Question alanlarını ayrıca istenmedikçe yeniden tasarlama.
+
+Sistemde üç tür kullanıcı var. 
+1) Login gerektirmeyen kullanıcı:
+Ana Sayfa, Başarılarımız, Kurslarımız, Kampanyalarımız, Şubelerimiz sayfalarına ulaşabilir.
+2) Login gerektiren kullanıcı:
+Ana Sayfa, Başarılarımız, Kurslarımız, Kampanyalarımız, Şubelerimiz sayfaları ile birlikte Seviye Tespit Sınavları sayfalarına da ulaşabilir.
+3) Admin Kullanıcı:
+/admin ile admin panel de dahil bütün sayfalara ulaşabilir.
 
 15. Başarı kriterleri
 Mevcut ALA ve admin paneli eskisi gibi çalışır.

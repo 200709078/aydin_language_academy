@@ -1,0 +1,52 @@
+    <!-- Footer Start -->
+    <div class="container-fluid bg-dark text-light footer mt-5 pt-5 wow fadeIn" data-wow-delay="0.1s">
+        <div class="container py-5">
+            <div class="row g-5">
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="text-light mb-4">Ortaca</h5>
+                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>Atatürk Mahallesi Eski Postane Karşısı No:10 Ortaca/Muğla</p>
+                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>(505) 929 6191</p>
+                    <p class="mb-2 small text-nowrap"><i class="fa fa-envelope me-2"></i>ortaca@learnenglishwithala.com</p>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="text-light mb-4">Dalaman</h5>
+                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>Karaçalı, Şehit Hamza Atakul Cad No:39-A Dalaman/Muğla</p>
+                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>(505) 929 6192</p>
+                    <p class="mb-2 small text-nowrap"><i class="fa fa-envelope me-2"></i>dalaman@learnenglishwithala.com</p>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="text-light mb-4">Köyceğiz</h5>
+                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>Cumhuriyet Mahallesi Köyceğiz/Muğla</p>
+                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>(505) 929 6193</p>
+                    <p class="mb-2 small text-nowrap"><i class="fa fa-envelope me-2"></i>koycegiz@learnenglishwithala.com</p>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="text-light mb-4">Hızlı Bağlantılar</h5>
+                    <a class="btn btn-link" href="{{ route('home') }}">Ana Sayfa</a>
+                    <a class="btn btn-link" href="{{ route('frontend.trainings.preschool') }}">Kurslarımız</a>
+                    <a class="btn btn-link" href="{{ route('frontend.achievements') }}">Başarılarımız</a>
+                    <a class="btn btn-link" href="{{ route('frontend.campaigns') }}">Kampanyalarımız</a>
+                    <a class="btn btn-link" href="{{ route('frontend.branches.ortaca') }}">Şubelerimiz</a>
+                </div>
+            </div>
+            <div class="d-flex justify-content-center pt-4">
+                <a class="btn btn-outline-light btn-social rounded-circle" href="https://www.youtube.com/@Ayd%C4%B1nLanguageAcademy" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><i class="fab fa-youtube" aria-hidden="true"></i></a>
+                <a class="btn btn-outline-light btn-social rounded-circle" href="https://www.instagram.com/aydindilakademisidalaman?igsh=MTVjaXl2eDJ2MjJwYg==" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+                <a class="btn btn-outline-light btn-social rounded-circle me-0" href="https://wa.me/905059296191" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><i class="fab fa-whatsapp" aria-hidden="true"></i></a>
+            </div>
+        </div>
+        <div class="container">
+            <div class="copyright">
+                <div class="row">
+                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                        &copy; <a class="border-bottom" href="{{ route('home') }}">Aydın Language Academy</a>, All Right Reserved.
+                    </div>
+                    <div class="col-md-6 text-center text-md-end">
+                        <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
+                        Designed By <a class="border-bottom" href="https://htmlcodex.com">HTML Codex</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer End -->

@@ -5,28 +5,30 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center mt-2 ml-2" style="width: 50px; height: 50px;">
-                    <a href="{{ route('home') }}">
+                    <a href="{{ Auth::user()->type === 'admin' ? route('admin') : route('home') }}">
                         <img src="{{ asset('front/') }}/img/favicon.png" alt="AYDIN LANGUAGE ACADEMY"
                             style="width: 50px; height: 50px;">
                         <!-- <x-application-mark class="block h-9 w-auto" /> -->
                     </a>
                 </div>
 
-                <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link href="{{ route('levels_list') }}" :active="request()->routeIs('levels_list')">
-                        {{ __('dictt.levels') }}
-                    </x-nav-link>
-                    <x-nav-link href="{{ route('sub_levels_list') }}" :active="request()->routeIs('sub_levels_list')">
-                        {{ __('dictt.sublevels') }}
-                    </x-nav-link>
-                    <x-nav-link href="{{ route('themes_list') }}" :active="request()->routeIs('themes_list')">
-                        {{ __('dictt.themes') }}
-                    </x-nav-link>
-                    <x-nav-link href="{{ route('courses_list') }}" :active="request()->routeIs('courses_list')">
-                        {{ __('dictt.courses') }}
-                    </x-nav-link>
-                </div>
+                @if (Auth::user()->type === 'admin')
+                    <!-- Navigation Links -->
+                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                        <x-nav-link href="{{ route('levels_list') }}" :active="request()->routeIs('levels_list')">
+                            {{ __('dictt.levels') }}
+                        </x-nav-link>
+                        <x-nav-link href="{{ route('sub_levels_list') }}" :active="request()->routeIs('sub_levels_list')">
+                            {{ __('dictt.sublevels') }}
+                        </x-nav-link>
+                        <x-nav-link href="{{ route('themes_list') }}" :active="request()->routeIs('themes_list')">
+                            {{ __('dictt.themes') }}
+                        </x-nav-link>
+                        <x-nav-link href="{{ route('courses_list') }}" :active="request()->routeIs('courses_list')">
+                            {{ __('dictt.courses') }}
+                        </x-nav-link>
+                    </div>
+                @endif
             </div>
 
             <div class="hidden sm:flex sm:items-center sm:ms-6">
@@ -112,15 +114,17 @@
                         </x-slot>
 
                         <x-slot name="content">
-                            <!-- Site Settings Start -->
-                            <div class="block px-4 py-2 text-xs text-gray-400">
-                                {{ __('dictt.sitemanage') }}
-                            </div>
+                            @if (Auth::user()->type === 'admin')
+                                <!-- Site Settings Start -->
+                                <div class="block px-4 py-2 text-xs text-gray-400">
+                                    {{ __('dictt.sitemanage') }}
+                                </div>
 
-                            <x-dropdown-link href="{{ route('settings_list') }}">
-                                {{ __('dictt.settings') }}
-                            </x-dropdown-link>
-                            <!-- Site Settings End -->
+                                <x-dropdown-link href="{{ route('settings_list') }}">
+                                    {{ __('dictt.settings') }}
+                                </x-dropdown-link>
+                                <!-- Site Settings End -->
+                            @endif
 
                             <!-- Account Management -->
                             <div class="block px-4 py-2 text-xs text-gray-400">
