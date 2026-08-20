@@ -100,13 +100,13 @@ ALA-FRONTEND/
     └── website-template/
 
 TEMPLATE
-Ham HTML template'i referanstır; nihai Laravel yapısı değildir. Dosyaları körlemesine public/ altına kopyalama. Önce gerçekten gereken asset/component'leri belirle.
+Ham HTML template'i referanstır; nihai Laravel yapısı değildir. Dosyaları körlemesine public/ altına kopyalama. Önce gerçekten gereken asset/component'leri belirle. Eksik olan sayfaları template içerisindeki uygun olan sayfalardan seç.
 
 CONTENT
 Kullanıcının sayfa metinleridir. home.txt vb. içerik brief'i olarak kullanılır. Kullanıcı istemedikçe metinlerin yerine yeni pazarlama metni uydurma. .txt dosyalarını runtime CMS/veri kaynağına dönüştürme.
 
 ASSETS
-Logo, fotoğraf, kampanya, şube, başarı vb. kullanıcı görselleridir. Uygun kullanıcı görseli varsa stok template görseline tercih et. Nihai kullanılan asset'leri public/frontend/ altına düzenli biçimde taşı ve Blade'de asset() kullan. Eğer template görseline alternatif uygun bir görsel bulunamazsa o bölgeye uygun isimle boş bir image dosyası oluşturarak ekle. Daha sonra bu kısma içeriğe uygun görsel temin edilecektir.
+Logo, fotoğraf, kampanya, şube, başarı vb. kullanıcı görselleridir. Uygun kullanıcı görseli varsa stok template görseline tercih et. Nihai kullanılan asset'leri public/frontend/ altına düzenli biçimde taşı ve Blade'de asset() kullan. Eğer template görseline alternatif uygun bir görsel bulunamazsa o bölgeye uygun isimle boş bir image dosyası oluşturarak ekle yada orijinalini bırak. Daha sonra bu kısma içeriğe uygun görsel temin edilecektir.
 
 7. Template dönüşüm kuralları
 Tekrarlanan yapıları Blade layout/partial'larına ayır.

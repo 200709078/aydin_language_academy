@@ -52,7 +52,7 @@
         </div>
         <div class="col-md-6 text-center text-md-end">
           <a class="border-none" href="{{ route('levels_list') }}" target="_blank">&copy; </a>
-          Designed By <a class="border-bottom" href="https://www.madematik.com" target="_blank">mADEMatik</a>
+          Designed By <a class="border-bottom" href="https://htmlcodex.com">HTML Codex</a>
         </div>
       </div>
     </div>
