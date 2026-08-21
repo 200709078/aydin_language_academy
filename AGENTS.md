@@ -33,13 +33,13 @@ Kampanyalarımız
 Seviye Tespit Sınavı
 Dökümanlar
 
-İlk dört sayfa public'tir. Seviye Tespit Sınavı ve Dökümanlar login gerektirir.
+İlk beş sayfa public'tir. Seviye Tespit Sınavı'nın tanıtım sayfası public olabilir; sınavı başlatma, sınav kaydı ve sonuçlar login gerektirir. Dökümanlar login gerektirir.
 Klinik Template yalnızca görsel/tasarım kaynağıdır. Mümkün olduğunca template ini eğitim template ine uyarla.
 
 4. Authentication akışı
 Public frontend
     ↓
-Seviye Tespit Sınavı / Dökümanlar
+Seviye Tespit Sınavını Başlat / Dökümanlar
     ↓
 Giriş yapılmış mı?
     ├── Evet → belirlenen mevcut ALA üye sayfası
@@ -54,6 +54,52 @@ Giriş yapılmış mı?
 Login sonrası kesin hedef sayfa daha sonra kullanıcı tarafından belirlenecek. Route/hedef uydurma.
 
 Seviye Tespit Sınavı'nın kendisi ayrıca/daha sonra geliştirilecektir.
+
+Seviye Tespit Sınavı için girişsiz ziyaretçiye yalnız tanıtım/yer tutucu içerik gösterilebilir; sınavı başlatma, sınav kaydı ve sonucu görüntüleme giriş gerektirir. Mevcut legacy exercise sistemi yeni sınav sisteminin çalışan altyapısı olarak kabul edilmez.
+
+4.1 Seviye Tespit Sınavı — kalıcı domain ve veri katmanı kuralları
+Bu özellik üyelik gerektirir ve mevcut legacy exercise sisteminden bağımsızdır. Kullanıcı açıkça istemedikçe bu aşamada yalnız migration, model, ilişki, index/constraint, seviye seed'i ve bunlarla doğrudan ilgili güvenli doğrulamalar yapılır; controller, route, frontend, admin ekranı, sınav ekranı, authorization değişikliği veya sınav başlatma servisi yapılmaz.
+
+Temel seviye ve sonuç kuralları:
+
+- CEFR seviyeleri A1 → A2 → B1 → B2 → C1 → C2 sırasındadır. Sınav yalnız A1, A2, B1, B2 ve C1 için vardır; C2 için sınav yoktur.
+- C1 sınavından success alan kullanıcının nihai seviyesi C2 olur. Başarısız olunan ilk sınav seviyesi, kullanıcının nihai seviyesidir.
+- Her seviyenin soru sayısı ve geçme yüzdesi admin tarafından değiştirilebilir. Soru sayıları kod içine hard-code edilmez; A1–C1 için question_count nullable tutulur. C2 istisnası has_exam=false, question_count=0 ve pass_percentage=NULL'dır.
+- Başarı formülü score_percentage = correct_count / question_count_snapshot * 100 şeklindedir. score_percentage, pass_percentage_snapshot değerine eşit ya da büyükse success, aksi durumda unsuccess olur.
+- Yanlış ve boş cevapların negatif puanı yoktur. Yarım bırakılan sınavda cevaplanmamış sorular blank sayılır; yeterli doğru varsa yine success mümkündür.
+- Attempt, admin tarafından approved edilene kadar yeni attempt başlatılamaz. Bu iş kuralı ileride controller/service katmanında uygulanır; veri modeli bunu desteklemelidir.
+
+Veri sözleşmesi:
+
+- placement_test_levels: code ve sequence benzersiz; question_count negatif olmayacak unsigned türde; pass_percentage decimal; has_exam ve is_active alanları bulunur.
+- placement_test_questions: placement_test_level_id, question_text ve is_active içerir. Master soruda global order alanı bulunmaz; soru sırası her attempt'te belirlenir. C2'ye soru atama uygulama katmanında engellenir.
+- placement_test_question_options: placement_test_question_id, option_text, display_position ve is_correct içerir. Şıkların görüntüleme sırası sabittir; aynı soru altında display_position benzersizdir. Şık sayısı hard-code edilmez.
+- placement_tests: user_id, status, nullable result_level_id, started_at, nullable submitted_at/approved_at ve nullable approved_by içerir. Status yalnız in_progress, pending_approval ve approved yaşam döngüsünü destekler; kullanıcı + status sorgusu için index bulunur.
+- placement_test_level_results: her placement_test + level çifti için tek kayıttır. question_count_snapshot, pass_percentage_snapshot, correct_count, wrong_count, blank_count, score_percentage, result, started_at ve nullable completed_at saklar. Result yalnız success veya unsuccess değerini destekler.
+- placement_test_level_questions: atanan soru için nullable master soru FK'si, attempt içi display_position, question_text_snapshot, options_snapshot JSON, correct_option_snapshot, nullable selected_option, answer_status ve nullable answered_at saklar. Aynı level result içinde display_position benzersizdir. Snapshot'taki seçenekler en az position ve text bilgisini içerir; doğru/seçili seçenekler master option tablosuna ihtiyaç duymadan bu konumu tanımlar.
+
+İlişkiler, geçmiş ve silme politikası:
+
+- PlacementTestLevel hasMany questions ve levelResults; PlacementTestQuestion belongsTo level ve hasMany options; PlacementTestQuestionOption belongsTo question.
+- PlacementTest belongsTo user, resultLevel ve approver; hasMany levelResults. PlacementTestLevelResult belongsTo placementTest ve level; hasMany levelQuestions. PlacementTestLevelQuestion belongsTo levelResult ve özgün/master soruya, kayıt hâlâ mevcutsa, bağlanır.
+- Master soru/seçenek değişse, pasife alınsa veya silinse bile geçmiş sınav sonucu değişmemeli ya da kaybolmamalıdır. Snapshot kayıtları geçmişin asıl kaynağıdır; master soru bağı yalnız yardımcıdır.
+- PlacementTestLevelQuestion içindeki master soru FK'si nullable/nullOnDelete olmalı; geçmiş snapshot kayıtlarını silmeyecek şekilde tasarlanmalıdır. Kullanıcı ve approver silinirse sınav geçmişi kalacak biçimde nullable/nullOnDelete ilişki kullanılır.
+- Tarihçe zinciri ve master seviye/soru ilişkilerinde cascade delete kullanma. Kullanıcıları, sınav geçmişini veya sonuçları yanlışlıkla silebilecek ilişki kurma. Projede soft delete yaklaşımı varsa önce incele ve onunla uyumlu davran.
+- Mevcut User modeline yalnız placementTests ve approvedPlacementTests gibi gerçekten gerekli ilişkileri ekle; fillable, auth ve kullanıcı türü davranışını değiştirme.
+- PHP enum proje standardı yoksa yalnız bu özellik için enum mimarisi kurma. JSON snapshot alanlarına array, tarih/saat alanlarına datetime ve sayı/yüzde alanlarına uygun cast tanımla.
+
+Seed kuralları:
+
+- A1, A2, B1, B2, C1 ve C2 seviyelerini ayrı ve idempotent bir seeder oluşturur. Aynı seeder tekrar çalıştığında duplicate kayıt oluşturmaz veya adminin sonradan değiştirdiği ayarları ezmez.
+- A1–C1: sequence sırasıyla 1–5, has_exam=true, is_active=true, question_count=NULL, pass_percentage=60. C2: sequence=6, has_exam=false, is_active=true, question_count=0, pass_percentage=NULL.
+- Mevcut DatabaseSeeder'ı çalıştırma/değiştirme; soru veya seçenek içerikleri verilmedikçe soru/şık seed etme.
+
+Migration ve doğrulama güvenliği:
+
+- Mevcut migration dosyalarını değiştirme; yalnız yeni migration dosyaları oluştur. Mevcut verileri silme ve MariaDB/MySQL uyumluluğunu koru. Uzun placement-table constraint adlarını MariaDB/MySQL'nin 64 karakter sınırını aşmayacak açık, kısa adlarla tanımla.
+- Kullanıcı açıkça onaylamadıkça migrate, db, database reset veya drop database komutlarını çalıştırma. Onaylı migration yalnız kapsamındaki pending migration'ları çalıştırır; reset/drop veya mevcut veriyi silme kesinlikle yapılmaz.
+- Doğrulamada güvenli migration syntax/schema kontrolü ve model syntax kontrolü kullan. Yerel MariaDB'yi sıfırlayan veya değiştiren test komutları çalıştırılmaz; bunun için izole bir test veritabanı gerekir.
+- Bu kapsam tamamlandığında dosyaları, tabloları, önemli foreign key/unique constraint'leri, snapshot yapısını, status/result alanlarını, seed yaklaşımını, çalıştırılan doğrulamaları ve açık teknik sorunları kısa ve somut olarak raporla. Kapsam dışı özellik geliştirme ve burada dur.
 
 5. Yeni frontend'i izole tut
 
@@ -129,7 +175,7 @@ Hedef yaklaşık olarak:
 /kurslarimiz            → public
 /kampanyalarimiz        → public
 /subelerimiz            → public
-/seviye-tespit-sinavi   → auth gerekli
+/seviye-tespit-sinavi   → public tanıtım; sınavı başlatma/sonuç auth gerekli
 /dokumanlar             → auth gerekli
 
 Kullanıcı final geçişi açıkça onaylamadan mevcut / route'unu veya mevcut home route'unu değiştirme.
@@ -185,9 +231,9 @@ Mevcut Level/Sub Level/Theme/Exercise/Question alanlarını ayrıca istenmedikç
 
 Sistemde üç tür kullanıcı var. 
 1) Login gerektirmeyen kullanıcı:
-Ana Sayfa, Başarılarımız, Kurslarımız, Kampanyalarımız, Şubelerimiz sayfalarına ulaşabilir.
+Ana Sayfa, Başarılarımız, Kurslarımız, Kampanyalarımız, Şubelerimiz ve Seviye Tespit Sınavı'nın tanıtım sayfasına ulaşabilir.
 2) Login gerektiren kullanıcı:
-Ana Sayfa, Başarılarımız, Kurslarımız, Kampanyalarımız, Şubelerimiz sayfaları ile birlikte Seviye Tespit Sınavları sayfalarına da ulaşabilir.
+Ana Sayfa, Başarılarımız, Kurslarımız, Kampanyalarımız, Şubelerimiz sayfaları ile birlikte Seviye Tespit Sınavı'nı başlatma, sınav kayıtları ve sonuçlarına da ulaşabilir.
 3) Admin Kullanıcı:
 /admin ile admin panel de dahil bütün sayfalara ulaşabilir.
 

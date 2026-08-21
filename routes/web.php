@@ -90,6 +90,8 @@ Route::redirect('/dashboard', '/admin')
 Route::view('/', 'frontend.home')->name('home');
 Route::view('/basarilarimiz', 'frontend.achievements')->name('frontend.achievements');
 Route::view('/kampanyalarimiz', 'frontend.campaigns')->name('frontend.campaigns');
+Route::view('/seviye-tespit-sinavi', 'frontend.placement-test')
+    ->name('frontend.placement-test');
 /*
 |--------------------------------------------------------------------------
 | Yeni Public Frontend — Üyelik Formu

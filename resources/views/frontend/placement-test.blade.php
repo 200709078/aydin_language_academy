@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 
 <head>
     <meta charset="utf-8">
-    <title>Başarılarımız | Aydın Language Academy</title>
+    <title>Seviye Tespit Sınavı | Aydın Language Academy</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -24,7 +24,7 @@
     <!-- Libraries Stylesheet -->
     <link href="lib/animate/animate.min.css" rel="stylesheet">
     <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-    <link href="lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+    <link href="lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet">
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -36,21 +36,24 @@
 <body>
     @include('frontend.partials.header')
 
-    <!-- Achievements Start -->
+    <!-- Placement Test Start -->
     <div class="container-xxl py-5">
         <div class="container">
-            <div class="row g-5">
-                <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
-                    <img class="img-fluid rounded w-100" src="{{ asset('frontend/images/whoweare.png') }}" alt="Başarılarımız">
-                </div>
-                <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
-                    <h1 class="mb-4">Başarılarımız</h1>
-                    <p>BURADA BAŞARILARIMIZ OLACAK.</p>
+            <div class="row justify-content-center">
+                <div class="col-lg-8 wow fadeIn" data-wow-delay="0.1s">
+                    <div class="bg-light rounded p-5 text-center">
+                        <h1 class="mb-4">Seviye Tespit Sınavı</h1>
+                        @auth
+                            <p class="mb-0">Hoş geldin {{ auth()->user()->name }}</p>
+                        @else
+                            <p class="mb-0">İçeriği görmek için lütfen giriş yapınız.</p>
+                        @endauth
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- Achievements End -->
+    <!-- Placement Test End -->
 
     @include('frontend.partials.footer')
 
