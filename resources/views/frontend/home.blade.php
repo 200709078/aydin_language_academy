@@ -66,7 +66,7 @@
             </div>
             <div class="row g-4">
                 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="service-item bg-light rounded h-100 p-5 d-flex align-items-center">
+                    <div class="service-item bg-light rounded h-100 p-4 d-flex align-items-center">
                         <div class="d-inline-flex flex-shrink-0 align-items-center justify-content-center bg-white rounded-circle me-4" style="width: 65px; height: 65px;">
                             <i class="fa fa-graduation-cap text-primary fs-4"></i>
                         </div>
@@ -74,7 +74,7 @@
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
-                    <div class="service-item bg-light rounded h-100 p-5 d-flex align-items-center">
+                    <div class="service-item bg-light rounded h-100 p-4 d-flex align-items-center">
                         <div class="d-inline-flex flex-shrink-0 align-items-center justify-content-center bg-white rounded-circle me-4" style="width: 65px; height: 65px;">
                             <i class="fa fa-graduation-cap text-primary fs-4"></i>
                         </div>
@@ -82,7 +82,7 @@
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
-                    <div class="service-item bg-light rounded h-100 p-5 d-flex align-items-center">
+                    <div class="service-item bg-light rounded h-100 p-4 d-flex align-items-center">
                         <div class="d-inline-flex flex-shrink-0 align-items-center justify-content-center bg-white rounded-circle me-4" style="width: 65px; height: 65px;">
                             <i class="fa fa-graduation-cap text-primary fs-4"></i>
                         </div>
@@ -90,7 +90,7 @@
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="service-item bg-light rounded h-100 p-5 d-flex align-items-center">
+                    <div class="service-item bg-light rounded h-100 p-4 d-flex align-items-center">
                         <div class="d-inline-flex flex-shrink-0 align-items-center justify-content-center bg-white rounded-circle me-4" style="width: 65px; height: 65px;">
                             <i class="fa fa-graduation-cap text-primary fs-4"></i>
                         </div>
@@ -98,7 +98,7 @@
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
-                    <div class="service-item bg-light rounded h-100 p-5 d-flex align-items-center">
+                    <div class="service-item bg-light rounded h-100 p-4 d-flex align-items-center">
                         <div class="d-inline-flex flex-shrink-0 align-items-center justify-content-center bg-white rounded-circle me-4" style="width: 65px; height: 65px;">
                             <i class="fa fa-graduation-cap text-primary fs-4"></i>
                         </div>
@@ -106,7 +106,7 @@
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
-                    <div class="service-item bg-light rounded h-100 p-5 d-flex align-items-center">
+                    <div class="service-item bg-light rounded h-100 p-4 d-flex align-items-center">
                         <div class="d-inline-flex flex-shrink-0 align-items-center justify-content-center bg-white rounded-circle me-4" style="width: 65px; height: 65px;">
                             <i class="fa fa-graduation-cap text-primary fs-4"></i>
                         </div>

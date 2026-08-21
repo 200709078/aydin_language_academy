@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 
 <head>
     <meta charset="utf-8">
-    <title>Klinik - Clinic Website Template</title>
+    <title>Kampanyalarımız | Aydın Language Academy</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -39,13 +39,53 @@
     <!-- Campaigns Start -->
     <div class="container-xxl py-5">
         <div class="container">
-            <div class="row g-5">
-                <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
-                    <img class="img-fluid rounded w-100" src="{{ asset('frontend/images/whoweare.png') }}" alt="Kampanyalarımız">
+            <div class="row g-5 align-items-center mb-5">
+                <div class="col-lg-7 wow fadeIn" data-wow-delay="0.1s">
+                    <h1 class="mb-0">Kaçırılamayacak Fırsatlar ve Kampanyalarımız!</h1>
                 </div>
-                <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
-                    <h1 class="mb-4">Kampanyalarımız</h1>
-                    <p>BURADA KAMPANYALARIMIZ OLACAK.</p>
+                <div class="col-lg-5 wow fadeIn" data-wow-delay="0.5s">
+                    <div class="text-center">
+                        <img class="img-fluid" src="{{ asset('frontend/images/campaigns/campaign-1.png') }}" alt="Yabancı dil eğitimi kampanyaları" style="max-height: 360px;">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-lg-6 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="service-item bg-light rounded h-100 p-5">
+                        <div class="d-inline-flex align-items-center justify-content-center bg-white rounded-circle mb-4" style="width: 65px; height: 65px;">
+                            <img src="{{ asset('frontend/images/campaigns/teachings.png') }}" alt="" style="width: 42px; height: 42px; object-fit: contain;">
+                        </div>
+                        <h4 class="mb-3">Yaz + Kış Kampanyası</h4>
+                        <p class="mb-0">Kış sezonu kayıtlarında yaz kurslarımız ücretsizdir.</p>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
+                    <div class="service-item bg-light rounded h-100 p-5">
+                        <div class="d-inline-flex align-items-center justify-content-center bg-white rounded-circle mb-4" style="width: 65px; height: 65px;">
+                            <img src="{{ asset('frontend/images/campaigns/exam.png') }}" alt="" style="width: 42px; height: 42px; object-fit: contain;">
+                        </div>
+                        <h4 class="mb-3">Ücretsiz Seviye Tespit Sınavına %15 İndirim</h4>
+                        <p class="mb-0">Ücretsiz online seviye tespit sınavına katılarak hem ingilize seviyenizi ölçün hem de size tanımlanan %15 indirimden yararlanın.</p>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
+                    <div class="service-item bg-light rounded h-100 p-5">
+                        <div class="d-inline-flex align-items-center justify-content-center bg-white rounded-circle mb-4" style="width: 65px; height: 65px;">
+                            <img src="{{ asset('frontend/images/campaigns/linguistics.png') }}" alt="" style="width: 42px; height: 42px; object-fit: contain;">
+                        </div>
+                        <h4 class="mb-3">%100'e varan burs avantajları</h4>
+                        <p class="mb-0">Her yıl şubat mart aylarında düzenlediğimiz bursluluk sınavıyla %100’e varan kurs olanaklarından yararlanabilirsiniz.</p>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 wow fadeInUp" data-wow-delay="0.7s">
+                    <div class="service-item bg-light rounded h-100 p-5">
+                        <div class="d-inline-flex align-items-center justify-content-center bg-white rounded-circle mb-4" style="width: 65px; height: 65px;">
+                            <img src="{{ asset('frontend/images/campaigns/communicate.png') }}" alt="" style="width: 42px; height: 42px; object-fit: contain;">
+                        </div>
+                        <h4 class="mb-3">Instagram Çekilişlerimize Katılın</h4>
+                        <p class="mb-0">Periyodik olarak instagram takipçilerimiz arasından yapmış olduğumuz canlı çekilişlerle ücretsiz ve indirimli kurs fırsatlarından yararlanın.</p>
+                    </div>
                 </div>
             </div>
         </div>

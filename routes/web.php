@@ -116,37 +116,270 @@ Route::view('/uye-ol', 'frontend.auth.register')
 | hazırlanırken ortak geçici görünümü kullanır.
 |
 */
+$sharedCourseImageText = 'Tüm gruplarda, eğitim süreçlerini daha verimli hale getirmek için uzman eğitmenlerimiz tarafından seçilen modern ve ilgi çekici kaynaklar kullanılır. Her yaş grubunun farklı ihtiyaçlarına yönelik olarak kişiye özel eğitim yöntemleri uygulanır. Öğrencilerin seviyeleri, ilgi alanları ve öğrenme hızlarına göre eğitim programları şekillendirilir. Bu sayede, her öğrenci en iyi şekilde gelişir ve dil becerileri en üst düzeye çıkarılır.';
+
 Route::view('/kurslarimiz/okul-oncesi', 'frontend.placeholder', [
     'title' => 'Okul Öncesi',
-    'placeholder' => 'BURADA OKUL ÖNCESİ OLACAK.',
+    'imageBelowText' => $sharedCourseImageText,
+    'placeholder' => <<<'TEXT'
+Okul öncesi öğrencilerimiz için hazırlanan İngilizce eğitim programlarımız, dil öğrenme sürecini eğlenceli ve etkileşimli bir hale getirir. Bu yaş grubunun doğal öğrenme yetenekleri göz önünde bulundurularak, dil becerilerini oyunlar, şarkılar ve çeşitli yaratıcı etkinliklerle geliştirmeyi hedefliyoruz.
+TEXT,
+    'checkedSections' => [
+        [
+            'heading' => 'Seviye Tespit ile Kişiye Özel Eğitim',
+            'text' => 'Okul öncesi öğrencilerimiz için seviye tespit sınavı uygulanmaz, çünkü bu yaş grubunda dil öğrenimi doğal bir süreç olarak ele alınır. Öğrenciler, yaşlarına uygun materyallerle eğlenceli bir şekilde dil becerilerini geliştirir. Ancak, öğrencinin dil gelişimi ve ihtiyaçları, öğretmenlerimiz tarafından sürekli izlenir ve her çocuğa özel eğitim yaklaşımı benimsenir.',
+        ],
+        [
+            'heading' => 'Dil Becerilerini Eğlenceli Yöntemlerle Geliştirme',
+            'text' => 'Okul öncesi programımız, İngilizceyi öğrenmeye yönelik temel becerileri geliştirmeye odaklanır. Çocuklar, şarkılar, hikayeler ve oyunlar aracılığıyla dilin temellerini öğrenirken, özellikle dinleme, konuşma ve kelime dağarcığını geliştirme üzerine yoğunlaşılır. Bu sayede, çocuklar doğal bir şekilde İngilizceyi günlük yaşamlarında kullanmaya başlarlar.',
+        ],
+        [
+            'heading' => 'Uzman Eğitmenler ve Oyun Bazlı Kaynaklar',
+            'text' => 'Eğitim materyallerimiz, uzman eğitmenlerimiz tarafından seçilen renkli ve eğlenceli içeriklerden oluşur. Hikayeler, şarkılar ve resimli kitaplar, çocukların dikkatini çekmek ve onların öğrenmesini desteklemek için kullanılmaktadır. Öğrenme süreci oyun tabanlı olduğundan, çocuklar doğal bir şekilde İngilizceyi keşfeder ve eğlenerek öğrenir.',
+        ],
+        [
+            'heading' => 'Grup Dersleri',
+            'text' => 'Çocukların sosyal becerilerini geliştirirken, dil öğrenme süreçlerine aktif katılımlarını sağlar.',
+        ],
+        [
+            'heading' => 'Özel Dersler',
+            'text' => 'Çocuğun bireysel hızına ve ihtiyaçlarına göre uyarlanmış kişisel bir öğrenme deneyimi sunar.',
+        ],
+    ],
 ])->name('frontend.trainings.preschool');
 Route::view('/kurslarimiz/ilkokul', 'frontend.placeholder', [
     'title' => 'İlkokul',
-    'placeholder' => 'BURADA İLKOKUL OLACAK.',
+    'imageBelowText' => $sharedCourseImageText,
+    'placeholder' => 'İlkokul öğrencilerimize yönelik programlarımız, dil öğrenimini eğlenceli ve kolay bir süreç haline getirerek onların İngilizceye erken yaşta sevgiyle bağlanmasını hedefliyor. Derslerimiz, oyunlar, şarkılar ve görsel materyallerle zenginleştirilerek çocukların dil öğrenme becerilerini doğal bir şekilde geliştirmelerini sağlıyor.',
+    'checkedSections' => [
+        [
+            'heading' => 'Seviye Tespit ile Kişiye Özel Yaklaşım',
+            'text' => 'Her öğrencimizin dil seviyesini anlamak için bir seviye tespit sınavı uyguluyoruz. Bu sayede öğrencilerimizi ihtiyaçlarına ve mevcut seviyelerine uygun gruplara yerleştirerek daha etkili bir eğitim ortamı oluşturuyoruz.',
+        ],
+        [
+            'heading' => 'Dil Becerilerini Eğlenceli Yöntemlerle Geliştirme',
+            'text' => 'İlkokul öğrencilerine yönelik programımız, İngilizce öğrenimini dört temel beceri (dinleme, konuşma, okuma, yazma) çerçevesinde ele alır. Ancak, bu yaş grubunun ihtiyaçlarına uygun olarak özellikle konuşma ve dinleme becerilerine ağırlık verilir.',
+        ],
+        [
+            'heading' => 'Uzman Eğitmenler ve Çocuk Dostu Kaynaklar',
+            'text' => 'Ders materyallerimiz, uzman eğitmenlerimiz tarafından seçilen, renkli ve eğlenceli içeriklerden oluşur. Çocukların ilgisini çekecek hikayeler, görseller ve interaktif etkinliklerle öğrenme sürecini eğlenceli hale getiriyoruz.',
+        ],
+        [
+            'heading' => 'Grup Dersleri',
+            'text' => 'Çocukların sosyal becerilerini geliştirmelerine ve diğer öğrencilerle iletişim kurarak öğrenmelerine yardımcı olur.',
+        ],
+        [
+            'heading' => 'Özel Dersler',
+            'text' => 'Daha kişiselleştirilmiş bir yaklaşım sunarak çocuğun bireysel ihtiyaçlarına odaklanır.',
+        ],
+    ],
 ])->name('frontend.trainings.primary-school');
 Route::view('/kurslarimiz/ortaokul', 'frontend.placeholder', [
     'title' => 'Ortaokul',
-    'placeholder' => 'BURADA ORTAOKUL OLACAK.',
+    'imageBelowText' => $sharedCourseImageText,
+    'placeholder' => 'Ortaokul öğrencilerimize özel İngilizce programlarımız, akademik başarıyı desteklemekle birlikte öğrencilerimizin İngilizceye olan güvenlerini artırmayı ve dil becerilerini daha ileri bir seviyeye taşımayı amaçlıyor.',
+    'checkedSections' => [
+        [
+            'heading' => 'Seviye Tespit ile Kişiselleştirilmiş Eğitim',
+            'text' => 'Her öğrencinin mevcut İngilizce seviyesini belirlemek için bir seviye tespit sınavı gerçekleştiriyoruz. Bu sayede, öğrencilerimizi dil seviyelerine uygun gruplara yönlendirerek etkili bir öğrenme süreci sağlıyoruz.',
+        ],
+        [
+            'heading' => 'Gelişmiş Dil Becerileri Odaklı Eğitim',
+            'text' => 'Bu yaş grubunda, İngilizce eğitimi okuma, yazma, dinleme ve konuşma becerilerinin dengeli bir şekilde geliştirilmesine odaklanır. Özellikle akademik İngilizceyi destekleyen programlarımızla, öğrencilerin okuma-anlama ve yazılı ifade becerilerinin güçlenmesini sağlıyoruz.',
+        ],
+        [
+            'heading' => 'Uzman Kadro ve Güncel Kaynaklar',
+            'text' => 'Kullanılan tüm eğitim materyalleri, uzman eğitmenlerimiz tarafından seçilmiş ve öğrencilerin bu yaş grubundaki ihtiyaçlarına göre hazırlanmıştır. Modern içeriklerle öğrencilerimizin ilgisini çekerken, öğrenim süreçlerini hızlandırıyoruz.',
+        ],
+        [
+            'heading' => 'Grup Dersleri',
+            'text' => 'Takım çalışmasını teşvik eden ve sosyal öğrenmeyi destekleyen bir ortam sağlar.',
+        ],
+        [
+            'heading' => 'Özel Dersler',
+            'text' => 'Öğrencinin ihtiyaçlarına göre birebir ilgiyle hazırlanır.',
+        ],
+    ],
 ])->name('frontend.trainings.middle-school');
 Route::view('/kurslarimiz/lise', 'frontend.placeholder', [
     'title' => 'Lise',
-    'placeholder' => 'BURADA LİSE OLACAK.',
+    'imageBelowText' => $sharedCourseImageText,
+    'placeholder' => 'Lise öğrencilerimize yönelik İngilizce programlarımız, onların gelecekteki akademik ve profesyonel hayatlarına güçlü bir başlangıç yapmalarını sağlamak üzere tasarlanmıştır. İngilizceyi etkili bir şekilde öğrenen lise öğrencileri, hem sınav başarılarında hem de uluslararası platformlarda avantaj kazanır.',
+    'checkedSections' => [
+        [
+            'heading' => 'Seviye Tespit ile Doğru Başlangıç',
+            'text' => 'Her öğrencimiz, tarafımızca uygulanan seviye tespit sınavıyla değerlendirilir. Bu sınav sonuçlarına göre, öğrencilerimiz seviyelerine uygun sınıflara yerleştirilerek etkili bir dil eğitimi alır.',
+        ],
+        [
+            'heading' => 'İleri Düzey Dil Becerileri Eğitimi',
+            'text' => 'Lise öğrencilerine yönelik derslerimiz, akademik ve profesyonel İngilizce kullanımını geliştirmeye odaklanır. Derslerde okuma, yazma, dinleme ve konuşma becerileri üzerinde çalışılırken, özellikle sınav teknikleri, sunum yapma ve eleştirel düşünce gibi ileri düzey becerilere de yer verilir.',
+        ],
+        [
+            'heading' => 'Kaliteli Kaynaklar ve Uzman Eğitmenler',
+            'text' => 'Lise seviyesine uygun olarak seçilmiş akademik ve güncel kaynaklar, uzman eğitmenlerimizin rehberliğinde kullanılır. Öğrencilerimizin hedeflerine ulaşmalarını sağlayacak materyallerle öğrenim sürecini destekliyoruz.',
+        ],
+        [
+            'heading' => 'Grup Dersleri',
+            'text' => 'Akademik başarı ve grup etkileşimiyle öğrenmeyi teşvik eder.',
+        ],
+        [
+            'heading' => 'Özel Dersler',
+            'text' => 'Kişiselleştirilmiş bir programla öğrencinin hedeflerine odaklanır.',
+        ],
+    ],
 ])->name('frontend.trainings.high-school');
 Route::view('/kurslarimiz/yetiskin', 'frontend.placeholder', [
     'title' => 'Yetişkin',
-    'placeholder' => 'BURADA YETİŞKİN OLACAK.',
+    'imageBelowText' => $sharedCourseImageText,
+    'placeholder' => 'İngilizce öğrenme yolculuğunuzda, uluslararası standartlara uygun eğitim programlarımızla yanınızdayız! Kurslarımız, Avrupa Dilleri Ortak Çerçeve Programı (CEFR) verilerine dayalı olarak tasarlanmıştır ve her seviyede ihtiyacınıza özel çözümler sunar.',
+    'checkedSections' => [
+        [
+            'heading' => 'A1-A2 seviyeleri',
+            'text' => 'Toplamda 90-110 ders saati süren programlarla dil öğreniminde sağlam bir temel oluşturabilirsiniz.',
+        ],
+        [
+            'heading' => 'B seviyeleri',
+            'text' => '180 ders saati içeren kapsamlı bir eğitimle daha akıcı ve özgüvenli bir şekilde iletişim kurmayı öğrenebilirsiniz.',
+        ],
+        [
+            'heading' => 'Dört Temel Beceri Odaklı Eğitim',
+            'text' => 'Derslerimiz, CEFR’in öngördüğü şekilde dört temel dil becerisini – reading, writing, listening ve speaking – geliştirmeye odaklanır. Bu sistem, hem teorik hem de pratik beceriler kazanmanıza olanak tanır.',
+        ],
+        [
+            'heading' => 'Yerli ve Native Öğretmenlerden Eğitim',
+            'text' => 'Programlarımızda, hem yerli hem de anadili İngilizce olan deneyimli öğretmenler görev alır. Bu sayede, dil öğrenme sürecinizi hem yerel ihtiyaçlarınıza hem de uluslararası standartlara uygun bir şekilde destekliyoruz.',
+        ],
+        [
+            'heading' => 'Neden Biz?',
+            'text' => 'İngilizce öğrenmek, sadece bir dil öğrenmek değil, aynı zamanda yeni fırsatlara kapı açmaktır. Seyahat, kariyer ya da kişisel gelişim hedefleriniz ne olursa olsun, size en uygun yöntemi sunuyor ve başarı yolculuğunuzda yanınızda oluyoruz.',
+        ],
+    ],
 ])->name('frontend.trainings.adults');
 Route::view('/subelerimiz/ortaca', 'frontend.placeholder', [
     'title' => 'Ortaca',
-    'placeholder' => 'BURADA ORTACA OLACAK.',
+    'placeholder' => <<<'TEXT'
+Aydın Language Academy, Ortaca'da İngilizce öğrenmek isteyenler için mükemmel bir seçenektir. Kaliteli eğitim ve uzman öğretmenlerimizle, dil becerilerinizi geliştirmek için size yardımcı oluyoruz.
+
+Kaliteli Eğitim:
+Aydın Language Academy olarak, öğrencilere en iyi eğitimi sunmayı taahhüt ediyoruz. Nitelikli ve deneyimli öğretmenlerimiz, interaktif dersler ve modern öğretim materyalleriyle öğrencilerin İngilizce becerilerini hızla geliştirmelerini sağlıyor.
+
+Geniş Kurs Seçenekleri:
+Ortaca'daki Aydın Language Academy, farklı seviyelerde ve ihtiyaçlara uygun çeşitli kurs seçenekleri sunar. Genel İngilizce, İş İngilizcesi, Akademik İngilizce ve daha fazlası için bize katılın ve İngilizce becerilerinizi geliştirin!
+
+Esnek Programlar:
+Yoğun bir programınız varsa endişelenmeyin! Aydın Language Academy, esnek programlar sunarak öğrencilerin ihtiyaçlarına uyum sağlar. Sabah, öğle veya akşam dersleri arasından seçim yapabilir ve kendi hızınızda ilerleyebilirsiniz.
+
+Mükemmel Konum:
+Aydın Language Academy, Ortaca'nın merkezinde yer almaktadır. Ulaşım açısından oldukça elverişli olan merkezimiz, öğrencilere kolaylık sağlar. Ortaca'nın güzel doğası ve tarihi mirasını keşfederken İngbecerilerinizi geliştirin!
+
+Ücretsiz Deneme Dersleri:
+Hala karar veremediniz mi? Hiç sorun değil! Aydın Language Academy, tüm potansiyel öğrencilere ücretsiz deneme dersleri sunmaktadır. Kurslarımızı deneyin ve sizin için en uygun olanı seçin.
+
+Ortaca'da İngilizce öğrenmek isteyen herkes için Aydın Language Academy mükemmel bir seçenektir. Bizimle iletişime geçin ve dil becerilerinizi geliştirmeye hemen başlayın!
+TEXT,
+    'contactCards' => [
+        [
+            'label' => 'Adresimiz',
+            'value' => 'Atatürk Mahallesi Eski Postane Karşısı No:10 Ortaca/Muğla',
+            'icon' => 'fa-map-marker-alt',
+        ],
+        [
+            'label' => 'Bizi Arayın',
+            'value' => '(505) 929 6191',
+            'href' => 'tel:+905059296191',
+            'icon' => 'fa-phone-alt',
+        ],
+        [
+            'label' => 'E-posta Gönderin',
+            'value' => 'ortaca@learnenglishwithala.com',
+            'href' => 'mailto:ortaca@learnenglishwithala.com',
+            'icon' => 'fa-envelope-open',
+        ],
+    ],
 ])->name('frontend.branches.ortaca');
 Route::view('/subelerimiz/dalaman', 'frontend.placeholder', [
     'title' => 'Dalaman',
-    'placeholder' => 'BURADA DALAMAN OLACAK.',
+    'placeholder' => <<<'TEXT'
+Aydın Language Academy, Dalaman'da İngilizce öğrenmek isteyenler için mükemmel bir seçenektir. Kaliteli eğitim ve uzman öğretmenlerimizle, dil becerilerinizi geliştirmek için size yardımcı oluyoruz.
+
+Kaliteli Eğitim:
+Aydın Language Academy olarak, öğrencilerimize en iyi eğitimi sunmayı hedefliyoruz. Uzman ve deneyimli öğretmenlerimiz, interaktif dersler ve modern öğretim materyalleri ile öğrencilerin dil becerilerini hızla geliştirmelerini sağlıyor.
+
+Çeşitli Kurs Seçenekleri:
+Aydın Language Academy, farklı seviyelerde ve ihtiyaçlara uygun çeşitli kurs seçenekleri sunar. Başlangıç ​​seviyesinden ileri seviyeye kadar herkes için bir kurs bulabilirsiniz. Genel İngilizce, İş İngilizcesi, Akademik İngilizce ve daha fazlası için bize katılın!
+
+Esnek Programlar:
+İşiniz veya günlük yaşamınız nedeniyle yoğun bir programınız varsa endişelenmeyin! Aydın Language Academy, esnek programlar sunarak öğrencilerin ihtiyaçlarına uyum sağlar. Sabah, öğle veya akşam dersleri arasından seçim yapabilir ve kendi hızınızda ilerleyebilirsiniz.
+
+Mükemmel Konum:
+Aydın Language Academy, Dalaman'ın merkezinde bulunmaktadır. Ulaşım açısından oldukça elverişli olan merkezimiz, öğrencilere kolaylık sağlar. Dalaman'ın tarihi ve doğal güzelliklerini keşfetmek için kurslar arasında keyifli bir mola verin!
+
+Ücretsiz Deneme Dersleri:
+Hala karar veremediniz mi? Hiç sorun değil! Aydın Language Academy, tüm potansiyel öğrencilere ücretsiz deneme dersleri sunmaktadır. Kurslarımızı deneyin ve kendiniz için mükemmel olanı seçin.
+
+Dalaman'da İngilizce öğrenmek isteyen herkes için Aydın Language Academy mükemmel bir seçenektir. Bizimle iletişime geçin ve dil becerilerinizi geliştirmeye bugün başlayın!
+TEXT,
+    'contactCards' => [
+        [
+            'label' => 'Adresimiz',
+            'value' => 'Karaçalı, Şehit Hamza Atakul Cad No:39-A Dalaman/Muğla',
+            'icon' => 'fa-map-marker-alt',
+        ],
+        [
+            'label' => 'Bizi Arayın',
+            'value' => '(505) 929 6192',
+            'href' => 'tel:+905059296192',
+            'icon' => 'fa-phone-alt',
+        ],
+        [
+            'label' => 'E-posta Gönderin',
+            'value' => 'dalaman@learnenglishwithala.com',
+            'href' => 'mailto:dalaman@learnenglishwithala.com',
+            'icon' => 'fa-envelope-open',
+        ],
+    ],
 ])->name('frontend.branches.dalaman');
 Route::view('/subelerimiz/koycegiz', 'frontend.placeholder', [
     'title' => 'Köyceğiz',
-    'placeholder' => 'BURADA KÖYCEĞİZ OLACAK.',
+    'placeholder' => <<<'TEXT'
+Aydın Language Academy, Köyceğiz'de İngilizce öğrenmek isteyenler için mükemmel bir seçenektir. Kaliteli eğitim ve uzman öğretmenlerimizle, dil becerilerinizi geliştirmek için size yardımcı oluyoruz.
+
+Kaliteli Eğitim
+Aydın Language Academy olarak, öğrencilerimize en iyi eğitimi sunmayı hedefliyoruz. Uzman ve deneyimli öğretmenlerimiz, interaktif dersler ve modern öğretim materyalleri ile öğrencilerin dil becerilerini hızla geliştirmelerini sağlıyor.
+
+Çeşitli Kurs Seçenekleri
+Aydın Language Academy, farklı seviyelerde ve ihtiyaçlara uygun çeşitli kurs seçenekleri sunar. Başlangıç ​​seviyesinden ileri seviyeye kadar herkes için bir kurs bulabilirsiniz. Genel İngilizce, İş İngilizcesi, Akademik İngilizce ve daha fazlası için bize katılın!
+
+Esnek Programlar
+İşiniz veya günlük yaşamınız nedeniyle yoğun bir programınız varsa endişelenmeyin! Aydın Language Academy, esnek programlar sunarak öğrencilerin ihtiyaçlarına uyum sağlar. Sabah, öğle veya akşam dersleri arasından seçim yapabilir ve kendi hızınızda ilerleyebilirsiniz.
+
+Mükemmel Konum
+Aydın Language Academy, Dalaman'ın merkezinde bulunmaktadır. Ulaşım açısından oldukça elverişli olan merkezimiz, öğrencilere kolaylık sağlar. Dalaman'ın tarihi ve doğal güzelliklerini keşfetmek için kurslar arasında keyifli bir mola verin!
+
+Ücretsiz Deneme Dersleri
+Hala karar veremediniz mi? Hiç sorun değil! Aydın Language Academy, tüm potansiyel öğrencilere ücretsiz deneme dersleri sunmaktadır. Kurslarımızı deneyin ve kendiniz için mükemmel olanı seçin.
+
+Köyceğiz'de İngilizce öğrenmek isteyen herkes için Aydın Language Academy mükemmel bir seçenektir. Bizimle iletişime geçin ve dil becerilerinizi geliştirmeye bugün başlayın!
+TEXT,
+    'contactCards' => [
+        [
+            'label' => 'Adresimiz',
+            'value' => 'Cumhuriyet Mahallesi Köyceğiz/Muğla',
+            'icon' => 'fa-map-marker-alt',
+        ],
+        [
+            'label' => 'Bizi Arayın',
+            'value' => '(505) 929 6193',
+            'href' => 'tel:+905059296193',
+            'icon' => 'fa-phone-alt',
+        ],
+        [
+            'label' => 'E-posta Gönderin',
+            'value' => 'koycegiz@learnenglishwithala.com',
+            'href' => 'mailto:koycegiz@learnenglishwithala.com',
+            'icon' => 'fa-envelope-open',
+        ],
+    ],
 ])->name('frontend.branches.koycegiz');
 /*
 |--------------------------------------------------------------------------
