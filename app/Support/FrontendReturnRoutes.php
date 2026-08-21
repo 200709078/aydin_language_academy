@@ -13,6 +13,7 @@ final class FrontendReturnRoutes
             'home' => 'home',
             'frontend.achievements' => 'frontend.achievements',
             'frontend.campaigns' => 'frontend.campaigns',
+            'frontend.placement-test' => 'frontend.placement-test',
             'frontend.trainings.preschool' => 'frontend.trainings.preschool',
             'frontend.trainings.primary-school' => 'frontend.trainings.primary-school',
             'frontend.trainings.middle-school' => 'frontend.trainings.middle-school',

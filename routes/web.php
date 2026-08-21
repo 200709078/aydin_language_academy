@@ -259,6 +259,7 @@ Route::view('/kurslarimiz/yetiskin', 'frontend.placeholder', [
 ])->name('frontend.trainings.adults');
 Route::view('/subelerimiz/ortaca', 'frontend.placeholder', [
     'title' => 'Ortaca',
+    'imagePath' => 'frontend/images/branches/ala_ortaca.jpg',
     'placeholder' => <<<'TEXT'
 Aydın Language Academy, Ortaca'da İngilizce öğrenmek isteyenler için mükemmel bir seçenektir. Kaliteli eğitim ve uzman öğretmenlerimizle, dil becerilerinizi geliştirmek için size yardımcı oluyoruz.
 
@@ -282,13 +283,13 @@ TEXT,
     'contactCards' => [
         [
             'label' => 'Adresimiz',
-            'value' => 'Atatürk Mahallesi Eski Postane Karşısı No:10 Ortaca/Muğla',
+            'value' => 'Merkez Mahallesi Muhammed Kundakçı Caddesi Eski PTT Karşısı No:10 Ortaca/Muğla',
             'icon' => 'fa-map-marker-alt',
         ],
         [
             'label' => 'Bizi Arayın',
-            'value' => '(505) 929 6191',
-            'href' => 'tel:+905059296191',
+            'value' => '(546) 828 4884',
+            'href' => 'tel:+905468284884',
             'icon' => 'fa-phone-alt',
         ],
         [
@@ -297,10 +298,32 @@ TEXT,
             'href' => 'mailto:ortaca@learnenglishwithala.com',
             'icon' => 'fa-envelope-open',
         ],
+        [
+            'label' => 'WhatsApp ile İletişime Geçin',
+            'value' => 'WhatsApp',
+            'href' => 'https://wa.me/905468284884',
+            'iconClass' => 'fab fa-whatsapp',
+            'newTab' => true,
+        ],
+        [
+            'label' => 'YouTube Kanalımız',
+            'value' => 'YouTube',
+            'href' => 'https://www.youtube.com/@Ayd%C4%B1nLanguageAcademy',
+            'iconClass' => 'fab fa-youtube',
+            'newTab' => true,
+        ],
+        [
+            'label' => 'Instagram Hesabımız',
+            'value' => 'Instagram',
+            'href' => 'https://www.instagram.com/aydindilakademisidalaman?igsh=MTVjaXl2eDJ2MjJwYg==',
+            'iconClass' => 'fab fa-instagram',
+            'newTab' => true,
+        ],
     ],
 ])->name('frontend.branches.ortaca');
 Route::view('/subelerimiz/dalaman', 'frontend.placeholder', [
     'title' => 'Dalaman',
+    'imagePath' => 'frontend/images/branches/ala_dalaman.jpg',
     'placeholder' => <<<'TEXT'
 Aydın Language Academy, Dalaman'da İngilizce öğrenmek isteyenler için mükemmel bir seçenektir. Kaliteli eğitim ve uzman öğretmenlerimizle, dil becerilerinizi geliştirmek için size yardımcı oluyoruz.
 
@@ -324,13 +347,13 @@ TEXT,
     'contactCards' => [
         [
             'label' => 'Adresimiz',
-            'value' => 'Karaçalı, Şehit Hamza Atakul Cad No:39-A Dalaman/Muğla',
+            'value' => 'Karaçalı Mahallesi, Şehit Hamza Atakul Caddesi No:39/A Dalaman/Muğla',
             'icon' => 'fa-map-marker-alt',
         ],
         [
             'label' => 'Bizi Arayın',
-            'value' => '(505) 929 6192',
-            'href' => 'tel:+905059296192',
+            'value' => '(530) 828 4884',
+            'href' => 'tel:+905308284884',
             'icon' => 'fa-phone-alt',
         ],
         [
@@ -339,10 +362,32 @@ TEXT,
             'href' => 'mailto:dalaman@learnenglishwithala.com',
             'icon' => 'fa-envelope-open',
         ],
+        [
+            'label' => 'WhatsApp ile İletişime Geçin',
+            'value' => 'WhatsApp',
+            'href' => 'https://wa.me/905308284884',
+            'iconClass' => 'fab fa-whatsapp',
+            'newTab' => true,
+        ],
+        [
+            'label' => 'YouTube Kanalımız',
+            'value' => 'YouTube',
+            'href' => 'https://www.youtube.com/@Ayd%C4%B1nLanguageAcademy',
+            'iconClass' => 'fab fa-youtube',
+            'newTab' => true,
+        ],
+        [
+            'label' => 'Instagram Hesabımız',
+            'value' => 'Instagram',
+            'href' => 'https://www.instagram.com/aydindilakademisidalaman?igsh=MTVjaXl2eDJ2MjJwYg==',
+            'iconClass' => 'fab fa-instagram',
+            'newTab' => true,
+        ],
     ],
 ])->name('frontend.branches.dalaman');
 Route::view('/subelerimiz/koycegiz', 'frontend.placeholder', [
     'title' => 'Köyceğiz',
+    'imagePath' => 'frontend/images/branches/ala_koycegiz.jpg',
     'placeholder' => <<<'TEXT'
 Aydın Language Academy, Köyceğiz'de İngilizce öğrenmek isteyenler için mükemmel bir seçenektir. Kaliteli eğitim ve uzman öğretmenlerimizle, dil becerilerinizi geliştirmek için size yardımcı oluyoruz.
 
@@ -366,13 +411,13 @@ TEXT,
     'contactCards' => [
         [
             'label' => 'Adresimiz',
-            'value' => 'Cumhuriyet Mahallesi Köyceğiz/Muğla',
+            'value' => 'Ulucamii İbrahim Koç Sokak Köyceğiz Lokantası Yanı Köyceğiz/Muğla',
             'icon' => 'fa-map-marker-alt',
         ],
         [
             'label' => 'Bizi Arayın',
-            'value' => '(505) 929 6193',
-            'href' => 'tel:+905059296193',
+            'value' => '(540) 828 4884',
+            'href' => 'tel:+905408284884',
             'icon' => 'fa-phone-alt',
         ],
         [
@@ -380,6 +425,27 @@ TEXT,
             'value' => 'koycegiz@learnenglishwithala.com',
             'href' => 'mailto:koycegiz@learnenglishwithala.com',
             'icon' => 'fa-envelope-open',
+        ],
+        [
+            'label' => 'WhatsApp ile İletişime Geçin',
+            'value' => 'WhatsApp',
+            'href' => 'https://wa.me/905408284884',
+            'iconClass' => 'fab fa-whatsapp',
+            'newTab' => true,
+        ],
+        [
+            'label' => 'YouTube Kanalımız',
+            'value' => 'YouTube',
+            'href' => 'https://www.youtube.com/@Ayd%C4%B1nLanguageAcademy',
+            'iconClass' => 'fab fa-youtube',
+            'newTab' => true,
+        ],
+        [
+            'label' => 'Instagram Hesabımız',
+            'value' => 'Instagram',
+            'href' => 'https://www.instagram.com/aydindilakademisidalaman?igsh=MTVjaXl2eDJ2MjJwYg==',
+            'iconClass' => 'fab fa-instagram',
+            'newTab' => true,
         ],
     ],
 ])->name('frontend.branches.koycegiz');

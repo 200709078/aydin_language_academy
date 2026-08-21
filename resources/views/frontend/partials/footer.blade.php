@@ -4,21 +4,36 @@
             <div class="row g-5">
                 <div class="col-lg-3 col-md-6">
                     <h5 class="text-light mb-4">Ortaca</h5>
-                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>Atatürk Mahallesi Eski Postane Karşısı No:10 Ortaca/Muğla</p>
-                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>(505) 929 6191</p>
+                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>Merkez Mahallesi Muhammed Kundakçı Caddesi Eski PTT Karşısı No:10 Ortaca/Muğla</p>
+                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>(546) 828 4884</p>
                     <p class="mb-2 small text-nowrap"><i class="fa fa-envelope me-2"></i>ortaca@learnenglishwithala.com</p>
+                    <p class="mb-0"><i class="fab fa-whatsapp me-2"></i><a class="text-light" href="https://wa.me/905468284884" target="_blank" rel="noopener noreferrer">WhatsApp</a></p>
+                    <p class="mb-0 mt-2 small">
+                        <a class="text-light" href="https://www.youtube.com/@Ayd%C4%B1nLanguageAcademy" target="_blank" rel="noopener noreferrer"><i class="fab fa-youtube me-1" aria-hidden="true"></i>YouTube</a>
+                        <a class="text-light ms-3" href="https://www.instagram.com/aydindilakademisidalaman?igsh=MTVjaXl2eDJ2MjJwYg==" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram me-1" aria-hidden="true"></i>Instagram</a>
+                    </p>
                 </div>
                 <div class="col-lg-3 col-md-6">
                     <h5 class="text-light mb-4">Dalaman</h5>
-                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>Karaçalı, Şehit Hamza Atakul Cad No:39-A Dalaman/Muğla</p>
-                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>(505) 929 6192</p>
+                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>Karaçalı Mahallesi, Şehit Hamza Atakul Caddesi No:39/A Dalaman/Muğla</p>
+                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>(530) 828 4884</p>
                     <p class="mb-2 small text-nowrap"><i class="fa fa-envelope me-2"></i>dalaman@learnenglishwithala.com</p>
+                    <p class="mb-0"><i class="fab fa-whatsapp me-2"></i><a class="text-light" href="https://wa.me/905308284884" target="_blank" rel="noopener noreferrer">WhatsApp</a></p>
+                    <p class="mb-0 mt-2 small">
+                        <a class="text-light" href="https://www.youtube.com/@Ayd%C4%B1nLanguageAcademy" target="_blank" rel="noopener noreferrer"><i class="fab fa-youtube me-1" aria-hidden="true"></i>YouTube</a>
+                        <a class="text-light ms-3" href="https://www.instagram.com/aydindilakademisidalaman?igsh=MTVjaXl2eDJ2MjJwYg==" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram me-1" aria-hidden="true"></i>Instagram</a>
+                    </p>
                 </div>
                 <div class="col-lg-3 col-md-6">
                     <h5 class="text-light mb-4">Köyceğiz</h5>
-                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>Cumhuriyet Mahallesi Köyceğiz/Muğla</p>
-                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>(505) 929 6193</p>
+                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>Ulucamii İbrahim Koç Sokak Köyceğiz Lokantası Yanı Köyceğiz/Muğla</p>
+                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>(540) 828 4884</p>
                     <p class="mb-2 small text-nowrap"><i class="fa fa-envelope me-2"></i>koycegiz@learnenglishwithala.com</p>
+                    <p class="mb-0"><i class="fab fa-whatsapp me-2"></i><a class="text-light" href="https://wa.me/905408284884" target="_blank" rel="noopener noreferrer">WhatsApp</a></p>
+                    <p class="mb-0 mt-2 small">
+                        <a class="text-light" href="https://www.youtube.com/@Ayd%C4%B1nLanguageAcademy" target="_blank" rel="noopener noreferrer"><i class="fab fa-youtube me-1" aria-hidden="true"></i>YouTube</a>
+                        <a class="text-light ms-3" href="https://www.instagram.com/aydindilakademisidalaman?igsh=MTVjaXl2eDJ2MjJwYg==" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram me-1" aria-hidden="true"></i>Instagram</a>
+                    </p>
                 </div>
                 <div class="col-lg-3 col-md-6">
                     <h5 class="text-light mb-4">Hızlı Bağlantılar</h5>
@@ -27,12 +42,12 @@
                     <a class="btn btn-link" href="{{ route('frontend.achievements') }}">Başarılarımız</a>
                     <a class="btn btn-link" href="{{ route('frontend.campaigns') }}">Kampanyalarımız</a>
                     <a class="btn btn-link" href="{{ route('frontend.branches.ortaca') }}">Şubelerimiz</a>
+                    <a class="btn btn-link" href="{{ route('frontend.placement-test') }}">Seviye Tespit Sınavı</a>
                 </div>
             </div>
             <div class="d-flex justify-content-center pt-4">
                 <a class="btn btn-outline-light btn-social rounded-circle" href="https://www.youtube.com/@Ayd%C4%B1nLanguageAcademy" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><i class="fab fa-youtube" aria-hidden="true"></i></a>
-                <a class="btn btn-outline-light btn-social rounded-circle" href="https://www.instagram.com/aydindilakademisidalaman?igsh=MTVjaXl2eDJ2MjJwYg==" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
-                <a class="btn btn-outline-light btn-social rounded-circle me-0" href="https://wa.me/905059296191" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><i class="fab fa-whatsapp" aria-hidden="true"></i></a>
+                <a class="btn btn-outline-light btn-social rounded-circle me-0" href="https://www.instagram.com/aydindilakademisidalaman?igsh=MTVjaXl2eDJ2MjJwYg==" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
             </div>
         </div>
         <div class="container">

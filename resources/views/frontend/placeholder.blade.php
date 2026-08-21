@@ -41,22 +41,22 @@
         <div class="container">
             <div class="row g-5">
                 <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
-                    <img class="img-fluid rounded w-100" src="{{ asset('frontend/images/whoweare.png') }}" alt="{{ $title }}">
+                    <img class="img-fluid rounded w-100" src="{{ asset($imagePath ?? 'frontend/images/whoweare.png') }}" alt="{{ $title }}">
                     @isset($imageBelowText)
                         <p class="mt-4 mb-0 clearfix"><i class="fa fa-book-open text-primary fs-4 float-start me-3" aria-hidden="true"></i>{{ $imageBelowText }}</p>
                     @endisset
                     @isset($contactCards)
                         <div class="mt-4">
                             @foreach ($contactCards as $contactCard)
-                                <div class="bg-light rounded d-flex align-items-center p-4 {{ $loop->last ? '' : 'mb-4' }}">
+                                <div class="bg-light rounded d-flex align-items-center p-3 {{ $loop->last ? '' : 'mb-4' }}">
                                     <div class="d-flex flex-shrink-0 align-items-center justify-content-center rounded-circle bg-white" style="width: 55px; height: 55px;">
-                                        <i class="fa {{ $contactCard['icon'] }} text-primary"></i>
+                                        <i class="{{ $contactCard['iconClass'] ?? 'fa ' . $contactCard['icon'] }} text-primary"></i>
                                     </div>
-                                    <div class="ms-4">
-                                        <p class="mb-2">{{ $contactCard['label'] }}</p>
+                                    <div class="ms-3">
+                                        <p class="mb-1">{{ $contactCard['label'] }}</p>
                                         <h5 class="mb-0">
                                             @if (! empty($contactCard['href']))
-                                                <a class="text-dark text-break" href="{{ $contactCard['href'] }}">{{ $contactCard['value'] }}</a>
+                                                <a class="text-dark text-break" href="{{ $contactCard['href'] }}" @if (! empty($contactCard['newTab'])) target="_blank" rel="noopener noreferrer" @endif>{{ $contactCard['value'] }}</a>
                                             @else
                                                 <span class="text-dark text-break">{{ $contactCard['value'] }}</span>
                                             @endif

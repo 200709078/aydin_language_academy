@@ -46,7 +46,7 @@
                         @auth
                             <p class="mb-0">Hoş geldin {{ auth()->user()->name }}</p>
                         @else
-                            <p class="mb-0">İçeriği görmek için lütfen giriş yapınız.</p>
+                            <p class="mb-0">İçeriği görmek için lütfen <a class="text-primary" href="{{ route('frontend.login', ['return' => request()->route()?->getName()]) }}">giriş</a> yapınız.</p>
                         @endauth
                     </div>
                 </div>
