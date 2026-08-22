@@ -12,68 +12,6 @@
                     </a>
                 </div>
 
-                @if (Auth::user()->type === 'admin')
-                    <!-- Navigation Links -->
-                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                        <div style="display: flex; height: 4rem; align-items: center;">
-                            <x-dropdown align="left" width="48">
-                            <x-slot name="trigger">
-                                @php
-                                    $adminMenuActive = request()->routeIs(
-                                        'levels_list',
-                                        'sub_levels_list',
-                                        'themes_list',
-                                        'courses_list',
-                                    );
-                                @endphp
-
-                                <button type="button"
-                                    class="admin-themes-menu-trigger {{ $adminMenuActive ? 'is-active' : '' }}">
-                                    {{ __('dictt.themes') }}
-                                </button>
-                            </x-slot>
-
-                            <x-slot name="content">
-                                <x-dropdown-link href="{{ route('levels_list') }}">
-                                    {{ __('dictt.levels') }}
-                                </x-dropdown-link>
-                                <x-dropdown-link href="{{ route('sub_levels_list') }}">
-                                    {{ __('dictt.sublevels') }}
-                                </x-dropdown-link>
-                                <x-dropdown-link href="{{ route('themes_list') }}">
-                                    {{ __('dictt.themes') }}
-                                </x-dropdown-link>
-                                <x-dropdown-link href="{{ route('courses_list') }}">
-                                    {{ __('dictt.courses') }}
-                                </x-dropdown-link>
-                            </x-slot>
-                            </x-dropdown>
-                        </div>
-
-                        <div style="display: flex; height: 4rem; align-items: center;">
-                            <x-dropdown align="left" width="48">
-                                <x-slot name="trigger">
-                                    <button type="button"
-                                        class="admin-themes-menu-trigger {{ request()->routeIs('placement_test_levels_*', 'placement_test_question_contents_*', 'placement_test_questions_*') ? 'is-active' : '' }}">
-                                        Placement Test
-                                    </button>
-                                </x-slot>
-
-                                <x-slot name="content">
-                                    <x-dropdown-link href="{{ route('placement_test_levels_list') }}">
-                                        Levels
-                                    </x-dropdown-link>
-                                    <x-dropdown-link href="{{ route('placement_test_question_contents_list') }}">
-                                        Ortak İçerikler
-                                    </x-dropdown-link>
-                                    <x-dropdown-link href="{{ route('placement_test_questions_list') }}">
-                                        Sorular
-                                    </x-dropdown-link>
-                                </x-slot>
-                            </x-dropdown>
-                        </div>
-                    </div>
-                @endif
             </div>
 
             <div class="hidden sm:flex sm:items-center sm:ms-6">
@@ -165,7 +103,7 @@
                                     {{ __('dictt.sitemanage') }}
                                 </div>
 
-                                <x-dropdown-link href="{{ route('settings_list') }}">
+                                <x-dropdown-link class="admin-user-menu-link" href="{{ route('settings_list') }}">
                                     {{ __('dictt.settings') }}
                                 </x-dropdown-link>
                                 <!-- Site Settings End -->
@@ -176,15 +114,13 @@
                                 {{ __('dictt.accountmanage') }}
                             </div>
 
-                            <x-dropdown-link href="{{ route('profile.show') }}">
+                            <x-dropdown-link class="admin-user-menu-link" href="{{ route('profile.show') }}">
                                 {{ __('dictt.profile') }}
                             </x-dropdown-link>
 
-                            @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
-                                <x-dropdown-link href="{{ route('api-tokens.index') }}">
-                                    {{ __('API Tokens') }}
-                                </x-dropdown-link>
-                            @endif
+                            <span class="admin-user-menu-disabled" aria-disabled="true">
+                                {{ __('API Tokens') }}
+                            </span>
 
                             <div class="border-t border-gray-200"></div>
 
@@ -192,7 +128,7 @@
                             <form method="POST" action="{{ route('logout') }}" x-data>
                                 @csrf
 
-                                <x-dropdown-link href="{{ route('logout') }}" @click.prevent="$root.submit();">
+                                <x-dropdown-link class="admin-user-menu-link" href="{{ route('logout') }}" @click.prevent="$root.submit();">
                                     {{ __('dictt.logout') }}
                                 </x-dropdown-link>
                             </form>

@@ -29,57 +29,10 @@
     <x-banner />
 
     <div class="min-h-screen bg-gray-100">
-        @livewire('navigation-menu')
-
-        <!-- Page Heading -->
-        @if (isset($header))
-            @php
-                $isThemesMenuRoute = request()->routeIs(
-                    'levels_*',
-                    'level_*',
-                    'sub_levels_*',
-                    'sub_level_*',
-                    'themes_*',
-                    'theme_*',
-                    'courses_*',
-                    'course_*',
-                    'declarations_*',
-                    'declaration_*',
-                    'exercises_*',
-                    'exercise_*',
-                    'questions_*',
-                    'question_*',
-                );
-                $showThemesBreadcrumb = request()->is('admin', 'admin/*')
-                    && $isThemesMenuRoute;
-                $showPlacementTestBreadcrumb = request()->is('admin', 'admin/*')
-                    && request()->routeIs(
-                        'placement_test_levels_*',
-                        'placement_test_question_contents_*',
-                        'placement_test_questions_*',
-                    );
-            @endphp
-
-            <header class="bg-white shadow">
-                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                    <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                        @if ($showThemesBreadcrumb)
-                            {{ __('dictt.themes') }}
-                            <svg class="admin-breadcrumb-separator" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="m9 18 6-6-6-6" />
-                            </svg>
-                        @elseif ($showPlacementTestBreadcrumb)
-                            Placement Test
-                            <svg class="admin-breadcrumb-separator" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="m9 18 6-6-6-6" />
-                            </svg>
-                        @endif
-                        {{ $header }}
-                    </h2>
-                </div>
-            </header>
+        @if (Auth::check() && Auth::user()->type === 'admin')
+            @include('partials.admin-navigation-menu')
+        @else
+            @livewire('navigation-menu')
         @endif
 
         <div class="py-6">

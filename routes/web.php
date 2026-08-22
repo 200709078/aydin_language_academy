@@ -301,8 +301,8 @@ Route::view('/kurslarimiz/lise', 'frontend.placeholder', [
         ],
     ],
 ])->name('frontend.trainings.high-school');
-Route::view('/kurslarimiz/yetiskin', 'frontend.placeholder', [
-    'title' => 'Yetişkin',
+Route::view('/kurslarimiz/genel-ingilizce', 'frontend.placeholder', [
+    'title' => 'Genel İngilizce',
     'imageBelowText' => $sharedCourseImageText,
     'placeholder' => 'İngilizce öğrenme yolculuğunuzda, uluslararası standartlara uygun eğitim programlarımızla yanınızdayız! Kurslarımız, Avrupa Dilleri Ortak Çerçeve Programı (CEFR) verilerine dayalı olarak tasarlanmıştır ve her seviyede ihtiyacınıza özel çözümler sunar.',
     'checkedSections' => [
@@ -327,7 +327,83 @@ Route::view('/kurslarimiz/yetiskin', 'frontend.placeholder', [
             'text' => 'İngilizce öğrenmek, sadece bir dil öğrenmek değil, aynı zamanda yeni fırsatlara kapı açmaktır. Seyahat, kariyer ya da kişisel gelişim hedefleriniz ne olursa olsun, size en uygun yöntemi sunuyor ve başarı yolculuğunuzda yanınızda oluyoruz.',
         ],
     ],
-])->name('frontend.trainings.adults');
+])->name('frontend.trainings.general-english');
+
+$demoTrainingPages = [
+    'ielts' => [
+        'title' => 'IELTS Hazırlık',
+        'placeholder' => 'IELTS sınavına yönelik demo hazırlık programımız, akademik İngilizce becerilerinizi ve sınav stratejilerinizi geliştirmeye odaklanır.',
+        'checkedSections' => [
+            ['heading' => 'Madde 1', 'text' => 'Madde 1 içeriği burada.'],
+            ['heading' => 'Madde 2', 'text' => 'Madde 2 içeriği burada.'],
+        ],
+    ],
+    'yks-dil' => [
+        'title' => 'YKS-DİL Hazırlık',
+        'placeholder' => 'YKS-DİL sınavına hazırlanan öğrenciler için kelime, dil bilgisi, okuma ve soru çözme becerilerini destekleyen demo program.',
+        'checkedSections' => [
+            ['heading' => 'Madde 1', 'text' => 'Madde 1 içeriği burada.'],
+            ['heading' => 'Madde 2', 'text' => 'Madde 2 içeriği burada.'],
+        ],
+    ],
+    'yds-yokdil' => [
+        'title' => 'YDS / YÖKDİL',
+        'placeholder' => 'YDS ve YÖKDİL sınavlarına hazırlık için demo içerik ve çalışma programı.',
+        'checkedSections' => [
+            ['heading' => 'Madde 1', 'text' => 'Madde 1 içeriği burada.'],
+            ['heading' => 'Madde 2', 'text' => 'Madde 2 içeriği burada.'],
+        ],
+    ],
+    'toefl' => [
+        'title' => 'TOEFL',
+        'placeholder' => 'TOEFL sınavının temel bölümlerine ve akademik iletişim becerilerine yönelik demo hazırlık içeriği.',
+        'checkedSections' => [
+            ['heading' => 'Madde 1', 'text' => 'Madde 1 içeriği burada.'],
+            ['heading' => 'Madde 2', 'text' => 'Madde 2 içeriği burada.'],
+        ],
+    ],
+    'pte-academic' => [
+        'title' => 'PTE Academic',
+        'placeholder' => 'PTE Academic sınavına hazırlık için konuşma, yazma, okuma ve dinleme becerilerini geliştiren demo içerik.',
+        'checkedSections' => [
+            ['heading' => 'Madde 1', 'text' => 'Madde 1 içeriği burada.'],
+            ['heading' => 'Madde 2', 'text' => 'Madde 2 içeriği burada.'],
+        ],
+    ],
+    'test-of-english' => [
+        'title' => 'Test of English',
+        'placeholder' => 'Test of English hedeflerinize uygun dil becerilerini ve sınav yaklaşımını geliştirmeye yönelik demo kurs içeriği.',
+        'checkedSections' => [
+            ['heading' => 'Madde 1', 'text' => 'Madde 1 içeriği burada.'],
+            ['heading' => 'Madde 2', 'text' => 'Madde 2 içeriği burada.'],
+        ],
+    ],
+    'sat' => [
+        'title' => 'SAT',
+        'placeholder' => 'Sat içeriği burada.',
+        'checkedSections' => [
+            ['heading' => 'Madde 1', 'text' => 'Madde 1 içeriği burada.'],
+            ['heading' => 'Madde 2', 'text' => 'Madde 2 içeriği burada.'],
+        ],
+    ],
+    'konusma-kulupleri' => [
+        'title' => 'Konuşma Kulüpleri',
+        'placeholder' => 'İngilizce konuşma pratiğini günlük ve ilgi çekici konular üzerinden geliştirmeye yönelik demo kulüp içeriği.',
+        'checkedSections' => [
+            ['heading' => 'Madde 1', 'text' => 'Madde 1 içeriği burada.'],
+            ['heading' => 'Madde 2', 'text' => 'Madde 2 içeriği burada.'],
+        ],
+    ],
+];
+
+foreach ($demoTrainingPages as $slug => $course) {
+    $routeName = $slug === 'konusma-kulupleri' ? 'speaking-clubs' : $slug;
+
+    Route::view('/kurslarimiz/' . $slug, 'frontend.placeholder', [
+        'imageBelowText' => $sharedCourseImageText,
+        ...$course,
+    ])->name('frontend.trainings.' . $routeName);
+}
 Route::view('/subelerimiz/ortaca', 'frontend.placeholder', [
     'title' => 'Ortaca',
     'imagePath' => 'frontend/images/branches/ala_ortaca.jpg',
