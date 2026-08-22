@@ -18,6 +18,8 @@ class PlacementTestLevelResult extends Model
         return [
             'question_count_snapshot' => 'integer',
             'pass_percentage_snapshot' => 'decimal:2',
+            'total_points_snapshot' => 'decimal:2',
+            'correct_points' => 'decimal:2',
             'correct_count' => 'integer',
             'wrong_count' => 'integer',
             'blank_count' => 'integer',
@@ -40,5 +42,10 @@ class PlacementTestLevelResult extends Model
     public function levelQuestions(): HasMany
     {
         return $this->hasMany(PlacementTestLevelQuestion::class);
+    }
+
+    public function contentSnapshots(): HasMany
+    {
+        return $this->hasMany(PlacementTestLevelResultContent::class);
     }
 }

@@ -41,6 +41,11 @@ class PlacementTestLevel extends Model
         return $this->hasMany(PlacementTestQuestion::class);
     }
 
+    public function questionContents(): HasMany
+    {
+        return $this->hasMany(PlacementTestQuestionContent::class);
+    }
+
     public function levelResults(): HasMany
     {
         return $this->hasMany(PlacementTestLevelResult::class);

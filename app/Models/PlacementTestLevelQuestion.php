@@ -18,6 +18,7 @@ class PlacementTestLevelQuestion extends Model
             'display_position' => 'integer',
             'options_snapshot' => 'array',
             'correct_option_snapshot' => 'integer',
+            'points_snapshot' => 'decimal:2',
             'selected_option' => 'integer',
             'answered_at' => 'datetime',
         ];
@@ -31,5 +32,13 @@ class PlacementTestLevelQuestion extends Model
     public function question(): BelongsTo
     {
         return $this->belongsTo(PlacementTestQuestion::class, 'placement_test_question_id');
+    }
+
+    public function contentSnapshot(): BelongsTo
+    {
+        return $this->belongsTo(
+            PlacementTestLevelResultContent::class,
+            'placement_test_level_result_content_id',
+        );
     }
 }
