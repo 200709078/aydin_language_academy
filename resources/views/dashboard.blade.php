@@ -14,26 +14,6 @@
                         Hesabınıza giriş yaptınız.
                     </p>
 
-                    @if (Auth::user()->type === 'admin')
-                        <div class="mt-6 flex flex-wrap gap-4">
-                            <a href="{{ route('courses_list') }}"
-                                class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition ease-in-out duration-150">
-                                {{ __('dictt.courses') }}
-                            </a>
-                            <a href="{{ route('levels_list') }}"
-                                class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition ease-in-out duration-150">
-                                {{ __('dictt.levels') }}
-                            </a>
-                            <a href="{{ route('themes_list') }}"
-                                class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition ease-in-out duration-150">
-                                {{ __('dictt.themes') }}
-                            </a>
-                            <a href="{{ route('profile.show') }}"
-                                class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition ease-in-out duration-150">
-                                {{ __('dictt.profile') }}
-                            </a>
-                        </div>
-                    @endif
                 </div>
             </div>
         </div>

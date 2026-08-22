@@ -15,18 +15,56 @@
                 @if (Auth::user()->type === 'admin')
                     <!-- Navigation Links -->
                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                        <x-nav-link href="{{ route('levels_list') }}" :active="request()->routeIs('levels_list')">
-                            {{ __('dictt.levels') }}
-                        </x-nav-link>
-                        <x-nav-link href="{{ route('sub_levels_list') }}" :active="request()->routeIs('sub_levels_list')">
-                            {{ __('dictt.sublevels') }}
-                        </x-nav-link>
-                        <x-nav-link href="{{ route('themes_list') }}" :active="request()->routeIs('themes_list')">
-                            {{ __('dictt.themes') }}
-                        </x-nav-link>
-                        <x-nav-link href="{{ route('courses_list') }}" :active="request()->routeIs('courses_list')">
-                            {{ __('dictt.courses') }}
-                        </x-nav-link>
+                        <div style="display: flex; height: 4rem; align-items: center;">
+                            <x-dropdown align="left" width="48">
+                            <x-slot name="trigger">
+                                @php
+                                    $adminMenuActive = request()->routeIs(
+                                        'levels_list',
+                                        'sub_levels_list',
+                                        'themes_list',
+                                        'courses_list',
+                                    );
+                                @endphp
+
+                                <button type="button"
+                                    class="admin-themes-menu-trigger {{ $adminMenuActive ? 'is-active' : '' }}">
+                                    {{ __('dictt.themes') }}
+                                </button>
+                            </x-slot>
+
+                            <x-slot name="content">
+                                <x-dropdown-link href="{{ route('levels_list') }}">
+                                    {{ __('dictt.levels') }}
+                                </x-dropdown-link>
+                                <x-dropdown-link href="{{ route('sub_levels_list') }}">
+                                    {{ __('dictt.sublevels') }}
+                                </x-dropdown-link>
+                                <x-dropdown-link href="{{ route('themes_list') }}">
+                                    {{ __('dictt.themes') }}
+                                </x-dropdown-link>
+                                <x-dropdown-link href="{{ route('courses_list') }}">
+                                    {{ __('dictt.courses') }}
+                                </x-dropdown-link>
+                            </x-slot>
+                            </x-dropdown>
+                        </div>
+
+                        <div style="display: flex; height: 4rem; align-items: center;">
+                            <x-dropdown align="left" width="48">
+                                <x-slot name="trigger">
+                                    <button type="button" class="admin-themes-menu-trigger">
+                                        Placement Test
+                                    </button>
+                                </x-slot>
+
+                                <x-slot name="content">
+                                    <div class="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700">
+                                        Levels
+                                    </div>
+                                </x-slot>
+                            </x-dropdown>
+                        </div>
                     </div>
                 @endif
             </div>
@@ -93,14 +131,14 @@
                         <x-slot name="trigger">
                             @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
                                 <button
-                                    class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition">
+                                    class="profile-menu-trigger flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition">
                                     <img class="size-8 rounded-full object-cover"
                                         src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
                                 </button>
                             @else
                                 <span class="inline-flex rounded-md">
                                     <button type="button"
-                                        class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none focus:bg-gray-50 active:bg-gray-50 transition ease-in-out duration-150">
+                                        class="profile-menu-trigger inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none focus:bg-gray-50 active:bg-gray-50 transition ease-in-out duration-150">
                                         {{ Auth::user()->name }}
 
                                         <svg class="ms-2 -me-0.5 size-4" xmlns="http://www.w3.org/2000/svg" fill="none"
