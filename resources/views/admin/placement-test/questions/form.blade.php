@@ -1,0 +1,246 @@
+@php
+    $currentQuestion = $placementTestQuestion ?? null;
+    $submittedOptions = old('options');
+    $optionRows = [];
+
+    if (is_array($submittedOptions)) {
+        foreach ($submittedOptions as $option) {
+            $optionRows[] = [
+                'key' => 'option-' . count($optionRows),
+                'text' => (string) data_get($option, 'text', ''),
+            ];
+        }
+    } elseif ($currentQuestion !== null) {
+        foreach ($currentQuestion->options as $option) {
+            $optionRows[] = [
+                'key' => 'option-' . count($optionRows),
+                'text' => $option->option_text,
+            ];
+        }
+    }
+
+    while (count($optionRows) < 2) {
+        $optionRows[] = [
+            'key' => 'option-' . count($optionRows),
+            'text' => '',
+        ];
+    }
+
+    $savedCorrectOptionIndex = 0;
+
+    if ($currentQuestion !== null) {
+        foreach ($currentQuestion->options as $index => $option) {
+            if ($option->is_correct) {
+                $savedCorrectOptionIndex = $index;
+                break;
+            }
+        }
+    }
+
+    $initialLevelId = old('placement_test_level_id', $currentQuestion?->placement_test_level_id);
+    $initialContentId = old('placement_test_question_content_id', $currentQuestion?->placement_test_question_content_id);
+    $initialContentPosition = old('content_position', $currentQuestion?->content_position);
+    $initialCorrectOptionIndex = old('correct_option_index', $savedCorrectOptionIndex);
+    $initialIsActive = old('is_active', $currentQuestion?->is_active ?? true);
+@endphp
+
+<div class="card"
+    x-data="placementQuestionForm({
+        levelId: @js($initialLevelId),
+        contentId: @js($initialContentId),
+        contentPosition: @js($initialContentPosition),
+        options: @js($optionRows),
+        correctOptionIndex: @js($initialCorrectOptionIndex),
+        contents: @js($contents),
+    })">
+    <div class="card-body">
+        <h5 class="card-title">
+            <a href="{{ route('placement_test_questions_list') }}" class="btn btn-sm btn-secondary">
+                <i class="fa fa-arrow-left"></i> Geri dön
+            </a>
+        </h5>
+
+        @if ($currentQuestion !== null && $currentQuestion->levelQuestionSnapshots()->exists())
+            <div class="alert alert-info" role="alert">
+                Bu soru daha önce sınavda kullanılmış. Buradaki değişiklikler yalnızca yeni sınavları etkiler; geçmiş snapshot kayıtları korunur.
+            </div>
+        @endif
+
+        <form method="POST" action="{{ $action }}">
+            @csrf
+            @if ($method !== 'POST')
+                @method($method)
+            @endif
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="placement_test_level_id" class="form-label">Seviye</label>
+                    <select id="placement_test_level_id" name="placement_test_level_id" x-model="levelId" x-on:change="clearInvalidContent()"
+                        class="form-control @error('placement_test_level_id') is-invalid @enderror" required>
+                        <option value="">Seviye seçin</option>
+                        @foreach ($levels as $level)
+                            <option value="{{ $level->id }}">{{ $level->code }}</option>
+                        @endforeach
+                    </select>
+                    @error('placement_test_level_id')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                    <div class="form-text">C2 için soru oluşturulamaz.</div>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label for="placement_test_question_content_id" class="form-label">Ortak İçerik</label>
+                    <select id="placement_test_question_content_id" name="placement_test_question_content_id" x-model="contentId"
+                        class="form-control @error('placement_test_question_content_id') is-invalid @enderror"
+                        x-bind:disabled="!levelId">
+                        <option value="">Bağımsız soru</option>
+                        <template x-for="content in contentsForSelectedLevel" :key="content.id">
+                            <option x-bind:value="String(content.id)" x-text="content.label"></option>
+                        </template>
+                    </select>
+                    @error('placement_test_question_content_id')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                    <div class="form-text">Yalnız seçilen seviyedeki aktif ortak içerikler listelenir.</div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3" x-show="contentId" style="display: none;">
+                    <label for="content_position" class="form-label">Grup İçi Sıra</label>
+                    <input id="content_position" name="content_position" type="number" min="1" max="65535" x-model="contentPosition"
+                        x-bind:disabled="!contentId"
+                        class="form-control @error('content_position') is-invalid @enderror">
+                    @error('content_position')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                    <div class="form-text">Aynı ortak içeriğe bağlı sorular bu sırayla arka arkaya gösterilir.</div>
+                </div>
+
+                <div class="col-md-6 mb-3" x-bind:class="contentId ? '' : 'd-none'"></div>
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="question_text" class="form-label">Soru Metni</label>
+                <textarea id="question_text" name="question_text" rows="5"
+                    class="form-control @error('question_text') is-invalid @enderror" required>{{ old('question_text', $currentQuestion?->question_text) }}</textarea>
+                @error('question_text')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="points" class="form-label">Soru Puanı</label>
+                    <input id="points" name="points" type="number" min="0.01" max="999999.99" step="0.01"
+                        class="form-control @error('points') is-invalid @enderror"
+                        value="{{ old('points', $currentQuestion?->points ?? '1.00') }}" required>
+                    @error('points')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                    <div class="form-text">Puanı admin belirler; sıfırdan büyük ve en fazla iki ondalıklı olmalıdır.</div>
+                </div>
+
+                <div class="col-md-6 mb-3 d-flex align-items-end">
+                    <div class="form-check form-switch mb-2">
+                        <input type="hidden" name="is_active" value="0">
+                        <input id="is_active" name="is_active" type="checkbox" class="form-check-input" value="1"
+                            @checked($initialIsActive)>
+                        <label for="is_active" class="form-check-label">Bu soru aktif</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border rounded p-3 mb-4">
+                <div class="d-flex justify-content-between align-items-start gap-3 mb-3">
+                    <div>
+                        <h6 class="mb-1">Şıklar</h6>
+                        <p class="text-muted small mb-0">En az iki şık ekleyin ve tam olarak bir doğru şık seçin.</p>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-outline-primary" x-on:click="addOption()">
+                        <i class="fa fa-plus"></i> Şık Ekle
+                    </button>
+                </div>
+
+                <div class="vstack gap-2">
+                    <template x-for="(option, index) in options" :key="option.key">
+                        <div class="input-group">
+                            <div class="input-group-text">
+                                <input type="radio" name="correct_option_index" x-bind:value="index" x-model.number="correctOptionIndex"
+                                    x-bind:aria-label="(index + 1) + '. şık doğru cevap'">
+                            </div>
+                            <textarea rows="2" x-bind:id="'option-text-' + option.key" x-bind:name="'options[' + index + '][text]'"
+                                x-model="option.text" class="form-control" x-bind:placeholder="(index + 1) + '. şık'" required></textarea>
+                            <button type="button" class="btn btn-outline-danger" x-on:click="removeOption(index)"
+                                x-bind:disabled="options.length <= 2" title="Şıkkı kaldır">
+                                <i class="fa fa-minus"></i>
+                            </button>
+                        </div>
+                    </template>
+                </div>
+
+                @error('options')
+                    <div class="text-danger small mt-2">{{ $message }}</div>
+                @enderror
+                @error('correct_option_index')
+                    <div class="text-danger small mt-2">{{ $message }}</div>
+                @enderror
+                @if ($errors->get('options.*.text'))
+                    <div class="text-danger small mt-2">Şık metinlerini kontrol edin.</div>
+                @endif
+            </div>
+
+            <div class="form-group mt-2">
+                <button type="submit" class="btn btn-success btn-sm">{{ $submitLabel }}</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function placementQuestionForm(config) {
+        return {
+            levelId: config.levelId ?? '',
+            contentId: config.contentId ?? '',
+            contentPosition: config.contentPosition ?? '',
+            options: config.options,
+            correctOptionIndex: config.correctOptionIndex ?? 0,
+            contents: config.contents,
+            nextOptionKey: config.options.length,
+
+            get contentsForSelectedLevel() {
+                return this.contents.filter((content) => String(content.level_id) === String(this.levelId));
+            },
+
+            clearInvalidContent() {
+                const selectedContent = this.contents.find((content) => String(content.id) === String(this.contentId));
+
+                if (selectedContent && String(selectedContent.level_id) !== String(this.levelId)) {
+                    this.contentId = '';
+                    this.contentPosition = '';
+                }
+            },
+
+            addOption() {
+                this.options.push({
+                    key: `option-${this.nextOptionKey++}`,
+                    text: '',
+                });
+            },
+
+            removeOption(index) {
+                if (this.options.length <= 2) {
+                    return;
+                }
+
+                this.options.splice(index, 1);
+
+                if (Number(this.correctOptionIndex) === index) {
+                    this.correctOptionIndex = 0;
+                } else if (Number(this.correctOptionIndex) > index) {
+                    this.correctOptionIndex--;
+                }
+            },
+        };
+    }
+</script>

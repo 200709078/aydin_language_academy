@@ -27,6 +27,41 @@ class PlacementTestQuestion extends Model
             if ($points === null || ! is_numeric($points) || (float) $points <= 0) {
                 throw new LogicException('Her sorunun puanı sıfırdan büyük olmalıdır.');
             }
+
+            $question->question_text = trim((string) $question->question_text);
+
+            if ($question->question_text === '') {
+                throw new LogicException('Soru metni boş olamaz.');
+            }
+
+            $level = PlacementTestLevel::query()
+                ->select(['id', 'has_exam'])
+                ->find($question->placement_test_level_id);
+
+            if ($level === null || ! $level->has_exam) {
+                throw new LogicException('C2 seviyesine soru atanamaz.');
+            }
+
+            if (! $hasContent) {
+                return;
+            }
+
+            $content = PlacementTestQuestionContent::query()
+                ->select(['id', 'placement_test_level_id', 'is_active'])
+                ->find($question->placement_test_question_content_id);
+
+            if (
+                $content === null
+                || (int) $content->placement_test_level_id !== (int) $question->placement_test_level_id
+            ) {
+                throw new LogicException('Ortak içerik, sorunun seviyesiyle aynı seviyeye ait olmalıdır.');
+            }
+
+            $isActive = $question->getAttribute('is_active');
+
+            if (($isActive === null || $isActive) && ! $content->is_active) {
+                throw new LogicException('Aktif soru pasif ortak içeriğe bağlanamaz.');
+            }
         });
     }
 
@@ -66,6 +101,11 @@ class PlacementTestQuestion extends Model
     public function options(): HasMany
     {
         return $this->hasMany(PlacementTestQuestionOption::class);
+    }
+
+    public function levelQuestionSnapshots(): HasMany
+    {
+        return $this->hasMany(PlacementTestLevelQuestion::class, 'placement_test_question_id');
     }
 
     public function questionContent(): BelongsTo

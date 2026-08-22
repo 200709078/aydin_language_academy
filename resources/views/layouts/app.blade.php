@@ -52,6 +52,12 @@
                 );
                 $showThemesBreadcrumb = request()->is('admin', 'admin/*')
                     && $isThemesMenuRoute;
+                $showPlacementTestBreadcrumb = request()->is('admin', 'admin/*')
+                    && request()->routeIs(
+                        'placement_test_levels_*',
+                        'placement_test_question_contents_*',
+                        'placement_test_questions_*',
+                    );
             @endphp
 
             <header class="bg-white shadow">
@@ -59,6 +65,12 @@
                     <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                         @if ($showThemesBreadcrumb)
                             {{ __('dictt.themes') }}
+                            <svg class="admin-breadcrumb-separator" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="m9 18 6-6-6-6" />
+                            </svg>
+                        @elseif ($showPlacementTestBreadcrumb)
+                            Placement Test
                             <svg class="admin-breadcrumb-separator" xmlns="http://www.w3.org/2000/svg" fill="none"
                                 viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="m9 18 6-6-6-6" />

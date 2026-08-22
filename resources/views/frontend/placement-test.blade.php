@@ -49,6 +49,23 @@
                             <p class="mb-0">İçeriği görmek için lütfen <a class="text-primary" href="{{ route('frontend.login', ['return' => request()->route()?->getName()]) }}">giriş</a> yapınız.</p>
                         @endauth
                     </div>
+
+                    @auth
+                        <div class="bg-light rounded p-4 mt-4">
+                            <h4 class="mb-3">Seviye Tespit Sınavı Kuralları</h4>
+                            <ul class="mb-0 ps-3">
+                                <li class="mb-2">Sınav A1 seviyesinden başlar; başarılı olduğunuzda bir sonraki seviyeye geçersiniz.</li>
+                                <li class="mb-2">Her seviyedeki aktif soruların tamamı sınava dahil edilir.</li>
+                                <li class="mb-2">Sorular farklı puan değerlerine sahip olabilir. Başarı oranı, doğru cevapların puan ağırlığına göre hesaplanır.</li>
+                                <li class="mb-2">Cevaplanmayan sorular boş sayılır; yanlış veya boş cevaplar için negatif puan uygulanmaz.</li>
+                                <li class="mb-0">İlk başarısız olduğunuz seviye sonucunuz olur; C1 seviyesini başarıyla tamamlarsanız nihai seviyeniz C2 kabul edilir. Sonuç yönetici onayıyla kesinleşir.</li>
+                            </ul>
+                        </div>
+
+                        <div class="text-center mt-4">
+                            <button type="button" class="btn btn-primary py-3 px-5">Sınava Başla</button>
+                        </div>
+                    @endauth
                 </div>
             </div>
         </div>

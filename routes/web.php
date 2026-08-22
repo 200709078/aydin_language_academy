@@ -8,6 +8,9 @@ use App\Http\Controllers\cont_questions;
 use App\Http\Controllers\cont_sub_levels;
 use App\Http\Controllers\cont_themes;
 use App\Http\Controllers\cont_user_main;
+use App\Http\Controllers\PlacementTestLevelController;
+use App\Http\Controllers\PlacementTestQuestionController;
+use App\Http\Controllers\PlacementTestQuestionContentController;
 use App\Http\Middleware\isAdmin_middle;
 use App\Support\FrontendReturnRoutes;
 use Illuminate\Http\Request;
@@ -23,6 +26,50 @@ Route::group(['middleware' => ['auth', isAdmin_middle::class], 'prefix' => 'admi
     Route::view('/', 'dashboard')->name('admin');
 
     Route::get('settings_list', [cont_user_main::class, 'settings_list'])->name('settings_list');
+
+    Route::get('placement-test/levels', [PlacementTestLevelController::class, 'index'])
+        ->name('placement_test_levels_list');
+    Route::get('placement-test/levels/{placementTestLevel}/edit', [PlacementTestLevelController::class, 'edit'])
+        ->whereNumber('placementTestLevel')
+        ->name('placement_test_levels_edit');
+    Route::put('placement-test/levels/{placementTestLevel}', [PlacementTestLevelController::class, 'update'])
+        ->whereNumber('placementTestLevel')
+        ->name('placement_test_levels_update');
+
+    Route::get('placement-test/question-contents', [PlacementTestQuestionContentController::class, 'index'])
+        ->name('placement_test_question_contents_list');
+    Route::get('placement-test/question-contents/create', [PlacementTestQuestionContentController::class, 'create'])
+        ->name('placement_test_question_contents_create');
+    Route::post('placement-test/question-contents', [PlacementTestQuestionContentController::class, 'store'])
+        ->name('placement_test_question_contents_store');
+    Route::get('placement-test/question-contents/{placementTestQuestionContent}/edit', [PlacementTestQuestionContentController::class, 'edit'])
+        ->whereNumber('placementTestQuestionContent')
+        ->name('placement_test_question_contents_edit');
+    Route::put('placement-test/question-contents/{placementTestQuestionContent}', [PlacementTestQuestionContentController::class, 'update'])
+        ->whereNumber('placementTestQuestionContent')
+        ->name('placement_test_question_contents_update');
+    Route::delete('placement-test/question-contents/{placementTestQuestionContent}', [PlacementTestQuestionContentController::class, 'destroy'])
+        ->whereNumber('placementTestQuestionContent')
+        ->name('placement_test_question_contents_destroy');
+    Route::get('placement-test/question-contents/{placementTestQuestionContent}/media', [PlacementTestQuestionContentController::class, 'media'])
+        ->whereNumber('placementTestQuestionContent')
+        ->name('placement_test_question_contents_media');
+
+    Route::get('placement-test/questions', [PlacementTestQuestionController::class, 'index'])
+        ->name('placement_test_questions_list');
+    Route::get('placement-test/questions/create', [PlacementTestQuestionController::class, 'create'])
+        ->name('placement_test_questions_create');
+    Route::post('placement-test/questions', [PlacementTestQuestionController::class, 'store'])
+        ->name('placement_test_questions_store');
+    Route::get('placement-test/questions/{placementTestQuestion}/edit', [PlacementTestQuestionController::class, 'edit'])
+        ->whereNumber('placementTestQuestion')
+        ->name('placement_test_questions_edit');
+    Route::put('placement-test/questions/{placementTestQuestion}', [PlacementTestQuestionController::class, 'update'])
+        ->whereNumber('placementTestQuestion')
+        ->name('placement_test_questions_update');
+    Route::delete('placement-test/questions/{placementTestQuestion}', [PlacementTestQuestionController::class, 'destroy'])
+        ->whereNumber('placementTestQuestion')
+        ->name('placement_test_questions_destroy');
 
     Route::get('courses_list', [cont_user_main::class, 'courses_list'])->name('courses_list');
     Route::get('levels_list', [cont_user_main::class, 'levels_list'])->name('levels_list');

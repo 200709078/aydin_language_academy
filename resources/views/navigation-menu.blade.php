@@ -53,15 +53,22 @@
                         <div style="display: flex; height: 4rem; align-items: center;">
                             <x-dropdown align="left" width="48">
                                 <x-slot name="trigger">
-                                    <button type="button" class="admin-themes-menu-trigger">
+                                    <button type="button"
+                                        class="admin-themes-menu-trigger {{ request()->routeIs('placement_test_levels_*', 'placement_test_question_contents_*', 'placement_test_questions_*') ? 'is-active' : '' }}">
                                         Placement Test
                                     </button>
                                 </x-slot>
 
                                 <x-slot name="content">
-                                    <div class="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700">
+                                    <x-dropdown-link href="{{ route('placement_test_levels_list') }}">
                                         Levels
-                                    </div>
+                                    </x-dropdown-link>
+                                    <x-dropdown-link href="{{ route('placement_test_question_contents_list') }}">
+                                        Ortak İçerikler
+                                    </x-dropdown-link>
+                                    <x-dropdown-link href="{{ route('placement_test_questions_list') }}">
+                                        Sorular
+                                    </x-dropdown-link>
                                 </x-slot>
                             </x-dropdown>
                         </div>

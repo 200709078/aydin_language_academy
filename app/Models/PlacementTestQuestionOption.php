@@ -4,9 +4,29 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use LogicException;
 
 class PlacementTestQuestionOption extends Model
 {
+    protected static function booted(): void
+    {
+        static::saving(function (self $option): void {
+            $option->option_text = trim((string) $option->option_text);
+
+            if ($option->option_text === '') {
+                throw new LogicException('Şık metni boş olamaz.');
+            }
+
+            if (
+                $option->display_position === null
+                || ! is_numeric($option->display_position)
+                || (int) $option->display_position < 1
+            ) {
+                throw new LogicException('Şık sıra numarası pozitif olmalıdır.');
+            }
+        });
+    }
+
     /**
      * The attributes that are mass assignable.
      *
