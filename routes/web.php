@@ -8,6 +8,7 @@ use App\Http\Controllers\cont_questions;
 use App\Http\Controllers\cont_sub_levels;
 use App\Http\Controllers\cont_themes;
 use App\Http\Controllers\cont_user_main;
+use App\Http\Controllers\PlacementTestAttemptController;
 use App\Http\Controllers\PlacementTestLevelController;
 use App\Http\Controllers\PlacementTestQuestionController;
 use App\Http\Controllers\PlacementTestQuestionContentController;
@@ -137,8 +138,31 @@ Route::redirect('/dashboard', '/admin')
 Route::view('/', 'frontend.home')->name('home');
 Route::view('/basarilarimiz', 'frontend.achievements')->name('frontend.achievements');
 Route::view('/kampanyalarimiz', 'frontend.campaigns')->name('frontend.campaigns');
-Route::view('/seviye-tespit-sinavi', 'frontend.placement-test')
+Route::get('/seviye-tespit-sinavi', [PlacementTestAttemptController::class, 'landing'])
     ->name('frontend.placement-test');
+
+Route::middleware('auth')->prefix('seviye-tespit-sinavi')->group(function (): void {
+    Route::post('/baslat', [PlacementTestAttemptController::class, 'start'])
+        ->name('frontend.placement-test.start');
+    Route::get('/sinav/{placementTest}', [PlacementTestAttemptController::class, 'resume'])
+        ->whereNumber('placementTest')
+        ->name('frontend.placement-test.exam');
+    Route::get('/sinav/{placementTest}/sorular/{placementTestLevelQuestion}', [PlacementTestAttemptController::class, 'showQuestion'])
+        ->whereNumber('placementTest')
+        ->whereNumber('placementTestLevelQuestion')
+        ->name('frontend.placement-test.question');
+    Route::put('/sinav/{placementTest}/sorular/{placementTestLevelQuestion}', [PlacementTestAttemptController::class, 'saveAnswer'])
+        ->whereNumber('placementTest')
+        ->whereNumber('placementTestLevelQuestion')
+        ->name('frontend.placement-test.answer');
+    Route::get('/sinav/{placementTest}/tamamlandi', [PlacementTestAttemptController::class, 'completed'])
+        ->whereNumber('placementTest')
+        ->name('frontend.placement-test.completed');
+    Route::get('/sinav/{placementTest}/icerikler/{placementTestLevelResultContent}/medya', [PlacementTestAttemptController::class, 'media'])
+        ->whereNumber('placementTest')
+        ->whereNumber('placementTestLevelResultContent')
+        ->name('frontend.placement-test.media');
+});
 /*
 |--------------------------------------------------------------------------
 | Yeni Public Frontend — Üyelik Formu

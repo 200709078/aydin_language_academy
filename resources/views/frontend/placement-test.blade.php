@@ -41,6 +41,13 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-8 wow fadeIn" data-wow-delay="0.1s">
+                    @if (session('error'))
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            {{ session('error') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Kapat"></button>
+                        </div>
+                    @endif
+
                     <div class="bg-light rounded p-5 text-center">
                         <h1 class="mb-4">Seviye Tespit Sınavı</h1>
                         @auth
@@ -51,19 +58,41 @@
                     </div>
 
                     @auth
-                        <div class="bg-light rounded p-4 mt-4">
-                            <h4 class="mb-3">Seviye Tespit Sınavı Kuralları</h4>
-                            <ul class="mb-0 ps-3">
-                                <li class="mb-2">Sınav A1 seviyesinden başlar; başarılı olduğunuzda bir sonraki seviyeye geçersiniz.</li>
-                                <li class="mb-2">Her seviyedeki aktif soruların tamamı sınava dahil edilir.</li>
-                                <li class="mb-2">Sorular farklı puan değerlerine sahip olabilir. Başarı oranı, doğru cevapların puan ağırlığına göre hesaplanır.</li>
-                                <li class="mb-2">Cevaplanmayan sorular boş sayılır; yanlış veya boş cevaplar için negatif puan uygulanmaz.</li>
-                                <li class="mb-0">İlk başarısız olduğunuz seviye sonucunuz olur; C1 seviyesini başarıyla tamamlarsanız nihai seviyeniz C2 kabul edilir. Sonuç yönetici onayıyla kesinleşir.</li>
-                            </ul>
-                        </div>
+                        @if (($openAttempt ?? null)?->status === 'pending_approval')
+                            <div class="bg-light rounded p-4 mt-4">
+                                <h4 class="mb-3">Sınav Bilgileri</h4>
+                                @include('frontend.placement-test.attempt-summary', ['placementTest' => $openAttempt])
+                            </div>
+                        @else
+                            <div class="bg-light rounded p-4 mt-4">
+                                <h4 class="mb-3">Seviye Tespit Sınavı Kuralları</h4>
+                                <ul class="mb-0 ps-3">
+                                    <li class="mb-2">Sınav A1 seviyesinden başlar; başarılı olduğunuzda bir sonraki seviyeye geçersiniz.</li>
+                                    <li class="mb-2">Her seviyedeki aktif soruların tamamı sınava dahil edilir.</li>
+                                    <li class="mb-2">Sorular farklı puan değerlerine sahip olabilir. Başarı oranı, doğru cevapların puan ağırlığına göre hesaplanır.</li>
+                                    <li class="mb-2">Cevaplanmayan sorular boş sayılır; yanlış veya boş cevaplar için negatif puan uygulanmaz.</li>
+                                    <li class="mb-0">İlk başarısız olduğunuz seviye sonucunuz olur; C1 seviyesini başarıyla tamamlarsanız nihai seviyeniz C2 kabul edilir. Sonuç yönetici onayıyla kesinleşir.</li>
+                                </ul>
+                            </div>
+                        @endif
 
                         <div class="text-center mt-4">
-                            <button type="button" class="btn btn-primary py-3 px-5">Sınava Başla</button>
+                            @if (($openAttempt ?? null)?->status === 'in_progress')
+                                <p class="text-muted mb-3">Devam eden bir sınavınız var. Cevaplarınız kaydedildi.</p>
+                                <form method="POST" action="{{ route('frontend.placement-test.start') }}">
+                                    @csrf
+                                    <button type="submit" class="btn btn-primary py-3 px-5">Sınava Devam Et</button>
+                                </form>
+                            @elseif (($openAttempt ?? null)?->status === 'pending_approval')
+                                <a href="{{ route('frontend.placement-test.completed', $openAttempt) }}" class="btn btn-primary py-3 px-5">
+                                    Sınav Durumunu Görüntüle
+                                </a>
+                            @else
+                                <form method="POST" action="{{ route('frontend.placement-test.start') }}">
+                                    @csrf
+                                    <button type="submit" class="btn btn-primary py-3 px-5">Sınava Başla</button>
+                                </form>
+                            @endif
                         </div>
                     @endauth
                 </div>
