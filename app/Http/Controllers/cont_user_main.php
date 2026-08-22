@@ -98,24 +98,6 @@ class cont_user_main extends Controller
                 );
         });
 
-        /*         Mail::send([], [], function ($message) use ($request) {
-                    $message->to('learnenglishwithala@gmail.com', 'Adem VAROL')
-                        ->subject($request->subject)
-                        ->setBody(
-                            "<b>Ad Soyad:</b> {$request->fullname}<br>
-                             <b>Email:</b> {$request->email}<br>
-                             <b>Telefon:</b> {$request->telephone}<br><br>
-                             <b>Mesaj:</b><br>" . nl2br(e($request->message)),
-                            'text/html'
-                        );
-                }); */
-
-        /*         Mail::raw($request->message, function ($message) use ($request) {
-                    $message->from($request->email, $request->fullname);
-                    $message->to('ademvarol0808@hotmail.com', 'Adem VAROL');
-                    $message->subject($request->subject);
-                }); */
-
         $modalSuccessTitle = __('dictt.sendmessagesuccesstitle');
         $modalSuccessContent = __('dictt.sendmessagesuccesscontent');
 
@@ -141,50 +123,10 @@ class cont_user_main extends Controller
 
     public function exercises_result(Request $request, $theme_id)
     {
-        /* 
-            $exercises = model_exercises::with('questions')->whereSlug($slug)->first() ?? abort(404, 'EXERCISES NOT FOUND.');
-    $correct = 0;
-    if ($exercises->my_result != null) {
-        abort(404, 'You have join this exercises before.');
+    $exercises = model_exercises::with('questions')->whereId($theme_id)->first() ?? abort(404, Lang::get('dictt.exercisesnotfound'));
+    return Lang::get('dictt.commingsoon');
     }
 
-    foreach ($exercises->questions as $question) {
-        model_user_answers::create([
-            'user_id' => auth()->user()->id,
-            'question_id' => $question->id,
-            'user_select' => $request->post($question->id)
-        ]);
-        if ($question->correct_answer === $request->post($question->id)) {
-            $correct += 1;
-        }
-    }
-    $point = round((100 / count($exercises->questions)) * $correct, 2);
-    $wrong = count($exercises->questions) - $correct;
-    model_results::create([
-        'user_id' => auth()->user()->id,
-        'exercises_id' => $exercises->id,
-        'point' => $point,
-        'correct_number' => $correct,
-        'wrong_number' => $wrong
-    ]);
-    return redirect()->route('exercises.detail', $exercises->slug)->with('success', 'YOUR SUCCESSFULLY TO EXERCISES. Your Point:' . $point);
-        */
-
-        //$declarations = model_declarations::where('theme_id', '=', $theme_id)->get() ?? abort(404, 'THEME NOT FOUND');
-        //$exercises = model_exercises::where('theme_id', '=', $theme_id)->with('questions')->get() ?? abort(404, 'THEME NOT FOUND');
-        //return view('front.theme_detail', compact(['declarations', 'exercises', 'theme_id', 'request']));
-        $exercises = model_exercises::with('questions')->whereId($theme_id)->first() ?? abort(404, Lang::get('dictt.exercisesnotfound'));
-        //return $exercises;
-        return Lang::get('dictt.commingsoon');
-        //return redirect($request->session()->previousUrl());
-    }
-
-    public function settings_list()
-    {
-        return 'SETTINGS E GELDİN...';
-        /*         $levels = model_levels::orderBy('updated_at', 'desc')->get();
-                return view("admin.levels.list", compact('levels')); */
-    }
     public function courses_list()
     {
         $courses = model_courses::get();
@@ -256,5 +198,4 @@ class cont_user_main extends Controller
         $exercises = model_exercises::whereSlug($slug)->with('my_result', 'topTen.user')->withCount('questions')->first() ?? abort(404, Lang::get('dictt.exercisesnotfound'));
         return view("exercises_detail", compact('exercises'));
     }
-
 }

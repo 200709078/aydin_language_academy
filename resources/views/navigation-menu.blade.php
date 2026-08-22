@@ -103,9 +103,6 @@
                                     {{ __('dictt.sitemanage') }}
                                 </div>
 
-                                <x-dropdown-link class="admin-user-menu-link" href="{{ route('settings_list') }}">
-                                    {{ __('dictt.settings') }}
-                                </x-dropdown-link>
                                 <!-- Site Settings End -->
                             @endif
 

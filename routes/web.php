@@ -26,8 +26,6 @@ Route::group(['middleware' => 'auth'], function () {
 Route::group(['middleware' => ['auth', isAdmin_middle::class], 'prefix' => 'admin'], function () {
     Route::view('/', 'dashboard')->name('admin');
 
-    Route::get('settings_list', [cont_user_main::class, 'settings_list'])->name('settings_list');
-
     Route::get('placement-test/levels', [PlacementTestLevelController::class, 'index'])
         ->name('placement_test_levels_list');
     Route::get('placement-test/levels/{placementTestLevel}/edit', [PlacementTestLevelController::class, 'edit'])

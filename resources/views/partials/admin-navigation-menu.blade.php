@@ -1,4 +1,4 @@
-<nav x-data="{ themesOpen: {{ request()->routeIs('levels_list', 'sub_levels_list', 'themes_list', 'courses_list') ? 'true' : 'false' }}, placementOpen: {{ request()->routeIs('placement_test_levels_*', 'placement_test_question_contents_*', 'placement_test_questions_*') ? 'true' : 'false' }}, userOpen: {{ request()->routeIs('settings_list', 'profile.show') ? 'true' : 'false' }} }"
+<nav x-data="{ themesOpen: {{ request()->routeIs('levels_list', 'sub_levels_list', 'themes_list', 'courses_list') ? 'true' : 'false' }}, placementOpen: {{ request()->routeIs('placement_test_levels_*', 'placement_test_question_contents_*', 'placement_test_questions_*') ? 'true' : 'false' }}, userOpen: {{ request()->routeIs('profile.show') ? 'true' : 'false' }} }"
     class="admin-navigation border-b border-gray-200 bg-white shadow-sm">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <a href="{{ route('admin') }}" class="admin-navigation-brand">
@@ -11,7 +11,7 @@
 
                 <div class="admin-navigation-group">
                     <button type="button"
-                        class="admin-navigation-trigger {{ request()->routeIs('settings_list', 'profile.show') ? 'is-active' : '' }}"
+                        class="admin-navigation-trigger {{ request()->routeIs('profile.show') ? 'is-active' : '' }}"
                         @click="userOpen = !userOpen" :aria-expanded="userOpen.toString()">
                         {{ Auth::user()->name }}
                         <svg class="admin-navigation-arrow h-4 w-4" :class="{ 'is-open': userOpen }" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -19,7 +19,6 @@
                         </svg>
                     </button>
                     <div x-show="userOpen" x-transition class="admin-navigation-collapse" style="display: none;">
-                        <a href="{{ route('settings_list') }}" class="admin-navigation-collapse-link {{ request()->routeIs('settings_list') ? 'is-active' : '' }}">Settings</a>
                         <a href="{{ route('profile.show') }}" class="admin-navigation-collapse-link {{ request()->routeIs('profile.show') ? 'is-active' : '' }}">Profile</a>
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
