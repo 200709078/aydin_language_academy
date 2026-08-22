@@ -140,11 +140,21 @@
         transition: .5s;
     }
 
-    .navbar .nav-item:hover .dropdown-menu {
+    .navbar .nav-item:hover .dropdown-menu,
+    .navbar .nav-item .dropdown-menu.show,
+    .navbar .nav-item:focus-within .dropdown-menu {
         top: 100%;
         visibility: visible;
         transition: .5s;
         opacity: 1;
+    }
+
+    .navbar .frontend-user-dropdown .frontend-user-dropdown-menu {
+        right: 0;
+        left: auto;
+        width: 160px;
+        min-width: 160px;
+        box-sizing: border-box;
     }
 }
 

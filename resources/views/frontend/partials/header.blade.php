@@ -67,11 +67,11 @@
             @guest
                 <a href="{{ route('frontend.login', ['return' => request()->route()?->getName()]) }}" class="btn btn-primary rounded-0 py-4 px-lg-5 d-none d-lg-block">Giriş Yap<i class="fa fa-arrow-right ms-3"></i></a>
             @else
-                <div class="nav-item dropdown d-none d-lg-flex align-items-stretch">
-                    <a href="#" class="btn btn-primary rounded-0 py-4 px-lg-4 d-flex align-items-center dropdown-toggle" data-bs-toggle="dropdown" aria-label="Kullanıcı menüsü" aria-expanded="false">
+                <div class="nav-item dropdown frontend-user-dropdown d-none d-lg-flex align-items-stretch">
+                    <a href="#" class="btn btn-primary rounded-0 py-4 px-lg-4 d-flex align-items-center dropdown-toggle" data-bs-toggle="dropdown" data-bs-display="static" aria-label="Kullanıcı menüsü" aria-expanded="false">
                         <span class="d-inline-flex align-items-center justify-content-center rounded-circle bg-white text-primary fw-bold" style="width: 36px; height: 36px;">{{ $initials ?: 'Ü' }}</span>
                     </a>
-                    <div class="dropdown-menu dropdown-menu-end bg-light rounded-0 m-0">
+                    <div class="dropdown-menu frontend-user-dropdown-menu dropdown-menu-end bg-light rounded-0 m-0">
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
                             <input type="hidden" name="return" value="{{ request()->route()?->getName() }}">

@@ -40,7 +40,29 @@
         }
 
         .placement-question-progress {
-            height: 8px;
+            height: 16px;
+        }
+
+        .placement-exam-status-bar {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .placement-exam-status-bar > :last-child {
+            text-align: right;
+        }
+
+        @media (max-width: 575.98px) {
+            .placement-exam-status-bar {
+                grid-template-columns: 1fr;
+                gap: 0.35rem;
+            }
+
+            .placement-exam-status-bar > :last-child {
+                text-align: left;
+            }
         }
 
         .placement-question-progress-segment {
@@ -48,10 +70,37 @@
             min-width: 4px;
             border-radius: 999px;
             background: #dce7f0;
+            color: #374151;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .placement-question-progress-segment.is-answered {
+            background: #045aa2;
+            color: #ffffff;
         }
 
         .placement-question-progress-segment.is-current {
-            background: #045aa2;
+            background: #fca5a5;
+            color: #7f1d1d;
+        }
+
+        .placement-question-progress-link {
+            display: block;
+            flex: 1 1 0;
+            min-width: 4px;
+        }
+
+        a.placement-question-progress-link {
+            cursor: pointer;
+        }
+
+        .placement-question-progress-link .placement-question-progress-segment {
+            height: 100%;
         }
 
         .placement-question-card,
@@ -90,11 +139,10 @@
                     </div>
                     <div class="d-flex align-items-center justify-content-sm-end gap-2">
                         <span class="badge bg-primary fs-6">{{ $level->code }}</span>
-                        <span class="small text-muted">Soru {{ $currentQuestion->display_position }} / {{ $questions->count() }}</span>
                     </div>
                 </div>
 
-                <div class="d-flex flex-wrap align-items-center justify-content-sm-end gap-3 mt-3">
+                <div class="placement-exam-status-bar mt-3">
                     <span class="small text-muted">{{ $answeredQuestionCount }} soru cevaplandı</span>
                     <span class="small text-muted" data-placement-elapsed-time
                         data-started-at="{{ $placementTest->started_at?->getTimestamp() }}" aria-live="polite">
@@ -107,8 +155,22 @@
                     aria-label="Soru ilerlemesi" aria-valuenow="{{ $currentQuestion->display_position }}"
                     aria-valuemin="1" aria-valuemax="{{ $questions->count() }}">
                     @foreach ($questions as $question)
-                        <span class="placement-question-progress-segment {{ $question->id === $currentQuestion->id ? 'is-current' : '' }}"
-                            title="Soru {{ $question->display_position }}"></span>
+                        @if ($question->id === $currentQuestion->id)
+                            <span class="placement-question-progress-link" aria-current="step">
+                                <span class="placement-question-progress-segment is-current"
+                                    title="Soru {{ $question->display_position }}">{{ $question->display_position }}</span>
+                            </span>
+                        @else
+                            <a class="placement-question-progress-link"
+                                href="{{ route('frontend.placement-test.question', [
+                                    'placementTest' => $placementTest,
+                                    'placementTestLevelQuestion' => $question,
+                                ]) }}"
+                                aria-label="Soru {{ $question->display_position }}'ye git">
+                                <span class="placement-question-progress-segment {{ $question->selected_option !== null ? 'is-answered' : 'is-unanswered' }}"
+                                    title="Soru {{ $question->display_position }}">{{ $question->display_position }}</span>
+                            </a>
+                        @endif
                     @endforeach
                 </div>
             </div>
