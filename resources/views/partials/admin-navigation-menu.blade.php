@@ -1,4 +1,4 @@
-<nav x-data="{ themesOpen: {{ request()->routeIs('levels_list', 'sub_levels_list', 'themes_list', 'courses_list') ? 'true' : 'false' }}, placementOpen: {{ request()->routeIs('placement_test_levels_*', 'placement_test_question_contents_*', 'placement_test_questions_*') ? 'true' : 'false' }}, userOpen: {{ request()->routeIs('profile.show') ? 'true' : 'false' }} }"
+<nav x-data="{ themesOpen: {{ request()->routeIs('levels_list', 'sub_levels_list', 'themes_list', 'courses_list') ? 'true' : 'false' }}, placementOpen: {{ request()->routeIs('placement_test_levels_*', 'placement_test_question_contents_*', 'placement_test_questions_*') ? 'true' : 'false' }}, userOpen: {{ request()->routeIs('profile.show') ? 'true' : 'false' }}, languageOpen: false }"
     class="admin-navigation border-b border-gray-200 bg-white shadow-sm">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <a href="{{ route('admin') }}" class="admin-navigation-brand">
@@ -13,16 +13,16 @@
                     <button type="button"
                         class="admin-navigation-trigger {{ request()->routeIs('profile.show') ? 'is-active' : '' }}"
                         @click="userOpen = !userOpen" :aria-expanded="userOpen.toString()">
-                        {{ Auth::user()->name }}
                         <svg class="admin-navigation-arrow h-4 w-4" :class="{ 'is-open': userOpen }" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                            <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 1 1 1.06.02L10 11.168l3.71-3.938a.75.75 0 1 1 1.08 1.04l-4.25 4.512a.75.75 0 0 1-1.08 0L5.21 8.27a.75.75 0 0 1 .02-1.06Z" clip-rule="evenodd" />
+                            <path fill-rule="evenodd" d="M8.72 15.47a.75.75 0 0 1 0-1.06L12.19 10 8.72 6.53a.75.75 0 1 1 1.06-1.06l4 4a.75.75 0 0 1 0 1.06l-4 4a.75.75 0 0 1-1.06 0Z" clip-rule="evenodd" />
                         </svg>
+                        {{ Auth::user()->name }}
                     </button>
                     <div x-show="userOpen" x-transition class="admin-navigation-collapse" style="display: none;">
-                        <a href="{{ route('profile.show') }}" class="admin-navigation-collapse-link {{ request()->routeIs('profile.show') ? 'is-active' : '' }}">Profile</a>
+                        <a href="{{ route('profile.show') }}" class="admin-navigation-collapse-link {{ request()->routeIs('profile.show') ? 'is-active' : '' }}">{{ __('dictt.profile') }}</a>
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
-                            <button type="submit" class="admin-navigation-collapse-link w-full text-left">Log Out</button>
+                            <button type="submit" class="admin-navigation-collapse-link w-full text-left">{{ __('dictt.logout') }}</button>
                         </form>
                     </div>
                 </div>
@@ -33,16 +33,16 @@
                     <button type="button"
                         class="admin-navigation-trigger {{ request()->routeIs('levels_list', 'sub_levels_list', 'themes_list', 'courses_list') ? 'is-active' : '' }}"
                         @click="themesOpen = !themesOpen" :aria-expanded="themesOpen.toString()">
-                        Themes
                         <svg class="admin-navigation-arrow h-4 w-4" :class="{ 'is-open': themesOpen }" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                            <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 11.168l3.71-3.938a.75.75 0 1 1 1.08 1.04l-4.25 4.512a.75.75 0 0 1-1.08 0L5.21 8.27a.75.75 0 0 1 .02-1.06Z" clip-rule="evenodd" />
+                            <path fill-rule="evenodd" d="M8.72 15.47a.75.75 0 0 1 0-1.06L12.19 10 8.72 6.53a.75.75 0 1 1 1.06-1.06l4 4a.75.75 0 0 1 0 1.06l-4 4a.75.75 0 0 1-1.06 0Z" clip-rule="evenodd" />
                         </svg>
+                        {{ __('dictt.themes') }}
                     </button>
                     <div x-show="themesOpen" x-transition class="admin-navigation-collapse" style="display: none;">
-                        <a href="{{ route('levels_list') }}" class="admin-navigation-collapse-link {{ request()->routeIs('levels_list') ? 'is-active' : '' }}">Levels</a>
-                        <a href="{{ route('sub_levels_list') }}" class="admin-navigation-collapse-link {{ request()->routeIs('sub_levels_list') ? 'is-active' : '' }}">Sub Levels</a>
-                        <a href="{{ route('themes_list') }}" class="admin-navigation-collapse-link {{ request()->routeIs('themes_list') ? 'is-active' : '' }}">Themes</a>
-                        <a href="{{ route('courses_list') }}" class="admin-navigation-collapse-link {{ request()->routeIs('courses_list') ? 'is-active' : '' }}">Courses</a>
+                        <a href="{{ route('levels_list') }}" class="admin-navigation-collapse-link {{ request()->routeIs('levels_list') ? 'is-active' : '' }}">{{ __('dictt.levels') }}</a>
+                        <a href="{{ route('sub_levels_list') }}" class="admin-navigation-collapse-link {{ request()->routeIs('sub_levels_list') ? 'is-active' : '' }}">{{ __('dictt.sublevels') }}</a>
+                        <a href="{{ route('themes_list') }}" class="admin-navigation-collapse-link {{ request()->routeIs('themes_list') ? 'is-active' : '' }}">{{ __('dictt.themes') }}</a>
+                        <a href="{{ route('courses_list') }}" class="admin-navigation-collapse-link {{ request()->routeIs('courses_list') ? 'is-active' : '' }}">{{ __('dictt.courses') }}</a>
                     </div>
                 </div>
 
@@ -52,15 +52,32 @@
                     <button type="button"
                         class="admin-navigation-trigger {{ request()->routeIs('placement_test_levels_*', 'placement_test_question_contents_*', 'placement_test_questions_*') ? 'is-active' : '' }}"
                         @click="placementOpen = !placementOpen" :aria-expanded="placementOpen.toString()">
-                        Placement Test
                         <svg class="admin-navigation-arrow h-4 w-4" :class="{ 'is-open': placementOpen }" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                            <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 1 1 1.06.02L10 11.168l3.71-3.938a.75.75 0 1 1 1.08 1.04l-4.25 4.512a.75.75 0 0 1-1.08 0L5.21 8.27a.75.75 0 0 1 .02-1.06Z" clip-rule="evenodd" />
+                            <path fill-rule="evenodd" d="M8.72 15.47a.75.75 0 0 1 0-1.06L12.19 10 8.72 6.53a.75.75 0 1 1 1.06-1.06l4 4a.75.75 0 0 1 0 1.06l-4 4a.75.75 0 0 1-1.06 0Z" clip-rule="evenodd" />
                         </svg>
+                        {{ __('dictt.placement_test') }}
                     </button>
                     <div x-show="placementOpen" x-transition class="admin-navigation-collapse" style="display: none;">
-                        <a href="{{ route('placement_test_levels_list') }}" class="admin-navigation-collapse-link {{ request()->routeIs('placement_test_levels_list') ? 'is-active' : '' }}">Levels</a>
-                        <a href="{{ route('placement_test_question_contents_list') }}" class="admin-navigation-collapse-link {{ request()->routeIs('placement_test_question_contents_list') ? 'is-active' : '' }}">Ortak İçerikler</a>
-                        <a href="{{ route('placement_test_questions_list') }}" class="admin-navigation-collapse-link {{ request()->routeIs('placement_test_questions_list') ? 'is-active' : '' }}">Sorular</a>
+                        <a href="{{ route('placement_test_levels_list') }}" class="admin-navigation-collapse-link {{ request()->routeIs('placement_test_levels_list') ? 'is-active' : '' }}">{{ __('dictt.levels') }}</a>
+                        <a href="{{ route('placement_test_question_contents_list') }}" class="admin-navigation-collapse-link {{ request()->routeIs('placement_test_question_contents_list') ? 'is-active' : '' }}">{{ __('dictt.question_contents') }}</a>
+                        <a href="{{ route('placement_test_questions_list') }}" class="admin-navigation-collapse-link {{ request()->routeIs('placement_test_questions_list') ? 'is-active' : '' }}">{{ __('dictt.questions') }}</a>
+                    </div>
+                </div>
+
+                <hr class="admin-navigation-divider">
+
+                <div class="admin-navigation-group">
+                    <button type="button"
+                        class="admin-navigation-trigger"
+                        @click="languageOpen = !languageOpen" :aria-expanded="languageOpen.toString()">
+                        <svg class="admin-navigation-arrow h-4 w-4" :class="{ 'is-open': languageOpen }" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M8.72 15.47a.75.75 0 0 1 0-1.06L12.19 10 8.72 6.53a.75.75 0 1 1 1.06-1.06l4 4a.75.75 0 0 1 0 1.06l-4 4a.75.75 0 0 1-1.06 0Z" clip-rule="evenodd" />
+                        </svg>
+                        {{ __('dictt.languages') }}
+                    </button>
+                    <div x-show="languageOpen" x-transition class="admin-navigation-collapse" style="display: none;">
+                        <a href="{{ route('changeLanguage', 'tr') }}" class="admin-navigation-collapse-link {{ session('locale', config('app.locale')) === 'tr' ? 'is-active' : '' }}">{{ __('dictt.lang_tr') }}</a>
+                        <a href="{{ route('changeLanguage', 'en') }}" class="admin-navigation-collapse-link {{ session('locale', config('app.locale')) === 'en' ? 'is-active' : '' }}">{{ __('dictt.lang_en') }}</a>
                     </div>
                 </div>
 

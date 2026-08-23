@@ -1,5 +1,5 @@
 <x-app-layout>
-    <x-slot name="header">Sorular</x-slot>
+    <x-slot name="header">{{ __('dictt.questions') }}</x-slot>
 
     @if (session('success') || session('error'))
         <div class="alert {{ session('success') ? 'alert-success' : 'alert-danger' }} alert-dismissible fade show" role="alert">
@@ -10,37 +10,37 @@
 
     @php
         $typeLabels = [
-            'text' => 'Metin',
-            'audio' => 'Ses',
-            'image' => 'Görsel',
-            'video' => 'Video',
+            'text' => __('dictt.content_type_text'),
+            'audio' => __('dictt.content_type_audio'),
+            'image' => __('dictt.content_type_image'),
+            'video' => __('dictt.content_type_video'),
         ];
     @endphp
 
     <div class="card">
         <div class="card-body">
             <a href="{{ route('placement_test_questions_create') }}" class="btn btn-sm btn-primary float-right">
-                <i class="fa fa-plus"></i> Yeni Soru Ekle
+                <i class="fa fa-plus"></i> {{ __('dictt.addnewquestion') }}
             </a>
 
-            <h5 class="card-title mb-1">Seviye Tespit Sınavı Soruları</h5>
+            <h5 class="card-title mb-1">{{ __('dictt.pt_questions_title') }}</h5>
             <p class="text-muted small mb-3">
-                Aktif soruların tamamı sınava atanır. Aynı ortak içeriğe bağlı sorular grup içi sıraya göre birlikte gösterilir.
+                {{ __('dictt.pt_questions_note') }}
             </p>
 
             <div class="table-responsive">
                 <table class="table table-striped table-sm align-middle mb-0">
                     <thead>
                         <tr>
-                            <th scope="col">Seviye</th>
-                            <th scope="col">Soru</th>
-                            <th scope="col">Ortak İçerik</th>
-                            <th scope="col">Grup Sırası</th>
-                            <th scope="col">Puan</th>
-                            <th scope="col">Şık</th>
-                            <th scope="col">Geçmiş Snapshot</th>
-                            <th scope="col">Durum</th>
-                            <th scope="col">İşlemler</th>
+                            <th scope="col">{{ __('dictt.level') }}</th>
+                            <th scope="col">{{ __('dictt.question') }}</th>
+                            <th scope="col">{{ __('dictt.question_contents') }}</th>
+                            <th scope="col">{{ __('dictt.group_order') }}</th>
+                            <th scope="col">{{ __('dictt.points') }}</th>
+                            <th scope="col">{{ __('dictt.options_col') }}</th>
+                            <th scope="col">{{ __('dictt.history_snapshots') }}</th>
+                            <th scope="col">{{ __('dictt.status') }}</th>
+                            <th scope="col">{{ __('dictt.operations') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -55,7 +55,7 @@
                                             {{ $typeLabels[$question->questionContent->type] }} #{{ $question->questionContent->id }}
                                         </a>
                                     @else
-                                        <span class="text-muted">Bağımsız</span>
+                                        <span class="text-muted">{{ __('dictt.independent') }}</span>
                                     @endif
                                 </td>
                                 <td>{{ $question->content_position ?? '—' }}</td>
@@ -64,28 +64,28 @@
                                 <td>{{ $question->level_question_snapshots_count }}</td>
                                 <td>
                                     @if ($question->is_active)
-                                        <span class="badge text-bg-success">Aktif</span>
+                                        <span class="badge text-bg-success">{{ __('dictt.active') }}</span>
                                     @else
-                                        <span class="badge text-bg-secondary">Pasif</span>
+                                        <span class="badge text-bg-secondary">{{ __('dictt.passive') }}</span>
                                     @endif
                                 </td>
                                 <td>
                                     @php
                                         $deletePrompt = $question->level_question_snapshots_count > 0
-                                            ? 'Bu soru silinsin mi? Geçmiş sınav snapshot kayıtları korunacak, ancak kaynak soru bağlantısı kaldırılacaktır.'
-                                            : 'Bu soru silinsin mi?';
+                                            ? __('dictt.pt_question_delete_confirm_with_snapshots')
+                                            : __('dictt.pt_question_delete_confirm');
                                     @endphp
 
                                     <div class="flex gap-1">
                                         <a href="{{ route('placement_test_questions_edit', $question) }}" class="btn btn-sm btn-primary"
-                                            title="Düzenle">
+                                            title="{{ __('dictt.edit') }}">
                                             <i class="fa fa-pen w-4"></i>
                                         </a>
                                         <form method="POST" action="{{ route('placement_test_questions_destroy', $question) }}"
                                             onsubmit="return confirm(@js($deletePrompt));">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-danger" title="Sil">
+                                            <button type="submit" class="btn btn-sm btn-danger" title="{{ __('dictt.delete') }}">
                                                 <i class="fa fa-trash"></i>
                                             </button>
                                         </form>
@@ -94,7 +94,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="9" class="text-center text-muted py-4">Henüz soru bulunmuyor.</td>
+                                <td colspan="9" class="text-center text-muted py-4">{{ __('dictt.pt_no_questions') }}</td>
                             </tr>
                         @endforelse
                     </tbody>

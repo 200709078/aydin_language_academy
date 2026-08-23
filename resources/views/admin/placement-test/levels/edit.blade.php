@@ -1,11 +1,11 @@
 <x-app-layout>
-    <x-slot name="header">Levels / {{ $placementTestLevel->code }} Düzenle</x-slot>
+    <x-slot name="header">{{ __('dictt.levels') }} / {{ $placementTestLevel->code }} {{ __('dictt.edit') }}</x-slot>
 
     <div class="card">
         <div class="card-body">
             <h5 class="card-title">
                 <a href="{{ route('placement_test_levels_list') }}" class="btn btn-sm btn-secondary">
-                    <i class="fa fa-arrow-left"></i> Geri dön
+                    <i class="fa fa-arrow-left"></i> {{ __('dictt.back') }}
                 </a>
             </h5>
 
@@ -15,17 +15,17 @@
 
                 <div class="row">
                     <div class="col-md-4 mb-3">
-                        <label for="code" class="form-label">Seviye</label>
+                        <label for="code" class="form-label">{{ __('dictt.level') }}</label>
                         <input id="code" type="text" class="form-control" value="{{ $placementTestLevel->code }}" readonly>
                     </div>
                     <div class="col-md-4 mb-3">
-                        <label for="sequence" class="form-label">Sıra</label>
+                        <label for="sequence" class="form-label">{{ __('dictt.order') }}</label>
                         <input id="sequence" type="text" class="form-control" value="{{ $placementTestLevel->sequence }}" readonly>
                     </div>
                     <div class="col-md-4 mb-3">
-                        <label for="has_exam" class="form-label">Sınav Durumu</label>
+                        <label for="has_exam" class="form-label">{{ __('dictt.exam_status') }}</label>
                         <input id="has_exam" type="text" class="form-control"
-                            value="{{ $placementTestLevel->has_exam ? 'Sınav var' : 'Sınav yok' }}" readonly>
+                            value="{{ $placementTestLevel->has_exam ? __('dictt.pt_has_exam') : __('dictt.pt_no_exam') }}" readonly>
                     </div>
                 </div>
 
@@ -33,23 +33,23 @@
                     <input type="hidden" name="is_active" value="0">
                     <input id="is_active" name="is_active" type="checkbox" class="form-check-input" value="1"
                         @checked(old('is_active', $placementTestLevel->is_active))>
-                    <label for="is_active" class="form-check-label">Bu seviye aktif</label>
+                    <label for="is_active" class="form-check-label">{{ __('dictt.pt_level_active_label') }}</label>
                 </div>
 
                 @if ($placementTestLevel->has_exam)
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label for="question_count" class="form-label">Hedef Soru Sayısı</label>
+                            <label for="question_count" class="form-label">{{ __('dictt.target_question_count') }}</label>
                             <input id="question_count" name="question_count" type="number" min="0" max="65535"
                                 class="form-control @error('question_count') is-invalid @enderror"
                                 value="{{ old('question_count', $placementTestLevel->question_count) }}">
                             @error('question_count')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
-                            <div class="form-text">Boş bırakılabilir. Tanımlandığında aktif soru sayısıyla eşit olmalıdır.</div>
+                            <div class="form-text">{{ __('dictt.pt_question_count_help') }}</div>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label for="pass_percentage" class="form-label">Geçme Yüzdesi</label>
+                            <label for="pass_percentage" class="form-label">{{ __('dictt.pass_percentage') }}</label>
                             @php
                                 $passPercentage = (int) old('pass_percentage', $placementTestLevel->pass_percentage);
                             @endphp
@@ -65,17 +65,17 @@
                                     <div class="invalid-feedback d-block">{{ $message }}</div>
                                 @enderror
                             </div>
-                            <div class="form-text">Kaydırıcı 5’er puanlık adımlarla ilerler.</div>
+                            <div class="form-text">{{ __('dictt.pt_slider_help') }}</div>
                         </div>
                     </div>
                 @else
                     <div class="alert alert-info" role="alert">
-                        C2 için sınav yapılmaz. Hedef soru sayısı 0, geçme yüzdesi ise boş olarak korunur.
+                        {{ __('dictt.pt_c2_alert') }}
                     </div>
                 @endif
 
                 <div class="form-group mt-2">
-                    <button type="submit" class="btn btn-success btn-sm">Ayarları Kaydet</button>
+                    <button type="submit" class="btn btn-success btn-sm">{{ __('dictt.save_settings') }}</button>
                 </div>
             </form>
         </div>

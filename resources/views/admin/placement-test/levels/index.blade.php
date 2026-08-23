@@ -1,5 +1,5 @@
 <x-app-layout>
-    <x-slot name="header">Levels</x-slot>
+    <x-slot name="header">{{ __('dictt.levels') }}</x-slot>
 
     @if (session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -12,9 +12,9 @@
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-start gap-3 mb-3">
                 <div>
-                    <h5 class="card-title mb-1">Seviye Tespit Sınavı Seviyeleri</h5>
+                    <h5 class="card-title mb-1">{{ __('dictt.pt_levels_title') }}</h5>
                     <p class="text-muted small mb-0">
-                        A1–C2 seviyeleri sabittir. Buradaki ayarlar yalnızca bundan sonraki sınavları etkiler.
+                        {{ __('dictt.pt_levels_note') }}
                     </p>
                 </div>
             </div>
@@ -23,14 +23,14 @@
                 <table class="table table-striped table-sm align-middle mb-0">
                     <thead>
                         <tr>
-                            <th scope="col">Seviye</th>
-                            <th scope="col">Sıra</th>
-                            <th scope="col">Sınav</th>
-                            <th scope="col">Aktif Soru</th>
-                            <th scope="col">Hedef Soru Sayısı</th>
-                            <th scope="col">Geçme Yüzdesi</th>
-                            <th scope="col">Durum</th>
-                            <th scope="col">İşlemler</th>
+                            <th scope="col">{{ __('dictt.level') }}</th>
+                            <th scope="col">{{ __('dictt.order') }}</th>
+                            <th scope="col">{{ __('dictt.exam') }}</th>
+                            <th scope="col">{{ __('dictt.active_questions') }}</th>
+                            <th scope="col">{{ __('dictt.target_question_count') }}</th>
+                            <th scope="col">{{ __('dictt.pass_percentage') }}</th>
+                            <th scope="col">{{ __('dictt.status') }}</th>
+                            <th scope="col">{{ __('dictt.operations') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -40,9 +40,9 @@
                                 <td>{{ $level->sequence }}</td>
                                 <td>
                                     @if ($level->has_exam)
-                                        <span class="badge text-bg-primary">Var</span>
+                                        <span class="badge text-bg-primary">{{ __('dictt.exists') }}</span>
                                     @else
-                                        <span class="badge text-bg-secondary">Yok</span>
+                                        <span class="badge text-bg-secondary">{{ __('dictt.none') }}</span>
                                     @endif
                                 </td>
                                 <td>{{ $level->has_exam ? $level->active_questions_count : '—' }}</td>
@@ -50,7 +50,7 @@
                                     @if (! $level->has_exam)
                                         <span class="text-muted">0</span>
                                     @elseif ($level->question_count === null)
-                                        <span class="text-muted">Belirlenmedi</span>
+                                        <span class="text-muted">{{ __('dictt.pt_not_set') }}</span>
                                     @elseif ($level->question_count === $level->active_questions_count)
                                         <span class="badge text-bg-success">{{ $level->question_count }}</span>
                                     @else
@@ -66,21 +66,21 @@
                                 </td>
                                 <td>
                                     @if ($level->is_active)
-                                        <span class="badge text-bg-success">Aktif</span>
+                                        <span class="badge text-bg-success">{{ __('dictt.active') }}</span>
                                     @else
-                                        <span class="badge text-bg-secondary">Pasif</span>
+                                        <span class="badge text-bg-secondary">{{ __('dictt.passive') }}</span>
                                     @endif
                                 </td>
                                 <td>
                                     <a href="{{ route('placement_test_levels_edit', $level) }}" class="btn btn-sm btn-primary"
-                                        title="Düzenle">
+                                        title="{{ __('dictt.edit') }}">
                                         <i class="fa fa-pen w-4"></i>
                                     </a>
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="8" class="text-center text-muted py-4">Henüz seviye bulunmuyor.</td>
+                                <td colspan="8" class="text-center text-muted py-4">{{ __('dictt.pt_no_levels') }}</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -88,7 +88,7 @@
             </div>
 
             <p class="text-muted small mb-0 mt-3">
-                Aktif olan tüm sorular sınava atanır. Hedef soru sayısı tanımlanmışsa, sınav başlatılmadan önce aktif soru sayısıyla eşitliği denetlenir.
+                {{ __('dictt.pt_levels_footer_note') }}
             </p>
         </div>
     </div>
