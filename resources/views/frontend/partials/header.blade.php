@@ -1,7 +1,7 @@
     <!-- Spinner Start -->
     <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
         <div class="spinner-grow text-primary" style="width: 3rem; height: 3rem;" role="status">
-            <span class="sr-only">Loading...</span>
+            <span class="sr-only">{{ __('dictt.loading') }}</span>
         </div>
     </div>
     <!-- Spinner End -->
@@ -99,18 +99,18 @@
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle {{ request()->routeIs('frontend.branches.*') ? 'active' : '' }}" data-bs-toggle="dropdown">{{ __('dictt.branches') }}</a>
                     <div class="dropdown-menu bg-light rounded-0 rounded-bottom m-0">
-                        <a href="{{ route('frontend.branches.ortaca') }}" class="dropdown-item {{ request()->routeIs('frontend.branches.ortaca') ? 'active' : '' }}">Ortaca</a>
-                        <a href="{{ route('frontend.branches.dalaman') }}" class="dropdown-item {{ request()->routeIs('frontend.branches.dalaman') ? 'active' : '' }}">Dalaman</a>
-                        <a href="{{ route('frontend.branches.koycegiz') }}" class="dropdown-item {{ request()->routeIs('frontend.branches.koycegiz') ? 'active' : '' }}">Köyceğiz</a>
+                        <a href="{{ route('frontend.branches.ortaca') }}" class="dropdown-item {{ request()->routeIs('frontend.branches.ortaca') ? 'active' : '' }}">{{ __('dictt.branch_ortaca') }}</a>
+                        <a href="{{ route('frontend.branches.dalaman') }}" class="dropdown-item {{ request()->routeIs('frontend.branches.dalaman') ? 'active' : '' }}">{{ __('dictt.branch_dalaman') }}</a>
+                        <a href="{{ route('frontend.branches.koycegiz') }}" class="dropdown-item {{ request()->routeIs('frontend.branches.koycegiz') ? 'active' : '' }}">{{ __('dictt.branch_koycegiz') }}</a>
                     </div>
                 </div>
                 <a href="{{ route('frontend.placement-test') }}" class="nav-item nav-link {{ request()->routeIs('frontend.placement-test') ? 'active' : '' }}">{{ __('dictt.placement_test') }}</a>
                 @guest
-                    <a href="{{ route('frontend.login', ['return' => request()->route()?->getName()]) }}" class="nav-item nav-link d-lg-none">Giriş Yap</a>
+                    <a href="{{ route('frontend.login', ['return' => request()->route()?->getName()]) }}" class="nav-item nav-link d-lg-none">{{ __('dictt.login_now') }}</a>
                 @else
                     <div class="nav-item dropdown av-dropdown d-lg-none">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-label="Kullanıcı menüsü" aria-expanded="false">
-                            <span class="d-inline-flex align-items-center justify-content-center rounded-circle bg-primary text-white fw-bold" style="width: 32px; height: 32px;">{{ $initials ?: 'Ü' }}</span>
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-label="{{ __('dictt.user_menu') }}" aria-expanded="false">
+                            <span class="d-inline-flex align-items-center justify-content-center rounded-circle bg-primary text-white fw-bold" style="width: 32px; height: 32px;">{{ $initials ?: __('dictt.user_initial') }}</span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end bg-light rounded-0 m-0">
                             <a href="{{ route('changeLanguage', session('locale') === 'tr' ? 'en' : 'tr') }}" class="dropdown-item border-0 bg-transparent w-100 text-start">
@@ -127,11 +127,11 @@
                 @endguest
             </div>
             @guest
-                <a href="{{ route('frontend.login', ['return' => request()->route()?->getName()]) }}" class="btn btn-primary rounded-0 py-4 px-lg-5 d-none d-lg-block" style="margin-right: 6rem;">Giriş Yap<i class="fa fa-arrow-right ms-3"></i></a>
+                <a href="{{ route('frontend.login', ['return' => request()->route()?->getName()]) }}" class="btn btn-primary rounded-0 py-4 px-lg-5 d-none d-lg-block" style="margin-right: 6rem;">{{ __('dictt.login_now') }}<i class="fa fa-arrow-right ms-3"></i></a>
             @else
                 <div class="nav-item dropdown av-dropdown d-none d-lg-flex align-items-stretch">
-                    <a href="#" class="btn btn-primary rounded-0 py-4 px-lg-4 d-flex align-items-center dropdown-toggle border-0 shadow-none" style="box-shadow:none !important; border:0 !important; outline:none !important;" data-bs-toggle="dropdown" aria-label="Kullanıcı menüsü" aria-expanded="false">
-                        <span class="d-inline-flex align-items-center justify-content-center rounded-circle bg-white text-primary fw-bold" style="width: 36px; height: 36px;">{{ $initials ?: 'Ü' }}</span>
+                    <a href="#" class="btn btn-primary rounded-0 py-4 px-lg-4 d-flex align-items-center dropdown-toggle border-0 shadow-none" style="box-shadow:none !important; border:0 !important; outline:none !important;" data-bs-toggle="dropdown" aria-label="{{ __('dictt.user_menu') }}" aria-expanded="false">
+                        <span class="d-inline-flex align-items-center justify-content-center rounded-circle bg-white text-primary fw-bold" style="width: 36px; height: 36px;">{{ $initials ?: __('dictt.user_initial') }}</span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-end bg-light rounded-0 m-0">
                         <a href="{{ route('changeLanguage', session('locale') === 'tr' ? 'en' : 'tr') }}" class="dropdown-item border-0 bg-transparent w-100 text-start">

@@ -43,12 +43,12 @@
                 <div class="col-lg-5 wow fadeIn" data-wow-delay="0.1s">
                     <div class="text-center text-lg-start">
                         <img class="img-fluid mb-4" src="{{ asset('frontend/images/logo-2.png') }}" alt="Aydın Language Academy" style="max-width: 220px;">
-                        <h1 class="mb-0">Üye Ol</h1>
+                        <h1 class="mb-0">{{ __('dictt.register') }}</h1>
                     </div>
                 </div>
                 <div class="col-lg-7 wow fadeInUp" data-wow-delay="0.5s">
                     <div class="bg-light rounded h-100 p-5">
-                        <h4 class="mb-4">Üyelik Bilgileri</h4>
+                        <h4 class="mb-4">{{ __('dictt.membership_details') }}</h4>
 
                         @if (isset($errors) && $errors->any())
                             <div class="alert alert-danger" role="alert">
@@ -65,23 +65,23 @@
 
                             <div class="row g-3">
                                 <div class="col-12">
-                                    <label class="form-label" for="name">Ad Soyad</label>
+                                    <label class="form-label" for="name">{{ __('dictt.fullname') }}</label>
                                     <input id="name" class="form-control border-0" type="text" name="name" value="{{ old('name') }}" required autofocus autocomplete="name" style="height: 55px;">
                                 </div>
                                 <div class="col-12">
-                                    <label class="form-label" for="email">E-posta Adresi</label>
+                                    <label class="form-label" for="email">{{ __('dictt.email_address') }}</label>
                                     <input id="email" class="form-control border-0" type="email" name="email" value="{{ old('email') }}" required autocomplete="username" style="height: 55px;">
                                 </div>
                                 <div class="col-12">
-                                    <label class="form-label" for="phone">Telefon Numarası</label>
+                                    <label class="form-label" for="phone">{{ __('dictt.phone_number') }}</label>
                                     <input id="phone" class="form-control border-0" type="tel" name="phone" value="{{ old('phone') }}" required autocomplete="tel" inputmode="tel" maxlength="32" style="height: 55px;">
                                 </div>
                                 <div class="col-12 col-sm-6">
-                                    <label class="form-label" for="password">Şifre</label>
+                                    <label class="form-label" for="password">{{ __('dictt.password') }}</label>
                                     <input id="password" class="form-control border-0" type="password" name="password" required autocomplete="new-password" style="height: 55px;">
                                 </div>
                                 <div class="col-12 col-sm-6">
-                                    <label class="form-label" for="password_confirmation">Şifre Tekrarı</label>
+                                    <label class="form-label" for="password_confirmation">{{ __('dictt.password_repeat') }}</label>
                                     <input id="password_confirmation" class="form-control border-0" type="password" name="password_confirmation" required autocomplete="new-password" style="height: 55px;">
                                 </div>
                                 @if (Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())
@@ -89,19 +89,21 @@
                                         <div class="form-check">
                                             <input id="terms" class="form-check-input" type="checkbox" name="terms" required>
                                             <label class="form-check-label" for="terms">
-                                                <a href="{{ route('terms.show') }}" target="_blank">Kullanım Koşulları</a> ve
-                                                <a href="{{ route('policy.show') }}" target="_blank">Gizlilik Politikası</a> metinlerini kabul ediyorum.
+                                                {!! __('dictt.accept_terms_note', [
+                                                    'terms' => '<a href="' . route('terms.show') . '" target="_blank">' . __('dictt.terms_of_use') . '</a>',
+                                                    'privacy' => '<a href="' . route('policy.show') . '" target="_blank">' . __('dictt.privacy_policy') . '</a>',
+                                                ]) !!}
                                             </label>
                                         </div>
                                     </div>
                                 @endif
                                 <div class="col-12">
-                                    <button class="btn btn-primary w-100 py-3" type="submit">Üye Ol</button>
+                                    <button class="btn btn-primary w-100 py-3" type="submit">{{ __('dictt.register') }}</button>
                                 </div>
                             </div>
                         </form>
 
-                        <p class="text-center mb-0 mt-3">Hesabın var mı? <a href="{{ route('login') }}">Giriş Yap</a></p>
+                        <p class="text-center mb-0 mt-3">{{ __('dictt.have_account') }} <a href="{{ route('login') }}">{{ __('dictt.login_now') }}</a></p>
                     </div>
                 </div>
             </div>

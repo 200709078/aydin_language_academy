@@ -3,7 +3,7 @@
         <div class="container py-5">
             <div class="row g-5">
                 <div class="col-lg-3 col-md-6">
-                    <h5 class="text-light mb-4">Ortaca</h5>
+                    <h5 class="text-light mb-4">{{ __('dictt.branch_ortaca') }}</h5>
                     <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>Merkez Mahallesi Muhammed Kundakçı Caddesi Eski PTT Karşısı No:10 Ortaca/Muğla</p>
                     <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>(546) 828 4884</p>
                     <p class="mb-2 small text-nowrap"><i class="fa fa-envelope me-2"></i>ortaca@learnenglishwithala.com</p>
@@ -14,7 +14,7 @@
                     </p>
                 </div>
                 <div class="col-lg-3 col-md-6">
-                    <h5 class="text-light mb-4">Dalaman</h5>
+                    <h5 class="text-light mb-4">{{ __('dictt.branch_dalaman') }}</h5>
                     <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>Karaçalı Mahallesi, Şehit Hamza Atakul Caddesi No:39/A Dalaman/Muğla</p>
                     <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>(530) 828 4884</p>
                     <p class="mb-2 small text-nowrap"><i class="fa fa-envelope me-2"></i>dalaman@learnenglishwithala.com</p>
@@ -25,7 +25,7 @@
                     </p>
                 </div>
                 <div class="col-lg-3 col-md-6">
-                    <h5 class="text-light mb-4">Köyceğiz</h5>
+                    <h5 class="text-light mb-4">{{ __('dictt.branch_koycegiz') }}</h5>
                     <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>Ulucamii İbrahim Koç Sokak Köyceğiz Lokantası Yanı Köyceğiz/Muğla</p>
                     <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>(540) 828 4884</p>
                     <p class="mb-2 small text-nowrap"><i class="fa fa-envelope me-2"></i>koycegiz@learnenglishwithala.com</p>

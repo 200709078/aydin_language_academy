@@ -133,8 +133,8 @@
                     <div class="d-flex align-items-center gap-3">
                         <img src="{{ asset('frontend/images/logo-2.png') }}" class="placement-exam-logo" alt="Aydın Language Academy">
                         <div>
-                            <div class="fw-bold text-dark">Seviye Tespit Sınavı</div>
-                            <div class="small text-muted">Cevaplarınız seçtiğiniz anda kaydedilir.</div>
+                            <div class="fw-bold text-dark">{{ __('dictt.placement_test') }}</div>
+                            <div class="small text-muted">{{ __('dictt.placement_test_answers_autosave_note') }}</div>
                         </div>
                     </div>
                     <div class="d-flex align-items-center justify-content-sm-end gap-2">
@@ -143,22 +143,22 @@
                 </div>
 
                 <div class="placement-exam-status-bar mt-3">
-                    <span class="small text-muted">{{ $answeredQuestionCount }} soru cevaplandı</span>
+                    <span class="small text-muted">{{ __('dictt.placement_test_answered_count', ['count' => $answeredQuestionCount]) }}</span>
                     <span class="small text-muted" data-placement-elapsed-time
                         data-started-at="{{ $placementTest->started_at?->getTimestamp() }}" aria-live="polite">
-                        Sınavda Geçen Süre: hesaplanıyor...
+                        {{ __('dictt.placement_test_elapsed_calculating') }}
                     </span>
-                    <span class="small text-muted">Bu sınavda süre sınırlaması yoktur.</span>
+                    <span class="small text-muted">{{ __('dictt.placement_test_no_time_limit') }}</span>
                 </div>
 
                 <div class="placement-question-progress d-flex gap-1 mt-3" role="progressbar"
-                    aria-label="Soru ilerlemesi" aria-valuenow="{{ $currentQuestion->display_position }}"
+                    aria-label="{{ __('dictt.placement_test_progress_aria') }}" aria-valuenow="{{ $currentQuestion->display_position }}"
                     aria-valuemin="1" aria-valuemax="{{ $questions->count() }}">
                     @foreach ($questions as $question)
                         @if ($question->id === $currentQuestion->id)
                             <span class="placement-question-progress-link" aria-current="step">
                                 <span class="placement-question-progress-segment is-current"
-                                    title="Soru {{ $question->display_position }}">{{ $question->display_position }}</span>
+                                    title="{{ __('dictt.placement_test_question_n', ['n' => $question->display_position]) }}">{{ $question->display_position }}</span>
                             </span>
                         @else
                             <a class="placement-question-progress-link"
@@ -166,9 +166,9 @@
                                     'placementTest' => $placementTest,
                                     'placementTestLevelQuestion' => $question,
                                 ]) }}"
-                                aria-label="Soru {{ $question->display_position }}'ye git">
+                                aria-label="{{ __('dictt.placement_test_go_to_question', ['n' => $question->display_position]) }}">
                                 <span class="placement-question-progress-segment {{ $question->selected_option !== null ? 'is-answered' : 'is-unanswered' }}"
-                                    title="Soru {{ $question->display_position }}">{{ $question->display_position }}</span>
+                                    title="{{ __('dictt.placement_test_question_n', ['n' => $question->display_position]) }}">{{ $question->display_position }}</span>
                             </a>
                         @endif
                     @endforeach
@@ -192,24 +192,24 @@
                         <section class="placement-content-card bg-white rounded p-4 p-lg-5 mb-4">
                             <div class="d-flex align-items-center gap-2 mb-3">
                                 <i class="fa fa-book-open text-primary"></i>
-                                <h2 class="h5 mb-0">Ortak İçerik</h2>
+                                <h2 class="h5 mb-0">{{ __('dictt.placement_test_shared_content') }}</h2>
                             </div>
 
                             @if ($contentSnapshot->type_snapshot === 'text')
                                 <div class="text-dark lh-lg">{!! nl2br(e($contentSnapshot->text_content_snapshot)) !!}</div>
                             @elseif ($contentSnapshot->type_snapshot === 'image')
-                                <img src="{{ $mediaUrl }}" class="img-fluid rounded" alt="Soruya ait ortak görsel">
+                                <img src="{{ $mediaUrl }}" class="img-fluid rounded" alt="{{ __('dictt.placement_test_shared_image_alt') }}">
                             @elseif ($contentSnapshot->type_snapshot === 'audio')
                                 <audio controls preload="metadata" class="w-100" data-placement-media
                                     data-content-key="{{ $contentSnapshot->id }}">
                                     <source src="{{ $mediaUrl }}">
-                                    Tarayıcınız ses oynatmayı desteklemiyor.
+                                    {{ __('dictt.placement_test_audio_unsupported') }}
                                 </audio>
                             @elseif ($contentSnapshot->type_snapshot === 'video')
                                 <video controls preload="metadata" class="w-100 rounded" data-placement-media
                                     data-content-key="{{ $contentSnapshot->id }}">
                                     <source src="{{ $mediaUrl }}">
-                                    Tarayıcınız video oynatmayı desteklemiyor.
+                                    {{ __('dictt.placement_test_video_unsupported') }}
                                 </video>
                             @endif
                         </section>
@@ -218,7 +218,7 @@
                     <section class="placement-question-card bg-white rounded p-4 p-lg-5">
                         <div class="d-flex align-items-center gap-2 mb-3">
                             <span class="badge bg-secondary">{{ $currentQuestion->display_position }}</span>
-                            <span class="small text-muted">Soru</span>
+                            <span class="small text-muted">{{ __('dictt.placement_test_question_label') }}</span>
                         </div>
 
                         <h1 class="h4 text-dark mb-4">{!! nl2br(e($currentQuestion->question_text_snapshot)) !!}</h1>
@@ -245,9 +245,9 @@
 
                             <div id="placement-save-status" class="small text-muted mt-3" role="status" aria-live="polite">
                                 @if ($currentQuestion->selected_option !== null)
-                                    <i class="fa fa-check-circle text-success"></i> Cevabınız kaydedildi.
+                                    <i class="fa fa-check-circle text-success"></i> {{ __('dictt.placement_test_answer_saved') }}
                                 @else
-                                    Bir şık seçebilir veya soruyu boş bırakabilirsiniz.
+                                    {{ __('dictt.placement_test_answer_hint') }}
                                 @endif
                             </div>
 
@@ -256,21 +256,21 @@
                                     @if ($previousQuestion)
                                         <button type="submit" name="go_to_question" value="{{ $previousQuestion->id }}"
                                             class="btn btn-outline-secondary">
-                                            <i class="fa fa-arrow-left me-2"></i>Önceki
+                                            <i class="fa fa-arrow-left me-2"></i>{{ __('dictt.placement_test_previous') }}
                                         </button>
                                     @endif
                                     <button type="submit" name="clear_answer" value="1" class="btn btn-outline-secondary">
-                                        Cevabı Temizle
+                                        {{ __('dictt.placement_test_clear_answer') }}
                                     </button>
                                 </div>
 
                                 @if ($nextQuestion)
                                     <button type="submit" name="go_to_question" value="{{ $nextQuestion->id }}" class="btn btn-primary">
-                                        Sonraki<i class="fa fa-arrow-right ms-2"></i>
+                                        {{ __('dictt.placement_test_next') }}<i class="fa fa-arrow-right ms-2"></i>
                                     </button>
                                 @else
                                     <button type="submit" name="finish_level" value="1" class="btn btn-success">
-                                        Seviyeyi Tamamla<i class="fa fa-check ms-2"></i>
+                                        {{ __('dictt.placement_test_finish_level') }}<i class="fa fa-check ms-2"></i>
                                     </button>
                                 @endif
                             </div>
@@ -283,6 +283,16 @@
 
     <script>
         (() => {
+            const examI18n = {!! json_encode([
+                'duration' => __('dictt.placement_test_duration'),
+                'minutes' => __('dictt.placement_test_duration_minutes'),
+                'seconds' => __('dictt.placement_test_duration_seconds'),
+                'saving' => __('dictt.placement_test_saving_answer'),
+                'sessionExpired' => __('dictt.placement_test_session_expired'),
+                'saveFailed' => __('dictt.placement_test_save_failed'),
+                'retryNote' => __('dictt.placement_test_retry_note'),
+            ], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) !!};
+
             const answerForm = document.querySelector('[data-placement-answer-form]');
             const saveStatus = document.getElementById('placement-save-status');
 
@@ -304,7 +314,7 @@
                         saveQueue = saveQueue
                             .catch(() => undefined)
                             .then(async () => {
-                                setStatus('Cevabınız kaydediliyor...');
+                                setStatus(examI18n.saving);
 
                                 const response = await fetch(answerForm.action, {
                                     method: 'POST',
@@ -316,7 +326,7 @@
                                 });
 
                                 if (response.status === 401 || response.status === 419 || response.redirected) {
-                                    throw new Error('Oturumunuz sona erdi. Sayfayı yenileyip tekrar giriş yapın.');
+                                    throw new Error(examI18n.sessionExpired);
                                 }
 
                                 const isJsonResponse = response.headers
@@ -325,13 +335,13 @@
                                 const payload = isJsonResponse ? await response.json() : {};
 
                                 if (! response.ok) {
-                                    throw new Error(payload.message || 'Cevabınız kaydedilemedi.');
+                                    throw new Error(payload.message || examI18n.saveFailed);
                                 }
 
                                 setStatus(payload.message, 'success');
                             })
                             .catch((error) => {
-                                setStatus(`${error.message} Sonraki veya önceki düğmesiyle tekrar deneyin.`);
+                                setStatus(`${error.message} ${examI18n.retryNote}`);
                             });
                     });
                 });
@@ -372,7 +382,7 @@
                         const elapsedMinutes = Math.floor(elapsedSeconds / 60);
                         const remainingSeconds = elapsedSeconds % 60;
 
-                        elapsedTime.textContent = `Sınavda Geçen Süre: ${elapsedMinutes} dakika ${remainingSeconds} saniye`;
+                        elapsedTime.textContent = `${examI18n.duration} ${elapsedMinutes} ${examI18n.minutes} ${remainingSeconds} ${examI18n.seconds}`;
                     };
 
                     updateElapsedTime();

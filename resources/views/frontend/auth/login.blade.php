@@ -43,12 +43,12 @@
                 <div class="col-lg-5 wow fadeIn" data-wow-delay="0.1s">
                     <div class="text-center text-lg-start">
                         <img class="img-fluid mb-4" src="{{ asset('frontend/images/logo-2.png') }}" alt="Aydın Language Academy" style="max-width: 220px;">
-                        <h1 class="mb-0">Giriş Yap</h1>
+                        <h1 class="mb-0">{{ __('dictt.login_now') }}</h1>
                     </div>
                 </div>
                 <div class="col-lg-7 wow fadeInUp" data-wow-delay="0.5s">
                     <div class="bg-light rounded h-100 p-5">
-                        <h4 class="mb-4">Giriş Bilgileri</h4>
+                        <h4 class="mb-4">{{ __('dictt.login_details') }}</h4>
 
                         @if (session('status'))
                             <div class="alert alert-success" role="status">
@@ -71,29 +71,29 @@
 
                             <div class="row g-3">
                                 <div class="col-12">
-                                    <label class="form-label" for="email">E-posta Adresi</label>
+                                    <label class="form-label" for="email">{{ __('dictt.email_address') }}</label>
                                     <input id="email" class="form-control border-0" type="email" name="email" value="{{ old('email') }}" required autofocus autocomplete="username" style="height: 55px;">
                                 </div>
                                 <div class="col-12">
-                                    <label class="form-label" for="password">Şifre</label>
+                                    <label class="form-label" for="password">{{ __('dictt.password') }}</label>
                                     <input id="password" class="form-control border-0" type="password" name="password" required autocomplete="current-password" style="height: 55px;">
                                 </div>
                                 <div class="col-12 d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-2">
                                     <div class="form-check">
                                         <input id="remember" class="form-check-input" type="checkbox" name="remember" @checked(old('remember'))>
-                                        <label class="form-check-label" for="remember">Beni hatırla</label>
+                                        <label class="form-check-label" for="remember">{{ __('dictt.rememberme') }}</label>
                                     </div>
                                     @if (Route::has('password.request'))
-                                        <a href="{{ route('password.request') }}">Şifremi unuttum</a>
+                                        <a href="{{ route('password.request') }}">{{ __('dictt.forgot_my_password') }}</a>
                                     @endif
                                 </div>
                                 <div class="col-12">
-                                    <button class="btn btn-primary w-100 py-3" type="submit">Giriş Yap</button>
+                                    <button class="btn btn-primary w-100 py-3" type="submit">{{ __('dictt.login_now') }}</button>
                                 </div>
                             </div>
                         </form>
 
-                        <p class="text-center mb-0 mt-3">Hesabın yok mu? <a href="{{ route('register') }}">Üye Ol</a></p>
+                        <p class="text-center mb-0 mt-3">{{ __('dictt.no_account_yet') }} <a href="{{ route('register') }}">{{ __('dictt.register') }}</a></p>
                     </div>
                 </div>
             </div>

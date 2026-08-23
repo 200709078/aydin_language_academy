@@ -143,8 +143,8 @@ class PlacementTestAttemptController extends Controller
             'finish_level' => ['nullable', 'boolean'],
             'go_to_question' => ['nullable', 'integer'],
         ], [
-            'selected_option.integer' => 'Seçilen şık geçersiz.',
-            'go_to_question.integer' => 'Hedef soru geçersiz.',
+            'selected_option.integer' => __('dictt.placement_test_selected_option_invalid'),
+            'go_to_question.integer' => __('dictt.placement_test_target_question_invalid'),
         ]);
 
         $selectedOption = $request->boolean('clear_answer')
@@ -161,7 +161,7 @@ class PlacementTestAttemptController extends Controller
 
             if ($request->expectsJson()) {
                 return response()->json([
-                    'message' => 'Cevabınız kaydedildi.',
+                    'message' => __('dictt.placement_test_answer_saved'),
                 ]);
             }
 

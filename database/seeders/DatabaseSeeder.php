@@ -104,7 +104,6 @@ class DatabaseSeeder extends Seeder
             'email' => 'adem@learnenglishwithala.com',
             'email_verified_at' => now(),
             'type' => 'admin',
-            //'password' => '$2y$12$Sj8XJ5vfQBpW6opvmlrgTuvnbOKWHBDvg.6o1ZTuKSJPuOzI7oEzu',
             'password' => '$2y$12$pVyMOcbht5SoAL1D1Kp3E.eocQcfKXufYbvOcOgQZ7S2RmbzBeXau',
             'remember_token' => Str::random(10),
         ]);
@@ -114,8 +113,5 @@ class DatabaseSeeder extends Seeder
         model_exercises::factory(100)->create();
         model_declarations::factory(100)->create();
         model_questions::factory(1000)->create();
-        /*        model_courses::factory(1)->create();
-                model_results::factory(1000)->create();
-                model_user_answers::factory(1000)->create(); */
     }
 }

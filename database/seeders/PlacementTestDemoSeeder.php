@@ -1,7 +1,5 @@
 <?php
-
 namespace Database\Seeders;
-
 use App\Models\PlacementTest;
 use App\Models\PlacementTestLevel;
 use App\Models\PlacementTestLevelQuestion;
@@ -18,12 +16,6 @@ use LogicException;
 
 class PlacementTestDemoSeeder extends Seeder
 {
-    /**
-     * Seed a deterministic demo dataset for the placement-test domain.
-     *
-     * Every demo result receives every active question for its level. Questions
-     * that share a reading passage are assigned next to one another as a block.
-     */
     public function run(): void
     {
         $this->call(PlacementTestLevelSeeder::class);
@@ -55,7 +47,6 @@ class PlacementTestDemoSeeder extends Seeder
         ]);
 
         $this->seedQuestionBank($levels);
-
         $this->seedApprovedA2Attempt($studentA2, $admin, $levels);
         $this->seedPendingC2Attempt($studentC2, $levels);
         $this->seedInProgressAttempt($studentProgress, $levels);

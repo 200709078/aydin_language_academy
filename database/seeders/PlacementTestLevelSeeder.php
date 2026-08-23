@@ -1,15 +1,10 @@
 <?php
-
 namespace Database\Seeders;
-
 use App\Models\PlacementTestLevel;
 use Illuminate\Database\Seeder;
 
 class PlacementTestLevelSeeder extends Seeder
 {
-    /**
-     * Seed the placement-test levels without overwriting later admin settings.
-     */
     public function run(): void
     {
         $levels = [
