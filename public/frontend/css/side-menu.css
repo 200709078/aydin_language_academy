@@ -1,0 +1,144 @@
+.fsm-root {
+    position: fixed;
+    /* Üst navbar 75px yüksekliğinde; menü onun alt çizgisinden başlar. */
+    inset: 75px auto 0 0;
+    width: 0;
+    overflow: visible;
+    z-index: 1035;
+}
+
+.fsm-panel {
+    width: 16rem;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    background: #f8f9fa;
+    border-right: 1px solid #e5e7eb;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 180ms ease;
+}
+
+.fsm-body {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 0.5rem;
+    padding: 1.25rem 0.75rem;
+    /* Üst navbar bg-light (#EFF5FF) ile aynı ton */
+    background: #eff5ff;
+    overflow-y: auto;
+}
+
+.fsm-root.is-closed .fsm-panel {
+    /* Yalnızca sağdaki DÖKÜMANLAR şeridi görünür kalarak sola kayar. */
+    transform: translateX(calc(2.5rem - 16rem));
+}
+
+.fsm-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.25rem;
+    letter-spacing: 0.02em;
+    color: #374151;
+    text-align: left;
+    white-space: nowrap;
+    background: transparent;
+    border: 0;
+}
+
+.fsm-bullet {
+    flex-shrink: 0;
+    font-size: 0.45rem;
+    line-height: 1;
+    vertical-align: middle;
+}
+
+.fsm-chevron {
+    margin-left: auto;
+    font-size: 0.75rem;
+    /* Kapalıyken sola bakar */
+    transform: rotate(90deg);
+    transition: transform 180ms ease;
+}
+
+/* Açıkken aşağı bakar */
+.fsm-item[aria-expanded="true"] .fsm-chevron {
+    transform: rotate(0deg);
+}
+
+.fsm-collapse {
+    display: flex;
+    flex-direction: column;
+    margin-top: 0.25rem;
+    padding-left: 1rem;
+}
+
+.fsm-subitem {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8125rem;
+    color: #6b7280;
+}
+
+.fsm-subbullet {
+    flex-shrink: 0;
+    font-size: 0.3rem;
+    line-height: 1;
+}
+
+.fsm-divider {
+    width: 100%;
+    margin: 0.25rem 0;
+    border: 0;
+    border-top: 1px solid #e5e7eb;
+}
+
+.fsm-strip {
+    flex: 0 0 2.5rem;
+    width: 2.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    background: transparent;
+    color: inherit;
+    border: 0;
+    border-left: 1px solid #e5e7eb;
+    cursor: pointer;
+}
+
+.fsm-strip:hover .fsm-strip-text,
+.fsm-strip:focus-visible .fsm-strip-text {
+    color: #111827;
+}
+
+.fsm-strip:focus-visible {
+    outline: none;
+}
+
+.fsm-strip-text {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #d32f2f;
+    letter-spacing: 0.7em;
+    white-space: nowrap;
+    writing-mode: vertical-rl;
+    /* Harfler sola yatarak aşağıdan yukarıya okunur. */
+    transform: rotate(180deg);
+}
+
+.fsm-root.is-closed .fsm-strip {
+    /* Tek başına göründüğünde sol kenar çizgisi olmasın. */
+    border-left-color: transparent;
+}

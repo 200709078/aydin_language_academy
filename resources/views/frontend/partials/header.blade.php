@@ -149,3 +149,5 @@
         </div>
     </nav>
     <!-- Navbar End -->
+
+    @include('frontend.partials.side-menu')

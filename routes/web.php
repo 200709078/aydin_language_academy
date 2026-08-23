@@ -171,6 +171,14 @@ Route::view('/subelerimiz/koycegiz', 'frontend.branches.koycegiz')->name('fronte
 
 Route::view('/yeni-site', 'frontend.home')->name('frontend.preview.home');
 
+Route::prefix('eski-site')->group(function () {
+    Route::get('/', [cont_user_main::class, 'index'])->name('eski_site.home');
+    Route::get('/hakkimizda', [cont_user_main::class, 'about'])->name('eski_site.about');
+    Route::get('/iletisim', [cont_user_main::class, 'contact'])->name('eski_site.contact');
+    Route::get('/temalar/{level_slug}/{sub_level_slug}', [cont_user_main::class, 'themes'])->name('eski_site.themes');
+    Route::get('/tema/{theme_id}', [cont_user_main::class, 'tab1'])->whereNumber('theme_id')->name('eski_site.theme_detail');
+});
+
 Route::get('/giris', function (Request $request) {
     if ($request->user()?->type === 'admin') {
         return redirect()->route('admin');
