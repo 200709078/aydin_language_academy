@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>PTE Academic | {{ __('dictt.ala') }}</title>
+    <title>{{ __('dictt.pte_academic') }} | {{ __('dictt.ala') }}</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -41,16 +41,16 @@
         <div class="container">
             <div class="row g-5">
                 <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
-                    <img class="img-fluid rounded w-100" src="{{ asset('frontend/images/whoweare.png') }}" alt="PTE Academic">
+                    <img class="img-fluid rounded w-100" src="{{ asset('frontend/images/whoweare.png') }}" alt="{{ __('dictt.pte_academic') }}">
                     <p class="mt-4 mb-0 clearfix"><i class="fa fa-book-open text-primary fs-4 float-start me-3" aria-hidden="true"></i>{{ __('dictt.shared_course_image_text') }}</p>
                 </div>
                 <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
-                    <h1 class="mb-4">PTE Academic</h1>
-                    <p>PTE Academic sınavına hazırlık için konuşma, yazma, okuma ve dinleme becerilerini geliştiren demo içerik.</p>
-                    <p class="mb-2 fw-bold"><i class="far fa-check-circle text-primary me-3"></i>Madde 1</p>
-                    <p class="mb-4">Madde 1 içeriği burada.</p>
-                    <p class="mb-2 fw-bold"><i class="far fa-check-circle text-primary me-3"></i>Madde 2</p>
-                    <p class="mb-4">Madde 2 içeriği burada.</p>
+                    <h1 class="mb-4">{{ __('dictt.pte_academic') }}</h1>
+                    <p>{{ __('dictt.pte_academic_intro') }}</p>
+                    <p class="mb-2 fw-bold"><i class="far fa-check-circle text-primary me-3"></i>{{ __('dictt.course_demo_item_1') }}</p>
+                    <p class="mb-4">{{ __('dictt.course_demo_item_1_text') }}</p>
+                    <p class="mb-2 fw-bold"><i class="far fa-check-circle text-primary me-3"></i>{{ __('dictt.course_demo_item_2') }}</p>
+                    <p class="mb-4">{{ __('dictt.course_demo_item_2_text') }}</p>
                 </div>
             </div>
         </div>

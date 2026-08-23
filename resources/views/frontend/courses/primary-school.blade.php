@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>İlkokul | {{ __('dictt.ala') }}</title>
+    <title>{{ __('dictt.primary_school') }} | {{ __('dictt.ala') }}</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -41,22 +41,22 @@
         <div class="container">
             <div class="row g-5">
                 <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
-                    <img class="img-fluid rounded w-100" src="{{ asset('frontend/images/whoweare.png') }}" alt="İlkokul">
+                    <img class="img-fluid rounded w-100" src="{{ asset('frontend/images/whoweare.png') }}" alt="{{ __('dictt.primary_school') }}">
                     <p class="mt-4 mb-0 clearfix"><i class="fa fa-book-open text-primary fs-4 float-start me-3" aria-hidden="true"></i>{{ __('dictt.shared_course_image_text') }}</p>
                 </div>
                 <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
-                    <h1 class="mb-4">İlkokul</h1>
-                    <p>İlkokul öğrencilerimize yönelik programlarımız, dil öğrenimini eğlenceli ve kolay bir süreç haline getirerek onların İngilizceye erken yaşta sevgiyle bağlanmasını hedefliyor. Derslerimiz, oyunlar, şarkılar ve görsel materyallerle zenginleştirilerek çocukların dil öğrenme becerilerini doğal bir şekilde geliştirmelerini sağlıyor.</p>
-                    <p class="mb-2 fw-bold"><i class="far fa-check-circle text-primary me-3"></i>Seviye Tespit ile Kişiye Özel Yaklaşım</p>
-                    <p class="mb-4">Her öğrencimizin dil seviyesini anlamak için bir seviye tespit sınavı uyguluyoruz. Bu sayede öğrencilerimizi ihtiyaçlarına ve mevcut seviyelerine uygun gruplara yerleştirerek daha etkili bir eğitim ortamı oluşturuyoruz.</p>
-                    <p class="mb-2 fw-bold"><i class="far fa-check-circle text-primary me-3"></i>Dil Becerilerini Eğlenceli Yöntemlerle Geliştirme</p>
-                    <p class="mb-4">İlkokul öğrencilerine yönelik programımız, İngilizce öğrenimini dört temel beceri (dinleme, konuşma, okuma, yazma) çerçevesinde ele alır. Ancak, bu yaş grubunun ihtiyaçlarına uygun olarak özellikle konuşma ve dinleme becerilerine ağırlık verilir.</p>
-                    <p class="mb-2 fw-bold"><i class="far fa-check-circle text-primary me-3"></i>Uzman Eğitmenler ve Çocuk Dostu Kaynaklar</p>
-                    <p class="mb-4">Ders materyallerimiz, uzman eğitmenlerimiz tarafından seçilen, renkli ve eğlenceli içeriklerden oluşur. Çocukların ilgisini çekecek hikayeler, görseller ve interaktif etkinliklerle öğrenme sürecini eğlenceli hale getiriyoruz.</p>
-                    <p class="mb-2 fw-bold"><i class="far fa-check-circle text-primary me-3"></i>Grup Dersleri</p>
-                    <p class="mb-4">Çocukların sosyal becerilerini geliştirmelerine ve diğer öğrencilerle iletişim kurarak öğrenmelerine yardımcı olur.</p>
-                    <p class="mb-2 fw-bold"><i class="far fa-check-circle text-primary me-3"></i>Özel Dersler</p>
-                    <p class="mb-4">Daha kişiselleştirilmiş bir yaklaşım sunarak çocuğun bireysel ihtiyaçlarına odaklanır.</p>
+                    <h1 class="mb-4">{{ __('dictt.primary_school') }}</h1>
+                    <p>{{ __('dictt.primary_school_intro') }}</p>
+                    <p class="mb-2 fw-bold"><i class="far fa-check-circle text-primary me-3"></i>{{ __('dictt.primary_school_section_1_title') }}</p>
+                    <p class="mb-4">{{ __('dictt.primary_school_section_1_text') }}</p>
+                    <p class="mb-2 fw-bold"><i class="far fa-check-circle text-primary me-3"></i>{{ __('dictt.primary_school_section_2_title') }}</p>
+                    <p class="mb-4">{{ __('dictt.primary_school_section_2_text') }}</p>
+                    <p class="mb-2 fw-bold"><i class="far fa-check-circle text-primary me-3"></i>{{ __('dictt.primary_school_section_3_title') }}</p>
+                    <p class="mb-4">{{ __('dictt.primary_school_section_3_text') }}</p>
+                    <p class="mb-2 fw-bold"><i class="far fa-check-circle text-primary me-3"></i>{{ __('dictt.primary_school_section_4_title') }}</p>
+                    <p class="mb-4">{{ __('dictt.primary_school_section_4_text') }}</p>
+                    <p class="mb-2 fw-bold"><i class="far fa-check-circle text-primary me-3"></i>{{ __('dictt.primary_school_section_5_title') }}</p>
+                    <p class="mb-4">{{ __('dictt.primary_school_section_5_text') }}</p>
                 </div>
             </div>
         </div>

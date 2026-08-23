@@ -43,14 +43,14 @@
         <div class="container">
             <div class="row g-5">
                 <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
-                    <h1 class="mb-4">Neden Biz!</h1>
-                    <p>Genel İngilizce kurslarımız ilkokul, ortaokul ve lise seviyelerinde, öğrencilerin dil becerilerini geliştirmeye yönelik kapsamlı bir program sunmaktadır. Ayrıca, YKS ve IELTS gibi önemli sınavlara hazırlık kurslarımız ile öğrencilerimizi bu zorlu süreçte en iyi şekilde destekliyoruz. Amacımız, her öğrencinin potansiyelini keşfetmesine ve en yüksek dereceleri elde etmesine olanak tanımaktır.</p>
-                    <p>Kurumumuzda, ücretsiz seviye tespit sınavları hem online hem de yüz yüze olarak gerçekleştirilmektedir. Bu sayede, öğrencilerimizin dil seviyeleri doğru bir şekilde belirlenir ve en uygun eğitim programına yönlendirilirler. Ayrıca, online ders seçeneklerimiz ile öğrencilerimize esnek bir öğrenme imkanı sunuyoruz.</p>
-                    <p>Bunun yanı sıra, diğer dünya dillerinde de eğitim vererek, öğrencilerimizin dil dağarcıklarını zenginleştirmeyi hedefliyoruz. Alanında uzman eğitmen kadromuz, etkileşimli ve eğlenceli bir öğrenme ortamı yaratarak, dil öğrenimini keyifli hale getiriyor.</p>
-                    <p class="mb-4">Aydın Dil Akademisi olarak, öğrenme sürecinin her aşamasında yanınızdayız. Bize katılarak, dil öğreniminde yeni ufuklar açabilir ve geleceğinizi şekillendirebilirsiniz.</p>
+                    <h1 class="mb-4">{{ __('dictt.why_us') }}</h1>
+                    <p>{{ __('dictt.why_us_text_1') }}</p>
+                    <p>{{ __('dictt.why_us_text_2') }}</p>
+                    <p>{{ __('dictt.why_us_text_3') }}</p>
+                    <p class="mb-4">{{ __('dictt.why_us_text_4') }}</p>
                 </div>
                 <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
-                    <img class="img-fluid rounded w-100" src="{{ asset('frontend/images/whyus.jpg') }}" alt="Neden Biz">
+                    <img class="img-fluid rounded w-100" src="{{ asset('frontend/images/whyus.jpg') }}" alt="{{ __('dictt.why_us_image_alt') }}">
                 </div>
             </div>
         </div>
@@ -62,56 +62,112 @@
     <div class="container-xxl py-5">
         <div class="container">
             <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
-                <h1>Kurslarımız</h1>
+                <h1>{{ __('dictt.ourcourses') }}</h1>
             </div>
             <div class="row g-4">
                 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="service-item bg-light rounded h-100 p-4 d-flex align-items-center">
+                    <a href="{{ route('frontend.courses.ielts') }}" class="service-item bg-light rounded h-100 p-4 d-flex align-items-center text-decoration-none">
                         <div class="d-inline-flex flex-shrink-0 align-items-center justify-content-center bg-white rounded-circle me-4" style="width: 65px; height: 65px;">
-                            <i class="fa fa-graduation-cap text-primary fs-4"></i>
+                            <i class="fa fa-plane-departure text-primary fs-4"></i>
                         </div>
-                        <h4 class="mb-0">Genel İngilizce</h4>
-                    </div>
+                        <h4 class="mb-0">{{ __('dictt.ielts_prep') }}</h4>
+                    </a>
                 </div>
                 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
-                    <div class="service-item bg-light rounded h-100 p-4 d-flex align-items-center">
+                    <a href="{{ route('frontend.courses.yks-dil') }}" class="service-item bg-light rounded h-100 p-4 d-flex align-items-center text-decoration-none">
                         <div class="d-inline-flex flex-shrink-0 align-items-center justify-content-center bg-white rounded-circle me-4" style="width: 65px; height: 65px;">
-                            <i class="fa fa-graduation-cap text-primary fs-4"></i>
+                            <i class="fa fa-university text-primary fs-4"></i>
                         </div>
-                        <h4 class="mb-0">Okul Öncesi</h4>
-                    </div>
+                        <h4 class="mb-0">{{ __('dictt.yks_dil_prep') }}</h4>
+                    </a>
                 </div>
                 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
-                    <div class="service-item bg-light rounded h-100 p-4 d-flex align-items-center">
+                    <a href="{{ route('frontend.courses.yds-yokdil') }}" class="service-item bg-light rounded h-100 p-4 d-flex align-items-center text-decoration-none">
                         <div class="d-inline-flex flex-shrink-0 align-items-center justify-content-center bg-white rounded-circle me-4" style="width: 65px; height: 65px;">
-                            <i class="fa fa-graduation-cap text-primary fs-4"></i>
+                            <i class="fa fa-book text-primary fs-4"></i>
                         </div>
-                        <h4 class="mb-0">İlkokul</h4>
-                    </div>
+                        <h4 class="mb-0">{{ __('dictt.yds_yokdil') }}</h4>
+                    </a>
                 </div>
                 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="service-item bg-light rounded h-100 p-4 d-flex align-items-center">
+                    <a href="{{ route('frontend.courses.toefl') }}" class="service-item bg-light rounded h-100 p-4 d-flex align-items-center text-decoration-none">
                         <div class="d-inline-flex flex-shrink-0 align-items-center justify-content-center bg-white rounded-circle me-4" style="width: 65px; height: 65px;">
-                            <i class="fa fa-graduation-cap text-primary fs-4"></i>
+                            <i class="fa fa-globe text-primary fs-4"></i>
                         </div>
-                        <h4 class="mb-0">Ortaokul</h4>
-                    </div>
+                        <h4 class="mb-0">{{ __('dictt.toefl') }}</h4>
+                    </a>
                 </div>
                 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
-                    <div class="service-item bg-light rounded h-100 p-4 d-flex align-items-center">
+                    <a href="{{ route('frontend.courses.pte-academic') }}" class="service-item bg-light rounded h-100 p-4 d-flex align-items-center text-decoration-none">
                         <div class="d-inline-flex flex-shrink-0 align-items-center justify-content-center bg-white rounded-circle me-4" style="width: 65px; height: 65px;">
-                            <i class="fa fa-graduation-cap text-primary fs-4"></i>
+                            <i class="fa fa-laptop text-primary fs-4"></i>
                         </div>
-                        <h4 class="mb-0">Lise</h4>
-                    </div>
+                        <h4 class="mb-0">{{ __('dictt.pte_academic') }}</h4>
+                    </a>
                 </div>
                 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
-                    <div class="service-item bg-light rounded h-100 p-4 d-flex align-items-center">
+                    <a href="{{ route('frontend.courses.test-of-english') }}" class="service-item bg-light rounded h-100 p-4 d-flex align-items-center text-decoration-none">
+                        <div class="d-inline-flex flex-shrink-0 align-items-center justify-content-center bg-white rounded-circle me-4" style="width: 65px; height: 65px;">
+                            <i class="fa fa-check-circle text-primary fs-4"></i>
+                        </div>
+                        <h4 class="mb-0">{{ __('dictt.test_of_english') }}</h4>
+                    </a>
+                </div>
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                    <a href="{{ route('frontend.courses.sat') }}" class="service-item bg-light rounded h-100 p-4 d-flex align-items-center text-decoration-none">
+                        <div class="d-inline-flex flex-shrink-0 align-items-center justify-content-center bg-white rounded-circle me-4" style="width: 65px; height: 65px;">
+                            <i class="fa fa-calculator text-primary fs-4"></i>
+                        </div>
+                        <h4 class="mb-0">{{ __('dictt.sat') }}</h4>
+                    </a>
+                </div>
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
+                    <a href="{{ route('frontend.courses.preschool') }}" class="service-item bg-light rounded h-100 p-4 d-flex align-items-center text-decoration-none">
+                        <div class="d-inline-flex flex-shrink-0 align-items-center justify-content-center bg-white rounded-circle me-4" style="width: 65px; height: 65px;">
+                            <i class="fa fa-child text-primary fs-4"></i>
+                        </div>
+                        <h4 class="mb-0">{{ __('dictt.preschool') }}</h4>
+                    </a>
+                </div>
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
+                    <a href="{{ route('frontend.courses.primary-school') }}" class="service-item bg-light rounded h-100 p-4 d-flex align-items-center text-decoration-none">
+                        <div class="d-inline-flex flex-shrink-0 align-items-center justify-content-center bg-white rounded-circle me-4" style="width: 65px; height: 65px;">
+                            <i class="fa fa-pencil-alt text-primary fs-4"></i>
+                        </div>
+                        <h4 class="mb-0">{{ __('dictt.primary_school') }}</h4>
+                    </a>
+                </div>
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                    <a href="{{ route('frontend.courses.middle-school') }}" class="service-item bg-light rounded h-100 p-4 d-flex align-items-center text-decoration-none">
+                        <div class="d-inline-flex flex-shrink-0 align-items-center justify-content-center bg-white rounded-circle me-4" style="width: 65px; height: 65px;">
+                            <i class="fa fa-book-open text-primary fs-4"></i>
+                        </div>
+                        <h4 class="mb-0">{{ __('dictt.middle_school') }}</h4>
+                    </a>
+                </div>
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
+                    <a href="{{ route('frontend.courses.high-school') }}" class="service-item bg-light rounded h-100 p-4 d-flex align-items-center text-decoration-none">
                         <div class="d-inline-flex flex-shrink-0 align-items-center justify-content-center bg-white rounded-circle me-4" style="width: 65px; height: 65px;">
                             <i class="fa fa-graduation-cap text-primary fs-4"></i>
                         </div>
-                        <h4 class="mb-0">Yetişkin</h4>
-                    </div>
+                        <h4 class="mb-0">{{ __('dictt.high_school') }}</h4>
+                    </a>
+                </div>
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
+                    <a href="{{ route('frontend.courses.general-english') }}" class="service-item bg-light rounded h-100 p-4 d-flex align-items-center text-decoration-none">
+                        <div class="d-inline-flex flex-shrink-0 align-items-center justify-content-center bg-white rounded-circle me-4" style="width: 65px; height: 65px;">
+                            <i class="fa fa-comments text-primary fs-4"></i>
+                        </div>
+                        <h4 class="mb-0">{{ __('dictt.general_english') }}</h4>
+                    </a>
+                </div>
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                    <a href="{{ route('frontend.courses.speaking-clubs') }}" class="service-item bg-light rounded h-100 p-4 d-flex align-items-center text-decoration-none">
+                        <div class="d-inline-flex flex-shrink-0 align-items-center justify-content-center bg-white rounded-circle me-4" style="width: 65px; height: 65px;">
+                            <i class="fa fa-users text-primary fs-4"></i>
+                        </div>
+                        <h4 class="mb-0">{{ __('dictt.speaking_clubs') }}</h4>
+                    </a>
                 </div>
             </div>
         </div>
@@ -123,7 +179,7 @@
     <div class="container-xxl py-5">
         <div class="container">
             <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
-                <h1>Öğrencilerimizin Yorumları</h1>
+                <h1>{{ __('dictt.testimonials') }}</h1>
             </div>
             <div class="owl-carousel testimonial-carousel wow fadeInUp" data-wow-delay="0.1s">
                 <div class="testimonial-item text-center">

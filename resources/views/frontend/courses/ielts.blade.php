@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>IELTS Hazırlık | {{ __('dictt.ala') }}</title>
+    <title>{{ __('dictt.ielts_prep') }} | {{ __('dictt.ala') }}</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -41,16 +41,16 @@
         <div class="container">
             <div class="row g-5">
                 <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
-                    <img class="img-fluid rounded w-100" src="{{ asset('frontend/images/whoweare.png') }}" alt="IELTS Hazırlık">
+                    <img class="img-fluid rounded w-100" src="{{ asset('frontend/images/whoweare.png') }}" alt="{{ __('dictt.ielts_prep') }}">
                     <p class="mt-4 mb-0 clearfix"><i class="fa fa-book-open text-primary fs-4 float-start me-3" aria-hidden="true"></i>{{ __('dictt.shared_course_image_text') }}</p>
                 </div>
                 <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
-                    <h1 class="mb-4">IELTS Hazırlık</h1>
-                    <p>IELTS sınavına yönelik demo hazırlık programımız, akademik İngilizce becerilerinizi ve sınav stratejilerinizi geliştirmeye odaklanır.</p>
-                    <p class="mb-2 fw-bold"><i class="far fa-check-circle text-primary me-3"></i>Madde 1</p>
-                    <p class="mb-4">Madde 1 içeriği burada.</p>
-                    <p class="mb-2 fw-bold"><i class="far fa-check-circle text-primary me-3"></i>Madde 2</p>
-                    <p class="mb-4">Madde 2 içeriği burada.</p>
+                    <h1 class="mb-4">{{ __('dictt.ielts_prep') }}</h1>
+                    <p>{{ __('dictt.ielts_intro') }}</p>
+                    <p class="mb-2 fw-bold"><i class="far fa-check-circle text-primary me-3"></i>{{ __('dictt.course_demo_item_1') }}</p>
+                    <p class="mb-4">{{ __('dictt.course_demo_item_1_text') }}</p>
+                    <p class="mb-2 fw-bold"><i class="far fa-check-circle text-primary me-3"></i>{{ __('dictt.course_demo_item_2') }}</p>
+                    <p class="mb-4">{{ __('dictt.course_demo_item_2_text') }}</p>
                 </div>
             </div>
         </div>

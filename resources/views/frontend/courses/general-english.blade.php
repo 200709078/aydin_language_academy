@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Genel İngilizce | {{ __('dictt.ala') }}</title>
+    <title>{{ __('dictt.general_english') }} | {{ __('dictt.ala') }}</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -41,22 +41,22 @@
         <div class="container">
             <div class="row g-5">
                 <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
-                    <img class="img-fluid rounded w-100" src="{{ asset('frontend/images/whoweare.png') }}" alt="Genel İngilizce">
+                    <img class="img-fluid rounded w-100" src="{{ asset('frontend/images/whoweare.png') }}" alt="{{ __('dictt.general_english') }}">
                     <p class="mt-4 mb-0 clearfix"><i class="fa fa-book-open text-primary fs-4 float-start me-3" aria-hidden="true"></i>{{ __('dictt.shared_course_image_text') }}</p>
                 </div>
                 <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
-                    <h1 class="mb-4">Genel İngilizce</h1>
-                    <p>İngilizce öğrenme yolculuğunuzda, uluslararası standartlara uygun eğitim programlarımızla yanınızdayız! Kurslarımız, Avrupa Dilleri Ortak Çerçeve Programı (CEFR) verilerine dayalı olarak tasarlanmıştır ve her seviyede ihtiyacınıza özel çözümler sunar.</p>
-                    <p class="mb-2 fw-bold"><i class="far fa-check-circle text-primary me-3"></i>A1-A2 seviyeleri</p>
-                    <p class="mb-4">Toplamda 90-110 ders saati süren programlarla dil öğreniminde sağlam bir temel oluşturabilirsiniz.</p>
-                    <p class="mb-2 fw-bold"><i class="far fa-check-circle text-primary me-3"></i>B seviyeleri</p>
-                    <p class="mb-4">180 ders saati içeren kapsamlı bir eğitimle daha akıcı ve özgüvenli bir şekilde iletişim kurmayı öğrenebilirsiniz.</p>
-                    <p class="mb-2 fw-bold"><i class="far fa-check-circle text-primary me-3"></i>Dört Temel Beceri Odaklı Eğitim</p>
-                    <p class="mb-4">Derslerimiz, CEFR’in öngördüğü şekilde dört temel dil becerisini – reading, writing, listening ve speaking – geliştirmeye odaklanır. Bu sistem, hem teorik hem de pratik beceriler kazanmanıza olanak tanır.</p>
-                    <p class="mb-2 fw-bold"><i class="far fa-check-circle text-primary me-3"></i>Yerli ve Native Öğretmenlerden Eğitim</p>
-                    <p class="mb-4">Programlarımızda, hem yerli hem de anadili İngilizce olan deneyimli öğretmenler görev alır. Bu sayede, dil öğrenme sürecinizi hem yerel ihtiyaçlarınıza hem de uluslararası standartlara uygun bir şekilde destekliyoruz.</p>
-                    <p class="mb-2 fw-bold"><i class="far fa-check-circle text-primary me-3"></i>Neden Biz?</p>
-                    <p class="mb-4">İngilizce öğrenmek, sadece bir dil öğrenmek değil, aynı zamanda yeni fırsatlara kapı açmaktır. Seyahat, kariyer ya da kişisel gelişim hedefleriniz ne olursa olsun, size en uygun yöntemi sunuyor ve başarı yolculuğunuzda yanınızda oluyoruz.</p>
+                    <h1 class="mb-4">{{ __('dictt.general_english') }}</h1>
+                    <p>{{ __('dictt.general_english_intro') }}</p>
+                    <p class="mb-2 fw-bold"><i class="far fa-check-circle text-primary me-3"></i>{{ __('dictt.general_english_section_1_title') }}</p>
+                    <p class="mb-4">{{ __('dictt.general_english_section_1_text') }}</p>
+                    <p class="mb-2 fw-bold"><i class="far fa-check-circle text-primary me-3"></i>{{ __('dictt.general_english_section_2_title') }}</p>
+                    <p class="mb-4">{{ __('dictt.general_english_section_2_text') }}</p>
+                    <p class="mb-2 fw-bold"><i class="far fa-check-circle text-primary me-3"></i>{{ __('dictt.general_english_section_3_title') }}</p>
+                    <p class="mb-4">{{ __('dictt.general_english_section_3_text') }}</p>
+                    <p class="mb-2 fw-bold"><i class="far fa-check-circle text-primary me-3"></i>{{ __('dictt.general_english_section_4_title') }}</p>
+                    <p class="mb-4">{{ __('dictt.general_english_section_4_text') }}</p>
+                    <p class="mb-2 fw-bold"><i class="far fa-check-circle text-primary me-3"></i>{{ __('dictt.general_english_section_5_title') }}</p>
+                    <p class="mb-4">{{ __('dictt.general_english_section_5_text') }}</p>
                 </div>
             </div>
         </div>

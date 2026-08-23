@@ -41,11 +41,11 @@
         <div class="container">
             <div class="row g-5">
                 <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
-                    <img class="img-fluid rounded w-100" src="{{ asset('frontend/images/whoweare.png') }}" alt="Başarılarımız">
+                    <img class="img-fluid rounded w-100" src="{{ asset('frontend/images/whoweare.png') }}" alt="{{ __('dictt.achievements') }}">
                 </div>
                 <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
-                    <h1 class="mb-4">Başarılarımız</h1>
-                    <p>BURADA BAŞARILARIMIZ OLACAK.</p>
+                    <h1 class="mb-4">{{ __('dictt.achievements') }}</h1>
+                    <p>{{ __('dictt.achievements_placeholder') }}</p>
                 </div>
             </div>
         </div>

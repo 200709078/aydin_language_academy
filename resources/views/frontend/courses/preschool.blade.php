@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Okul Öncesi | {{ __('dictt.ala') }}</title>
+    <title>{{ __('dictt.preschool') }} | {{ __('dictt.ala') }}</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -41,22 +41,22 @@
         <div class="container">
             <div class="row g-5">
                 <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
-                    <img class="img-fluid rounded w-100" src="{{ asset('frontend/images/whoweare.png') }}" alt="Okul Öncesi">
+                    <img class="img-fluid rounded w-100" src="{{ asset('frontend/images/whoweare.png') }}" alt="{{ __('dictt.preschool') }}">
                     <p class="mt-4 mb-0 clearfix"><i class="fa fa-book-open text-primary fs-4 float-start me-3" aria-hidden="true"></i>{{ __('dictt.shared_course_image_text') }}</p>
                 </div>
                 <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
-                    <h1 class="mb-4">Okul Öncesi</h1>
-                    <p>Okul öncesi öğrencilerimiz için hazırlanan İngilizce eğitim programlarımız, dil öğrenme sürecini eğlenceli ve etkileşimli bir hale getirir. Bu yaş grubunun doğal öğrenme yetenekleri göz önünde bulundurularak, dil becerilerini oyunlar, şarkılar ve çeşitli yaratıcı etkinliklerle geliştirmeyi hedefliyoruz.</p>
-                    <p class="mb-2 fw-bold"><i class="far fa-check-circle text-primary me-3"></i>Seviye Tespit ile Kişiye Özel Eğitim</p>
-                    <p class="mb-4">Okul öncesi öğrencilerimiz için seviye tespit sınavı uygulanmaz, çünkü bu yaş grubunda dil öğrenimi doğal bir süreç olarak ele alınır. Öğrenciler, yaşlarına uygun materyallerle eğlenceli bir şekilde dil becerilerini geliştirir. Ancak, öğrencinin dil gelişimi ve ihtiyaçları, öğretmenlerimiz tarafından sürekli izlenir ve her çocuğa özel eğitim yaklaşımı benimsenir.</p>
-                    <p class="mb-2 fw-bold"><i class="far fa-check-circle text-primary me-3"></i>Dil Becerilerini Eğlenceli Yöntemlerle Geliştirme</p>
-                    <p class="mb-4">Okul öncesi programımız, İngilizceyi öğrenmeye yönelik temel becerileri geliştirmeye odaklanır. Çocuklar, şarkılar, hikayeler ve oyunlar aracılığıyla dilin temellerini öğrenirken, özellikle dinleme, konuşma ve kelime dağarcığını geliştirme üzerine yoğunlaşılır. Bu sayede, çocuklar doğal bir şekilde İngilizceyi günlük yaşamlarında kullanmaya başlarlar.</p>
-                    <p class="mb-2 fw-bold"><i class="far fa-check-circle text-primary me-3"></i>Uzman Eğitmenler ve Oyun Bazlı Kaynaklar</p>
-                    <p class="mb-4">Eğitim materyallerimiz, uzman eğitmenlerimiz tarafından seçilen renkli ve eğlenceli içeriklerden oluşur. Hikayeler, şarkılar ve resimli kitaplar, çocukların dikkatini çekmek ve onların öğrenmesini desteklemek için kullanılmaktadır. Öğrenme süreci oyun tabanlı olduğundan, çocuklar doğal bir şekilde İngilizceyi keşfeder ve eğlenerek öğrenir.</p>
-                    <p class="mb-2 fw-bold"><i class="far fa-check-circle text-primary me-3"></i>Grup Dersleri</p>
-                    <p class="mb-4">Çocukların sosyal becerilerini geliştirirken, dil öğrenme süreçlerine aktif katılımlarını sağlar.</p>
-                    <p class="mb-2 fw-bold"><i class="far fa-check-circle text-primary me-3"></i>Özel Dersler</p>
-                    <p class="mb-4">Çocuğun bireysel hızına ve ihtiyaçlarına göre uyarlanmış kişisel bir öğrenme deneyimi sunar.</p>
+                    <h1 class="mb-4">{{ __('dictt.preschool') }}</h1>
+                    <p>{{ __('dictt.preschool_intro') }}</p>
+                    <p class="mb-2 fw-bold"><i class="far fa-check-circle text-primary me-3"></i>{{ __('dictt.preschool_section_1_title') }}</p>
+                    <p class="mb-4">{{ __('dictt.preschool_section_1_text') }}</p>
+                    <p class="mb-2 fw-bold"><i class="far fa-check-circle text-primary me-3"></i>{{ __('dictt.preschool_section_2_title') }}</p>
+                    <p class="mb-4">{{ __('dictt.preschool_section_2_text') }}</p>
+                    <p class="mb-2 fw-bold"><i class="far fa-check-circle text-primary me-3"></i>{{ __('dictt.preschool_section_3_title') }}</p>
+                    <p class="mb-4">{{ __('dictt.preschool_section_3_text') }}</p>
+                    <p class="mb-2 fw-bold"><i class="far fa-check-circle text-primary me-3"></i>{{ __('dictt.preschool_section_4_title') }}</p>
+                    <p class="mb-4">{{ __('dictt.preschool_section_4_text') }}</p>
+                    <p class="mb-2 fw-bold"><i class="far fa-check-circle text-primary me-3"></i>{{ __('dictt.preschool_section_5_title') }}</p>
+                    <p class="mb-4">{{ __('dictt.preschool_section_5_text') }}</p>
                 </div>
             </div>
         </div>

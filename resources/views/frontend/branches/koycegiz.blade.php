@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Köyceğiz | {{ __('dictt.ala') }}</title>
+    <title>{{ __('dictt.branch_koycegiz') }} | {{ __('dictt.ala') }}</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -41,14 +41,14 @@
         <div class="container">
             <div class="row g-5">
                 <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
-                    <img class="img-fluid rounded w-100" src="{{ asset('frontend/images/branches/ala_koycegiz.jpg') }}" alt="Köyceğiz">
+                    <img class="img-fluid rounded w-100" src="{{ asset('frontend/images/branches/ala_koycegiz.jpg') }}" alt="{{ __('dictt.branch_koycegiz') }}">
                     <div class="mt-4">
                         <div class="bg-light rounded d-flex align-items-center p-3 mb-4">
                             <div class="d-flex flex-shrink-0 align-items-center justify-content-center rounded-circle bg-white" style="width: 55px; height: 55px;">
                                 <i class="fa fa-map-marker-alt text-primary"></i>
                             </div>
                             <div class="ms-3">
-                                <p class="mb-1">Adresimiz</p>
+                                <p class="mb-1">{{ __('dictt.branch_our_address') }}</p>
                                 <h5 class="mb-0"><span class="text-dark text-break">Ulucamii İbrahim Koç Sokak Köyceğiz Lokantası Yanı Köyceğiz/Muğla</span></h5>
                             </div>
                         </div>
@@ -57,7 +57,7 @@
                                 <i class="fa fa-phone-alt text-primary"></i>
                             </div>
                             <div class="ms-3">
-                                <p class="mb-1">Bizi Arayın</p>
+                                <p class="mb-1">{{ __('dictt.branch_call_us') }}</p>
                                 <h5 class="mb-0"><a class="text-dark text-break" href="tel:+905408284884">(540) 828 4884</a></h5>
                             </div>
                         </div>
@@ -66,7 +66,7 @@
                                 <i class="fa fa-envelope-open text-primary"></i>
                             </div>
                             <div class="ms-3">
-                                <p class="mb-1">E-posta Gönderin</p>
+                                <p class="mb-1">{{ __('dictt.branch_send_email') }}</p>
                                 <h5 class="mb-0"><a class="text-dark text-break" href="mailto:koycegiz@learnenglishwithala.com">koycegiz@learnenglishwithala.com</a></h5>
                             </div>
                         </div>
@@ -75,7 +75,7 @@
                                 <i class="fab fa-whatsapp text-primary"></i>
                             </div>
                             <div class="ms-3">
-                                <p class="mb-1">WhatsApp ile İletişime Geçin</p>
+                                <p class="mb-1">{{ __('dictt.branch_whatsapp_contact') }}</p>
                                 <h5 class="mb-0"><a class="text-dark text-break" href="https://wa.me/905408284884" target="_blank" rel="noopener noreferrer">WhatsApp</a></h5>
                             </div>
                         </div>
@@ -84,7 +84,7 @@
                                 <i class="fab fa-youtube text-primary"></i>
                             </div>
                             <div class="ms-3">
-                                <p class="mb-1">YouTube Kanalımız</p>
+                                <p class="mb-1">{{ __('dictt.branch_youtube_channel') }}</p>
                                 <h5 class="mb-0"><a class="text-dark text-break" href="https://www.youtube.com/@Ayd%C4%B1nLanguageAcademy" target="_blank" rel="noopener noreferrer">YouTube</a></h5>
                             </div>
                         </div>
@@ -93,21 +93,21 @@
                                 <i class="fab fa-instagram text-primary"></i>
                             </div>
                             <div class="ms-3">
-                                <p class="mb-1">Instagram Hesabımız</p>
+                                <p class="mb-1">{{ __('dictt.branch_instagram_account') }}</p>
                                 <h5 class="mb-0"><a class="text-dark text-break" href="https://www.instagram.com/aydindilakademisidalaman?igsh=MTVjaXl2eDJ2MjJwYg==" target="_blank" rel="noopener noreferrer">Instagram</a></h5>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
-                    <h1 class="mb-4">Köyceğiz</h1>
-                    <p>Aydın Language Academy, Köyceğiz'de İngilizce öğrenmek isteyenler için mükemmel bir seçenektir. Kaliteli eğitim ve uzman öğretmenlerimizle, dil becerilerinizi geliştirmek için size yardımcı oluyoruz.</p>
-                    <p>Kaliteli Eğitim<br>Aydın Language Academy olarak, öğrencilerimize en iyi eğitimi sunmayı hedefliyoruz. Uzman ve deneyimli öğretmenlerimiz, interaktif dersler ve modern öğretim materyalleri ile öğrencilerin dil becerilerini hızla geliştirmelerini sağlıyor.</p>
-                    <p>Çeşitli Kurs Seçenekleri<br>Aydın Language Academy, farklı seviyelerde ve ihtiyaçlara uygun çeşitli kurs seçenekleri sunar. Başlangıç ​​seviyesinden ileri seviyeye kadar herkes için bir kurs bulabilirsiniz. Genel İngilizce, İş İngilizcesi, Akademik İngilizce ve daha fazlası için bize katılın!</p>
-                    <p>Esnek Programlar<br>İşiniz veya günlük yaşamınız nedeniyle yoğun bir programınız varsa endişelenmeyin! Aydın Language Academy, esnek programlar sunarak öğrencilerin ihtiyaçlarına uyum sağlar. Sabah, öğle veya akşam dersleri arasından seçim yapabilir ve kendi hızınızda ilerleyebilirsiniz.</p>
-                    <p>Mükemmel Konum<br>Aydın Language Academy, Dalaman'ın merkezinde bulunmaktadır. Ulaşım açısından oldukça elverişli olan merkezimiz, öğrencilere kolaylık sağlar. Dalaman'ın tarihi ve doğal güzelliklerini keşfetmek için kurslar arasında keyifli bir mola verin!</p>
-                    <p>Ücretsiz Deneme Dersleri<br>Hala karar veremediniz mi? Hiç sorun değil! Aydın Language Academy, tüm potansiyel öğrencilere ücretsiz deneme dersleri sunmaktadır. Kurslarımızı deneyin ve kendiniz için mükemmel olanı seçin.</p>
-                    <p>Köyceğiz'de İngilizce öğrenmek isteyen herkes için Aydın Language Academy mükemmel bir seçenektir. Bizimle iletişime geçin ve dil becerilerinizi geliştirmeye bugün başlayın!</p>
+                    <h1 class="mb-4">{{ __('dictt.branch_koycegiz') }}</h1>
+                    <p>{{ __('dictt.koycegiz_intro') }}</p>
+                    <p>{{ __('dictt.koycegiz_section_1_title') }}<br>{{ __('dictt.koycegiz_section_1_text') }}</p>
+                    <p>{{ __('dictt.koycegiz_section_2_title') }}<br>{{ __('dictt.koycegiz_section_2_text') }}</p>
+                    <p>{{ __('dictt.koycegiz_section_3_title') }}<br>{{ __('dictt.koycegiz_section_3_text') }}</p>
+                    <p>{{ __('dictt.koycegiz_section_4_title') }}<br>{{ __('dictt.koycegiz_section_4_text') }}</p>
+                    <p>{{ __('dictt.koycegiz_section_5_title') }}<br>{{ __('dictt.koycegiz_section_5_text') }}</p>
+                    <p>{{ __('dictt.koycegiz_outro') }}</p>
                 </div>
             </div>
         </div>

@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Ortaokul | {{ __('dictt.ala') }}</title>
+    <title>{{ __('dictt.middle_school') }} | {{ __('dictt.ala') }}</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -41,22 +41,22 @@
         <div class="container">
             <div class="row g-5">
                 <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
-                    <img class="img-fluid rounded w-100" src="{{ asset('frontend/images/whoweare.png') }}" alt="Ortaokul">
+                    <img class="img-fluid rounded w-100" src="{{ asset('frontend/images/whoweare.png') }}" alt="{{ __('dictt.middle_school') }}">
                     <p class="mt-4 mb-0 clearfix"><i class="fa fa-book-open text-primary fs-4 float-start me-3" aria-hidden="true"></i>{{ __('dictt.shared_course_image_text') }}</p>
                 </div>
                 <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
-                    <h1 class="mb-4">Ortaokul</h1>
-                    <p>Ortaokul öğrencilerimize özel İngilizce programlarımız, akademik başarıyı desteklemekle birlikte öğrencilerimizin İngilizceye olan güvenlerini artırmayı ve dil becerilerini daha ileri bir seviyeye taşımayı amaçlıyor.</p>
-                    <p class="mb-2 fw-bold"><i class="far fa-check-circle text-primary me-3"></i>Seviye Tespit ile Kişiselleştirilmiş Eğitim</p>
-                    <p class="mb-4">Her öğrencinin mevcut İngilizce seviyesini belirlemek için bir seviye tespit sınavı gerçekleştiriyoruz. Bu sayede, öğrencilerimizi dil seviyelerine uygun gruplara yönlendirerek etkili bir öğrenme süreci sağlıyoruz.</p>
-                    <p class="mb-2 fw-bold"><i class="far fa-check-circle text-primary me-3"></i>Gelişmiş Dil Becerileri Odaklı Eğitim</p>
-                    <p class="mb-4">Bu yaş grubunda, İngilizce eğitimi okuma, yazma, dinleme ve konuşma becerilerinin dengeli bir şekilde geliştirilmesine odaklanır. Özellikle akademik İngilizceyi destekleyen programlarımızla, öğrencilerin okuma-anlama ve yazılı ifade becerilerinin güçlenmesini sağlıyoruz.</p>
-                    <p class="mb-2 fw-bold"><i class="far fa-check-circle text-primary me-3"></i>Uzman Kadro ve Güncel Kaynaklar</p>
-                    <p class="mb-4">Kullanılan tüm eğitim materyalleri, uzman eğitmenlerimiz tarafından seçilmiş ve öğrencilerin bu yaş grubundaki ihtiyaçlarına göre hazırlanmıştır. Modern içeriklerle öğrencilerimizin ilgisini çekerken, öğrenim süreçlerini hızlandırıyoruz.</p>
-                    <p class="mb-2 fw-bold"><i class="far fa-check-circle text-primary me-3"></i>Grup Dersleri</p>
-                    <p class="mb-4">Takım çalışmasını teşvik eden ve sosyal öğrenmeyi destekleyen bir ortam sağlar.</p>
-                    <p class="mb-2 fw-bold"><i class="far fa-check-circle text-primary me-3"></i>Özel Dersler</p>
-                    <p class="mb-4">Öğrencinin ihtiyaçlarına göre birebir ilgiyle hazırlanır.</p>
+                    <h1 class="mb-4">{{ __('dictt.middle_school') }}</h1>
+                    <p>{{ __('dictt.middle_school_intro') }}</p>
+                    <p class="mb-2 fw-bold"><i class="far fa-check-circle text-primary me-3"></i>{{ __('dictt.middle_school_section_1_title') }}</p>
+                    <p class="mb-4">{{ __('dictt.middle_school_section_1_text') }}</p>
+                    <p class="mb-2 fw-bold"><i class="far fa-check-circle text-primary me-3"></i>{{ __('dictt.middle_school_section_2_title') }}</p>
+                    <p class="mb-4">{{ __('dictt.middle_school_section_2_text') }}</p>
+                    <p class="mb-2 fw-bold"><i class="far fa-check-circle text-primary me-3"></i>{{ __('dictt.middle_school_section_3_title') }}</p>
+                    <p class="mb-4">{{ __('dictt.middle_school_section_3_text') }}</p>
+                    <p class="mb-2 fw-bold"><i class="far fa-check-circle text-primary me-3"></i>{{ __('dictt.middle_school_section_4_title') }}</p>
+                    <p class="mb-4">{{ __('dictt.middle_school_section_4_text') }}</p>
+                    <p class="mb-2 fw-bold"><i class="far fa-check-circle text-primary me-3"></i>{{ __('dictt.middle_school_section_5_title') }}</p>
+                    <p class="mb-4">{{ __('dictt.middle_school_section_5_text') }}</p>
                 </div>
             </div>
         </div>

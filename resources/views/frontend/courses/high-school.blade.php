@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Lise | {{ __('dictt.ala') }}</title>
+    <title>{{ __('dictt.high_school') }} | {{ __('dictt.ala') }}</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -41,22 +41,22 @@
         <div class="container">
             <div class="row g-5">
                 <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
-                    <img class="img-fluid rounded w-100" src="{{ asset('frontend/images/whoweare.png') }}" alt="Lise">
+                    <img class="img-fluid rounded w-100" src="{{ asset('frontend/images/whoweare.png') }}" alt="{{ __('dictt.high_school') }}">
                     <p class="mt-4 mb-0 clearfix"><i class="fa fa-book-open text-primary fs-4 float-start me-3" aria-hidden="true"></i>{{ __('dictt.shared_course_image_text') }}</p>
                 </div>
                 <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
-                    <h1 class="mb-4">Lise</h1>
-                    <p>Lise öğrencilerimize yönelik İngilizce programlarımız, onların gelecekteki akademik ve profesyonel hayatlarına güçlü bir başlangıç yapmalarını sağlamak üzere tasarlanmıştır. İngilizceyi etkili bir şekilde öğrenen lise öğrencileri, hem sınav başarılarında hem de uluslararası platformlarda avantaj kazanır.</p>
-                    <p class="mb-2 fw-bold"><i class="far fa-check-circle text-primary me-3"></i>Seviye Tespit ile Doğru Başlangıç</p>
-                    <p class="mb-4">Her öğrencimiz, tarafımızca uygulanan seviye tespit sınavıyla değerlendirilir. Bu sınav sonuçlarına göre, öğrencilerimiz seviyelerine uygun sınıflara yerleştirilerek etkili bir dil eğitimi alır.</p>
-                    <p class="mb-2 fw-bold"><i class="far fa-check-circle text-primary me-3"></i>İleri Düzey Dil Becerileri Eğitimi</p>
-                    <p class="mb-4">Lise öğrencilerine yönelik derslerimiz, akademik ve profesyonel İngilizce kullanımını geliştirmeye odaklanır. Derslerde okuma, yazma, dinleme ve konuşma becerileri üzerinde çalışılırken, özellikle sınav teknikleri, sunum yapma ve eleştirel düşünce gibi ileri düzey becerilere de yer verilir.</p>
-                    <p class="mb-2 fw-bold"><i class="far fa-check-circle text-primary me-3"></i>Kaliteli Kaynaklar ve Uzman Eğitmenler</p>
-                    <p class="mb-4">Lise seviyesine uygun olarak seçilmiş akademik ve güncel kaynaklar, uzman eğitmenlerimizin rehberliğinde kullanılır. Öğrencilerimizin hedeflerine ulaşmalarını sağlayacak materyallerle öğrenim sürecini destekliyoruz.</p>
-                    <p class="mb-2 fw-bold"><i class="far fa-check-circle text-primary me-3"></i>Grup Dersleri</p>
-                    <p class="mb-4">Akademik başarı ve grup etkileşimiyle öğrenmeyi teşvik eder.</p>
-                    <p class="mb-2 fw-bold"><i class="far fa-check-circle text-primary me-3"></i>Özel Dersler</p>
-                    <p class="mb-4">Kişiselleştirilmiş bir programla öğrencinin hedeflerine odaklanır.</p>
+                    <h1 class="mb-4">{{ __('dictt.high_school') }}</h1>
+                    <p>{{ __('dictt.high_school_intro') }}</p>
+                    <p class="mb-2 fw-bold"><i class="far fa-check-circle text-primary me-3"></i>{{ __('dictt.high_school_section_1_title') }}</p>
+                    <p class="mb-4">{{ __('dictt.high_school_section_1_text') }}</p>
+                    <p class="mb-2 fw-bold"><i class="far fa-check-circle text-primary me-3"></i>{{ __('dictt.high_school_section_2_title') }}</p>
+                    <p class="mb-4">{{ __('dictt.high_school_section_2_text') }}</p>
+                    <p class="mb-2 fw-bold"><i class="far fa-check-circle text-primary me-3"></i>{{ __('dictt.high_school_section_3_title') }}</p>
+                    <p class="mb-4">{{ __('dictt.high_school_section_3_text') }}</p>
+                    <p class="mb-2 fw-bold"><i class="far fa-check-circle text-primary me-3"></i>{{ __('dictt.high_school_section_4_title') }}</p>
+                    <p class="mb-4">{{ __('dictt.high_school_section_4_text') }}</p>
+                    <p class="mb-2 fw-bold"><i class="far fa-check-circle text-primary me-3"></i>{{ __('dictt.high_school_section_5_title') }}</p>
+                    <p class="mb-4">{{ __('dictt.high_school_section_5_text') }}</p>
                 </div>
             </div>
         </div>
