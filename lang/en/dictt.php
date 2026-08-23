@@ -172,6 +172,7 @@ return [
     'contactus' => 'Contact Us',
     'sitesettings' => 'Site Settings',
     'settings' => 'Settings',
+    'register' => 'Register',
     'slogan' => 'Slogan',
     'description' => 'Description',
     'imagemaxsize' => 'Maximum size of the image can be 1024 kb.',

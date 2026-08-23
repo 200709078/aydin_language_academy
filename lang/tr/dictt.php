@@ -172,6 +172,7 @@ return [
     'contactus' => 'Bizimle İletişime Geçin',
     'sitesettings' => 'Site Ayarları',
     'settings' => 'Ayarlar',
+    'register' => 'Üye Ol',
     'slogan' => 'Slogan',
     'description' => 'Açıklama',
     'imagemaxsize' => 'Fotoğraf en fazla 1024 kb boyutunda olabilir.',

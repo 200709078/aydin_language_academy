@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>{{ $level->code }} Seviye Tespit Sınavı | Aydın Language Academy</title>
+    <title>{{ $level->code }} {{ __('dictt.placement_test') }} | {{ __('dictt.ala') }}</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <base href="{{ asset('ALA-FRONTEND/TEMPLATE') }}/">
