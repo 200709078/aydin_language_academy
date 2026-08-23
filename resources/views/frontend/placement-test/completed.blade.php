@@ -28,26 +28,26 @@
                     <div class="bg-light rounded p-5 text-center">
                         @if ($placementTest->status === 'approved')
                             <i class="fa fa-check-circle text-success display-5 mb-4"></i>
-                            <h1 class="mb-3">Sınav Sonucunuz Onaylandı</h1>
-                            <p class="mb-4">Seviye tespit sınavınız yönetici tarafından onaylandı.</p>
+                            <h1 class="mb-3">{{ __('dictt.placement_test_result_approved_title') }}</h1>
+                            <p class="mb-4">{{ __('dictt.placement_test_result_approved_text') }}</p>
                             @if ($placementTest->resultLevel)
-                                <div class="h4 text-primary mb-4">Nihai seviyeniz: {{ $placementTest->resultLevel->code }}</div>
+                                <div class="h4 text-primary mb-4">{{ __('dictt.placement_test_final_level', ['level' => $placementTest->resultLevel->code]) }}</div>
                             @endif
                         @else
                             <i class="fa fa-clock text-primary display-5 mb-4"></i>
-                            <h1 class="mb-3">Sınavınız Tamamlandı</h1>
-                            <p class="mb-4">Cevaplarınız kaydedildi. Sonucunuz yönetici onayından sonra kesinleşecektir.</p>
+                            <h1 class="mb-3">{{ __('dictt.placement_test_completed_title') }}</h1>
+                            <p class="mb-4">{{ __('dictt.placement_test_completed_text') }}</p>
                         @endif
                     </div>
 
                     <div class="bg-light rounded p-4 mt-4">
-                        <h4 class="mb-3">Sınav Bilgileri</h4>
+                        <h4 class="mb-3">{{ __('dictt.placement_test_exam_info') }}</h4>
                         @include('frontend.placement-test.attempt-summary', ['placementTest' => $placementTest])
                     </div>
 
                     <div class="text-center mt-4">
                         <a href="{{ route('frontend.placement-test') }}" class="btn btn-primary py-3 px-5">
-                            Seviye Tespit Sınavı Sayfasına Dön
+                            {{ __('dictt.placement_test_back_to_page') }}
                         </a>
                     </div>
                 </div>

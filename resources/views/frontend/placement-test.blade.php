@@ -44,53 +44,53 @@
                     @if (session('error'))
                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
                             {{ session('error') }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Kapat"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="{{ __('dictt.placement_test_close') }}"></button>
                         </div>
                     @endif
 
                     <div class="bg-light rounded p-5 text-center">
-                        <h1 class="mb-4">Seviye Tespit Sınavı</h1>
+                        <h1 class="mb-4">{{ __('dictt.placement_test') }}</h1>
                         @auth
-                            <p class="mb-0">Hoş geldin {{ auth()->user()->name }}</p>
+                            <p class="mb-0">{{ __('dictt.placement_test_welcome', ['name' => auth()->user()->name]) }}</p>
                         @else
-                            <p class="mb-0">İçeriği görmek için lütfen <a class="text-primary" href="{{ route('frontend.login', ['return' => request()->route()?->getName()]) }}">giriş</a> yapınız.</p>
+                            <p class="mb-0">{!! __('dictt.placement_test_login_prompt', ['link' => '<a class="text-primary" href="' . route('frontend.login', ['return' => request()->route()?->getName()]) . '">' . __('dictt.login') . '</a>']) !!}</p>
                         @endauth
                     </div>
 
                     @auth
                         @if (($openAttempt ?? null)?->status === 'pending_approval')
                             <div class="bg-light rounded p-4 mt-4">
-                                <h4 class="mb-3">Sınav Bilgileri</h4>
+                                <h4 class="mb-3">{{ __('dictt.placement_test_exam_info') }}</h4>
                                 @include('frontend.placement-test.attempt-summary', ['placementTest' => $openAttempt])
                             </div>
                         @else
                             <div class="bg-light rounded p-4 mt-4">
-                                <h4 class="mb-3">Seviye Tespit Sınavı Kuralları</h4>
+                                <h4 class="mb-3">{{ __('dictt.placement_test_rules_title') }}</h4>
                                 <ul class="mb-0 ps-3">
-                                    <li class="mb-2">Sınav A1 seviyesinden başlar; başarılı olduğunuzda bir sonraki seviyeye geçersiniz.</li>
-                                    <li class="mb-2">Her seviyedeki aktif soruların tamamı sınava dahil edilir.</li>
-                                    <li class="mb-2">Sorular farklı puan değerlerine sahip olabilir. Başarı oranı, doğru cevapların puan ağırlığına göre hesaplanır.</li>
-                                    <li class="mb-2">Cevaplanmayan sorular boş sayılır; yanlış veya boş cevaplar için negatif puan uygulanmaz.</li>
-                                    <li class="mb-0">İlk başarısız olduğunuz seviye sonucunuz olur; C1 seviyesini başarıyla tamamlarsanız nihai seviyeniz C2 kabul edilir. Sonuç yönetici onayıyla kesinleşir.</li>
+                                    <li class="mb-2">{{ __('dictt.placement_test_rule_1') }}</li>
+                                    <li class="mb-2">{{ __('dictt.placement_test_rule_2') }}</li>
+                                    <li class="mb-2">{{ __('dictt.placement_test_rule_3') }}</li>
+                                    <li class="mb-2">{{ __('dictt.placement_test_rule_4') }}</li>
+                                    <li class="mb-0">{{ __('dictt.placement_test_rule_5') }}</li>
                                 </ul>
                             </div>
                         @endif
 
                         <div class="text-center mt-4">
                             @if (($openAttempt ?? null)?->status === 'in_progress')
-                                <p class="text-muted mb-3">Devam eden bir sınavınız var. Cevaplarınız kaydedildi.</p>
+                                <p class="text-muted mb-3">{{ __('dictt.placement_test_in_progress_note') }}</p>
                                 <form method="POST" action="{{ route('frontend.placement-test.start') }}">
                                     @csrf
-                                    <button type="submit" class="btn btn-primary py-3 px-5">Sınava Devam Et</button>
+                                    <button type="submit" class="btn btn-primary py-3 px-5">{{ __('dictt.placement_test_continue') }}</button>
                                 </form>
                             @elseif (($openAttempt ?? null)?->status === 'pending_approval')
                                 <a href="{{ route('frontend.placement-test.completed', $openAttempt) }}" class="btn btn-primary py-3 px-5">
-                                    Sınav Durumunu Görüntüle
+                                    {{ __('dictt.placement_test_view_status') }}
                                 </a>
                             @else
                                 <form method="POST" action="{{ route('frontend.placement-test.start') }}">
                                     @csrf
-                                    <button type="submit" class="btn btn-primary py-3 px-5">Sınava Başla</button>
+                                    <button type="submit" class="btn btn-primary py-3 px-5">{{ __('dictt.placement_test_start') }}</button>
                                 </form>
                             @endif
                         </div>

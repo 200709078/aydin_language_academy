@@ -57,39 +57,39 @@
             <div class="navbar-nav mx-auto p-4 p-lg-0">
                 <a href="{{ route('home') }}" class="nav-item nav-link {{ request()->routeIs('home', 'frontend.preview.home') ? 'active' : '' }}">{{ __('dictt.home') }}</a>
                 <div class="nav-item dropdown frontend-courses-dropdown">
-                    <a href="#" class="nav-link dropdown-toggle {{ request()->routeIs('frontend.trainings.*') ? 'active' : '' }}" data-bs-toggle="dropdown">{{ __('dictt.ourcourses') }}</a>
+                    <a href="#" class="nav-link dropdown-toggle {{ request()->routeIs('frontend.courses.*') ? 'active' : '' }}" data-bs-toggle="dropdown">{{ __('dictt.ourcourses') }}</a>
                     <div class="dropdown-menu bg-light rounded-0 rounded-bottom m-0">
                         <div class="dropdown-submenu">
-                            <span class="dropdown-item dropdown-submenu-toggle {{ request()->routeIs('frontend.trainings.ielts', 'frontend.trainings.yks-dil') ? 'active' : '' }}">{{ __('dictt.featured_programs') }}</span>
+                            <span class="dropdown-item dropdown-submenu-toggle {{ request()->routeIs('frontend.courses.ielts', 'frontend.courses.yks-dil') ? 'active' : '' }}">{{ __('dictt.featured_programs') }}</span>
                             <div class="dropdown-menu bg-light rounded-0 m-0">
-                                <a href="{{ route('frontend.trainings.ielts') }}" class="dropdown-item {{ request()->routeIs('frontend.trainings.ielts') ? 'active' : '' }}">{{ __('dictt.ielts_prep') }}</a>
-                                <a href="{{ route('frontend.trainings.yks-dil') }}" class="dropdown-item {{ request()->routeIs('frontend.trainings.yks-dil') ? 'active' : '' }}">{{ __('dictt.yks_dil_prep') }}</a>
+                                <a href="{{ route('frontend.courses.ielts') }}" class="dropdown-item {{ request()->routeIs('frontend.courses.ielts') ? 'active' : '' }}">{{ __('dictt.ielts_prep') }}</a>
+                                <a href="{{ route('frontend.courses.yks-dil') }}" class="dropdown-item {{ request()->routeIs('frontend.courses.yks-dil') ? 'active' : '' }}">{{ __('dictt.yks_dil_prep') }}</a>
                             </div>
                         </div>
                         <div class="dropdown-submenu">
-                            <span class="dropdown-item dropdown-submenu-toggle {{ request()->routeIs('frontend.trainings.yds-yokdil', 'frontend.trainings.toefl', 'frontend.trainings.pte-academic', 'frontend.trainings.test-of-english', 'frontend.trainings.sat') ? 'active' : '' }}">{{ __('dictt.academic_exam_prep') }}</span>
+                            <span class="dropdown-item dropdown-submenu-toggle {{ request()->routeIs('frontend.courses.yds-yokdil', 'frontend.courses.toefl', 'frontend.courses.pte-academic', 'frontend.courses.test-of-english', 'frontend.courses.sat') ? 'active' : '' }}">{{ __('dictt.academic_exam_prep') }}</span>
                             <div class="dropdown-menu bg-light rounded-0 m-0">
-                                <a href="{{ route('frontend.trainings.yds-yokdil') }}" class="dropdown-item {{ request()->routeIs('frontend.trainings.yds-yokdil') ? 'active' : '' }}">{{ __('dictt.yds_yokdil') }}</a>
-                                <a href="{{ route('frontend.trainings.toefl') }}" class="dropdown-item {{ request()->routeIs('frontend.trainings.toefl') ? 'active' : '' }}">{{ __('dictt.toefl') }}</a>
-                                <a href="{{ route('frontend.trainings.pte-academic') }}" class="dropdown-item {{ request()->routeIs('frontend.trainings.pte-academic') ? 'active' : '' }}">{{ __('dictt.pte_academic') }}</a>
-                                <a href="{{ route('frontend.trainings.test-of-english') }}" class="dropdown-item {{ request()->routeIs('frontend.trainings.test-of-english') ? 'active' : '' }}">{{ __('dictt.test_of_english') }}</a>
-                                <a href="{{ route('frontend.trainings.sat') }}" class="dropdown-item {{ request()->routeIs('frontend.trainings.sat') ? 'active' : '' }}">{{ __('dictt.sat') }}</a>
+                                <a href="{{ route('frontend.courses.yds-yokdil') }}" class="dropdown-item {{ request()->routeIs('frontend.courses.yds-yokdil') ? 'active' : '' }}">{{ __('dictt.yds_yokdil') }}</a>
+                                <a href="{{ route('frontend.courses.toefl') }}" class="dropdown-item {{ request()->routeIs('frontend.courses.toefl') ? 'active' : '' }}">{{ __('dictt.toefl') }}</a>
+                                <a href="{{ route('frontend.courses.pte-academic') }}" class="dropdown-item {{ request()->routeIs('frontend.courses.pte-academic') ? 'active' : '' }}">{{ __('dictt.pte_academic') }}</a>
+                                <a href="{{ route('frontend.courses.test-of-english') }}" class="dropdown-item {{ request()->routeIs('frontend.courses.test-of-english') ? 'active' : '' }}">{{ __('dictt.test_of_english') }}</a>
+                                <a href="{{ route('frontend.courses.sat') }}" class="dropdown-item {{ request()->routeIs('frontend.courses.sat') ? 'active' : '' }}">{{ __('dictt.sat') }}</a>
                             </div>
                         </div>
                         <div class="dropdown-submenu">
-                            <span class="dropdown-item dropdown-submenu-toggle {{ request()->routeIs('frontend.trainings.preschool', 'frontend.trainings.primary-school', 'frontend.trainings.middle-school', 'frontend.trainings.high-school') ? 'active' : '' }}">{{ __('dictt.kids_teens_english') }}</span>
+                            <span class="dropdown-item dropdown-submenu-toggle {{ request()->routeIs('frontend.courses.preschool', 'frontend.courses.primary-school', 'frontend.courses.middle-school', 'frontend.courses.high-school') ? 'active' : '' }}">{{ __('dictt.kids_teens_english') }}</span>
                             <div class="dropdown-menu bg-light rounded-0 m-0">
-                                <a href="{{ route('frontend.trainings.preschool') }}" class="dropdown-item {{ request()->routeIs('frontend.trainings.preschool') ? 'active' : '' }}">{{ __('dictt.preschool') }}</a>
-                                <a href="{{ route('frontend.trainings.primary-school') }}" class="dropdown-item {{ request()->routeIs('frontend.trainings.primary-school') ? 'active' : '' }}">{{ __('dictt.primary_school') }}</a>
-                                <a href="{{ route('frontend.trainings.middle-school') }}" class="dropdown-item {{ request()->routeIs('frontend.trainings.middle-school') ? 'active' : '' }}">{{ __('dictt.middle_school') }}</a>
-                                <a href="{{ route('frontend.trainings.high-school') }}" class="dropdown-item {{ request()->routeIs('frontend.trainings.high-school') ? 'active' : '' }}">{{ __('dictt.high_school') }}</a>
+                                <a href="{{ route('frontend.courses.preschool') }}" class="dropdown-item {{ request()->routeIs('frontend.courses.preschool') ? 'active' : '' }}">{{ __('dictt.preschool') }}</a>
+                                <a href="{{ route('frontend.courses.primary-school') }}" class="dropdown-item {{ request()->routeIs('frontend.courses.primary-school') ? 'active' : '' }}">{{ __('dictt.primary_school') }}</a>
+                                <a href="{{ route('frontend.courses.middle-school') }}" class="dropdown-item {{ request()->routeIs('frontend.courses.middle-school') ? 'active' : '' }}">{{ __('dictt.middle_school') }}</a>
+                                <a href="{{ route('frontend.courses.high-school') }}" class="dropdown-item {{ request()->routeIs('frontend.courses.high-school') ? 'active' : '' }}">{{ __('dictt.high_school') }}</a>
                             </div>
                         </div>
                         <div class="dropdown-submenu">
-                            <span class="dropdown-item dropdown-submenu-toggle {{ request()->routeIs('frontend.trainings.general-english', 'frontend.trainings.speaking-clubs') ? 'active' : '' }}">{{ __('dictt.adult_english') }}</span>
+                            <span class="dropdown-item dropdown-submenu-toggle {{ request()->routeIs('frontend.courses.general-english', 'frontend.courses.speaking-clubs') ? 'active' : '' }}">{{ __('dictt.adult_english') }}</span>
                             <div class="dropdown-menu bg-light rounded-0 m-0">
-                                <a href="{{ route('frontend.trainings.general-english') }}" class="dropdown-item {{ request()->routeIs('frontend.trainings.general-english') ? 'active' : '' }}">{{ __('dictt.general_english') }}</a>
-                                <a href="{{ route('frontend.trainings.speaking-clubs') }}" class="dropdown-item {{ request()->routeIs('frontend.trainings.speaking-clubs') ? 'active' : '' }}">{{ __('dictt.speaking_clubs') }}</a>
+                                <a href="{{ route('frontend.courses.general-english') }}" class="dropdown-item {{ request()->routeIs('frontend.courses.general-english') ? 'active' : '' }}">{{ __('dictt.general_english') }}</a>
+                                <a href="{{ route('frontend.courses.speaking-clubs') }}" class="dropdown-item {{ request()->routeIs('frontend.courses.speaking-clubs') ? 'active' : '' }}">{{ __('dictt.speaking_clubs') }}</a>
                             </div>
                         </div>
                     </div>

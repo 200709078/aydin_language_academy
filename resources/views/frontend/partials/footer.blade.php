@@ -38,7 +38,7 @@
                 <div class="col-lg-3 col-md-6">
                     <h5 class="text-light mb-4">{{ __('dictt.quick_links') }}</h5>
                     <a class="btn btn-link" href="{{ route('home') }}">{{ __('dictt.home') }}</a>
-                    <a class="btn btn-link" href="{{ route('frontend.trainings.preschool') }}">{{ __('dictt.ourcourses') }}</a>
+                    <a class="btn btn-link" href="{{ route('frontend.courses.preschool') }}">{{ __('dictt.ourcourses') }}</a>
                     <a class="btn btn-link" href="{{ route('frontend.achievements') }}">{{ __('dictt.achievements') }}</a>
                     <a class="btn btn-link" href="{{ route('frontend.campaigns') }}">{{ __('dictt.campaigns') }}</a>
                     <a class="btn btn-link" href="{{ route('frontend.branches.ortaca') }}">{{ __('dictt.branches') }}</a>

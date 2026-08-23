@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ app()->getLocale() }}">
 
 <head>
     <meta charset="utf-8">
-    <title>{{ $title }} | {{ __('dictt.ala') }}</title>
+    <title>Konuşma Kulüpleri | {{ __('dictt.ala') }}</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -36,53 +36,26 @@
 <body>
     @include('frontend.partials.header')
 
-    <!-- Temporary Page Start -->
+    <!-- Konuşma Kulüpleri Course Start -->
     <div class="container-xxl py-5">
         <div class="container">
             <div class="row g-5">
                 <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
-                    <img class="img-fluid rounded w-100" src="{{ asset($imagePath ?? 'frontend/images/whoweare.png') }}" alt="{{ $title }}">
-                    @isset($imageBelowText)
-                        <p class="mt-4 mb-0 clearfix"><i class="fa fa-book-open text-primary fs-4 float-start me-3" aria-hidden="true"></i>{{ __($imageBelowText) }}</p>
-                    @endisset
-                    @isset($contactCards)
-                        <div class="mt-4">
-                            @foreach ($contactCards as $contactCard)
-                                <div class="bg-light rounded d-flex align-items-center p-3 {{ $loop->last ? '' : 'mb-4' }}">
-                                    <div class="d-flex flex-shrink-0 align-items-center justify-content-center rounded-circle bg-white" style="width: 55px; height: 55px;">
-                                        <i class="{{ $contactCard['iconClass'] ?? 'fa ' . $contactCard['icon'] }} text-primary"></i>
-                                    </div>
-                                    <div class="ms-3">
-                                        <p class="mb-1">{{ $contactCard['label'] }}</p>
-                                        <h5 class="mb-0">
-                                            @if (! empty($contactCard['href']))
-                                                <a class="text-dark text-break" href="{{ $contactCard['href'] }}" @if (! empty($contactCard['newTab'])) target="_blank" rel="noopener noreferrer" @endif>{{ $contactCard['value'] }}</a>
-                                            @else
-                                                <span class="text-dark text-break">{{ $contactCard['value'] }}</span>
-                                            @endif
-                                        </h5>
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
-                    @endisset
+                    <img class="img-fluid rounded w-100" src="{{ asset('frontend/images/whoweare.png') }}" alt="Konuşma Kulüpleri">
+                    <p class="mt-4 mb-0 clearfix"><i class="fa fa-book-open text-primary fs-4 float-start me-3" aria-hidden="true"></i>{{ __('dictt.shared_course_image_text') }}</p>
                 </div>
                 <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
-                    <h1 class="mb-4">{{ $title }}</h1>
-                    <p>{!! nl2br(e($placeholder)) !!}</p>
-                    @isset($checkedSections)
-                        @foreach ($checkedSections as $checkedSection)
-                            <p class="mb-2 fw-bold"><i class="far fa-check-circle text-primary me-3"></i>{{ $checkedSection['heading'] }}</p>
-                            @if (! empty($checkedSection['text']))
-                                <p class="mb-4">{{ $checkedSection['text'] }}</p>
-                            @endif
-                        @endforeach
-                    @endisset
+                    <h1 class="mb-4">Konuşma Kulüpleri</h1>
+                    <p>İngilizce konuşma pratiğini günlük ve ilgi çekici konular üzerinden geliştirmeye yönelik demo kulüp içeriği.</p>
+                    <p class="mb-2 fw-bold"><i class="far fa-check-circle text-primary me-3"></i>Madde 1</p>
+                    <p class="mb-4">Madde 1 içeriği burada.</p>
+                    <p class="mb-2 fw-bold"><i class="far fa-check-circle text-primary me-3"></i>Madde 2</p>
+                    <p class="mb-4">Madde 2 içeriği burada.</p>
                 </div>
             </div>
         </div>
     </div>
-    <!-- Temporary Page End -->
+    <!-- Konuşma Kulüpleri Course End -->
 
     @include('frontend.partials.footer')
 
