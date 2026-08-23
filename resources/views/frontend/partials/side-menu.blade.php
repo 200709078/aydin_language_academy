@@ -1,5 +1,5 @@
 {{-- Frontend sol menü: üst navbar'dan bağımsız, sabit konumlu panel --}}
-<link rel="stylesheet" href="{{ asset('frontend/css/side-menu.css') }}?v=8">
+<link rel="stylesheet" href="{{ asset('frontend/css/side-menu.css') }}?v=9">
 
 @php
     $fsmLevels = \App\Models\model_levels::query()->orderBy('id')->get(['id', 'name', 'slug']);
@@ -7,6 +7,7 @@
 @endphp
 
 <div id="fsmRoot" class="fsm-root">
+    @auth
     <nav id="fsmPanel" class="fsm-panel">
         <div class="fsm-body">
             @foreach ($fsmLevels as $fsmLevel)
@@ -30,10 +31,18 @@
         </div>
         <button type="button" id="fsmStrip" class="fsm-strip"
             aria-expanded="true"
-            aria-label="Menüyü aç/kapat">
-            <span class="fsm-strip-text">DÖKÜMANLAR</span>
+            aria-label="{{ __('dictt.documents') }}">
+            <span class="fsm-strip-text">{{ strtoupper(__('dictt.documents')) }}</span>
         </button>
     </nav>
+    @endauth
+    @guest
+    <a id="fsmStripGuest" class="fsm-strip fsm-strip--solo"
+        href="{{ route('frontend.documents') }}"
+        aria-label="{{ __('dictt.documents') }}">
+        <span class="fsm-strip-text">{{ strtoupper(__('dictt.documents')) }}</span>
+    </a>
+    @endguest
 </div>
 
-<script src="{{ asset('frontend/js/side-menu.js') }}" defer></script>
+<script src="{{ asset('frontend/js/side-menu.js') }}?v=2" defer></script>

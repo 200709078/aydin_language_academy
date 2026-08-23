@@ -47,5 +47,14 @@
         apply();
     });
 
+    /* Level+alt seviye linki seçilince menüyü kapat */
+    root.querySelectorAll('a.fsm-subitem').forEach(function (link) {
+        link.addEventListener('click', function () {
+            isOpen = false;
+            persist();
+            apply();
+        });
+    });
+
     apply();
 })();

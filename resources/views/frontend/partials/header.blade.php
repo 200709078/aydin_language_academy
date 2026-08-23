@@ -114,20 +114,21 @@
                         </a>
                         <div class="dropdown-menu dropdown-menu-end bg-light rounded-0 m-0">
                             <a href="{{ route('changeLanguage', session('locale') === 'tr' ? 'en' : 'tr') }}" class="dropdown-item border-0 bg-transparent w-100 text-start">
-                                {{ session('locale') === 'tr' ? 'English' : 'Türkçe' }}
+                                    <span class="av-lang-badge me-2">{{ session('locale') === 'tr' ? 'EN' : 'TR' }}</span>{{ session('locale') === 'tr' ? 'English' : 'Türkçe' }}
+                                
                             </a>
                             <div class="dropdown-divider"></div>
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
                                 <input type="hidden" name="return" value="{{ request()->route()?->getName() }}">
-                                <button type="submit" class="dropdown-item border-0 bg-transparent w-100 text-start">{{ __('dictt.logout') }}</button>
+                                <button type="submit" class="dropdown-item border-0 bg-transparent w-100 text-start"><i class="fa fa-sign-out-alt me-2" aria-hidden="true"></i>{{ __('dictt.logout') }}</button>
                             </form>
                         </div>
                     </div>
                 @endguest
             </div>
             @guest
-                <a href="{{ route('frontend.login', ['return' => request()->route()?->getName()]) }}" class="btn btn-primary rounded-0 py-4 px-lg-5 d-none d-lg-block" style="margin-right: 6rem;">{{ __('dictt.login_now') }}<i class="fa fa-arrow-right ms-3"></i></a>
+                <a href="{{ route('frontend.login', ['return' => request()->route()?->getName()]) }}" class="btn btn-primary rounded-0 py-4 px-lg-5 d-none d-lg-block">{{ __('dictt.login_now') }}<i class="fa fa-arrow-right ms-3"></i></a>
             @else
                 <div class="nav-item dropdown av-dropdown d-none d-lg-flex align-items-stretch">
                     <a href="#" class="btn btn-primary rounded-0 py-4 px-lg-4 d-flex align-items-center dropdown-toggle border-0 shadow-none" style="box-shadow:none !important; border:0 !important; outline:none !important;" data-bs-toggle="dropdown" aria-label="{{ __('dictt.user_menu') }}" aria-expanded="false">
@@ -135,18 +136,19 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-end bg-light rounded-0 m-0">
                         <a href="{{ route('changeLanguage', session('locale') === 'tr' ? 'en' : 'tr') }}" class="dropdown-item border-0 bg-transparent w-100 text-start">
-                            {{ session('locale') === 'tr' ? 'English' : 'Türkçe' }}
+                                <span class="av-lang-badge me-2">{{ session('locale') === 'tr' ? 'EN' : 'TR' }}</span>{{ session('locale') === 'tr' ? 'English' : 'Türkçe' }}
+                            
                         </a>
                         <div class="dropdown-divider"></div>
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
                             <input type="hidden" name="return" value="{{ request()->route()?->getName() }}">
-                            <button type="submit" class="dropdown-item border-0 bg-transparent w-100 text-start">{{ __('dictt.logout') }}</button>
-                        </form>
+                                <button type="submit" class="dropdown-item border-0 bg-transparent w-100 text-start"><i class="fa fa-sign-out-alt me-2" aria-hidden="true"></i>{{ __('dictt.logout') }}</button>
+                            </form>
+                        </div>
                     </div>
-                </div>
-            @endguest
-        </div>
+                @endguest
+            </div>
     </nav>
     <!-- Navbar End -->
 

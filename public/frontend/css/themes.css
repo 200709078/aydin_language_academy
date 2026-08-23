@@ -1,0 +1,103 @@
+/* Tema listeleme/detay sayfaları: ince breadcrumb şeridi */
+.themes-crumb {
+    background: #eff5ff;
+    border-radius: 0.5rem;
+}
+
+/* Template, ayraçları koyu zemin için beyaz yapıyor; açık şeritte görünmez. */
+.themes-crumb .breadcrumb-item + .breadcrumb-item::before {
+    color: #25bebc;
+}
+
+.themes-crumb .breadcrumb-item {
+    color: #374151;
+}
+
+.themes-crumb .breadcrumb-item a {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    color: #374151;
+    transition: color 0.2s ease;
+}
+
+.themes-crumb .breadcrumb-item a:hover,
+.themes-crumb .breadcrumb-item a:focus-visible {
+    color: #25bebc;
+}
+
+/* Tema kartları: kompakt ve modern */
+.theme-card {
+    padding: 1rem;
+}
+
+.theme-thumb {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 130px;
+    border-radius: 0.5rem;
+    background: #ffffff;
+    overflow: hidden;
+}
+
+.theme-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.theme-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    line-height: 1.3;
+    color: #374151;
+    margin-bottom: 0.75rem;
+    min-height: 2.6em;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Template'in 40x40 daire butonunu ezip normal küçük pill yap */
+.service-item.theme-card .theme-btn,
+.service-item.theme-card:hover .theme-btn {
+    width: auto;
+    height: auto;
+    padding: 0.25rem 0.9rem;
+    border-radius: 50rem;
+    background: #25bebc;
+    border-color: #25bebc;
+    overflow: visible;
+    white-space: nowrap;
+    transition: background-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+/* Detay sayfası: accordion vurgusu tema rengiyle */
+.accordion-button:not(.collapsed) {
+    color: #25bebc;
+    background: #eff5ff;
+}
+
+.accordion-button:focus {
+    box-shadow: 0 0 0 0.2rem rgba(37, 190, 188, 0.25);
+}
+
+/* Kapalı kartta ok sola baksın; açık kartta aşağı dönsün */
+.accordion-button::after {
+    transform: rotate(90deg);
+}
+
+.accordion-button:not(.collapsed)::after {
+    transform: rotate(0deg);
+}
+
+/* Hover/focus'ta koyulaşma + hafif yükselme */
+.service-item.theme-card .theme-btn:hover,
+.service-item.theme-card .theme-btn:focus-visible {
+    background: #1b9e9c;
+    border-color: #1b9e9c;
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(37, 190, 188, 0.4);
+}

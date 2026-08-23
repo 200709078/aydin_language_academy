@@ -148,3 +148,26 @@ a.fsm-subitem:focus-visible {
     /* Tek başına göründüğünde sol kenar çizgisi olmasın. */
     border-left-color: transparent;
 }
+
+/* AV menüsündeki dil rozeti (admin paneldekiyle aynı stil) */
+.av-lang-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.75rem;
+    height: 1.25rem;
+    flex-shrink: 0;
+    border-radius: 0.25rem;
+    background: #e5e7eb;
+    color: #374151;
+    font-size: 0.6875rem;
+    font-weight: 700;
+}
+
+/* Giriş yapılmamışken yalnız Dökümanlar şeridi görünür; panel hiç render edilmez. */
+.fsm-strip--solo {
+    position: absolute;
+    inset: 0 auto 0 0;
+    text-decoration: none;
+    background: #eff5ff;
+}

@@ -168,6 +168,10 @@ Route::view('/kurslarimiz/sat', 'frontend.courses.sat')->name('frontend.courses.
 Route::view('/kurslarimiz/konusma-kulupleri', 'frontend.courses.konusma-kulupleri')->name('frontend.courses.speaking-clubs');
 Route::get('/temalar/{level_slug}/{sub_level_slug}', [ThemeListController::class, 'index'])
     ->name('frontend.themes.list');
+Route::get('/tema/{theme_id}', [ThemeListController::class, 'show'])
+    ->whereNumber('theme_id')
+    ->name('frontend.themes.detail');
+Route::view('/dokumanlar', 'frontend.documents')->name('frontend.documents');
 Route::view('/subelerimiz/ortaca', 'frontend.branches.ortaca')->name('frontend.branches.ortaca');
 Route::view('/subelerimiz/dalaman', 'frontend.branches.dalaman')->name('frontend.branches.dalaman');
 Route::view('/subelerimiz/koycegiz', 'frontend.branches.koycegiz')->name('frontend.branches.koycegiz');
