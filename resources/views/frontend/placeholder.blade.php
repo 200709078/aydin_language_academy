@@ -43,7 +43,7 @@
                 <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
                     <img class="img-fluid rounded w-100" src="{{ asset($imagePath ?? 'frontend/images/whoweare.png') }}" alt="{{ $title }}">
                     @isset($imageBelowText)
-                        <p class="mt-4 mb-0 clearfix"><i class="fa fa-book-open text-primary fs-4 float-start me-3" aria-hidden="true"></i>{{ $imageBelowText }}</p>
+                        <p class="mt-4 mb-0 clearfix"><i class="fa fa-book-open text-primary fs-4 float-start me-3" aria-hidden="true"></i>{{ __($imageBelowText) }}</p>
                     @endisset
                     @isset($contactCards)
                         <div class="mt-4">

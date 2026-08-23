@@ -187,7 +187,7 @@ Route::view('/uye-ol', 'frontend.auth.register')
 | hazırlanırken ortak geçici görünümü kullanır.
 |
 */
-$sharedCourseImageText = 'Tüm gruplarda, eğitim süreçlerini daha verimli hale getirmek için uzman eğitmenlerimiz tarafından seçilen modern ve ilgi çekici kaynaklar kullanılır. Her yaş grubunun farklı ihtiyaçlarına yönelik olarak kişiye özel eğitim yöntemleri uygulanır. Öğrencilerin seviyeleri, ilgi alanları ve öğrenme hızlarına göre eğitim programları şekillendirilir. Bu sayede, her öğrenci en iyi şekilde gelişir ve dil becerileri en üst düzeye çıkarılır.';
+$sharedCourseImageText = 'dictt.shared_course_image_text';
 
 Route::view('/kurslarimiz/okul-oncesi', 'frontend.placeholder', [
     'title' => 'Okul Öncesi',
@@ -634,7 +634,7 @@ Route::get('/giris', function (Request $request) {
 |
 */
 Route::redirect('/course/{course_id}', '/')->name('course_detail');
-Route::redirect('changeLanguage/{lang?}', '/')->name('changeLanguage');
+Route::get('changeLanguage/{lang}', [cont_user_main::class, 'changeLanguage'])->name('changeLanguage');
 Route::redirect('about', '/')->name('about');
 Route::redirect('contact', '/')->name('contact');
 Route::post('/contactpost', fn () => redirect()->route('home'))->name('contactpost');

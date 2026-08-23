@@ -198,4 +198,12 @@ class cont_user_main extends Controller
         $exercises = model_exercises::whereSlug($slug)->with('my_result', 'topTen.user')->withCount('questions')->first() ?? abort(404, Lang::get('dictt.exercisesnotfound'));
         return view("exercises_detail", compact('exercises'));
     }
+
+    public function changeLanguage($lang)
+    {
+        if (in_array($lang, ['tr', 'en'])) {
+            session()->put('locale', $lang);
+        }
+        return redirect()->back();
+    }
 }
