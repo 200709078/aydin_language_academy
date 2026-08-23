@@ -1,9 +1,9 @@
 {{-- Frontend sol menü: üst navbar'dan bağımsız, sabit konumlu panel --}}
-<link rel="stylesheet" href="{{ asset('frontend/css/side-menu.css') }}?v=7">
+<link rel="stylesheet" href="{{ asset('frontend/css/side-menu.css') }}?v=8">
 
 @php
-    $fsmLevels = \App\Models\model_levels::query()->orderBy('id')->get(['id', 'name']);
-    $fsmSubLevels = \App\Models\model_sub_levels::query()->orderBy('id')->get(['id', 'name']);
+    $fsmLevels = \App\Models\model_levels::query()->orderBy('id')->get(['id', 'name', 'slug']);
+    $fsmSubLevels = \App\Models\model_sub_levels::query()->orderBy('id')->get(['id', 'name', 'slug']);
 @endphp
 
 <div id="fsmRoot" class="fsm-root">
@@ -21,7 +21,8 @@
                 </button>
                 <div id="fsm-level-collapse-{{ $fsmLevel->id }}" class="fsm-collapse collapse">
                     @foreach ($fsmSubLevels as $fsmSubLevel)
-                        <span class="fsm-subitem"><i class="fa fa-circle fsm-subbullet" aria-hidden="true"></i>{{ ucfirst(mb_strtolower($fsmSubLevel->name)) }}</span>
+                        <a class="fsm-subitem"
+                            href="{{ route('frontend.themes.list', [$fsmLevel->slug, $fsmSubLevel->slug]) }}"><i class="fa fa-circle fsm-subbullet" aria-hidden="true"></i>{{ ucfirst(mb_strtolower($fsmSubLevel->name)) }}</a>
                     @endforeach
                 </div>
                 <hr class="fsm-divider">

@@ -8,6 +8,7 @@ use App\Http\Controllers\cont_questions;
 use App\Http\Controllers\cont_sub_levels;
 use App\Http\Controllers\cont_themes;
 use App\Http\Controllers\cont_user_main;
+use App\Http\Controllers\Frontend\ThemeListController;
 use App\Http\Controllers\PlacementTestAttemptController;
 use App\Http\Controllers\PlacementTestLevelController;
 use App\Http\Controllers\PlacementTestQuestionController;
@@ -165,6 +166,8 @@ Route::view('/kurslarimiz/pte-academic', 'frontend.courses.pte-academic')->name(
 Route::view('/kurslarimiz/test-of-english', 'frontend.courses.test-of-english')->name('frontend.courses.test-of-english');
 Route::view('/kurslarimiz/sat', 'frontend.courses.sat')->name('frontend.courses.sat');
 Route::view('/kurslarimiz/konusma-kulupleri', 'frontend.courses.konusma-kulupleri')->name('frontend.courses.speaking-clubs');
+Route::get('/temalar/{level_slug}/{sub_level_slug}', [ThemeListController::class, 'index'])
+    ->name('frontend.themes.list');
 Route::view('/subelerimiz/ortaca', 'frontend.branches.ortaca')->name('frontend.branches.ortaca');
 Route::view('/subelerimiz/dalaman', 'frontend.branches.dalaman')->name('frontend.branches.dalaman');
 Route::view('/subelerimiz/koycegiz', 'frontend.branches.koycegiz')->name('frontend.branches.koycegiz');

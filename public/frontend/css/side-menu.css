@@ -89,6 +89,12 @@
     padding: 0.5rem 0.75rem;
     font-size: 0.8125rem;
     color: #6b7280;
+    text-decoration: none;
+}
+
+a.fsm-subitem:hover,
+a.fsm-subitem:focus-visible {
+    color: #25bebc;
 }
 
 .fsm-subbullet {
