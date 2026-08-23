@@ -3,7 +3,7 @@
         <div class="container py-5">
             <div class="row g-5">
                 <div class="col-lg-3 col-md-6">
-                    <h5 class="text-light mb-4">{{ __('dictt.branch_ortaca') }}</h5>
+                    <h5 class="text-light mb-4"><a class="btn btn-link footer-branch" style="font-size: 1.35rem; font-weight: 600;" href="{{ route('frontend.branches.ortaca') }}">{{ __('dictt.branch_ortaca') }}</a></h5>
                     <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>Merkez Mahallesi Muhammed Kundakçı Caddesi Eski PTT Karşısı No:10 Ortaca/Muğla</p>
                     <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>(546) 828 4884</p>
                     <p class="mb-2 small text-nowrap"><i class="fa fa-envelope me-2"></i>ortaca@learnenglishwithala.com</p>
@@ -14,7 +14,7 @@
                     </p>
                 </div>
                 <div class="col-lg-3 col-md-6">
-                    <h5 class="text-light mb-4">{{ __('dictt.branch_dalaman') }}</h5>
+                    <h5 class="text-light mb-4"><a class="btn btn-link footer-branch" style="font-size: 1.35rem; font-weight: 600;" href="{{ route('frontend.branches.dalaman') }}">{{ __('dictt.branch_dalaman') }}</a></h5>
                     <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>Karaçalı Mahallesi, Şehit Hamza Atakul Caddesi No:39/A Dalaman/Muğla</p>
                     <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>(530) 828 4884</p>
                     <p class="mb-2 small text-nowrap"><i class="fa fa-envelope me-2"></i>dalaman@learnenglishwithala.com</p>
@@ -25,7 +25,7 @@
                     </p>
                 </div>
                 <div class="col-lg-3 col-md-6">
-                    <h5 class="text-light mb-4">{{ __('dictt.branch_koycegiz') }}</h5>
+                    <h5 class="text-light mb-4"><a class="btn btn-link footer-branch" style="font-size: 1.35rem; font-weight: 600;" href="{{ route('frontend.branches.koycegiz') }}">{{ __('dictt.branch_koycegiz') }}</a></h5>
                     <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>Ulucamii İbrahim Koç Sokak Köyceğiz Lokantası Yanı Köyceğiz/Muğla</p>
                     <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>(540) 828 4884</p>
                     <p class="mb-2 small text-nowrap"><i class="fa fa-envelope me-2"></i>koycegiz@learnenglishwithala.com</p>
@@ -36,7 +36,7 @@
                     </p>
                 </div>
                 <div class="col-lg-3 col-md-6">
-                    <h5 class="text-light mb-4">{{ __('dictt.quick_links') }}</h5>
+                    <h5 class="text-light mb-4"><span class="btn btn-link footer-branch" style="font-size: 1.35rem; font-weight: 600; cursor: default;">{{ __('dictt.quick_links') }}</span></h5>
                     <a class="btn btn-link" href="{{ route('home') }}">{{ __('dictt.home') }}</a>
                     <a class="btn btn-link" href="{{ route('frontend.courses.preschool') }}">{{ __('dictt.ourcourses') }}</a>
                     <a class="btn btn-link" href="{{ route('frontend.achievements') }}">{{ __('dictt.achievements') }}</a>
@@ -53,12 +53,15 @@
         <div class="container">
             <div class="copyright">
                 <div class="row">
-                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                    <div class="col-md-4 text-center text-md-start mb-3 mb-md-0">
                         &copy; <a class="border-bottom" href="{{ route('home') }}">Aydın Language Academy</a>, {{ __('dictt.allrightreserved.') }}
                     </div>
-                    <div class="col-md-6 text-center text-md-end">
+                    <div class="col-md-4 text-center mb-3 mb-md-0">
+                        Reserved By <a class="border-bottom" href="https://www.madematik.com" target="_blank" rel="noopener noreferrer">mADEMatik</a>
+                    </div>
+                    <div class="col-md-4 text-center text-md-end">
                         <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
-                        {{ __('dictt.designed_by') }} <a class="border-bottom" href="https://htmlcodex.com">HTML Codex</a>
+                        {{ __('dictt.designed_by') }} <a class="border-bottom" href="https://htmlcodex.com" target="_blank" rel="noopener noreferrer">HTML Codex</a>
                     </div>
                 </div>
             </div>

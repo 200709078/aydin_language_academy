@@ -162,6 +162,8 @@ a.fsm-subitem:focus-visible {
     color: #374151;
     font-size: 0.6875rem;
     font-weight: 700;
+    /* Metinle tam dikey hizaya getir */
+    transform: translateY(-1px);
 }
 
 /* Giriş yapılmamışken yalnız Dökümanlar şeridi görünür; panel hiç render edilmez. */
@@ -170,4 +172,17 @@ a.fsm-subitem:focus-visible {
     inset: 0 auto 0 0;
     text-decoration: none;
     background: #eff5ff;
+}
+
+/* Footer şube başlıklarının oku aşağı baksın (diğer quick link okları sağa kalır). */
+.footer .btn.btn-link.footer-branch::before {
+    content: "\f078";
+}
+
+/* Quick Links başlığı: aynı aşağı ok, tıklanamaz (span.btn.btn-link.footer-branch) */
+.footer span.btn.btn-link.footer-branch,
+.footer span.btn.btn-link.footer-branch:hover {
+    cursor: default;
+    color: #FFFFFF;
+    letter-spacing: normal;
 }

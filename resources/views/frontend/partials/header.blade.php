@@ -105,6 +105,9 @@
                     </div>
                 </div>
                 <a href="{{ route('frontend.placement-test') }}" class="nav-item nav-link {{ request()->routeIs('frontend.placement-test') ? 'active' : '' }}">{{ __('dictt.placement_test') }}</a>
+                <a href="{{ route('changeLanguage', session('locale') === 'tr' ? 'en' : 'tr') }}" class="nav-item nav-link">
+                    <span class="av-lang-badge me-2">{{ session('locale') === 'tr' ? 'EN' : 'TR' }}</span><span lang="{{ session('locale') === 'tr' ? 'en' : 'tr' }}">{{ session('locale') === 'tr' ? 'English' : 'Türkçe' }}</span>
+                </a>
                 @guest
                     <a href="{{ route('frontend.login', ['return' => request()->route()?->getName()]) }}" class="nav-item nav-link d-lg-none">{{ __('dictt.login_now') }}</a>
                 @else
@@ -113,11 +116,6 @@
                             <span class="d-inline-flex align-items-center justify-content-center rounded-circle bg-primary text-white fw-bold" style="width: 32px; height: 32px;">{{ $initials ?: __('dictt.user_initial') }}</span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end bg-light rounded-0 m-0">
-                            <a href="{{ route('changeLanguage', session('locale') === 'tr' ? 'en' : 'tr') }}" class="dropdown-item border-0 bg-transparent w-100 text-start">
-                                    <span class="av-lang-badge me-2">{{ session('locale') === 'tr' ? 'EN' : 'TR' }}</span>{{ session('locale') === 'tr' ? 'English' : 'Türkçe' }}
-                                
-                            </a>
-                            <div class="dropdown-divider"></div>
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
                                 <input type="hidden" name="return" value="{{ request()->route()?->getName() }}">
@@ -135,11 +133,6 @@
                         <span class="d-inline-flex align-items-center justify-content-center rounded-circle bg-white text-primary fw-bold" style="width: 36px; height: 36px;">{{ $initials ?: __('dictt.user_initial') }}</span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-end bg-light rounded-0 m-0">
-                        <a href="{{ route('changeLanguage', session('locale') === 'tr' ? 'en' : 'tr') }}" class="dropdown-item border-0 bg-transparent w-100 text-start">
-                                <span class="av-lang-badge me-2">{{ session('locale') === 'tr' ? 'EN' : 'TR' }}</span>{{ session('locale') === 'tr' ? 'English' : 'Türkçe' }}
-                            
-                        </a>
-                        <div class="dropdown-divider"></div>
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
                             <input type="hidden" name="return" value="{{ request()->route()?->getName() }}">

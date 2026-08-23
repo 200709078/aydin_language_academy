@@ -1,5 +1,5 @@
 {{-- Frontend sol menü: üst navbar'dan bağımsız, sabit konumlu panel --}}
-<link rel="stylesheet" href="{{ asset('frontend/css/side-menu.css') }}?v=9">
+<link rel="stylesheet" href="{{ asset('frontend/css/side-menu.css') }}?v=14">
 
 @php
     $fsmLevels = \App\Models\model_levels::query()->orderBy('id')->get(['id', 'name', 'slug']);
