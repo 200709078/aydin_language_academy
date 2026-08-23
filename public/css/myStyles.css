@@ -42,6 +42,11 @@ table th {
     z-index: 1000;
     width: 17rem;
     overflow: visible;
+    transition: width 180ms ease;
+}
+
+.admin-navigation.is-collapsed {
+    width: 4.5rem;
 }
 
 .admin-navigation > .mx-auto {
@@ -112,7 +117,9 @@ table th {
 }
 
 .admin-navigation-collapse-link {
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
     padding: 0.5rem 0.75rem;
     color: #6b7280;
     text-decoration: none;
@@ -127,20 +134,114 @@ table th {
     outline: none;
 }
 
+.admin-navigation-subicon {
+    width: 1.25rem;
+    flex-shrink: 0;
+    text-align: center;
+    font-size: 0.8125rem;
+}
+
+.admin-nav-lang-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.75rem;
+    height: 1.25rem;
+    flex-shrink: 0;
+    border-radius: 0.25rem;
+    background: #e5e7eb;
+    color: #374151;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+}
+
 .admin-navigation-trigger {
     width: 100%;
     text-align: left;
 }
 
+.admin-navigation-icon {
+    width: 1.25rem;
+    text-align: center;
+    flex-shrink: 0;
+}
+
 .admin-navigation-arrow {
     transition: transform 180ms ease;
     flex-shrink: 0;
+    margin-left: auto;
+    transform: rotate(180deg);
 }
 
 .admin-navigation-arrow.is-open {
     transform: rotate(90deg);
 }
 
-.admin-navigation + .py-6 {
+/* Dar şerit (kapalı) durumu */
+.admin-navigation.is-collapsed .admin-navigation-label,
+.admin-navigation.is-collapsed .admin-navigation-arrow,
+.admin-navigation.is-collapsed .admin-navigation-collapse,
+.admin-navigation.is-collapsed .admin-navigation-divider {
+    display: none !important;
+}
+
+.admin-navigation.is-collapsed .admin-navigation > .mx-auto {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+
+.admin-navigation.is-collapsed .admin-navigation-brand {
+    justify-content: center;
+}
+
+.admin-navigation.is-collapsed .admin-navigation-trigger {
+    justify-content: center;
+    gap: 0;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.admin-sidebar-toggle {
+    position: absolute;
+    top: 50%;
+    right: -0.875rem;
+    transform: translateY(-50%);
+    z-index: 1001;
+    width: 1.75rem;
+    height: 1.75rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    background: #ffffff;
+    color: #374151;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
+
+.admin-sidebar-toggle:hover,
+.admin-sidebar-toggle:focus-visible {
+    color: #111827;
+    outline: none;
+}
+
+.admin-sidebar-toggle svg {
+    width: 1rem;
+    height: 1rem;
+    transition: transform 180ms ease;
+    transform: rotate(180deg);
+}
+
+.admin-navigation.is-collapsed .admin-sidebar-toggle svg {
+    transform: rotate(0deg);
+}
+
+.admin-navigation:not(.is-collapsed) + .py-6 {
     margin-left: 17rem;
+}
+
+.admin-navigation.is-collapsed + .py-6 {
+    margin-left: 4.5rem;
 }
