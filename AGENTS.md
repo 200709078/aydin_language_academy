@@ -1,6 +1,6 @@
 Proje: ALA — Learn English With ALA
 
-Bu repository mevcut çalışan ALA Laravel uygulamasını ve geliştirilecek yeni public dil kursu tanıtım sitesini içerir.
+Bu repository mevcut çalışan ALA Laravel uygulamasını ve yayında olan yeni public dil kursu tanıtım sitesini içerir.
 
 Kullanıcı belirli bir değişikliği açıkça istemedikçe mevcut ALA uygulamasını bozma, yeniden tasarlama, refactor etme, yeniden adlandırma, taşıma veya değiştirme.
 
@@ -22,7 +22,7 @@ Açıkça istenmedikçe mevcut controller/model/migration/route/Blade/Livewire/b
 Bir değişiklik mevcut uygulamaya dokunmayı gerektiriyorsa önce nedenini bildir.
 
 3. Yeni public frontend
-Yeni ziyaretçi sitesi mevcut uygulamadan izole geliştirilecektir.
+Public tanıtım sitesi resources/views/frontend/ ve public/frontend/ altında, mevcut uygulamadan izole geliştirilmiştir ve yayınlanmıştır.
 
 Ana menü:
 Ana Sayfa
@@ -33,8 +33,14 @@ Kampanyalarımız
 Seviye Tespit Sınavı
 Dökümanlar
 
-İlk beş sayfa public'tir. Seviye Tespit Sınavı'nın tanıtım sayfası public olabilir; sınavı başlatma, sınav kaydı ve sonuçlar login gerektirir. Dökümanlar login gerektirir.
-Klinik Template yalnızca görsel/tasarım kaynağıdır. Mümkün olduğunca template ini eğitim template ine uyarla.
+Erişim: İlk beş sayfa public'tir. Seviye Tespit Sınavı'nın tanıtım sayfası public olabilir; sınavı başlatma, sınav kaydı ve sonuçlar login gerektirir. Dökümanlar login gerektirir.
+
+Kalıcı frontend kuralları:
+Internal URL'lerde Laravel route helper kullan.
+Asset'lerde asset() kullan.
+Responsive davranışı ve yararlı animasyonları koru.
+Onaysız yeni frontend framework veya gereksiz paket ekleme.
+Kullanıcı istemedikçe metinlerin yerine yeni pazarlama metni uydurma.
 
 4. Authentication akışı
 Public frontend
@@ -104,93 +110,13 @@ Migration ve doğrulama güvenliği:
 - Doğrulamada güvenli migration syntax/schema kontrolü ve model syntax kontrolü kullan. Yerel MariaDB'yi sıfırlayan veya değiştiren test komutları çalıştırılmaz; bunun için izole bir test veritabanı gerekir.
 - Bu kapsam tamamlandığında dosyaları, tabloları, önemli foreign key/unique constraint'leri, snapshot yapısını, status/result alanlarını, seed yaklaşımını, çalıştırılan doğrulamaları ve açık teknik sorunları kısa ve somut olarak raporla. Kapsam dışı özellik geliştirme ve burada dur.
 
-5. Yeni frontend'i izole tut
+5. Route kuralları
+Yeni route eklemeden veya taşımadan önce mevcut route'ları incele, çakışmaları belirle, yapılacak değişikliği bildir ve yalnızca onaylanan değişikliği yap.
 
-Önerilen nihai yapı:
-resources/views/frontend/
-├── layouts/
-├── partials/
-├── home.blade.php
-├── achievements.blade.php
-├── campaigns.blade.php
-├── trainings.blade.php
-└── branches.blade.php
+6. Veritabanı
+Frontend/içerik işlerinde mevcut migration, seeder veya factory'leri değiştirme; migration yalnız açıkça istenen özellikler için oluşturulur. Sonraki DB değişikliklerinde MySQL/MariaDB uyumluluğunu koru.
 
-public/frontend/
-├── css/
-├── js/
-├── images/
-├── fonts/
-└── vendor/
-
-Mevcut view'ları buraya taşıma veya üzerlerine yazma.
-
-6. Frontend kaynak paketi
-
-Kullanıcı yaklaşık şu yapıyı hazırlayacaktır:
-
-ALA-FRONTEND/
-├──ASSETS/
-│   ├── achievements/
-│   ├── branches/
-│   ├── campaigns/
-│   ├── home/
-│   ├── logo/
-│   └── trainings/
-├── CONTENT/
-│   ├── achievements.txt
-│   ├── branches.txt
-│   ├── campaigns.txt
-│   ├── documents.txt
-│   ├── home.txt
-│   ├── placement-test.txt
-│   └── trainings.txt
-└── TEMPLATE/
-    └── website-template/
-
-TEMPLATE
-Ham HTML template'i referanstır; nihai Laravel yapısı değildir. Dosyaları körlemesine public/ altına kopyalama. Önce gerçekten gereken asset/component'leri belirle. Eksik olan sayfaları template içerisindeki uygun olan sayfalardan seç.
-
-CONTENT
-Kullanıcının sayfa metinleridir. home.txt vb. içerik brief'i olarak kullanılır. Kullanıcı istemedikçe metinlerin yerine yeni pazarlama metni uydurma. .txt dosyalarını runtime CMS/veri kaynağına dönüştürme.
-
-ASSETS
-Logo, fotoğraf, kampanya, şube, başarı vb. kullanıcı görselleridir. Uygun kullanıcı görseli varsa stok template görseline tercih et. Nihai kullanılan asset'leri public/frontend/ altına düzenli biçimde taşı ve Blade'de asset() kullan. Eğer template görseline alternatif uygun bir görsel bulunamazsa o bölgeye uygun isimle boş bir image dosyası oluşturarak ekle yada orijinalini bırak. Daha sonra bu kısma içeriğe uygun görsel temin edilecektir.
-
-7. Template dönüşüm kuralları
-Tekrarlanan yapıları Blade layout/partial'larına ayır.
-Responsive davranışı koru.
-Yararlı animasyon ve etkileşimleri koru.
-Kullanılmayan demo bölüm/asset'lerini taşıma.
-Template markasını ALA ile değiştir.
-Demo metinlerini kullanıcının CONTENT dosyalarıyla değiştir.
-Kullanıcı görsellerini tercih et.
-Internal URL'lerde Laravel route helper kullan.
-Asset'lerde asset() kullan.
-Onaysız yeni frontend framework veya gereksiz paket ekleme.
-Demo backend/form davranışlarını körlemesine taşıma.
-Gereksiz over-engineering yapma.
-
-8. Route stratejisi
-Hedef yaklaşık olarak:
-/                       → yeni public ana sayfa
-/basarilarimiz          → public
-/kurslarimiz            → public
-/kampanyalarimiz        → public
-/subelerimiz            → public
-/seviye-tespit-sinavi   → public tanıtım; sınavı başlatma/sonuç auth gerekli
-/dokumanlar             → auth gerekli
-
-Kullanıcı final geçişi açıkça onaylamadan mevcut / route'unu veya mevcut home route'unu değiştirme.
-Geliştirme sırasında gerekirse /yeni-site/... gibi geçici route prefix'i kullan.
-Route değişikliğinden önce mevcut route'ları incele, çakışmaları belirle, yapılacak değişikliği bildir ve yalnızca onaylanan değişikliği yap.
-
-9. Veritabanı
-Yeni tanıtım frontend'i başlangıçta database schema değişikliği gerektirmemelidir. Kampanya/şube/başarı vb. içerikler admin yönetimine alınması açıkça istenmedikçe migration oluşturma.
-
-Frontend işi için mevcut migration, seeder veya factory'leri değiştirme. Sonraki DB değişikliklerinde MySQL/MariaDB uyumluluğunu koru.
-
-10. Git disiplini
+7. Git disiplini
 Dosya değiştirmeden önce git status kontrol et. Repository'deki mevcut değişikliklerin bu göreve ait olduğunu varsayma.
 
 Kullanıcı istemedikçe mevcut değişiklikleri discard/restore/reset/clean/stash etme veya üzerlerine yazma.
@@ -200,10 +126,10 @@ git clean -fd
 git checkout -- .
 .env, parola, secret, cache veya yerel database dosyalarını commit etme.
 
-11. Secret'lar
+8. Secret'lar
 .env içindeki database/SMTP parolası, API key veya diğer secret'ları gösterme, hard-code etme, dokümana veya frontend'e kopyalama ve commit etme.
 
-12. Çalışma yöntemi
+9. Çalışma yöntemi
 Kapsamlı işlerde:
 İncele.
 Bulguları bildir.
@@ -216,22 +142,10 @@ Kullanıcı yalnızca analiz istiyorsa dosya değiştirme, write operation yapma
 
 Frontend'de en az sayfanın hatasız render edilmesini, CSS/JS/görselleri, desktop/mobil görünümü, internal linkleri ve korumalı linklerin mevcut auth akışını kullanmasını test et.
 
-13. Tahmin etme
-Belirsizse projeyi incele. Özellikle mevcut route isimleri, login redirect'i, authenticated home, mevcut frontend, seçilen template, içerik-sayfa eşleşmesi ve görsel kullanımını uydurma.
-Kaynak paketi ile repository çelişirse çalışan mevcut uygulamayı koru ve çelişkiyi bildir.
+10. Tahmin etme
+Belirsizse projeyi incele. Özellikle mevcut route isimleri, login redirect'i, authenticated home, mevcut frontend ve görsel kullanımını uydurma.
 
-14. Mevcut öncelik
-1. Ana Sayfa
-2. Başarılarımız
-3. Kurslarımız
-4. Kampanyalarımız
-5. Şubelerimiz
-6. Seviye Tespit Sınavları - giriş/auth akışı
-7. Dökümanlar - giriş/auth akışı
-
-Sayfaları teker teker oluştur ve oluşturulan sayfanın kullanıcı tarafından teyit edilmesini bekle. Teyit edildikten sonra kullanıcı onay vermeden veya talep etmeden diğer sayfayı oluşturmaya geçme.
-Mevcut Level/Sub Level/Theme/Exercise/Question alanlarını ayrıca istenmedikçe yeniden tasarlama.
-
+11. Kullanıcı türleri ve erişim
 Sistemde üç tür kullanıcı var. 
 1) Login gerektirmeyen kullanıcı:
 Ana Sayfa, Başarılarımız, Kurslarımız, Kampanyalarımız, Şubelerimiz ve Seviye Tespit Sınavı'nın tanıtım sayfasına ulaşabilir.
@@ -240,13 +154,45 @@ Ana Sayfa, Başarılarımız, Kurslarımız, Kampanyalarımız, Şubelerimiz say
 3) Admin Kullanıcı:
 /admin ile admin panel de dahil bütün sayfalara ulaşabilir.
 
-15. Başarı kriterleri
-Mevcut ALA ve admin paneli eskisi gibi çalışır.
-Authentication mevcut sistemi kullanır.
-Yeni public frontend bağımsız ve modern olur.
-Kullanıcının sağladığı metin/görseller doğru kullanılır.
-Public sayfalar login olmadan çalışır.
-Korumalı girişler mevcut login akışını kullanır.
-Login sonrası belirlenen mevcut üye sayfasına gidilebilir.
-Mevcut business logic gereksiz yere değiştirilmez.
-Yeni frontend yalnızca kullanıcı final geçişi onayladığında ana public route'lara alınır.
+Mevcut Level/Sub Level/Theme/Exercise/Question alanlarını ayrıca istenmedikçe yeniden tasarlama.
+
+12. Yorumlar (Reviews) Sistemi
+Durum: Plan aşağıda karara bağlanmıştır; kullanıcı açıkça onay vermeden kodlamaya geçilmez.
+
+Amaç:
+Ana sayfadaki statik Reviews bölümünün gerçek verilere bağlanması. Üyeler yorum yazabilir, admin moderasyon yapar.
+
+Veri modeli — reviews tablosu:
+- id, nullable user_id (nullOnDelete; admin kendi de yorum girebilmeli), nullable branch_id (Ortaca/Dalaman/Köyceğiz şubesine bağlama; şube seçimi opsiyoneldir), content (düz metin, HTML yok), rating (unsigned tinyint 1–5, zorunlu), status (pending / approved / rejected), nullable approved_by (users FK, nullOnDelete), nullable approved_at, nullable display_order (admin sıralama/sabitleme), timestamps ve softDeletes.
+- İndeksler: (status, created_at) ve (branch_id).
+- Kullanıcı başına aynı anda en fazla bir pending yorum olabilir; kural uygulama katmanında zorlanır (spam koruması).
+- Migration yalnız yeni dosya olarak eklenir; mevcut migration'lara dokunulmaz; constraint/index adları MariaDB/MySQL 64 karakter sınırını aşmayan kısa adlardır.
+
+Yetki matrisi:
+- Yorum yazma: login gerektirir; girişsiz ziyaretçi mevcut ALA login akışına yönlenir. Admin de yorum girebilir.
+- Üye (kendi yorumu): pending iken düzenleyebilir ve silebilir (soft). Approved edildikten sonra düzenleyemez ama soft silebilir. Rejected yorumunu düzenleyip tekrar gönderebilir (yorum tekrar pending olur) ve silebilir.
+- Admin: tüm yorumları görebilir; onaylayabilir (approved_by/approved_at dolar), reddedebilir, her durumda düzenleyebilir, soft silebilir, display_order ile görüntüleme sırasını yönetebilir.
+- Public görünürlük: yalnız status=approved ve silinmemiş yorumlar.
+
+Görüntüleme kuralları:
+- Ana sayfa Reviews bölümü (public): üç kart. SOL = ilk yapılan yorum (en eski), ORTA = en son yapılan yorum, SAĞ = en sondan bir önceki yorum. Yeterli onaylı yorum yoksa eksik slot gizlenir; hiç onaylı yorum yoksa mevcut statik içerik gösterilir.
+- Tüm Yorumlar sayfası (public, login gerekmez): /yorumlar — tüm onaylı yorumlar sayfalı olarak; şubeye göre filtre içerir. Ana sayfada bu sayfaya "Tümünü Gör" linki olur.
+
+Admin listeleme sıralaması:
+1) Önce onaysızlar: pending, created_at ASC (ilk yapılan bekleyen yorum üstte).
+2) Sonra onaylılar: approved, created_at DESC (en yeni onaylı üstte).
+3) Rejected yorumlara varsayılan listede yer verilmez; filtre/sekme ile erişilir.
+
+Teknik yaklaşım:
+- Review modeli; user, branch ve approver ilişkileri. Mevcut User modeline yalnız gerçekten gereken ilişki (reviews) eklenir; fillable, auth ve kullanıcı türü davranışı değişmez.
+- PHP enum proje standardı yoksa enum mimarisi kurulmaz; status string kolon olarak tutulur.
+- Frontend yorum formu Livewire ile; admin tarafı mevcut cont_* controller + Livewire liste desenine uygun geliştirilir. Admin sol menüsünde Site Ayarları altındaki pasif Reviews öğesi aktifleştirilir.
+- Yetki: Policy ile üye yalnız kendi yorumunda işlem yapar; admin işlemleri mevcut admin route grubu korumasını kullanır.
+- Spam: yorum POST route'una throttle; Blade escape varsayılanı ile çıktı güvenliği.
+- Route'lar: GET /yorumlar (public), POST /yorumlar (auth + throttle), GET /yorumlarim (auth, üyenin kendi yorumları), PATCH /yorumlar/{id} (auth + policy, yalnız pending), DELETE /yorumlar/{id} (auth + policy, soft delete); admin işlemleri /admin/reviews* altında mevcut admin grubunda.
+- Metinler dictt çeviri dosyalarına tr/en eklenir.
+
+Aşamalar (her aşama ayrıca onaylanarak ilerler):
+1) Migration + Review modeli + ilişkiler + admin CRUD/onay/red/sil + admin menüsü aktifleştirme + listeleme sıralaması.
+2) Ana sayfa üç kartı + /yorumlar public sayfası + Tümünü Gör linki.
+3) Üye yorum formu + /yorumlarim + policy + throttle.
