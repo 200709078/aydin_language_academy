@@ -105,8 +105,9 @@
                     </div>
                 </div>
                 <a href="{{ route('frontend.placement-test') }}" class="nav-item nav-link {{ request()->routeIs('frontend.placement-test') ? 'active' : '' }}">{{ __('dictt.placement_test') }}</a>
-                <a href="{{ route('changeLanguage', session('locale') === 'tr' ? 'en' : 'tr') }}" class="nav-item nav-link">
-                    <span class="av-lang-badge me-2">{{ session('locale') === 'tr' ? 'EN' : 'TR' }}</span><span lang="{{ session('locale') === 'tr' ? 'en' : 'tr' }}">{{ session('locale') === 'tr' ? 'English' : 'Türkçe' }}</span>
+                @php $avLocale = session('locale') ?? config('app.locale'); @endphp
+                <a href="{{ route('changeLanguage', $avLocale === 'tr' ? 'en' : 'tr') }}" class="nav-item nav-link">
+                    <span class="av-lang-badge me-2">{{ $avLocale === 'tr' ? 'EN' : 'TR' }}</span><span lang="{{ $avLocale === 'tr' ? 'en' : 'tr' }}">{{ $avLocale === 'tr' ? 'English' : 'Türkçe' }}</span>
                 </a>
                 @guest
                     <a href="{{ route('frontend.login', ['return' => request()->route()?->getName()]) }}" class="nav-item nav-link d-lg-none">{{ __('dictt.login_now') }}</a>

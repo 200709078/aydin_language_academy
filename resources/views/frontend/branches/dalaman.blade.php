@@ -42,60 +42,72 @@
                 <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
                     <img class="img-fluid rounded w-100" src="{{ asset('frontend/images/branches/ala_dalaman.jpg') }}" alt="Dalaman">
                     <div class="mt-4">
-                        <div class="bg-light rounded d-flex align-items-center p-3 mb-4">
-                            <div class="d-flex flex-shrink-0 align-items-center justify-content-center rounded-circle bg-white" style="width: 55px; height: 55px;">
-                                <i class="fa fa-map-marker-alt text-primary"></i>
+                        <a class="text-decoration-none" href="https://maps.google.com/?cid=13451178032151641036&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAMYASAF&hl=tr&gl=TR&source=embed" target="_blank" rel="noopener noreferrer">
+                            <div class="bg-light rounded d-flex align-items-center p-3 mb-4">
+                                <div class="d-flex flex-shrink-0 align-items-center justify-content-center rounded-circle bg-white" style="width: 55px; height: 55px;">
+                                    <i class="fa fa-map-marker-alt text-primary"></i>
+                                </div>
+                                <div class="ms-3">
+                                    <p class="mb-1">{{ __('dictt.branch_our_address') }}</p>
+                                    <h5 class="mb-0"><span class="text-dark text-break">Karaçalı Mahallesi, Şehit Hamza Atakul Caddesi No:39/A Dalaman/Muğla</span></h5>
+                                </div>
                             </div>
-                            <div class="ms-3">
-                                <p class="mb-1">{{ __('dictt.branch_our_address') }}</p>
-                                <h5 class="mb-0"><span class="text-dark text-break">Karaçalı Mahallesi, Şehit Hamza Atakul Caddesi No:39/A Dalaman/Muğla</span></h5>
+                        </a>
+                        <a class="text-decoration-none" href="tel:+905308284884">
+                            <div class="bg-light rounded d-flex align-items-center p-3 mb-4">
+                                <div class="d-flex flex-shrink-0 align-items-center justify-content-center rounded-circle bg-white" style="width: 55px; height: 55px;">
+                                    <i class="fa fa-phone-alt text-primary"></i>
+                                </div>
+                                <div class="ms-3">
+                                    <p class="mb-1">{{ __('dictt.branch_call_us') }}</p>
+                                    <h5 class="mb-0"><span class="text-dark text-break">(530) 828 4884</span></h5>
+                                </div>
                             </div>
-                        </div>
-                        <div class="bg-light rounded d-flex align-items-center p-3 mb-4">
-                            <div class="d-flex flex-shrink-0 align-items-center justify-content-center rounded-circle bg-white" style="width: 55px; height: 55px;">
-                                <i class="fa fa-phone-alt text-primary"></i>
+                        </a>
+                        <a class="text-decoration-none" href="{{ route('frontend.contact', ['branch' => 'dalaman']) }}">
+                            <div class="bg-light rounded d-flex align-items-center p-3 mb-4">
+                                <div class="d-flex flex-shrink-0 align-items-center justify-content-center rounded-circle bg-white" style="width: 55px; height: 55px;">
+                                    <i class="fa fa-envelope-open text-primary"></i>
+                                </div>
+                                <div class="ms-3">
+                                    <p class="mb-1">{{ __('dictt.branch_send_email') }}</p>
+                                    <h5 class="mb-0"><span class="text-dark text-break">dalaman@learnenglishwithala.com</span></h5>
+                                </div>
                             </div>
-                            <div class="ms-3">
-                                <p class="mb-1">{{ __('dictt.branch_call_us') }}</p>
-                                <h5 class="mb-0"><a class="text-dark text-break" href="tel:+905308284884">(530) 828 4884</a></h5>
+                        </a>
+                        <a class="text-decoration-none" href="https://web.whatsapp.com/send?phone=905308284884&text=Selamlar%2C%20ALA%20web%20sitesi%20%C3%BCzerinden%20yaz%C4%B1yorum." target="_blank" rel="noopener noreferrer">
+                            <div class="bg-light rounded d-flex align-items-center p-3 mb-4">
+                                <div class="d-flex flex-shrink-0 align-items-center justify-content-center rounded-circle bg-white" style="width: 55px; height: 55px;">
+                                    <i class="fab fa-whatsapp text-primary"></i>
+                                </div>
+                                <div class="ms-3">
+                                    <p class="mb-1">{{ __('dictt.branch_whatsapp_contact') }}</p>
+                                    <h5 class="mb-0"><span class="text-dark text-break">WhatsApp</span></h5>
+                                </div>
                             </div>
-                        </div>
-                        <div class="bg-light rounded d-flex align-items-center p-3 mb-4">
-                            <div class="d-flex flex-shrink-0 align-items-center justify-content-center rounded-circle bg-white" style="width: 55px; height: 55px;">
-                                <i class="fa fa-envelope-open text-primary"></i>
+                        </a>
+                        <a class="text-decoration-none" href="https://www.youtube.com/@Ayd%C4%B1nLanguageAcademy" target="_blank" rel="noopener noreferrer">
+                            <div class="bg-light rounded d-flex align-items-center p-3 mb-4">
+                                <div class="d-flex flex-shrink-0 align-items-center justify-content-center rounded-circle bg-white" style="width: 55px; height: 55px;">
+                                    <i class="fab fa-youtube text-primary"></i>
+                                </div>
+                                <div class="ms-3">
+                                    <p class="mb-1">{{ __('dictt.branch_youtube_channel') }}</p>
+                                    <h5 class="mb-0"><span class="text-dark text-break">YouTube</span></h5>
+                                </div>
                             </div>
-                            <div class="ms-3">
-                                <p class="mb-1">{{ __('dictt.branch_send_email') }}</p>
-                                <h5 class="mb-0"><a class="text-dark text-break" href="{{ route('frontend.contact', ['branch' => 'dalaman']) }}">dalaman@learnenglishwithala.com</a></h5>
+                        </a>
+                        <a class="text-decoration-none" href="https://www.instagram.com/aydindilakademisidalaman?igsh=MTVjaXl2eDJ2MjJwYg==" target="_blank" rel="noopener noreferrer">
+                            <div class="bg-light rounded d-flex align-items-center p-3">
+                                <div class="d-flex flex-shrink-0 align-items-center justify-content-center rounded-circle bg-white" style="width: 55px; height: 55px;">
+                                    <i class="fab fa-instagram text-primary"></i>
+                                </div>
+                                <div class="ms-3">
+                                    <p class="mb-1">{{ __('dictt.branch_instagram_account') }}</p>
+                                    <h5 class="mb-0"><span class="text-dark text-break">Instagram</span></h5>
+                                </div>
                             </div>
-                        </div>
-                        <div class="bg-light rounded d-flex align-items-center p-3 mb-4">
-                            <div class="d-flex flex-shrink-0 align-items-center justify-content-center rounded-circle bg-white" style="width: 55px; height: 55px;">
-                                <i class="fab fa-whatsapp text-primary"></i>
-                            </div>
-                            <div class="ms-3">
-                                <p class="mb-1">{{ __('dictt.branch_whatsapp_contact') }}</p>
-                                <h5 class="mb-0"><a class="text-dark text-break" href="https://web.whatsapp.com/send?phone=905308284884&text=Selamlar%2C%20ALA%20web%20sitesi%20%C3%BCzerinden%20yaz%C4%B1yorum." target="_blank" rel="noopener noreferrer">WhatsApp</a></h5>
-                            </div>
-                        </div>
-                        <div class="bg-light rounded d-flex align-items-center p-3 mb-4">
-                            <div class="d-flex flex-shrink-0 align-items-center justify-content-center rounded-circle bg-white" style="width: 55px; height: 55px;">
-                                <i class="fab fa-youtube text-primary"></i>
-                            </div>
-                            <div class="ms-3">
-                                <p class="mb-1">{{ __('dictt.branch_youtube_channel') }}</p>
-                                <h5 class="mb-0"><a class="text-dark text-break" href="https://www.youtube.com/@Ayd%C4%B1nLanguageAcademy" target="_blank" rel="noopener noreferrer">YouTube</a></h5>
-                            </div>
-                        </div>
-                        <div class="bg-light rounded d-flex align-items-center p-3">
-                            <div class="d-flex flex-shrink-0 align-items-center justify-content-center rounded-circle bg-white" style="width: 55px; height: 55px;">
-                                <i class="fab fa-instagram text-primary"></i>
-                            </div>
-                            <div class="ms-3">
-                                <p class="mb-1">{{ __('dictt.branch_instagram_account') }}</p>
-                                <h5 class="mb-0"><a class="text-dark text-break" href="https://www.instagram.com/aydindilakademisidalaman?igsh=MTVjaXl2eDJ2MjJwYg==" target="_blank" rel="noopener noreferrer">Instagram</a></h5>
-                            </div>
-                        </div>
+                        </a>
                     </div>
                 </div>
                 <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
@@ -112,6 +124,12 @@
         </div>
     </div>
     <!-- Dalaman Branch End -->
+
+    <!-- Dalaman Map Start -->
+    <div class="container-fluid px-0 wow fadeIn" data-wow-delay="0.1s">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3196.2412788987353!2d28.807965776268485!3d36.76477886969464!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14c0712838e60f13%3A0xbaac2f2720efbbcc!2sAYDIN%20D%C4%B0L%20AKADEM%C4%B0S%C4%B0%20YABANCI%20D%C4%B0L%20KURSU%20(DALAMAN)!5e0!3m2!1str!2str!4v1787575566648!5m2!1str!2str" width="100%" height="450" style="border:0; display:block;" allowfullscreen loading="lazy" referrerpolicy="strict-origin-when-cross-origin" title="AYDIN DİL AKADEMİSİ YABANCI DİL KURSU (DALAMAN) - Google Haritalar"></iframe>
+    </div>
+    <!-- Dalaman Map End -->
 
     @include('frontend.partials.footer')
 

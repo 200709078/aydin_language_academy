@@ -4,10 +4,10 @@
             <div class="row g-5">
                 <div class="col-lg-3 col-md-6">
                     <h5 class="text-light mb-4"><a class="btn btn-link footer-branch" style="font-size: 1.35rem; font-weight: 600;" href="{{ route('frontend.branches.ortaca') }}">Ortaca</a></h5>
-                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>Merkez Mahallesi Muhammed Kundakçı Caddesi Eski PTT Karşısı No:10 Ortaca/Muğla</p>
-                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i><a class="text-light" href="https://web.whatsapp.com/send?phone=905468284884&text=Selamlar%2C%20ALA%20web%20sitesi%20%C3%BCzerinden%20yaz%C4%B1yorum." target="_blank" rel="noopener noreferrer">(546) 828 4884</a></p>
-                    <p class="mb-2 small text-nowrap"><i class="fa fa-envelope me-2"></i><a class="text-light" href="{{ route('frontend.contact', ['branch' => 'ortaca']) }}">ortaca@learnenglishwithala.com</a></p>
-                    <p class="mb-0"><i class="fab fa-whatsapp me-2"></i><a class="text-light" href="https://web.whatsapp.com/send?phone=905468284884&text=Selamlar%2C%20ALA%20web%20sitesi%20%C3%BCzerinden%20yaz%C4%B1yorum." target="_blank" rel="noopener noreferrer">WhatsApp</a></p>
+                    <p class="mb-2"><a class="text-light" href="https://maps.google.com/?cid=8402083866868113807&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAMYASAF&hl=tr&gl=TR&source=embed" target="_blank" rel="noopener noreferrer"><i class="fa fa-map-marker-alt me-3"></i>Merkez Mahallesi Muhammed Kundakçı Caddesi Eski PTT Karşısı No:10 Ortaca/Muğla</a></p>
+                    <p class="mb-2"><a class="text-light" href="tel:+905468284884"><i class="fa fa-phone-alt me-3"></i>(546) 828 4884</a></p>
+                    <p class="mb-2"><a class="text-light" href="{{ route('frontend.contact', ['branch' => 'ortaca']) }}"><i class="fa fa-envelope me-2"></i>ortaca@learnenglishwithala.com</a></p>
+                    <p class="mb-0"><a class="text-light" href="https://web.whatsapp.com/send?phone=905468284884&text=Selamlar%2C%20ALA%20web%20sitesi%20%C3%BCzerinden%20yaz%C4%B1yorum." target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp me-2"></i>WhatsApp</a></p>
                     <p class="mb-0 mt-2 small">
                         <a class="text-light" href="https://www.youtube.com/@Ayd%C4%B1nLanguageAcademy" target="_blank" rel="noopener noreferrer"><i class="fab fa-youtube me-1" aria-hidden="true"></i>YouTube</a>
                         <a class="text-light ms-3" href="https://www.instagram.com/aydindilakademisidalaman?igsh=MTVjaXl2eDJ2MjJwYg==" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram me-1" aria-hidden="true"></i>Instagram</a>
@@ -15,10 +15,10 @@
                 </div>
                 <div class="col-lg-3 col-md-6">
                     <h5 class="text-light mb-4"><a class="btn btn-link footer-branch" style="font-size: 1.35rem; font-weight: 600;" href="{{ route('frontend.branches.dalaman') }}">Dalaman</a></h5>
-                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>Karaçalı Mahallesi, Şehit Hamza Atakul Caddesi No:39/A Dalaman/Muğla</p>
-                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i><a class="text-light" href="https://web.whatsapp.com/send?phone=905308284884&text=Selamlar%2C%20ALA%20web%20sitesi%20%C3%BCzerinden%20yaz%C4%B1yorum." target="_blank" rel="noopener noreferrer">(530) 828 4884</a></p>
-                    <p class="mb-2 small text-nowrap"><i class="fa fa-envelope me-2"></i><a class="text-light" href="{{ route('frontend.contact', ['branch' => 'dalaman']) }}">dalaman@learnenglishwithala.com</a></p>
-                    <p class="mb-0"><i class="fab fa-whatsapp me-2"></i><a class="text-light" href="https://web.whatsapp.com/send?phone=905308284884&text=Selamlar%2C%20ALA%20web%20sitesi%20%C3%BCzerinden%20yaz%C4%B1yorum." target="_blank" rel="noopener noreferrer">WhatsApp</a></p>
+                    <p class="mb-2"><a class="text-light" href="https://maps.google.com/?cid=13451178032151641036&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAMYASAF&hl=tr&gl=TR&source=embed" target="_blank" rel="noopener noreferrer"><i class="fa fa-map-marker-alt me-3"></i>Karaçalı Mahallesi, Şehit Hamza Atakul Caddesi No:39/A Dalaman/Muğla</a></p>
+                    <p class="mb-2"><a class="text-light" href="tel:+905308284884"><i class="fa fa-phone-alt me-3"></i>(530) 828 4884</a></p>
+                    <p class="mb-2"><a class="text-light" href="{{ route('frontend.contact', ['branch' => 'dalaman']) }}"><i class="fa fa-envelope me-2"></i>dalaman@learnenglishwithala.com</a></p>
+                    <p class="mb-0"><a class="text-light" href="https://web.whatsapp.com/send?phone=905308284884&text=Selamlar%2C%20ALA%20web%20sitesi%20%C3%BCzerinden%20yaz%C4%B1yorum." target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp me-2"></i>WhatsApp</a></p>
                     <p class="mb-0 mt-2 small">
                         <a class="text-light" href="https://www.youtube.com/@Ayd%C4%B1nLanguageAcademy" target="_blank" rel="noopener noreferrer"><i class="fab fa-youtube me-1" aria-hidden="true"></i>YouTube</a>
                         <a class="text-light ms-3" href="https://www.instagram.com/aydindilakademisidalaman?igsh=MTVjaXl2eDJ2MjJwYg==" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram me-1" aria-hidden="true"></i>Instagram</a>
@@ -26,10 +26,10 @@
                 </div>
                 <div class="col-lg-3 col-md-6">
                     <h5 class="text-light mb-4"><a class="btn btn-link footer-branch" style="font-size: 1.35rem; font-weight: 600;" href="{{ route('frontend.branches.koycegiz') }}">Köyceğiz</a></h5>
-                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>Ulucamii İbrahim Koç Sokak Köyceğiz Lokantası Yanı Köyceğiz/Muğla</p>
-                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i><a class="text-light" href="https://web.whatsapp.com/send?phone=905408284884&text=Selamlar%2C%20ALA%20web%20sitesi%20%C3%BCzerinden%20yaz%C4%B1yorum." target="_blank" rel="noopener noreferrer">(540) 828 4884</a></p>
-                    <p class="mb-2 small text-nowrap"><i class="fa fa-envelope me-2"></i><a class="text-light" href="{{ route('frontend.contact', ['branch' => 'koycegiz']) }}">koycegiz@learnenglishwithala.com</a></p>
-                    <p class="mb-0"><i class="fab fa-whatsapp me-2"></i><a class="text-light" href="https://web.whatsapp.com/send?phone=905408284884&text=Selamlar%2C%20ALA%20web%20sitesi%20%C3%BCzerinden%20yaz%C4%B1yorum." target="_blank" rel="noopener noreferrer">WhatsApp</a></p>
+                    <p class="mb-2"><a class="text-light" href="https://maps.google.com/?cid=17191200493032107110&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAMYASAF&hl=tr&gl=TR&source=embed" target="_blank" rel="noopener noreferrer"><i class="fa fa-map-marker-alt me-3"></i>Ulucamii İbrahim Koç Sokak Köyceğiz Lokantası Yanı Köyceğiz/Muğla</a></p>
+                    <p class="mb-2"><a class="text-light" href="tel:+905408284884"><i class="fa fa-phone-alt me-3"></i>(540) 828 4884</a></p>
+                    <p class="mb-2"><a class="text-light" href="{{ route('frontend.contact', ['branch' => 'koycegiz']) }}"><i class="fa fa-envelope me-2"></i>koycegiz@learnenglishwithala.com</a></p>
+                    <p class="mb-0"><a class="text-light" href="https://web.whatsapp.com/send?phone=905408284884&text=Selamlar%2C%20ALA%20web%20sitesi%20%C3%BCzerinden%20yaz%C4%B1yorum." target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp me-2"></i>WhatsApp</a></p>
                     <p class="mb-0 mt-2 small">
                         <a class="text-light" href="https://www.youtube.com/@Ayd%C4%B1nLanguageAcademy" target="_blank" rel="noopener noreferrer"><i class="fab fa-youtube me-1" aria-hidden="true"></i>YouTube</a>
                         <a class="text-light ms-3" href="https://www.instagram.com/aydindilakademisidalaman?igsh=MTVjaXl2eDJ2MjJwYg==" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram me-1" aria-hidden="true"></i>Instagram</a>
@@ -44,10 +44,6 @@
                     <a class="btn btn-link" href="{{ route('frontend.branches.ortaca') }}">{{ __('dictt.branches') }}</a>
                     <a class="btn btn-link" href="{{ route('frontend.placement-test') }}">{{ __('dictt.placement_test') }}</a>
                 </div>
-            </div>
-            <div class="d-flex justify-content-center pt-4">
-                <a class="btn btn-outline-light btn-social rounded-circle" href="https://www.youtube.com/@Ayd%C4%B1nLanguageAcademy" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><i class="fab fa-youtube" aria-hidden="true"></i></a>
-                <a class="btn btn-outline-light btn-social rounded-circle me-0" href="https://www.instagram.com/aydindilakademisidalaman?igsh=MTVjaXl2eDJ2MjJwYg==" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
             </div>
         </div>
         <div class="container">
