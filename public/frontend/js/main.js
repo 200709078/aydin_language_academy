@@ -101,6 +101,36 @@
         }
     });
 
+    // Reviews carousel
+    $(".review-carousel").owlCarousel({
+        autoplay: false,
+        smartSpeed: 700,
+        loop: true,
+        margin: 24,
+        dots: false,
+        nav: false,
+        slideBy: 1,
+        responsive: {
+            0:{
+                items:1
+            },
+            768:{
+                items:2
+            },
+            992:{
+                items:3
+            }
+        }
+    });
+
+    $(".review-prev").on("click", function () {
+        $(".review-carousel").trigger("prev.owl.carousel");
+    });
+
+    $(".review-next").on("click", function () {
+        $(".review-carousel").trigger("next.owl.carousel");
+    });
+
     
 })(jQuery);
 

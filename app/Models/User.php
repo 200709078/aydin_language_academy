@@ -34,6 +34,11 @@ class User extends Authenticatable
     {
         return $this->hasMany(PlacementTest::class, 'approved_by');
     }
+
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class);
+    }
     /**
      * The attributes that are mass assignable.
      *

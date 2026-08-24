@@ -1,7 +1,7 @@
 <nav x-data="{
         sidebarOpen: (function () { var v = localStorage.getItem('adminSidebarOpen'); return v === null ? true : v === 'true'; })(),
         themesOpen: {{ request()->routeIs('levels_list', 'sub_levels_list', 'themes_list') ? 'true' : 'false' }},
-        siteSettingsOpen: {{ request()->routeIs('courses_list') ? 'true' : 'false' }},
+        siteSettingsOpen: {{ request()->routeIs('courses_list', 'reviews_list', 'review_edit') ? 'true' : 'false' }},
         placementOpen: {{ request()->routeIs('placement_test_levels_*', 'placement_test_question_contents_*', 'placement_test_questions_*') ? 'true' : 'false' }},
         userOpen: {{ request()->routeIs('profile.show') ? 'true' : 'false' }},
         languageOpen: false,
@@ -53,7 +53,7 @@
 
                 <div class="admin-navigation-group">
                     <button type="button"
-                        class="admin-navigation-trigger {{ request()->routeIs('courses_list') ? 'is-active' : '' }}"
+                        class="admin-navigation-trigger {{ request()->routeIs('courses_list', 'reviews_list', 'review_edit') ? 'is-active' : '' }}"
                         @click="toggleGroup('siteSettingsOpen')" :aria-expanded="siteSettingsOpen.toString()">
                         <i class="fas fa-gear admin-navigation-icon" aria-hidden="true"></i>
                         <span class="admin-navigation-label">{{ __('dictt.site_settings') }}</span>
@@ -63,7 +63,7 @@
                     </button>
                     <div x-show="siteSettingsOpen" x-transition class="admin-navigation-collapse" style="display: none;">
                         <a href="{{ route('courses_list') }}" class="admin-navigation-collapse-link {{ request()->routeIs('courses_list') ? 'is-active' : '' }}"><i class="fas fa-graduation-cap admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.courses') }}</a>
-                        <span class="admin-navigation-collapse-link" style="opacity: 0.5; cursor: not-allowed;" aria-disabled="true"><i class="fas fa-star admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.reviews') }}</span>
+                        <a href="{{ route('reviews_list') }}" class="admin-navigation-collapse-link {{ request()->routeIs('reviews_list', 'review_edit') ? 'is-active' : '' }}"><i class="fas fa-star admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.reviews') }}</a>
                     </div>
                 </div>
 

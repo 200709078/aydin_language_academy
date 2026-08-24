@@ -29,7 +29,7 @@
     <link href="{{ asset('frontend/css/bootstrap.min.css') }}" rel="stylesheet">
 
     <!-- Template Stylesheet -->
-    <link href="{{ asset('frontend/css/style.css') }}" rel="stylesheet">
+    <link href="{{ asset('frontend/css/style.css') }}?v=20260825" rel="stylesheet">
 </head>
 
 <body>
@@ -180,31 +180,75 @@
             <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
                 <h1>{{ __('dictt.testimonials') }}</h1>
             </div>
-            <div class="owl-carousel testimonial-carousel wow fadeInUp" data-wow-delay="0.1s">
-                <div class="testimonial-item text-center">
-                    <img class="img-fluid bg-light rounded-circle p-2 mx-auto mb-4" src="{{ asset('frontend/images/testimonial-1.jpg') }}" style="width: 100px; height: 100px;">
-                    <div class="testimonial-text rounded text-center p-4">
-                        <p>Dersler hem eğlenceli hem de çok düzenli ilerledi. Kısa sürede İngilizce konuşurken kendime daha çok güvenmeye başladım.</p>
-                        <h5 class="mb-1">Duru Kaya</h5>
-                        <span class="fst-italic">Grafik Tasarımcı</span>
+
+            @if (($reviewCarousel ?? collect())->count() > 3)
+                <div class="owl-carousel review-carousel wow fadeInUp" data-wow-delay="0.1s">
+                    @foreach ($reviewCarousel as $review)
+                        <div class="h-100 d-flex">
+                            @include('frontend.partials.review-card', ['review' => $review])
+                        </div>
+                    @endforeach
+                </div>
+
+                <div class="d-flex justify-content-center align-items-center mt-4 wow fadeInUp" data-wow-delay="0.15s">
+                    <button type="button" class="btn btn-outline-primary btn-lg-square rounded-circle me-2 d-inline-flex align-items-center justify-content-center review-prev" aria-label="{{ __('dictt.previous') }}">&lt;</button>
+                    <button type="button" class="btn btn-outline-primary btn-lg-square rounded-circle d-inline-flex align-items-center justify-content-center review-next" aria-label="{{ __('dictt.next') }}">&gt;</button>
+                </div>
+            @elseif (($latestReview ?? null) || ($previousReview ?? null) || ($firstReview ?? null))
+                <div class="row g-4 justify-content-center wow fadeInUp" data-wow-delay="0.1s">
+                    @if ($firstReview ?? null)
+                        <div class="col-lg-4 col-md-6 d-flex">
+                            @include('frontend.partials.review-card', ['review' => $firstReview])
+                        </div>
+                    @endif
+                    @if ($latestReview ?? null)
+                        <div class="col-lg-4 col-md-6 d-flex">
+                            @include('frontend.partials.review-card', ['review' => $latestReview])
+                        </div>
+                    @endif
+                    @if ($previousReview ?? null)
+                        <div class="col-lg-4 col-md-6 d-flex">
+                            @include('frontend.partials.review-card', ['review' => $previousReview])
+                        </div>
+                    @endif
+                </div>
+            @else
+                <div class="owl-carousel testimonial-carousel wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="testimonial-item text-center">
+                        <img class="img-fluid bg-light rounded-circle p-2 mx-auto mb-4" src="{{ asset('frontend/images/testimonial-1.jpg') }}" style="width: 100px; height: 100px;">
+                        <div class="testimonial-text rounded text-center p-4">
+                            <p>Dersler hem eğlenceli hem de çok düzenli ilerledi. Kısa sürede İngilizce konuşurken kendime daha çok güvenmeye başladım.</p>
+                            <h5 class="mb-1">Duru Kaya</h5>
+                            <span class="fst-italic">Grafik Tasarımcı</span>
+                        </div>
+                    </div>
+                    <div class="testimonial-item text-center">
+                        <img class="img-fluid bg-light rounded-circle p-2 mx-auto mb-4" src="{{ asset('frontend/images/testimonial-2.jpg') }}" style="width: 100px; height: 100px;">
+                        <div class="testimonial-text rounded text-center p-4">
+                            <p>Öğretmenlerim ihtiyaçlarıma göre yönlendirme yaptı. Özellikle konuşma pratiği sayesinde yabancı misafirlerle rahatça iletişim kurabiliyorum.</p>
+                            <h5 class="mb-1">Efe Yılmaz</h5>
+                            <span class="fst-italic">Turizm Uzmanı</span>
+                        </div>
+                    </div>
+                    <div class="testimonial-item text-center">
+                        <img class="img-fluid bg-light rounded-circle p-2 mx-auto mb-4" src="{{ asset('frontend/images/testimonial-3.jpg') }}" style="width: 100px; height: 100px;">
+                        <div class="testimonial-text rounded text-center p-4">
+                            <p>Online ders seçeneği yoğun çalışma temposunda benim için çok faydalı oldu. Her dersten sonra ilerlediğimi net biçimde hissediyorum.</p>
+                            <h5 class="mb-1">Selim Arslan</h5>
+                            <span class="fst-italic">Yazılım Geliştirici</span>
+                        </div>
                     </div>
                 </div>
-                <div class="testimonial-item text-center">
-                    <img class="img-fluid bg-light rounded-circle p-2 mx-auto mb-4" src="{{ asset('frontend/images/testimonial-2.jpg') }}" style="width: 100px; height: 100px;">
-                    <div class="testimonial-text rounded text-center p-4">
-                        <p>Öğretmenlerim ihtiyaçlarıma göre yönlendirme yaptı. Özellikle konuşma pratiği sayesinde yabancı misafirlerle rahatça iletişim kurabiliyorum.</p>
-                        <h5 class="mb-1">Efe Yılmaz</h5>
-                        <span class="fst-italic">Turizm Uzmanı</span>
-                    </div>
-                </div>
-                <div class="testimonial-item text-center">
-                    <img class="img-fluid bg-light rounded-circle p-2 mx-auto mb-4" src="{{ asset('frontend/images/testimonial-3.jpg') }}" style="width: 100px; height: 100px;">
-                    <div class="testimonial-text rounded text-center p-4">
-                        <p>Online ders seçeneği yoğun çalışma temposunda benim için çok faydalı oldu. Her dersten sonra ilerlediğimi net biçimde hissediyorum.</p>
-                        <h5 class="mb-1">Selim Arslan</h5>
-                        <span class="fst-italic">Yazılım Geliştirici</span>
-                    </div>
-                </div>
+            @endif
+
+            <div class="text-center mt-5 wow fadeInUp" data-wow-delay="0.2s">
+                <a class="btn btn-outline-primary py-3 px-5 mb-2 mb-lg-0" href="{{ route('frontend.reviews') }}">{{ __('dictt.view_all') }}</a>
+                @auth
+                    <a class="btn btn-outline-primary py-3 px-5" href="{{ route('frontend.my-reviews') }}">{{ __('dictt.write_review') }}</a>
+                @endauth
+                @guest
+                    <a class="btn btn-outline-primary py-3 px-5" href="{{ route('frontend.login', ['return' => 'frontend.my-reviews']) }}">{{ __('dictt.write_review') }}</a>
+                @endguest
             </div>
         </div>
     </div>
@@ -231,7 +275,7 @@
     <script src="{{ asset('frontend/vendor/tempusdominus/js/tempusdominus-bootstrap-4.min.js') }}"></script>
 
     <!-- Template Javascript -->
-    <script src="{{ asset('frontend/js/main.js') }}"></script>
+    <script src="{{ asset('frontend/js/main.js') }}?v=20260825"></script>
 </body>
 
 </html>

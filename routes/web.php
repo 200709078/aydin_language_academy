@@ -5,10 +5,13 @@ use App\Http\Controllers\cont_declarations;
 use App\Http\Controllers\cont_exercises;
 use App\Http\Controllers\cont_levels;
 use App\Http\Controllers\cont_questions;
+use App\Http\Controllers\cont_reviews;
 use App\Http\Controllers\cont_sub_levels;
 use App\Http\Controllers\cont_themes;
 use App\Http\Controllers\cont_user_main;
 use App\Http\Controllers\Frontend\ContactController;
+use App\Http\Controllers\Frontend\HomeController;
+use App\Http\Controllers\Frontend\ReviewController;
 use App\Http\Controllers\Frontend\ThemeListController;
 use App\Http\Controllers\PlacementTestAttemptController;
 use App\Http\Controllers\PlacementTestLevelController;
@@ -76,6 +79,9 @@ Route::group(['middleware' => ['auth', isAdmin_middle::class], 'prefix' => 'admi
     Route::get('levels_list', [cont_user_main::class, 'levels_list'])->name('levels_list');
     Route::get('sub_levels_list', [cont_user_main::class, 'sub_levels_list'])->name('sub_levels_list');
     Route::get('themes_list', [cont_user_main::class, 'themes_list'])->name('themes_list');
+    Route::get('reviews_list', [cont_reviews::class, 'index'])->name('reviews_list');
+    Route::get('review/{review_id}/edit', [cont_reviews::class, 'edit'])->whereNumber('review_id')->name('review_edit');
+    Route::put('review/{review_id}/update', [cont_reviews::class, 'update'])->whereNumber('review_id')->name('review_update');
     Route::get('themes/{theme_id}/declarations_list', [cont_user_main::class, 'declarations_list'])->name('declarations_list');
     Route::get('themes/{theme_id}/exercises_list', [cont_user_main::class, 'exercises_list'])->name('exercises_list');
     Route::get('exercise/{exercise_id}/questions_list', [cont_user_main::class, 'questions_list'])->name('questions_list');
@@ -119,9 +125,13 @@ Route::redirect('/dashboard', '/admin')
     ->middleware(['auth', isAdmin_middle::class])
     ->name('dashboard');
 
-Route::view('/', 'frontend.home')->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::view('/basarilarimiz', 'frontend.achievements')->name('frontend.achievements');
 Route::view('/kampanyalarimiz', 'frontend.campaigns')->name('frontend.campaigns');
+Route::get('/yorumlar', [ReviewController::class, 'index'])->name('frontend.reviews');
+Route::view('/yorumlarim', 'frontend.my-reviews')
+    ->middleware('auth')
+    ->name('frontend.my-reviews');
 Route::get('/seviye-tespit-sinavi', [PlacementTestAttemptController::class, 'landing'])
     ->name('frontend.placement-test');
 

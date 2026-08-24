@@ -575,3 +575,15 @@ select,
 .footer .copyright a:hover {
     color: var(--primary);
 }
+/*** Review Carousel ***/
+.review-carousel .owl-stage {
+    display: flex;
+}
+
+.review-carousel .owl-item {
+    display: flex;
+}
+
+.review-carousel .owl-item > * {
+    width: 100%;
+}
