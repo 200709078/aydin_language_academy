@@ -1,6 +1,7 @@
 <nav x-data="{
         sidebarOpen: (function () { var v = localStorage.getItem('adminSidebarOpen'); return v === null ? true : v === 'true'; })(),
-        themesOpen: {{ request()->routeIs('levels_list', 'sub_levels_list', 'themes_list', 'courses_list') ? 'true' : 'false' }},
+        themesOpen: {{ request()->routeIs('levels_list', 'sub_levels_list', 'themes_list') ? 'true' : 'false' }},
+        siteSettingsOpen: {{ request()->routeIs('courses_list') ? 'true' : 'false' }},
         placementOpen: {{ request()->routeIs('placement_test_levels_*', 'placement_test_question_contents_*', 'placement_test_questions_*') ? 'true' : 'false' }},
         userOpen: {{ request()->routeIs('profile.show') ? 'true' : 'false' }},
         languageOpen: false,
@@ -52,7 +53,25 @@
 
                 <div class="admin-navigation-group">
                     <button type="button"
-                        class="admin-navigation-trigger {{ request()->routeIs('levels_list', 'sub_levels_list', 'themes_list', 'courses_list') ? 'is-active' : '' }}"
+                        class="admin-navigation-trigger {{ request()->routeIs('courses_list') ? 'is-active' : '' }}"
+                        @click="toggleGroup('siteSettingsOpen')" :aria-expanded="siteSettingsOpen.toString()">
+                        <i class="fas fa-gear admin-navigation-icon" aria-hidden="true"></i>
+                        <span class="admin-navigation-label">{{ __('dictt.site_settings') }}</span>
+                        <svg class="admin-navigation-arrow h-4 w-4" :class="{ 'is-open': siteSettingsOpen }" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M8.72 15.47a.75.75 0 0 1 0-1.06L12.19 10 8.72 6.53a.75.75 0 1 1 1.06-1.06l4 4a.75.75 0 0 1 0 1.06l-4 4a.75.75 0 0 1-1.06 0Z" clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                    <div x-show="siteSettingsOpen" x-transition class="admin-navigation-collapse" style="display: none;">
+                        <a href="{{ route('courses_list') }}" class="admin-navigation-collapse-link {{ request()->routeIs('courses_list') ? 'is-active' : '' }}"><i class="fas fa-graduation-cap admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.courses') }}</a>
+                        <span class="admin-navigation-collapse-link" style="opacity: 0.5; cursor: not-allowed;" aria-disabled="true"><i class="fas fa-star admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.reviews') }}</span>
+                    </div>
+                </div>
+
+                <hr class="admin-navigation-divider">
+
+                <div class="admin-navigation-group">
+                    <button type="button"
+                        class="admin-navigation-trigger {{ request()->routeIs('levels_list', 'sub_levels_list', 'themes_list') ? 'is-active' : '' }}"
                         @click="toggleGroup('themesOpen')" :aria-expanded="themesOpen.toString()">
                         <i class="fas fa-layer-group admin-navigation-icon" aria-hidden="true"></i>
                         <span class="admin-navigation-label">{{ __('dictt.themes') }}</span>
@@ -64,7 +83,6 @@
                         <a href="{{ route('levels_list') }}" class="admin-navigation-collapse-link {{ request()->routeIs('levels_list') ? 'is-active' : '' }}"><i class="fas fa-list-ol admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.levels') }}</a>
                         <a href="{{ route('sub_levels_list') }}" class="admin-navigation-collapse-link {{ request()->routeIs('sub_levels_list') ? 'is-active' : '' }}"><i class="fas fa-sitemap admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.sublevels') }}</a>
                         <a href="{{ route('themes_list') }}" class="admin-navigation-collapse-link {{ request()->routeIs('themes_list') ? 'is-active' : '' }}"><i class="fas fa-palette admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.themes') }}</a>
-                        <a href="{{ route('courses_list') }}" class="admin-navigation-collapse-link {{ request()->routeIs('courses_list') ? 'is-active' : '' }}"><i class="fas fa-graduation-cap admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.courses') }}</a>
                     </div>
                 </div>
 

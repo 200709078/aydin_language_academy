@@ -53,8 +53,11 @@
     <!-- Success End  -->
     <div class="card">
         <div class="card-body">
-            <a href="{{ route('sub_level_create') }}" class="btn btn-sm btn-primary float-right">
-                <i class="fa fa-plus"></i> {{ __('dictt.addnewsublevel') }}</a>
+            <div class="d-flex justify-content-between align-items-start gap-3 mb-3">
+                <h5 class="card-title mb-1">{{ __('dictt.sub_levels_title') }}</h5>
+                <a href="{{ route('sub_level_create') }}" class="btn btn-sm btn-primary">
+                    <i class="fa fa-plus"></i> {{ __('dictt.addnewsublevel') }}</a>
+            </div>
             <table class="table table-striped table-sm">
                 <thead>
                     <tr>
