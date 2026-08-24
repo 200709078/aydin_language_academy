@@ -3,13 +3,13 @@
 
 <head>
     <meta charset="utf-8">
-    <title>{{ __('dictt.branch_dalaman') }} | {{ __('dictt.ala') }}</title>
+    <title>Dalaman | {{ __('dictt.ala') }}</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
 
     <!-- Favicon -->
-    <link href="{{ asset('favicon.ico') }}" rel="icon">
+    <link href="{{ asset('frontend/images/logo/favicon.png') }}" rel="icon">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -40,7 +40,7 @@
         <div class="container">
             <div class="row g-5">
                 <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
-                    <img class="img-fluid rounded w-100" src="{{ asset('frontend/images/branches/ala_dalaman.jpg') }}" alt="{{ __('dictt.branch_dalaman') }}">
+                    <img class="img-fluid rounded w-100" src="{{ asset('frontend/images/branches/ala_dalaman.jpg') }}" alt="Dalaman">
                     <div class="mt-4">
                         <div class="bg-light rounded d-flex align-items-center p-3 mb-4">
                             <div class="d-flex flex-shrink-0 align-items-center justify-content-center rounded-circle bg-white" style="width: 55px; height: 55px;">
@@ -66,7 +66,7 @@
                             </div>
                             <div class="ms-3">
                                 <p class="mb-1">{{ __('dictt.branch_send_email') }}</p>
-                                <h5 class="mb-0"><a class="text-dark text-break" href="mailto:dalaman@learnenglishwithala.com">dalaman@learnenglishwithala.com</a></h5>
+                                <h5 class="mb-0"><a class="text-dark text-break" href="{{ route('frontend.contact', ['branch' => 'dalaman']) }}">dalaman@learnenglishwithala.com</a></h5>
                             </div>
                         </div>
                         <div class="bg-light rounded d-flex align-items-center p-3 mb-4">
@@ -75,7 +75,7 @@
                             </div>
                             <div class="ms-3">
                                 <p class="mb-1">{{ __('dictt.branch_whatsapp_contact') }}</p>
-                                <h5 class="mb-0"><a class="text-dark text-break" href="https://wa.me/905308284884" target="_blank" rel="noopener noreferrer">WhatsApp</a></h5>
+                                <h5 class="mb-0"><a class="text-dark text-break" href="https://web.whatsapp.com/send?phone=905308284884&text=Selamlar%2C%20ALA%20web%20sitesi%20%C3%BCzerinden%20yaz%C4%B1yorum." target="_blank" rel="noopener noreferrer">WhatsApp</a></h5>
                             </div>
                         </div>
                         <div class="bg-light rounded d-flex align-items-center p-3 mb-4">
@@ -99,7 +99,7 @@
                     </div>
                 </div>
                 <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
-                    <h1 class="mb-4">{{ __('dictt.branch_dalaman') }}</h1>
+                    <h1 class="mb-4">Dalaman</h1>
                     <p>{{ __('dictt.dalaman_intro') }}</p>
                     <p>{{ __('dictt.dalaman_section_1_title') }}<br>{{ __('dictt.dalaman_section_1_text') }}</p>
                     <p>{{ __('dictt.dalaman_section_2_title') }}<br>{{ __('dictt.dalaman_section_2_text') }}</p>

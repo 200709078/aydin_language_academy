@@ -2,7 +2,7 @@
     <x-authentication-card>
         <x-slot name="logo">
             <a href="{{ route('home') }}" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
-                <img class="img-fluid bg-light rounded-circle" src="{{ asset('front/') }}/img/favicon.png"
+                <img class="img-fluid bg-light rounded-circle" src="{{ asset('frontend/images/logo/favicon.png') }}"
                     alt="AYDIN LANGUAGE ACADEMY" style="width: 70px; height: 70px;">
             </a>
         </x-slot>

@@ -22,7 +22,7 @@
     class="admin-navigation border-b border-gray-200 bg-white shadow-sm">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <a href="{{ route('admin') }}" class="admin-navigation-brand">
-            <img src="{{ asset('front/img/favicon.png') }}" alt="AYDIN LANGUAGE ACADEMY" class="admin-navigation-brand-logo">
+            <img src="{{ asset('frontend/images/logo/favicon.png') }}" alt="AYDIN LANGUAGE ACADEMY" class="admin-navigation-brand-logo">
             <span class="admin-navigation-label">ALA</span>
         </a>
         <div class="flex min-h-16 items-center justify-between gap-6">

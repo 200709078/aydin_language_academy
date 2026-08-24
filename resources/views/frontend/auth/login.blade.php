@@ -9,7 +9,7 @@
     <meta content="" name="description">
 
     <!-- Favicon -->
-    <link href="{{ asset('favicon.ico') }}" rel="icon">
+    <link href="{{ asset('frontend/images/logo/favicon.png') }}" rel="icon">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,7 +41,7 @@
             <div class="row g-5 align-items-center">
                 <div class="col-lg-5 wow fadeIn" data-wow-delay="0.1s">
                     <div class="text-center text-lg-start">
-                        <img class="img-fluid mb-4" src="{{ asset('frontend/images/logo-2.png') }}" alt="Aydın Language Academy" style="max-width: 220px;">
+                        <img class="img-fluid mb-4" src="{{ asset('frontend/images/logo/logo-2.png') }}" alt="Aydın Language Academy" style="max-width: 220px;">
                         <h1 class="mb-0">{{ __('dictt.login_now') }}</h1>
                     </div>
                 </div>

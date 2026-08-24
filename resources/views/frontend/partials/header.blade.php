@@ -48,7 +48,7 @@
     </style>
     <nav class="navbar navbar-expand-lg bg-light navbar-light sticky-top p-0 wow fadeIn" data-wow-delay="0.1s">
         <a href="{{ route('home') }}" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
-            <img src="{{ asset('frontend/images/logo-2.png') }}" alt="Aydın Language Academy" style="height: 56px; width: auto;">
+            <img src="{{ asset('frontend/images/logo/logo-2.png') }}" alt="Aydın Language Academy" style="height: 56px; width: auto;">
         </a>
         <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
@@ -99,9 +99,9 @@
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle {{ request()->routeIs('frontend.branches.*') ? 'active' : '' }}" data-bs-toggle="dropdown">{{ __('dictt.branches') }}</a>
                     <div class="dropdown-menu bg-light rounded-0 rounded-bottom m-0">
-                        <a href="{{ route('frontend.branches.ortaca') }}" class="dropdown-item {{ request()->routeIs('frontend.branches.ortaca') ? 'active' : '' }}">{{ __('dictt.branch_ortaca') }}</a>
-                        <a href="{{ route('frontend.branches.dalaman') }}" class="dropdown-item {{ request()->routeIs('frontend.branches.dalaman') ? 'active' : '' }}">{{ __('dictt.branch_dalaman') }}</a>
-                        <a href="{{ route('frontend.branches.koycegiz') }}" class="dropdown-item {{ request()->routeIs('frontend.branches.koycegiz') ? 'active' : '' }}">{{ __('dictt.branch_koycegiz') }}</a>
+                        <a href="{{ route('frontend.branches.ortaca') }}" class="dropdown-item {{ request()->routeIs('frontend.branches.ortaca') ? 'active' : '' }}">Ortaca</a>
+                        <a href="{{ route('frontend.branches.dalaman') }}" class="dropdown-item {{ request()->routeIs('frontend.branches.dalaman') ? 'active' : '' }}">Dalaman</a>
+                        <a href="{{ route('frontend.branches.koycegiz') }}" class="dropdown-item {{ request()->routeIs('frontend.branches.koycegiz') ? 'active' : '' }}">Köyceğiz</a>
                     </div>
                 </div>
                 <a href="{{ route('frontend.placement-test') }}" class="nav-item nav-link {{ request()->routeIs('frontend.placement-test') ? 'active' : '' }}">{{ __('dictt.placement_test') }}</a>

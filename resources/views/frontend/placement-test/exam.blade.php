@@ -7,7 +7,7 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <link href="{{ asset('favicon.ico') }}" rel="icon">
+    <link href="{{ asset('frontend/images/logo/favicon.png') }}" rel="icon">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&family=Roboto:wght@500;700;900&display=swap" rel="stylesheet">
@@ -130,7 +130,7 @@
             <div class="container py-3">
                 <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-3">
                     <div class="d-flex align-items-center gap-3">
-                        <img src="{{ asset('frontend/images/logo-2.png') }}" class="placement-exam-logo" alt="Aydın Language Academy">
+                        <img src="{{ asset('frontend/images/logo/logo-2.png') }}" class="placement-exam-logo" alt="Aydın Language Academy">
                         <div>
                             <div class="fw-bold text-dark">{{ __('dictt.placement_test') }}</div>
                             <div class="small text-muted">{{ __('dictt.placement_test_answers_autosave_note') }}</div>

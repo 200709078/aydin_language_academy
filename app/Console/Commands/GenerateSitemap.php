@@ -33,56 +33,55 @@ class GenerateSitemap extends Command
     public function handle()
     {
         $this->info('Generating sitemap...');
+        $baseUrl = 'https://www.learnenglishwithala.com';
         $sitemap = Sitemap::create();
 
-        $sitemap->add(Url::create('https://www.learnenglishwithala.com/')
-            ->setLastModificationDate(Carbon::yesterday())
-            ->setChangeFrequency(url::CHANGE_FREQUENCY_WEEKLY)
-            ->setPriority(1.0));
+        $staticUrls = [
+            ['/', 1.0],
+            ['/basarilarimiz', 0.9],
+            ['/kampanyalarimiz', 0.9],
+            ['/kurslarimiz/okul-oncesi', 0.8],
+            ['/kurslarimiz/ilkokul', 0.8],
+            ['/kurslarimiz/ortaokul', 0.8],
+            ['/kurslarimiz/lise', 0.8],
+            ['/kurslarimiz/genel-ingilizce', 0.8],
+            ['/kurslarimiz/ielts', 0.8],
+            ['/kurslarimiz/yks-dil', 0.8],
+            ['/kurslarimiz/yds-yokdil', 0.8],
+            ['/kurslarimiz/toefl', 0.8],
+            ['/kurslarimiz/pte-academic', 0.8],
+            ['/kurslarimiz/test-of-english', 0.8],
+            ['/kurslarimiz/sat', 0.8],
+            ['/kurslarimiz/konusma-kulupleri', 0.8],
+            ['/subelerimiz/ortaca', 0.8],
+            ['/subelerimiz/dalaman', 0.8],
+            ['/subelerimiz/koycegiz', 0.8],
+            ['/seviye-tespit-sinavi', 0.8],
+            ['/iletisim', 0.7],
+        ];
 
-        $sitemap->add(Url::create('https://www.learnenglishwithala.com/about')
-            ->setLastModificationDate(Carbon::yesterday())
-            ->setChangeFrequency(url::CHANGE_FREQUENCY_WEEKLY)
-            ->setPriority(0.9));
+        foreach ($staticUrls as [$path, $priority]) {
+            $sitemap->add(Url::create($baseUrl . $path)
+                ->setLastModificationDate(Carbon::yesterday())
+                ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
+                ->setPriority($priority));
+        }
 
-        $sitemap->add(Url::create('https://www.learnenglishwithala.com/contact')
-            ->setLastModificationDate(Carbon::yesterday())
-            ->setChangeFrequency(url::CHANGE_FREQUENCY_WEEKLY)
-            ->setPriority(0.8));
-
-        foreach (model_levels::all() as $levels) {
-            foreach (model_sub_levels::all() as $sub_levels) {
-                $sitemap->add(Url::create('https://www.learnenglishwithala.com/' . $levels->slug . '/' . $sub_levels->slug)
-                    ->setLastModificationDate($levels->updated_at)
-                    ->setChangeFrequency(url::CHANGE_FREQUENCY_WEEKLY)
-                    ->setPriority(0.7));
+        foreach (model_levels::all() as $level) {
+            foreach (model_sub_levels::all() as $subLevel) {
+                $sitemap->add(Url::create($baseUrl . '/temalar/' . $level->slug . '/' . $subLevel->slug)
+                    ->setLastModificationDate($level->updated_at)
+                    ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
+                    ->setPriority(0.6));
             }
         }
 
-        model_themes::all()->each(function (model_themes $theme) use ($sitemap) {
-            $sitemap->add(Url::create('https://www.learnenglishwithala.com/tab1/' . $theme->id)
+        model_themes::query()->orderBy('id')->each(function (model_themes $theme) use ($baseUrl, $sitemap) {
+            $sitemap->add(Url::create($baseUrl . '/tema/' . $theme->id)
                 ->setLastModificationDate($theme->updated_at)
-                ->setChangeFrequency(url::CHANGE_FREQUENCY_WEEKLY)
+                ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
                 ->setPriority(0.6));
-            $sitemap->add(Url::create('https://www.learnenglishwithala.com/tab2/' . $theme->id)
-                ->setLastModificationDate($theme->updated_at)
-                ->setChangeFrequency(url::CHANGE_FREQUENCY_WEEKLY)
-                ->setPriority(0.5));
         });
-
-        model_courses::all()->each(function (model_courses $course) use ($sitemap) {
-            $sitemap->add(Url::create('https://www.learnenglishwithala.com/course/' . $course->id)
-                ->setLastModificationDate($course->updated_at)
-                ->setChangeFrequency(url::CHANGE_FREQUENCY_WEEKLY)
-                ->setPriority(0.4));
-        });
-
-/*         model_courses::all()->each(function (model_courses $course) use ($sitemap) {
-            $sitemap->add(Url::create(route('course_detail', $course->id))
-                ->setLastModificationDate($course->updated_at)
-                ->setChangeFrequency(url::CHANGE_FREQUENCY_WEEKLY)
-                ->setPriority(0.4));
-        }); */
 
         $sitemap->writeToFile(public_path('sitemap.xml'));
 

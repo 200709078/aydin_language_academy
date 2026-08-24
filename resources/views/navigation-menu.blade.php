@@ -6,7 +6,7 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center mt-2 ml-2" style="width: 50px; height: 50px;">
                     <a href="{{ Auth::user()->type === 'admin' ? route('admin') : route('home') }}">
-                        <img src="{{ asset('front/') }}/img/favicon.png" alt="AYDIN LANGUAGE ACADEMY"
+                        <img src="{{ asset('frontend/images/logo/favicon.png') }}" alt="AYDIN LANGUAGE ACADEMY"
                             style="width: 50px; height: 50px;">
                         <!-- <x-application-mark class="block h-9 w-auto" /> -->
                     </a>

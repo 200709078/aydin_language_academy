@@ -1,6 +1,14 @@
 (function ($) {
     "use strict";
 
+    // Masaustunde tel: baglantilarini etkisizlestir (mobilde arama uygulamasi acilir)
+    var isTouchDevice = window.matchMedia('(pointer: coarse)').matches || navigator.maxTouchPoints > 0;
+    if (!isTouchDevice) {
+        document.querySelectorAll('a[href^="tel:"]').forEach(function (link) {
+            link.removeAttribute('href');
+        });
+    }
+
     // Spinner
     var spinner = function () {
         setTimeout(function () {

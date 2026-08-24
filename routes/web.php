@@ -8,6 +8,7 @@ use App\Http\Controllers\cont_questions;
 use App\Http\Controllers\cont_sub_levels;
 use App\Http\Controllers\cont_themes;
 use App\Http\Controllers\cont_user_main;
+use App\Http\Controllers\Frontend\ContactController;
 use App\Http\Controllers\Frontend\ThemeListController;
 use App\Http\Controllers\PlacementTestAttemptController;
 use App\Http\Controllers\PlacementTestLevelController;
@@ -175,16 +176,12 @@ Route::view('/dokumanlar', 'frontend.documents')->name('frontend.documents');
 Route::view('/subelerimiz/ortaca', 'frontend.branches.ortaca')->name('frontend.branches.ortaca');
 Route::view('/subelerimiz/dalaman', 'frontend.branches.dalaman')->name('frontend.branches.dalaman');
 Route::view('/subelerimiz/koycegiz', 'frontend.branches.koycegiz')->name('frontend.branches.koycegiz');
+Route::get('/iletisim/{branch?}', [ContactController::class, 'show'])
+    ->where('branch', 'ortaca|dalaman|koycegiz')
+    ->name('frontend.contact');
+Route::post('/iletisim', [ContactController::class, 'submit'])->name('frontend.contact.submit');
 
 Route::view('/yeni-site', 'frontend.home')->name('frontend.preview.home');
-
-Route::prefix('eski-site')->group(function () {
-    Route::get('/', [cont_user_main::class, 'index'])->name('eski_site.home');
-    Route::get('/hakkimizda', [cont_user_main::class, 'about'])->name('eski_site.about');
-    Route::get('/iletisim', [cont_user_main::class, 'contact'])->name('eski_site.contact');
-    Route::get('/temalar/{level_slug}/{sub_level_slug}', [cont_user_main::class, 'themes'])->name('eski_site.themes');
-    Route::get('/tema/{theme_id}', [cont_user_main::class, 'tab1'])->whereNumber('theme_id')->name('eski_site.theme_detail');
-});
 
 Route::get('/giris', function (Request $request) {
     if ($request->user()?->type === 'admin') {
@@ -207,9 +204,8 @@ Route::get('/giris', function (Request $request) {
 Route::redirect('/course/{course_id}', '/')->name('course_detail');
 Route::get('changeLanguage/{lang}', [cont_user_main::class, 'changeLanguage'])->name('changeLanguage');
 Route::redirect('about', '/')->name('about');
-Route::redirect('contact', '/')->name('contact');
-Route::post('/contactpost', fn () => redirect()->route('home'))->name('contactpost');
+Route::redirect('contact', '/iletisim')->name('contact');
+Route::post('/contactpost', [ContactController::class, 'submit'])->name('contactpost');
 Route::redirect('tab1/{theme_id}', '/')->name('tab1');
 Route::redirect('tab2/{theme_id}', '/')->name('tab2');
 Route::redirect('{level_slug}/{sub_level_slug}', '/')->name('themes');
-

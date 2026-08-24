@@ -6,7 +6,7 @@
     <title>{{ __('dictt.placement_test') }} | {{ __('dictt.ala') }}</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <link href="{{ asset('favicon.ico') }}" rel="icon">
+    <link href="{{ asset('frontend/images/logo/favicon.png') }}" rel="icon">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500&family=Roboto:wght@500;700;900&display=swap" rel="stylesheet">
