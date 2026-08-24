@@ -107,7 +107,7 @@
                 <a href="{{ route('frontend.placement-test') }}" class="nav-item nav-link {{ request()->routeIs('frontend.placement-test') ? 'active' : '' }}">{{ __('dictt.placement_test') }}</a>
                 @php $avLocale = session('locale') ?? config('app.locale'); @endphp
                 <a href="{{ route('changeLanguage', $avLocale === 'tr' ? 'en' : 'tr') }}" class="nav-item nav-link">
-                    <span class="av-lang-badge me-2">{{ $avLocale === 'tr' ? 'EN' : 'TR' }}</span><span lang="{{ $avLocale === 'tr' ? 'en' : 'tr' }}">{{ $avLocale === 'tr' ? 'English' : 'Türkçe' }}</span>
+                    <span class="av-lang-badge" aria-label="{{ $avLocale === 'tr' ? __('dictt.lang_en') : __('dictt.lang_tr') }}">{{ $avLocale === 'tr' ? 'EN' : 'TR' }}</span>
                 </a>
                 @guest
                     <a href="{{ route('frontend.login', ['return' => request()->route()?->getName()]) }}" class="nav-item nav-link d-lg-none">{{ __('dictt.login_now') }}</a>
