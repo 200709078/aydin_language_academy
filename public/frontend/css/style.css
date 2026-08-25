@@ -259,6 +259,19 @@ select,
     transition: .5s;
 }
 
+/* Mobildeki hamburger barı scroll boyunca ekranda kalır. */
+@media (max-width: 1199.98px) {
+    .frontend-header {
+        position: sticky;
+        top: 0;
+        z-index: 1020;
+    }
+
+    .frontend-header__mobile .navbar.sticky-top {
+        top: 0 !important;
+    }
+}
+
 @media (min-width: 1200px) and (max-width: 1279.98px) {
     .frontend-header__desktop .navbar .navbar-brand {
         padding-right: 1.5rem !important;

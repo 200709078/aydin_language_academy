@@ -90,3 +90,5 @@
         </div>
     </nav>
     <!-- Mobile Navbar End -->
+
+    <script src="{{ asset('frontend/js/mobile-menu.js') }}?v=1" defer></script>
