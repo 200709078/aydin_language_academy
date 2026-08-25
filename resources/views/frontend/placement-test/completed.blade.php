@@ -44,8 +44,22 @@
                         @include('frontend.placement-test.attempt-summary', ['placementTest' => $placementTest])
                     </div>
 
-                    <div class="text-center mt-4">
-                        <a href="{{ route('frontend.placement-test') }}" class="btn btn-primary py-3 px-5">
+                    <div class="d-flex flex-column flex-sm-row justify-content-center gap-2 mt-4">
+                        @if ($placementTest->status === 'approved')
+                            <a href="{{ route('frontend.placement-test.attempts.show', $placementTest) }}" class="btn btn-outline-primary py-3 px-4">
+                                <i class="fa fa-eye me-2" aria-hidden="true"></i>{{ __('dictt.placement_test_review') }}
+                            </a>
+                            <form method="POST" action="{{ route('frontend.placement-test.start') }}">
+                                @csrf
+                                <button type="submit" class="btn btn-primary py-3 px-4">
+                                    <i class="fa fa-redo me-2" aria-hidden="true"></i>{{ __('dictt.placement_test_start_new') }}
+                                </button>
+                            </form>
+                        @endif
+                        <a href="{{ route('frontend.placement-test.attempts') }}" class="btn btn-outline-secondary py-3 px-4">
+                            <i class="fa fa-history me-2" aria-hidden="true"></i>{{ __('dictt.placement_test_my_attempts') }}
+                        </a>
+                        <a href="{{ route('frontend.placement-test') }}" class="btn btn-outline-primary py-3 px-4">
                             {{ __('dictt.placement_test_back_to_page') }}
                         </a>
                     </div>

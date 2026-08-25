@@ -83,7 +83,7 @@
                                     <button type="submit" class="btn btn-primary py-3 px-5">{{ __('dictt.placement_test_continue') }}</button>
                                 </form>
                             @elseif (($openAttempt ?? null)?->status === 'pending_approval')
-                                <a href="{{ route('frontend.placement-test.completed', $openAttempt) }}" class="btn btn-primary py-3 px-5">
+                                <a href="{{ route('frontend.placement-test.completed', $openAttempt) }}" class="btn btn-outline-primary">
                                     {{ __('dictt.placement_test_view_status') }}
                                 </a>
                             @else
@@ -92,6 +92,12 @@
                                     <button type="submit" class="btn btn-primary py-3 px-5">{{ __('dictt.placement_test_start') }}</button>
                                 </form>
                             @endif
+                        </div>
+
+                        <div class="text-center mt-3">
+                            <a href="{{ route('frontend.placement-test.attempts') }}" class="btn btn-outline-primary">
+                                <i class="fa fa-history me-2" aria-hidden="true"></i>{{ __('dictt.placement_test_my_attempts') }}
+                            </a>
                         </div>
                     @endauth
                 </div>

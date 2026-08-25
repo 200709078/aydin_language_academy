@@ -1,0 +1,213 @@
+<x-app-layout>
+    <x-slot name="header">{{ __('dictt.placement_test_review') }} #{{ $placementTest->id }}</x-slot>
+
+    @if (session('success') || session('error'))
+        <div class="alert {{ session('success') ? 'alert-success' : 'alert-danger' }} alert-dismissible fade show" role="alert">
+            {{ session('success') ?? session('error') }}
+            <button type="button" class="btn-close" onclick="this.closest('.alert').remove()" aria-label="{{ __('dictt.placement_test_close') }}"></button>
+        </div>
+    @endif
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="d-flex flex-column flex-md-row justify-content-between gap-3 mb-3">
+                <div>
+                    <a href="{{ route('placement_test_attempts_list') }}" class="btn btn-sm btn-secondary">
+                        <i class="fa fa-arrow-left" aria-hidden="true"></i> {{ __('dictt.back') }}
+                    </a>
+                </div>
+
+                @if ($placementTest->status === 'pending_approval')
+                    <form method="POST" action="{{ route('placement_test_attempts_approve', $placementTest) }}"
+                        onsubmit="return confirm(@js(__('dictt.placement_test_attempt_approve_confirm')));">
+                        @csrf
+                        @method('PUT')
+                        <button type="submit" class="btn btn-success">
+                            <i class="fa fa-check" aria-hidden="true"></i> {{ __('dictt.approve') }}
+                        </button>
+                    </form>
+                @endif
+            </div>
+
+            <dl class="row mb-0">
+                <dt class="col-sm-3">{{ __('dictt.member') }}</dt>
+                <dd class="col-sm-9">{{ $placementTest->user?->name ?? ('#' . $placementTest->user_id) }}</dd>
+                <dt class="col-sm-3">{{ __('dictt.email') }}</dt>
+                <dd class="col-sm-9">{{ $placementTest->user?->email ?? '—' }}</dd>
+                <dt class="col-sm-3">{{ __('dictt.placement_test_started_at') }}</dt>
+                <dd class="col-sm-9">{{ $placementTest->started_at?->format('d.m.Y H:i:s') ?? '—' }}</dd>
+                <dt class="col-sm-3">{{ __('dictt.placement_test_submitted_at') }}</dt>
+                <dd class="col-sm-9">{{ $placementTest->submitted_at?->format('d.m.Y H:i:s') ?? '—' }}</dd>
+                <dt class="col-sm-3">{{ __('dictt.placement_test_result_level') }}</dt>
+                <dd class="col-sm-9">{{ $placementTest->resultLevel?->code ?? '—' }}</dd>
+                <dt class="col-sm-3">{{ __('dictt.status') }}</dt>
+                <dd class="col-sm-9">
+                    @if ($placementTest->status === 'pending_approval')
+                        <span class="badge text-bg-warning">{{ __('dictt.status_pending') }}</span>
+                    @else
+                        <span class="badge text-bg-success">{{ __('dictt.status_approved') }}</span>
+                    @endif
+                </dd>
+                @if ($placementTest->status === 'approved')
+                    <dt class="col-sm-3">{{ __('dictt.placement_test_approved_by') }}</dt>
+                    <dd class="col-sm-9">
+                        {{ $placementTest->approver?->name ?? '—' }}
+                        @if ($placementTest->approved_at)
+                            <span class="text-muted">— {{ $placementTest->approved_at->format('d.m.Y H:i:s') }}</span>
+                        @endif
+                    </dd>
+                @endif
+            </dl>
+        </div>
+    </div>
+
+    <div class="alert alert-info" role="note">
+        <i class="fa fa-info-circle" aria-hidden="true"></i> {{ __('dictt.placement_test_review_answer_note') }}
+    </div>
+
+    @forelse ($levelResults as $levelResult)
+        <section class="card mb-4">
+            <div class="card-header d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-2">
+                <h2 class="h5 mb-0">{{ __('dictt.level') }} {{ $levelResult->level?->code ?? '—' }}</h2>
+                @if ($levelResult->result === 'success')
+                    <span class="badge text-bg-success">{{ __('dictt.placement_test_level_success') }}</span>
+                @elseif ($levelResult->result === 'unsuccess')
+                    <span class="badge text-bg-danger">{{ __('dictt.placement_test_level_unsuccess') }}</span>
+                @endif
+            </div>
+            <div class="card-body">
+                @php
+                    $shownContentIds = [];
+                @endphp
+
+                @forelse ($levelResult->levelQuestions as $question)
+                    @php
+                        $contentSnapshot = $question->contentSnapshot;
+                    @endphp
+
+                    @if ($contentSnapshot && ! in_array($contentSnapshot->id, $shownContentIds, true))
+                        @php
+                            $shownContentIds[] = $contentSnapshot->id;
+                            $mediaUrl = $contentSnapshot->type_snapshot === 'text'
+                                ? null
+                                : route('placement_test_attempts_media', [
+                                    'placementTest' => $placementTest,
+                                    'placementTestLevelResultContent' => $contentSnapshot,
+                                ]);
+                        @endphp
+
+                        <section class="border rounded p-3 p-lg-4 mb-3 bg-light">
+                            <div class="d-flex align-items-center gap-2 mb-3">
+                                <i class="fa fa-book-open text-primary" aria-hidden="true"></i>
+                                <h3 class="h6 mb-0">{{ __('dictt.placement_test_shared_content') }}</h3>
+                            </div>
+
+                            @if ($contentSnapshot->type_snapshot === 'text')
+                                <div class="text-dark lh-lg">{!! nl2br(e($contentSnapshot->text_content_snapshot)) !!}</div>
+                            @elseif ($contentSnapshot->type_snapshot === 'image')
+                                <img src="{{ $mediaUrl }}" class="img-fluid rounded" alt="{{ __('dictt.placement_test_shared_image_alt') }}">
+                            @elseif ($contentSnapshot->type_snapshot === 'audio')
+                                <audio controls preload="metadata" class="w-100">
+                                    <source src="{{ $mediaUrl }}">
+                                    {{ __('dictt.placement_test_audio_unsupported') }}
+                                </audio>
+                            @elseif ($contentSnapshot->type_snapshot === 'video')
+                                <video controls preload="metadata" class="w-100 rounded">
+                                    <source src="{{ $mediaUrl }}">
+                                    {{ __('dictt.placement_test_video_unsupported') }}
+                                </video>
+                            @endif
+                        </section>
+                    @endif
+
+                    @php
+                        $options = collect($question->options_snapshot ?? [])
+                            ->filter(static fn ($option): bool => is_array($option)
+                                && array_key_exists('position', $option)
+                                && array_key_exists('text', $option))
+                            ->sortBy(static fn (array $option): int => (int) $option['position'])
+                            ->values();
+                        $correctPosition = (int) $question->correct_option_snapshot;
+                        $selectedPosition = $question->selected_option === null ? null : (int) $question->selected_option;
+                        $hasCorrectOption = $options->contains(static fn (array $option): bool => (int) $option['position'] === $correctPosition);
+                        $hasSelectedOption = $selectedPosition === null
+                            || $options->contains(static fn (array $option): bool => (int) $option['position'] === $selectedPosition);
+                        $answerStatus = match (true) {
+                            $selectedPosition === null => 'blank',
+                            $selectedPosition === $correctPosition => 'correct',
+                            default => 'wrong',
+                        };
+                    @endphp
+
+                    <article class="border rounded p-3 p-lg-4 mb-3">
+                        <div class="d-flex flex-column flex-sm-row align-items-sm-start justify-content-between gap-2 mb-3">
+                            <div class="d-flex align-items-center gap-2">
+                                <span class="badge text-bg-secondary">{{ $question->display_position }}</span>
+                                <span class="small text-muted">{{ __('dictt.placement_test_question_label') }}</span>
+                            </div>
+                            @if ($answerStatus === 'correct')
+                                <span class="badge text-bg-success">{{ __('dictt.placement_test_answer_correct') }}</span>
+                            @elseif ($answerStatus === 'wrong')
+                                <span class="badge text-bg-danger">{{ __('dictt.placement_test_answer_wrong') }}</span>
+                            @else
+                                <span class="badge text-bg-warning">{{ __('dictt.placement_test_answer_blank_label') }}</span>
+                            @endif
+                        </div>
+
+                        <div class="h6 text-dark mb-3">{!! nl2br(e($question->question_text_snapshot)) !!}</div>
+
+                        @if (! $hasCorrectOption || ! $hasSelectedOption)
+                            <div class="alert alert-danger small py-2" role="alert">{{ __('dictt.placement_test_snapshot_invalid') }}</div>
+                        @endif
+
+                        <div class="vstack gap-2">
+                            @foreach ($options as $option)
+                                @php
+                                    $position = (int) $option['position'];
+                                    $isCorrect = $position === $correctPosition;
+                                    $isSelected = $selectedPosition !== null && $position === $selectedPosition;
+                                    $optionClass = $isCorrect
+                                        ? 'border-success'
+                                        : ($isSelected ? 'border-danger' : 'border-light');
+                                    $optionStyle = $isCorrect
+                                        ? 'background-color: rgba(25, 135, 84, .10);'
+                                        : ($isSelected ? 'background-color: rgba(220, 53, 69, .10);' : '');
+                                @endphp
+                                <div class="border rounded p-3 {{ $optionClass }}" @if ($optionStyle) style="{{ $optionStyle }}" @endif>
+                                    <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-2">
+                                        <div class="d-flex align-items-start gap-2 text-dark">
+                                            <span class="badge text-bg-secondary">{{ $position }}</span>
+                                            <span>{{ $option['text'] }}</span>
+                                        </div>
+                                        <div class="d-flex flex-wrap gap-1">
+                                            @if ($isSelected)
+                                                <span class="badge {{ $isCorrect ? 'text-bg-success' : 'text-bg-danger' }}">{{ __('dictt.placement_test_student_answer') }}</span>
+                                            @endif
+                                            @if ($isCorrect)
+                                                <span class="badge text-bg-success">{{ __('dictt.placement_test_correct_answer') }}</span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+
+                        @if ($selectedPosition === null)
+                            <div class="alert alert-warning small py-2 mt-3 mb-0" role="alert">
+                                {{ __('dictt.placement_test_answer_blank') }}
+                            </div>
+                        @elseif ($question->answered_at)
+                            <p class="small text-muted mt-3 mb-0">
+                                {{ __('dictt.placement_test_answered_at') }} {{ $question->answered_at->format('d.m.Y H:i:s') }}
+                            </p>
+                        @endif
+                    </article>
+                @empty
+                    <p class="text-muted mb-0">{{ __('dictt.placement_test_attempt_questions_empty') }}</p>
+                @endforelse
+            </div>
+        </section>
+    @empty
+        <div class="alert alert-warning" role="alert">{{ __('dictt.placement_test_attempt_questions_empty') }}</div>
+    @endforelse
+</x-app-layout>

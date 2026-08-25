@@ -282,6 +282,38 @@ class PlacementTestAttemptService
             ->get();
     }
 
+    /**
+     * Finalize a submitted attempt after an administrator has reviewed its snapshots.
+     */
+    public function approveByAdmin(User $admin, PlacementTest $attempt): PlacementTest
+    {
+        if ($admin->type !== 'admin') {
+            throw new PlacementTestStateException('Bu sınavı onaylama yetkiniz yok.');
+        }
+
+        return DB::transaction(function () use ($admin, $attempt): PlacementTest {
+            $pendingAttempt = PlacementTest::query()
+                ->whereKey($attempt->id)
+                ->lockForUpdate()
+                ->firstOrFail();
+
+            if (
+                $pendingAttempt->status !== 'pending_approval'
+                || $pendingAttempt->submitted_at === null
+                || $pendingAttempt->result_level_id === null
+            ) {
+                throw new PlacementTestStateException('Yalnızca tamamlanmış ve onay bekleyen sınavlar onaylanabilir.');
+            }
+
+            $pendingAttempt->status = 'approved';
+            $pendingAttempt->approved_by = $admin->id;
+            $pendingAttempt->approved_at = now();
+            $pendingAttempt->save();
+
+            return $pendingAttempt;
+        });
+    }
+
     private function openAttemptQuery(User $user)
     {
         return PlacementTest::query()

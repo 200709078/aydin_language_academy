@@ -75,7 +75,7 @@
                                 </div>
                             </div>
                         </a>
-                        <a class="text-decoration-none" href="https://web.whatsapp.com/send?phone=905308284884&text=Selamlar%2C%20ALA%20web%20sitesi%20%C3%BCzerinden%20yaz%C4%B1yorum." target="_blank" rel="noopener noreferrer">
+                        <a class="text-decoration-none" href="https://web.whatsapp.com/send?phone=905308284884&amp;text=Selamlar%2C%20ALA%20web%20sitesi%20%C3%BCzerinden%20yaz%C4%B1yorum." data-whatsapp-app-url="whatsapp://send?phone=905308284884&amp;text=Selamlar%2C%20ALA%20web%20sitesi%20%C3%BCzerinden%20yaz%C4%B1yorum.">
                             <div class="bg-light rounded d-flex align-items-center p-3 mb-4">
                                 <div class="d-flex flex-shrink-0 align-items-center justify-content-center rounded-circle bg-white" style="width: 55px; height: 55px;">
                                     <i class="fab fa-whatsapp text-primary"></i>

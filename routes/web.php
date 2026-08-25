@@ -17,6 +17,7 @@ use App\Http\Controllers\PlacementTestAttemptController;
 use App\Http\Controllers\PlacementTestLevelController;
 use App\Http\Controllers\PlacementTestQuestionController;
 use App\Http\Controllers\PlacementTestQuestionContentController;
+use App\Http\Controllers\PlacementTestReviewController;
 use App\Http\Middleware\isAdmin_middle;
 use App\Support\FrontendReturnRoutes;
 use Illuminate\Http\Request;
@@ -74,6 +75,19 @@ Route::group(['middleware' => ['auth', isAdmin_middle::class], 'prefix' => 'admi
     Route::delete('placement-test/questions/{placementTestQuestion}', [PlacementTestQuestionController::class, 'destroy'])
         ->whereNumber('placementTestQuestion')
         ->name('placement_test_questions_destroy');
+
+    Route::get('placement-test/attempts', [PlacementTestReviewController::class, 'index'])
+        ->name('placement_test_attempts_list');
+    Route::get('placement-test/attempts/{placementTest}/contents/{placementTestLevelResultContent}/media', [PlacementTestReviewController::class, 'media'])
+        ->whereNumber('placementTest')
+        ->whereNumber('placementTestLevelResultContent')
+        ->name('placement_test_attempts_media');
+    Route::get('placement-test/attempts/{placementTest}', [PlacementTestReviewController::class, 'show'])
+        ->whereNumber('placementTest')
+        ->name('placement_test_attempts_show');
+    Route::put('placement-test/attempts/{placementTest}/approve', [PlacementTestReviewController::class, 'approve'])
+        ->whereNumber('placementTest')
+        ->name('placement_test_attempts_approve');
 
     Route::get('courses_list', [cont_user_main::class, 'courses_list'])->name('courses_list');
     Route::get('levels_list', [cont_user_main::class, 'levels_list'])->name('levels_list');
@@ -138,6 +152,15 @@ Route::get('/seviye-tespit-sinavi', [PlacementTestAttemptController::class, 'lan
 Route::middleware('auth')->prefix('seviye-tespit-sinavi')->group(function (): void {
     Route::post('/baslat', [PlacementTestAttemptController::class, 'start'])
         ->name('frontend.placement-test.start');
+    Route::get('/sinavlarim', [PlacementTestAttemptController::class, 'history'])
+        ->name('frontend.placement-test.attempts');
+    Route::get('/sinavlarim/{placementTest}/icerikler/{placementTestLevelResultContent}/medya', [PlacementTestAttemptController::class, 'historyMedia'])
+        ->whereNumber('placementTest')
+        ->whereNumber('placementTestLevelResultContent')
+        ->name('frontend.placement-test.attempts.media');
+    Route::get('/sinavlarim/{placementTest}', [PlacementTestAttemptController::class, 'showHistory'])
+        ->whereNumber('placementTest')
+        ->name('frontend.placement-test.attempts.show');
     Route::get('/sinav/{placementTest}', [PlacementTestAttemptController::class, 'resume'])
         ->whereNumber('placementTest')
         ->name('frontend.placement-test.exam');

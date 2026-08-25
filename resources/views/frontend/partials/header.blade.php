@@ -73,7 +73,7 @@
             'placement_test' => [
                 'route' => 'frontend.placement-test',
                 'label' => __('dictt.placement_test'),
-                'is_active' => request()->routeIs('frontend.placement-test'),
+                'is_active' => request()->routeIs('frontend.placement-test*'),
             ],
         ];
     @endphp
@@ -102,3 +102,5 @@
         'fsmLevels' => $headerDocumentLevels,
         'fsmSubLevels' => $headerDocumentSubLevels,
     ])
+
+    <script src="{{ asset('frontend/js/whatsapp-link.js') }}?v=1" defer></script>

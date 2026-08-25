@@ -229,6 +229,85 @@ class PlacementTestAttemptController extends Controller
     }
 
     /**
+     * List the authenticated user's placement tests.
+     */
+    public function history(Request $request): View
+    {
+        $attempts = PlacementTest::query()
+            ->where('user_id', $request->user()->id)
+            ->whereIn('status', ['in_progress', 'pending_approval', 'approved'])
+            ->with('resultLevel')
+            ->orderByRaw("CASE status WHEN 'in_progress' THEN 0 WHEN 'pending_approval' THEN 1 WHEN 'approved' THEN 2 ELSE 3 END")
+            ->orderByRaw("CASE WHEN status = 'in_progress' THEN started_at END DESC")
+            ->orderByRaw("CASE WHEN status = 'pending_approval' THEN submitted_at END ASC")
+            ->orderByDesc('approved_at')
+            ->orderByDesc('id')
+            ->paginate(20);
+
+        return view('frontend.placement-test.attempts.index', compact('attempts'));
+    }
+
+    /**
+     * Show immutable question snapshots from one of the authenticated user's approved tests.
+     */
+    public function showHistory(Request $request, PlacementTest $placementTest): View
+    {
+        $placementTest = $this->ownedApprovedAttempt($request, $placementTest);
+
+        $placementTest->load([
+            'resultLevel',
+            'levelResults.level',
+            'levelResults.levelQuestions' => fn ($query) => $query
+                ->with('contentSnapshot')
+                ->orderBy('display_position'),
+        ]);
+
+        $levelResults = $placementTest->levelResults
+            ->sortBy(fn ($levelResult): int => $levelResult->level?->sequence ?? PHP_INT_MAX)
+            ->values();
+
+        return view('frontend.placement-test.attempts.show', compact('placementTest', 'levelResults'));
+    }
+
+    /**
+     * Stream a historical shared-media snapshot from one of the user's approved tests.
+     */
+    public function historyMedia(
+        Request $request,
+        PlacementTest $placementTest,
+        PlacementTestLevelResultContent $placementTestLevelResultContent,
+    ) {
+        $placementTest = $this->ownedApprovedAttempt($request, $placementTest);
+
+        $contentSnapshot = PlacementTestLevelResultContent::query()
+            ->whereKey($placementTestLevelResultContent->id)
+            ->whereHas('levelResult', fn ($query) => $query->where('placement_test_id', $placementTest->id))
+            ->firstOrFail();
+
+        $mediaPath = trim((string) $contentSnapshot->media_path_snapshot);
+        $pathSegments = explode('/', $mediaPath);
+
+        if (
+            ! in_array($contentSnapshot->type_snapshot, ['audio', 'image', 'video'], true)
+            || $contentSnapshot->media_disk_snapshot !== 'local'
+            || $mediaPath === ''
+            || str_contains($mediaPath, '\\')
+            || in_array('..', $pathSegments, true)
+            || ! str_starts_with($mediaPath, 'placement-test/question-contents/')
+        ) {
+            abort(404);
+        }
+
+        $disk = Storage::disk('local');
+
+        if (! $disk->exists($mediaPath)) {
+            abort(404);
+        }
+
+        return $disk->response($mediaPath);
+    }
+
+    /**
      * Stream a private media snapshot only while its owner is answering that level.
      */
     public function media(
@@ -273,5 +352,14 @@ class PlacementTestAttemptController extends Controller
         if ((int) $placementTest->user_id !== (int) $request->user()->id) {
             abort(404);
         }
+    }
+
+    private function ownedApprovedAttempt(Request $request, PlacementTest $placementTest): PlacementTest
+    {
+        return PlacementTest::query()
+            ->whereKey($placementTest->id)
+            ->where('user_id', $request->user()->id)
+            ->where('status', 'approved')
+            ->firstOrFail();
     }
 }

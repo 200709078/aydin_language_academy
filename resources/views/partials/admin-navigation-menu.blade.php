@@ -2,7 +2,7 @@
         sidebarOpen: (function () { var v = localStorage.getItem('adminSidebarOpen'); return v === null ? true : v === 'true'; })(),
         themesOpen: {{ request()->routeIs('levels_list', 'sub_levels_list', 'themes_list') ? 'true' : 'false' }},
         siteSettingsOpen: {{ request()->routeIs('courses_list', 'reviews_list', 'review_edit') ? 'true' : 'false' }},
-        placementOpen: {{ request()->routeIs('placement_test_levels_*', 'placement_test_question_contents_*', 'placement_test_questions_*') ? 'true' : 'false' }},
+        placementOpen: {{ request()->routeIs('placement_test_levels_*', 'placement_test_question_contents_*', 'placement_test_questions_*', 'placement_test_attempts_*') ? 'true' : 'false' }},
         userOpen: {{ request()->routeIs('profile.show') ? 'true' : 'false' }},
         languageOpen: false,
         toggleSidebar() {
@@ -90,7 +90,7 @@
 
                 <div class="admin-navigation-group">
                     <button type="button"
-                        class="admin-navigation-trigger {{ request()->routeIs('placement_test_levels_*', 'placement_test_question_contents_*', 'placement_test_questions_*') ? 'is-active' : '' }}"
+                        class="admin-navigation-trigger {{ request()->routeIs('placement_test_levels_*', 'placement_test_question_contents_*', 'placement_test_questions_*', 'placement_test_attempts_*') ? 'is-active' : '' }}"
                         @click="toggleGroup('placementOpen')" :aria-expanded="placementOpen.toString()">
                         <i class="fas fa-clipboard-check admin-navigation-icon" aria-hidden="true"></i>
                         <span class="admin-navigation-label">{{ __('dictt.placement_test') }}</span>
@@ -102,6 +102,7 @@
                         <a href="{{ route('placement_test_levels_list') }}" class="admin-navigation-collapse-link {{ request()->routeIs('placement_test_levels_list') ? 'is-active' : '' }}"><i class="fas fa-list-ol admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.levels') }}</a>
                         <a href="{{ route('placement_test_question_contents_list') }}" class="admin-navigation-collapse-link {{ request()->routeIs('placement_test_question_contents_list') ? 'is-active' : '' }}"><i class="fas fa-photo-film admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.question_contents') }}</a>
                         <a href="{{ route('placement_test_questions_list') }}" class="admin-navigation-collapse-link {{ request()->routeIs('placement_test_questions_list') ? 'is-active' : '' }}"><i class="fas fa-circle-question admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.questions') }}</a>
+                        <a href="{{ route('placement_test_attempts_list') }}" class="admin-navigation-collapse-link {{ request()->routeIs('placement_test_attempts_*') ? 'is-active' : '' }}"><i class="fas fa-clipboard-list admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.placement_test_attempts') }}</a>
                     </div>
                 </div>
 
