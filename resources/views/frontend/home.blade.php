@@ -212,33 +212,6 @@
                         </div>
                     @endif
                 </div>
-            @else
-                <div class="owl-carousel testimonial-carousel wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="testimonial-item text-center">
-                        <img class="img-fluid bg-light rounded-circle p-2 mx-auto mb-4" src="{{ asset('frontend/images/testimonial-1.jpg') }}" style="width: 100px; height: 100px;">
-                        <div class="testimonial-text rounded text-center p-4">
-                            <p>Dersler hem eğlenceli hem de çok düzenli ilerledi. Kısa sürede İngilizce konuşurken kendime daha çok güvenmeye başladım.</p>
-                            <h5 class="mb-1">Duru Kaya</h5>
-                            <span class="fst-italic">Grafik Tasarımcı</span>
-                        </div>
-                    </div>
-                    <div class="testimonial-item text-center">
-                        <img class="img-fluid bg-light rounded-circle p-2 mx-auto mb-4" src="{{ asset('frontend/images/testimonial-2.jpg') }}" style="width: 100px; height: 100px;">
-                        <div class="testimonial-text rounded text-center p-4">
-                            <p>Öğretmenlerim ihtiyaçlarıma göre yönlendirme yaptı. Özellikle konuşma pratiği sayesinde yabancı misafirlerle rahatça iletişim kurabiliyorum.</p>
-                            <h5 class="mb-1">Efe Yılmaz</h5>
-                            <span class="fst-italic">Turizm Uzmanı</span>
-                        </div>
-                    </div>
-                    <div class="testimonial-item text-center">
-                        <img class="img-fluid bg-light rounded-circle p-2 mx-auto mb-4" src="{{ asset('frontend/images/testimonial-3.jpg') }}" style="width: 100px; height: 100px;">
-                        <div class="testimonial-text rounded text-center p-4">
-                            <p>Online ders seçeneği yoğun çalışma temposunda benim için çok faydalı oldu. Her dersten sonra ilerlediğimi net biçimde hissediyorum.</p>
-                            <h5 class="mb-1">Selim Arslan</h5>
-                            <span class="fst-italic">Yazılım Geliştirici</span>
-                        </div>
-                    </div>
-                </div>
             @endif
 
             <div class="text-center mt-5 wow fadeInUp" data-wow-delay="0.2s">

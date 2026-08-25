@@ -1,13 +1,12 @@
 {{-- Frontend sol menü: üst navbar'dan bağımsız, sabit konumlu panel --}}
-<link rel="stylesheet" href="{{ asset('frontend/css/side-menu.css') }}?v=14">
+<link rel="stylesheet" href="{{ asset('frontend/css/side-menu.css') }}?v=18">
 
 @php
-    $fsmLevels = \App\Models\model_levels::query()->orderBy('id')->get(['id', 'name', 'slug']);
-    $fsmSubLevels = \App\Models\model_sub_levels::query()->orderBy('id')->get(['id', 'name', 'slug']);
+    $fsmLevels ??= \App\Models\model_levels::query()->orderBy('id')->get(['id', 'name', 'slug']);
+    $fsmSubLevels ??= \App\Models\model_sub_levels::query()->orderBy('id')->get(['id', 'name', 'slug']);
 @endphp
 
 <div id="fsmRoot" class="fsm-root">
-    @auth
     <nav id="fsmPanel" class="fsm-panel">
         <div class="fsm-body">
             @foreach ($fsmLevels as $fsmLevel)
@@ -22,8 +21,13 @@
                 </button>
                 <div id="fsm-level-collapse-{{ $fsmLevel->id }}" class="fsm-collapse collapse">
                     @foreach ($fsmSubLevels as $fsmSubLevel)
-                        <a class="fsm-subitem"
-                            href="{{ route('frontend.themes.list', [$fsmLevel->slug, $fsmSubLevel->slug]) }}"><i class="fa fa-circle fsm-subbullet" aria-hidden="true"></i>{{ ucfirst(mb_strtolower($fsmSubLevel->name)) }}</a>
+                        @auth
+                            <a class="fsm-subitem"
+                                href="{{ route('frontend.themes.list', [$fsmLevel->slug, $fsmSubLevel->slug]) }}"><i class="fa fa-circle fsm-subbullet" aria-hidden="true"></i>{{ ucfirst(mb_strtolower($fsmSubLevel->name)) }}</a>
+                        @else
+                            <a class="fsm-subitem"
+                                href="{{ route('frontend.documents') }}"><i class="fa fa-circle fsm-subbullet" aria-hidden="true"></i>{{ ucfirst(mb_strtolower($fsmSubLevel->name)) }}</a>
+                        @endauth
                     @endforeach
                 </div>
                 <hr class="fsm-divider">
@@ -35,14 +39,6 @@
             <span class="fsm-strip-text">{{ strtoupper(__('dictt.documents')) }}</span>
         </button>
     </nav>
-    @endauth
-    @guest
-    <a id="fsmStripGuest" class="fsm-strip fsm-strip--solo"
-        href="{{ route('frontend.documents') }}"
-        aria-label="{{ __('dictt.documents') }}">
-        <span class="fsm-strip-text">{{ strtoupper(__('dictt.documents')) }}</span>
-    </a>
-    @endguest
 </div>
 
 <script src="{{ asset('frontend/js/side-menu.js') }}?v=2" defer></script>

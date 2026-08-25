@@ -32,6 +32,7 @@ return [
     'placement_test_welcome' => 'Hoş geldin :name',
     'documents' => 'Dökümanlar',
     'documents_coming_soon' => 'Döküman içerikleri hazırlanıyor.',
+    'documents_login_prompt' => 'İçeriği görmek için :link yapınız.',
     'placement_test_login_prompt' => 'İçeriği görmek için lütfen :link yapınız.',
     'placement_test_close' => 'Kapat',
     'placement_test_exam_info' => 'Sınav Bilgileri',

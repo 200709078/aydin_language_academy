@@ -178,9 +178,11 @@ Route::view('/kurslarimiz/test-of-english', 'frontend.courses.test-of-english')-
 Route::view('/kurslarimiz/sat', 'frontend.courses.sat')->name('frontend.courses.sat');
 Route::view('/kurslarimiz/konusma-kulupleri', 'frontend.courses.konusma-kulupleri')->name('frontend.courses.speaking-clubs');
 Route::get('/temalar/{level_slug}/{sub_level_slug}', [ThemeListController::class, 'index'])
+    ->middleware('auth')
     ->name('frontend.themes.list');
 Route::get('/tema/{theme_id}', [ThemeListController::class, 'show'])
     ->whereNumber('theme_id')
+    ->middleware('auth')
     ->name('frontend.themes.detail');
 Route::view('/dokumanlar', 'frontend.documents')->name('frontend.documents');
 Route::view('/subelerimiz/ortaca', 'frontend.branches.ortaca')->name('frontend.branches.ortaca');

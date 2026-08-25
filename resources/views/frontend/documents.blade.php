@@ -43,7 +43,7 @@
                     <div class="bg-light rounded p-5 text-center">
                         <h1 class="mb-4">{{ __('dictt.documents') }}</h1>
                         @guest
-                            <p class="mb-0">{!! __('dictt.placement_test_login_prompt', ['link' => '<a class="text-primary" href="' . route('frontend.login', ['return' => request()->route()?->getName()]) . '">' . __('dictt.login') . '</a>']) !!}</p>
+                            <p class="mb-0">{!! __('dictt.documents_login_prompt', ['link' => '<a class="text-primary" href="' . route('frontend.login', ['return' => request()->route()?->getName()]) . '">' . __('dictt.login') . '</a>']) !!}</p>
                         @else
                             <p class="text-muted mb-0">{{ __('dictt.documents_coming_soon') }}</p>
                         @endguest

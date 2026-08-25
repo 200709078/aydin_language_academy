@@ -7,6 +7,23 @@
     z-index: 1035;
 }
 
+/* Masaüstünde Dökümanlar paneli ekranın tamamını dikeyde kaplar. */
+@media (min-width: 1200px) {
+    .fsm-root {
+        inset: 0 auto 0 0;
+        /* Bootstrap sticky navbar z-index: 1020; üst menü her zaman önde kalır. */
+        z-index: 1015;
+    }
+
+}
+
+/* Mobilde sol Dökümanlar menüsü gösterilmez. */
+@media (max-width: 1199.98px) {
+    .fsm-root {
+        display: none;
+    }
+}
+
 .fsm-panel {
     width: 16rem;
     height: 100%;
@@ -31,6 +48,13 @@
     /* Üst navbar bg-light (#EFF5FF) ile aynı ton */
     background: #eff5ff;
     overflow-y: auto;
+}
+
+@media (min-width: 1200px) {
+    /* Liste, üst navbarın 75px yüksekliğinin hemen altından başlar. */
+    .fsm-body {
+        padding: 75px 0.75rem 1.25rem;
+    }
 }
 
 .fsm-root.is-closed .fsm-panel {
@@ -164,14 +188,6 @@ a.fsm-subitem:focus-visible {
     font-weight: 700;
     /* Metinle tam dikey hizaya getir */
     transform: translateY(-1px);
-}
-
-/* Giriş yapılmamışken yalnız Dökümanlar şeridi görünür; panel hiç render edilmez. */
-.fsm-strip--solo {
-    position: absolute;
-    inset: 0 auto 0 0;
-    text-decoration: none;
-    background: #eff5ff;
 }
 
 /* Footer şube başlıklarının oku aşağı baksın (diğer quick link okları sağa kalır). */

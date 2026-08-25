@@ -32,6 +32,7 @@ return [
     'placement_test_welcome' => 'Welcome :name',
     'documents' => 'Documents',
     'documents_coming_soon' => 'Document content is being prepared.',
+    'documents_login_prompt' => 'Please :link to view the content.',
     'placement_test_login_prompt' => 'Please :link to view the content.',
     'placement_test_close' => 'Close',
     'placement_test_exam_info' => 'Exam Information',
