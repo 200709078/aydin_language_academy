@@ -7,6 +7,7 @@ use App\Exceptions\PlacementTestStateException;
 use App\Models\PlacementTest;
 use App\Models\PlacementTestLevelQuestion;
 use App\Models\PlacementTestLevelResultContent;
+use App\Services\AdminApprovalNotificationService;
 use App\Services\PlacementTestAttemptService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -16,7 +17,10 @@ use Illuminate\View\View;
 
 class PlacementTestAttemptController extends Controller
 {
-    public function __construct(private readonly PlacementTestAttemptService $attempts)
+    public function __construct(
+        private readonly PlacementTestAttemptService $attempts,
+        private readonly AdminApprovalNotificationService $adminNotifications,
+    )
     {
     }
 
@@ -169,6 +173,8 @@ class PlacementTestAttemptController extends Controller
                 $outcome = $this->attempts->completeCurrentLevel($request->user(), $placementTest);
 
                 if ($outcome['submitted']) {
+                    $this->adminNotifications->placementTestSubmitted($outcome['attempt']);
+
                     return redirect()->route('frontend.placement-test.completed', $placementTest);
                 }
 

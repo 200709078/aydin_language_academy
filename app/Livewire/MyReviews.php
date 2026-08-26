@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Review;
+use App\Services\AdminApprovalNotificationService;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\Rule;
@@ -60,13 +61,15 @@ class MyReviews extends Component
             return;
         }
 
-        Review::create([
+        $review = Review::create([
             'user_id' => auth()->id(),
             'branch' => $this->branch !== '' ? $this->branch : null,
             'content' => $this->content,
             'rating' => $this->rating,
             'status' => Review::STATUS_PENDING,
         ]);
+
+        app(AdminApprovalNotificationService::class)->reviewCreated($review);
 
         $this->resetForm();
         $this->successMessage = __('dictt.review_submit_success');
@@ -95,6 +98,8 @@ class MyReviews extends Component
 
         $this->validate($this->rules(), $this->messages());
 
+        $wasRejected = $review->status === Review::STATUS_REJECTED;
+
         $review->fill([
             'branch' => $this->branch !== '' ? $this->branch : null,
             'content' => $this->content,
@@ -104,7 +109,12 @@ class MyReviews extends Component
         $review->status = Review::STATUS_PENDING;
         $review->approved_by = null;
         $review->approved_at = null;
+        $reviewContentChanged = $review->isDirty(['branch', 'content', 'rating']);
         $review->save();
+
+        if ($reviewContentChanged || $wasRejected) {
+            app(AdminApprovalNotificationService::class)->reviewUpdated($review, $wasRejected);
+        }
 
         $this->resetForm();
         $this->successMessage = __('dictt.review_update_success');
