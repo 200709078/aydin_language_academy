@@ -58,11 +58,11 @@
                                             </td>
                                             <td>
                                                 @if ($placementTest->status === 'in_progress')
-                                                    <span class="badge text-bg-primary">{{ __('dictt.placement_test_status_in_progress') }}</span>
+                                                    <span class="badge bg-primary text-white">{{ __('dictt.placement_test_status_in_progress') }}</span>
                                                 @elseif ($placementTest->status === 'approved')
-                                                    <span class="badge text-bg-success">{{ __('dictt.status_approved') }}</span>
+                                                    <span class="badge bg-success text-white">{{ __('dictt.status_approved') }}</span>
                                                 @else
-                                                    <span class="badge text-bg-warning">{{ __('dictt.status_pending') }}</span>
+                                                    <span class="badge bg-warning text-dark">{{ __('dictt.status_pending') }}</span>
                                                 @endif
                                             </td>
                                             <td>

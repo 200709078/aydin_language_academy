@@ -9,10 +9,6 @@
             this.sidebarOpen = !this.sidebarOpen;
             localStorage.setItem('adminSidebarOpen', this.sidebarOpen ? 'true' : 'false');
         },
-        collapseSidebar() {
-            this.sidebarOpen = false;
-            localStorage.setItem('adminSidebarOpen', 'false');
-        },
         toggleGroup(group) {
             if (!this.sidebarOpen) {
                 this.sidebarOpen = true;
@@ -24,7 +20,6 @@
         }
     }"
     :class="{ 'is-collapsed': ! sidebarOpen }"
-    @click="if ($event.target.closest('a')) collapseSidebar()"
     class="admin-navigation border-b border-gray-200 bg-white shadow-sm">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <a href="{{ route('admin') }}"

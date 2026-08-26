@@ -11,7 +11,7 @@
             <h4 class="mb-4">
                 {{ $editingId ? __('dictt.edit') : __('dictt.write_review') }}
                 @if ($editingId)
-                    <span class="badge text-bg-warning ms-2">{{ __('dictt.editing_review') }}</span>
+                    <span class="badge bg-warning text-dark ms-2">{{ __('dictt.editing_review') }}</span>
                 @endif
             </h4>
             <form wire:submit="{{ $editingId ? 'update' : 'create' }}">
@@ -63,11 +63,11 @@
                 <div class="testimonial-item text-center h-100 w-100 position-relative">
                     <div class="mt-2">
                         @if ($review->status === \App\Models\Review::STATUS_APPROVED)
-                            <span class="badge text-bg-success">{{ __('dictt.status_approved') }}</span>
+                            <span class="badge bg-success text-white">{{ __('dictt.status_approved') }}</span>
                         @elseif ($review->status === \App\Models\Review::STATUS_REJECTED)
-                            <span class="badge text-bg-danger">{{ __('dictt.status_rejected') }}</span>
+                            <span class="badge bg-danger text-white">{{ __('dictt.status_rejected') }}</span>
                         @else
-                            <span class="badge text-bg-warning">{{ __('dictt.status_pending') }}</span>
+                            <span class="badge bg-warning text-dark">{{ __('dictt.status_pending') }}</span>
                         @endif
                     </div>
                     <div class="testimonial-text bg-light rounded text-center p-4 mt-2 h-100">

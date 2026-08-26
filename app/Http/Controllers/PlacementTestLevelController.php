@@ -18,6 +18,9 @@ class PlacementTestLevelController extends Controller
             ->withCount([
                 'questions as active_questions_count' => fn ($query) => $query->where('is_active', true),
             ])
+            ->withSum([
+                'questions as active_questions_points_sum' => fn ($query) => $query->where('is_active', true),
+            ], 'points')
             ->orderBy('sequence')
             ->get();
 

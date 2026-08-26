@@ -58,9 +58,9 @@
                             <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-2 mb-4">
                                 <h2 class="h4 mb-0">{{ __('dictt.level') }} {{ $levelResult->level?->code ?? '—' }}</h2>
                                 @if ($levelResult->result === 'success')
-                                    <span class="badge text-bg-success">{{ __('dictt.placement_test_level_success') }}</span>
+                                    <span class="badge bg-success text-white">{{ __('dictt.placement_test_level_success') }}</span>
                                 @elseif ($levelResult->result === 'unsuccess')
-                                    <span class="badge text-bg-danger">{{ __('dictt.placement_test_level_unsuccess') }}</span>
+                                    <span class="badge bg-danger text-white">{{ __('dictt.placement_test_level_unsuccess') }}</span>
                                 @endif
                             </div>
 
@@ -138,7 +138,7 @@
                                         @elseif ($answerStatus === 'wrong')
                                             <span class="badge bg-danger text-white">{{ __('dictt.placement_test_answer_wrong') }}</span>
                                         @else
-                                            <span class="badge text-bg-warning">{{ __('dictt.placement_test_answer_blank_label') }}</span>
+                                            <span class="badge bg-warning text-dark">{{ __('dictt.placement_test_answer_blank_label') }}</span>
                                         @endif
                                     </div>
 

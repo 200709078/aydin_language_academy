@@ -19,7 +19,9 @@
         }
     }
 
-    while (count($optionRows) < 2) {
+    $minimumOptionRows = $currentQuestion === null && ! is_array($submittedOptions) ? 4 : 2;
+
+    while (count($optionRows) < $minimumOptionRows) {
         $optionRows[] = [
             'key' => 'option-' . count($optionRows),
             'text' => '',
@@ -42,6 +44,8 @@
     $initialContentPosition = old('content_position', $currentQuestion?->content_position);
     $initialCorrectOptionIndex = old('correct_option_index', $savedCorrectOptionIndex);
     $initialIsActive = old('is_active', $currentQuestion?->is_active ?? true);
+    $initialPoints = (int) old('points', $currentQuestion?->points ?? 4);
+    $initialPoints = min(20, max(1, $initialPoints));
 @endphp
 
 <div class="card"
@@ -90,12 +94,16 @@
 
                 <div class="col-md-6 mb-3">
                     <label for="placement_test_question_content_id" class="form-label">{{ __('dictt.question_contents') }}</label>
-                    <select id="placement_test_question_content_id" name="placement_test_question_content_id" x-model="contentId"
+                    <input type="hidden" name="placement_test_question_content_id" x-bind:value="contentId">
+                    <select id="placement_test_question_content_id" x-model="contentId"
+                        x-on:change="if (!$event.target.value) contentPosition = ''"
                         class="form-control @error('placement_test_question_content_id') is-invalid @enderror"
                         x-bind:disabled="!levelId">
                         <option value="">{{ __('dictt.independent_question') }}</option>
                         <template x-for="content in contentsForSelectedLevel" :key="content.id">
-                            <option x-bind:value="String(content.id)" x-text="content.label"></option>
+                            <option x-bind:value="String(content.id)"
+                                x-bind:selected="String(content.id) === String(contentId)"
+                                x-text="content.label"></option>
                         </template>
                     </select>
                     @error('placement_test_question_content_id')
@@ -132,13 +140,18 @@
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label for="points" class="form-label">{{ __('dictt.question_points') }}</label>
-                    <input id="points" name="points" type="number" min="0.01" max="999999.99" step="0.01"
-                        class="form-control @error('points') is-invalid @enderror"
-                        value="{{ old('points', $currentQuestion?->points ?? '1.00') }}" required>
-                    @error('points')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                    <div class="form-text">{{ __('dictt.pt_points_help') }}</div>
+                    <div x-data="{ points: {{ $initialPoints }} }">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="text-muted small">1 – 20</span>
+                            <span class="badge text-bg-primary" x-text="points">{{ $initialPoints }}</span>
+                        </div>
+                        <input id="points" name="points" type="range" min="1" max="20" step="1"
+                            class="form-range @error('points') is-invalid @enderror"
+                            x-model.number="points" value="{{ $initialPoints }}" required>
+                        @error('points')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
+                    </div>
                 </div>
 
                 <div class="col-md-6 mb-3 d-flex align-items-end">

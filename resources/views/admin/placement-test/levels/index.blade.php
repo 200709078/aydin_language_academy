@@ -24,10 +24,9 @@
                     <thead>
                         <tr>
                             <th scope="col">{{ __('dictt.level') }}</th>
-                            <th scope="col">{{ __('dictt.order') }}</th>
                             <th scope="col">{{ __('dictt.exam') }}</th>
                             <th scope="col">{{ __('dictt.active_questions') }}</th>
-                            <th scope="col">{{ __('dictt.target_question_count') }}</th>
+                            <th scope="col">{{ __('dictt.points') }}</th>
                             <th scope="col">{{ __('dictt.pass_percentage') }}</th>
                             <th scope="col">{{ __('dictt.status') }}</th>
                             <th scope="col">{{ __('dictt.operations') }}</th>
@@ -37,7 +36,6 @@
                         @forelse ($levels as $level)
                             <tr>
                                 <th scope="row">{{ $level->code }}</th>
-                                <td>{{ $level->sequence }}</td>
                                 <td>
                                     @if ($level->has_exam)
                                         <span class="badge text-bg-primary">{{ __('dictt.exists') }}</span>
@@ -48,13 +46,9 @@
                                 <td>{{ $level->has_exam ? $level->active_questions_count : '—' }}</td>
                                 <td>
                                     @if (! $level->has_exam)
-                                        <span class="text-muted">0</span>
-                                    @elseif ($level->question_count === null)
-                                        <span class="text-muted">{{ __('dictt.pt_not_set') }}</span>
-                                    @elseif ($level->question_count === $level->active_questions_count)
-                                        <span class="badge text-bg-success">{{ $level->question_count }}</span>
+                                        <span class="text-muted">—</span>
                                     @else
-                                        <span class="badge text-bg-warning">{{ $level->question_count }}</span>
+                                        {{ number_format((float) ($level->active_questions_points_sum ?? 0), 2, ',', '.') }}
                                     @endif
                                 </td>
                                 <td>
@@ -80,7 +74,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="8" class="text-center text-muted py-4">{{ __('dictt.pt_no_levels') }}</td>
+                                <td colspan="7" class="text-center text-muted py-4">{{ __('dictt.pt_no_levels') }}</td>
                             </tr>
                         @endforelse
                     </tbody>

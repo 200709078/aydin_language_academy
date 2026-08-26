@@ -32,7 +32,7 @@
 
 <div id="fsmRoot" class="fsm-root">
     <nav id="fsmPanel" class="fsm-panel">
-        <div class="fsm-body">
+        <div id="fsmAccordion" class="fsm-body">
             @foreach ($fsmLevels as $fsmLevel)
                 <button type="button" class="fsm-item {{ $fsmActiveLevelId == $fsmLevel->id ? 'active' : '' }}"
                     data-bs-toggle="collapse"
@@ -43,7 +43,7 @@
                     <span>{{ mb_strtoupper($fsmLevel->name, 'UTF-8') }}</span>
                     <i class="fa fa-chevron-down fsm-chevron" aria-hidden="true"></i>
                 </button>
-                <div id="fsm-level-collapse-{{ $fsmLevel->id }}" class="fsm-collapse collapse">
+                <div id="fsm-level-collapse-{{ $fsmLevel->id }}" class="fsm-collapse collapse" data-bs-parent="#fsmAccordion">
                     @foreach ($fsmSubLevelsByLevel->get($fsmLevel->id, collect()) as $fsmSubLevel)
                         @auth
                             <a class="fsm-subitem {{ $fsmActiveLevelId == $fsmLevel->id && $fsmActiveSubLevelId == $fsmSubLevel->id ? 'active' : '' }}"
