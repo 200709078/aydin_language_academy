@@ -6,5 +6,6 @@
         'action' => route('placement_test_questions_store'),
         'method' => 'POST',
         'submitLabel' => __('dictt.add_question'),
+        'pageTitle' => __('dictt.placement_test') . ' — ' . __('dictt.addnewquestion'),
     ])
 </x-app-layout>

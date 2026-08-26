@@ -17,12 +17,17 @@ class LevelList extends Component
     public $modalSuccessContent;
     public function mount()
     {
-        $this->levels = model_levels::orderBy('updated_at', 'desc')->get();
+        $this->levels = model_levels::withCount('themes')->orderBy('updated_at', 'desc')->get();
     }
 
     public function confirmDelete($id)
     {
-        $level = model_levels::find($id);
+        $level = model_levels::withCount('themes')->find($id);
+
+        if ($level === null || $level->themes_count > 0) {
+            return;
+        }
+
         $this->levelToDelete = $level;
         $this->modalConfirmTitle = __('dictt.deleteconfirmtitle', ['type' => __('dictt.level')]);
         $this->modalConfirmContent = __('dictt.deleteconfirmcontent', ['type' => Str::lower(__('dictt.level')), 'name' => $level->name]);
@@ -31,14 +36,23 @@ class LevelList extends Component
 
     public function deleteItem()
     {
-        if ($this->levelToDelete) {
-            $level = $this->levelToDelete;
-            $this->levelToDelete->delete();
-            $this->levels = model_levels::orderBy('updated_at', 'desc')->get();
-            $this->modalSuccessTitle = __('dictt.deletesuccesstitle', ['type' => __('dictt.level')]);
-            $this->modalSuccessContent = __('dictt.deletesuccesscontent', ['type' => Str::lower(__('dictt.level')), 'name' => $level->name]);
-            $this->confirmingDelete = false;
+        if (! $this->levelToDelete) {
+            return;
         }
+
+        $level = model_levels::find($this->levelToDelete->id);
+
+        if ($level === null || $level->themes()->exists()) {
+            $this->confirmingDelete = false;
+
+            return;
+        }
+
+        $level->delete();
+        $this->levels = model_levels::withCount('themes')->orderBy('updated_at', 'desc')->get();
+        $this->modalSuccessTitle = __('dictt.deletesuccesstitle', ['type' => __('dictt.level')]);
+        $this->modalSuccessContent = __('dictt.deletesuccesscontent', ['type' => Str::lower(__('dictt.level')), 'name' => $level->name]);
+        $this->confirmingDelete = false;
     }
 
     public function render()

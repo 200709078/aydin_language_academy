@@ -29,7 +29,7 @@ class PlacementTestQuestionContentController extends Controller
     {
         $contents = PlacementTestQuestionContent::query()
             ->with('level')
-            ->withCount(['questions', 'resultContentSnapshots'])
+            ->withCount('questions')
             ->orderBy(
                 PlacementTestLevel::query()
                     ->select('sequence')
@@ -46,8 +46,16 @@ class PlacementTestQuestionContentController extends Controller
      */
     public function create(): View
     {
+        $defaultLevelId = PlacementTestQuestionContent::query()
+            ->latest('id')
+            ->value('placement_test_level_id')
+            ?? PlacementTestLevel::query()
+                ->where('code', 'A1')
+                ->value('id');
+
         return view('admin.placement-test.question-contents.create', [
             'levels' => $this->examLevels(),
+            'defaultLevelId' => $defaultLevelId,
         ]);
     }
 

@@ -28,10 +28,20 @@ class CreateNewUser implements CreatesNewUsers
         ])->validate();
 
         return User::create([
-            'name' => $input['name'],
+            'name' => $this->capitalizeNameWords($input['name']),
             'email' => $input['email'],
             'phone' => $input['phone'],
             'password' => Hash::make($input['password']),
         ]);
+    }
+
+    private function capitalizeNameWords(string $name): string
+    {
+        return preg_replace_callback(
+            '/(^|\s)(\p{L})/u',
+            static fn (array $matches): string => $matches[1]
+                . ($matches[2] === 'i' ? 'İ' : mb_strtoupper($matches[2], 'UTF-8')),
+            $name,
+        ) ?? $name;
     }
 }

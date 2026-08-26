@@ -54,10 +54,13 @@
 
     <div class="card">
         <div class="card-body">
-            <a href="{{ route('themes_list') }}" class="btn btn-sm btn-secondary"><i class="fa fa-arrow-left"></i>
-                {{ __('dictt.backtothemeslist') }}</a>
-            <a href="{{ route('declaration_create', $theme_id) }}" class="btn btn-sm btn-primary float-right">
-                <i class="fa fa-plus"></i> {{ __('dictt.addnewdeclaration') }}</a>
+            <div class="d-flex justify-content-between align-items-center gap-3 mb-3">
+                <a href="{{ route('themes_list') }}" class="btn btn-sm btn-secondary"><i class="fa fa-arrow-left"></i>
+                    {{ __('dictt.backtothemeslist') }}</a>
+                <h5 class="card-title mb-0 text-center flex-grow-1">{{ __('dictt.declarationslist') }}</h5>
+                <a href="{{ route('declaration_create', $theme_id) }}" class="btn btn-sm btn-primary">
+                    <i class="fa fa-plus"></i> {{ __('dictt.addnewdeclaration') }}</a>
+            </div>
             <table class="table table-striped table-sm">
                 <thead>
                     <tr>

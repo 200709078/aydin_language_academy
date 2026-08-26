@@ -45,9 +45,23 @@ class PlacementTestQuestionController extends Controller
      */
     public function create(): View
     {
+        $latestQuestionContent = PlacementTestQuestionContent::query()
+            ->where('is_active', true)
+            ->whereHas('level', fn ($query) => $query->where('has_exam', true))
+            ->withMax('questions', 'content_position')
+            ->latest('id')
+            ->first(['id', 'placement_test_level_id']);
+
+        $defaultContentPosition = $latestQuestionContent === null
+            ? null
+            : ((int) ($latestQuestionContent->questions_max_content_position ?? 0)) + 1;
+
         return view('admin.placement-test.questions.create', [
             'levels' => $this->examLevels(),
             'contents' => $this->questionContentsForForm(),
+            'defaultLevelId' => $latestQuestionContent?->placement_test_level_id,
+            'defaultContentId' => $latestQuestionContent?->id,
+            'defaultContentPosition' => $defaultContentPosition,
         ]);
     }
 
@@ -317,7 +331,7 @@ class PlacementTestQuestionController extends Controller
     }
 
     /**
-     * @return list<array{id: int, level_id: int, label: string}>
+     * @return list<array{id: int, level_id: int, label: string, next_position: int}>
      */
     private function questionContentsForForm(?PlacementTestQuestion $currentQuestion = null): array
     {
@@ -331,6 +345,7 @@ class PlacementTestQuestionController extends Controller
 
         return PlacementTestQuestionContent::query()
             ->with('level')
+            ->withMax('questions', 'content_position')
             ->whereHas('level', fn ($query) => $query->where('has_exam', true))
             ->where(function ($query) use ($currentContentId): void {
                 $query->where('is_active', true);
@@ -355,6 +370,7 @@ class PlacementTestQuestionController extends Controller
                     'id' => $content->id,
                     'level_id' => $content->placement_test_level_id,
                     'label' => "{$content->level->code} · {$typeLabels[$content->type]} #{$content->id} — {$summary}",
+                    'next_position' => ((int) ($content->questions_max_content_position ?? 0)) + 1,
                 ];
             })
             ->values()

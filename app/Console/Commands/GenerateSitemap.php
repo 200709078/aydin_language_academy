@@ -2,11 +2,6 @@
 
 namespace App\Console\Commands;
 
-use App\Models\model_courses;
-use App\Models\model_levels;
-use App\Models\model_sub_levels;
-use App\Models\model_themes;
-use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Spatie\Sitemap\Sitemap;
 use Spatie\Sitemap\Tags\Url;
@@ -40,6 +35,7 @@ class GenerateSitemap extends Command
             ['/', 1.0],
             ['/basarilarimiz', 0.9],
             ['/kampanyalarimiz', 0.9],
+            ['/yorumlar', 0.7],
             ['/kurslarimiz/okul-oncesi', 0.8],
             ['/kurslarimiz/ilkokul', 0.8],
             ['/kurslarimiz/ortaokul', 0.8],
@@ -62,26 +58,9 @@ class GenerateSitemap extends Command
 
         foreach ($staticUrls as [$path, $priority]) {
             $sitemap->add(Url::create($baseUrl . $path)
-                ->setLastModificationDate(Carbon::yesterday())
                 ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
                 ->setPriority($priority));
         }
-
-        foreach (model_levels::all() as $level) {
-            foreach (model_sub_levels::all() as $subLevel) {
-                $sitemap->add(Url::create($baseUrl . '/temalar/' . $level->slug . '/' . $subLevel->slug)
-                    ->setLastModificationDate($level->updated_at)
-                    ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
-                    ->setPriority(0.6));
-            }
-        }
-
-        model_themes::query()->orderBy('id')->each(function (model_themes $theme) use ($baseUrl, $sitemap) {
-            $sitemap->add(Url::create($baseUrl . '/tema/' . $theme->id)
-                ->setLastModificationDate($theme->updated_at)
-                ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
-                ->setPriority(0.6));
-        });
 
         $sitemap->writeToFile(public_path('sitemap.xml'));
 

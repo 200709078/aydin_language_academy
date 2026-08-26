@@ -65,7 +65,7 @@
                             <div class="row g-3">
                                 <div class="col-12">
                                     <label class="form-label" for="name">{{ __('dictt.fullname') }}</label>
-                                    <input id="name" class="form-control border-0" type="text" name="name" value="{{ old('name') }}" required autofocus autocomplete="name" style="height: 55px;">
+                                    <input id="name" class="form-control border-0" type="text" name="name" value="{{ old('name') }}" required autofocus autocomplete="name" autocapitalize="words" data-name-titlecase style="height: 55px;">
                                 </div>
                                 <div class="col-12">
                                     <label class="form-label" for="email">{{ __('dictt.email_address') }}</label>
@@ -127,6 +127,24 @@
 
     <!-- Template Javascript -->
     <script src="{{ asset('frontend/js/main.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const nameInput = document.querySelector('[data-name-titlecase]');
+
+            if (!nameInput) {
+                return;
+            }
+
+            const capitalizeNameWords = (value) => value.replace(/(^|\s)(\p{L})/gu, (match, space, letter) => (
+                `${space}${letter.toLocaleUpperCase('tr-TR')}`
+            ));
+
+            nameInput.value = capitalizeNameWords(nameInput.value);
+            nameInput.addEventListener('input', () => {
+                nameInput.value = capitalizeNameWords(nameInput.value);
+            });
+        });
+    </script>
 </body>
 
 </html>

@@ -107,7 +107,7 @@
                         <a href="{{ route('placement_test_levels_list') }}" class="admin-navigation-collapse-link {{ request()->routeIs('placement_test_levels_list') ? 'is-active' : '' }}"><i class="fas fa-list-ol admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.levels') }}</a>
                         <a href="{{ route('placement_test_question_contents_list') }}" class="admin-navigation-collapse-link {{ request()->routeIs('placement_test_question_contents_list') ? 'is-active' : '' }}"><i class="fas fa-photo-film admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.question_contents') }}</a>
                         <a href="{{ route('placement_test_questions_list') }}" class="admin-navigation-collapse-link {{ request()->routeIs('placement_test_questions_list') ? 'is-active' : '' }}"><i class="fas fa-circle-question admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.questions') }}</a>
-                        <a href="{{ route('placement_test_attempts_list') }}" class="admin-navigation-collapse-link {{ request()->routeIs('placement_test_attempts_*') ? 'is-active' : '' }}"><i class="fas fa-clipboard-list admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.placement_test_attempts') }}</a>
+                        <a href="{{ route('placement_test_attempts_list') }}" class="admin-navigation-collapse-link {{ request()->routeIs('placement_test_attempts_*') ? 'is-active' : '' }}"><i class="fas fa-clipboard-list admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.placement_test_results') }}</a>
                     </div>
                 </div>
 

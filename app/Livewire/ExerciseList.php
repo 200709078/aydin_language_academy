@@ -23,7 +23,12 @@ class ExerciseList extends Component
 
     public function confirmDelete($id)
     {
-        $exercise = model_exercises::find($id);
+        $exercise = model_exercises::withCount('questions')->find($id);
+
+        if ($exercise === null || $exercise->questions_count > 0) {
+            return;
+        }
+
         $this->exerciseToDelete = $exercise;
         $this->modalConfirmTitle = __('dictt.deleteconfirmtitle', ['type' => __('dictt.exercise')]);
         $this->modalConfirmContent = __('dictt.deleteconfirmcontent', ['type' => Str::lower(__('dictt.exercise')), 'name' => $exercise->title]);
@@ -32,19 +37,28 @@ class ExerciseList extends Component
 
     public function deleteItem()
     {
-        if ($this->exerciseToDelete) {
-            $exercise = $this->exerciseToDelete;
-            $this->exerciseToDelete->delete();
-            $this->exercises = model_exercises::orderBy('updated_at', 'desc')->get();
-            $this->modalSuccessTitle = __('dictt.deletesuccesstitle', ['type' => __('dictt.exercise')]);
-            $this->modalSuccessContent = __('dictt.deletesuccesscontent', ['type' => Str::lower(__('dictt.exercise')), 'name' => $exercise->title]);
-            $this->confirmingDelete = false;
+        if (! $this->exerciseToDelete) {
+            return;
         }
+
+        $exercise = model_exercises::find($this->exerciseToDelete->id);
+
+        if ($exercise === null || $exercise->questions()->exists()) {
+            $this->confirmingDelete = false;
+
+            return;
+        }
+
+        $exercise->delete();
+        $this->modalSuccessTitle = __('dictt.deletesuccesstitle', ['type' => __('dictt.exercise')]);
+        $this->modalSuccessContent = __('dictt.deletesuccesscontent', ['type' => Str::lower(__('dictt.exercise')), 'name' => $exercise->title]);
+        $this->confirmingDelete = false;
     }
 
     public function render()
     {
         $exercises = model_exercises::where('theme_id', $this->theme_id)
+            ->withCount('questions')
             ->orderBy('updated_at', 'desc')
             ->get();
         return view('livewire.exercise-list', [

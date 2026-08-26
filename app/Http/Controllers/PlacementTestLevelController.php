@@ -68,7 +68,6 @@ class PlacementTestLevelController extends Controller
         }
 
         $validated = $request->validate([
-            'question_count' => ['nullable', 'integer', 'min:0', 'max:65535'],
             'pass_percentage' => [
                 'required',
                 'integer',
@@ -81,9 +80,6 @@ class PlacementTestLevelController extends Controller
                 },
             ],
         ], [
-            'question_count.integer' => 'Hedef soru sayısı tam sayı olmalıdır.',
-            'question_count.min' => 'Hedef soru sayısı negatif olamaz.',
-            'question_count.max' => 'Hedef soru sayısı en fazla 65535 olabilir.',
             'pass_percentage.required' => 'Geçme yüzdesi zorunludur.',
             'pass_percentage.integer' => 'Geçme yüzdesi tam sayı olmalıdır.',
             'pass_percentage.min' => 'Geçme yüzdesi 0’dan küçük olamaz.',
@@ -93,7 +89,7 @@ class PlacementTestLevelController extends Controller
         return [
             ...$settings,
             'has_exam' => true,
-            'question_count' => $validated['question_count'],
+            'question_count' => $placementTestLevel->question_count,
             'pass_percentage' => $validated['pass_percentage'],
         ];
     }

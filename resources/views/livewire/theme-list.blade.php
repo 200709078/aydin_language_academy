@@ -99,12 +99,17 @@
                                 <a href="{{ route('theme_edit', $theme->id) }}" class="btn btn-sm btn-primary"
                                     title="{{ __('dictt.edit') }}">
                                     <i class="fa fa-pen w-4"></i></a>
-                                <!--  -->
-                                <button wire:click="confirmDelete({{ $theme->id }})" class="btn btn-sm btn-danger"
-                                    title="{{ __('dictt.delete') }}">
-                                    <i class="fa fa-trash"></i>
-                                </button>
-                                <!--  -->
+                                @if ($theme->declarations_count > 0 || $theme->exercises_count > 0)
+                                    <button type="button" class="btn btn-sm btn-secondary opacity-50 cursor-not-allowed" disabled
+                                        title="{{ __('dictt.theme_delete_content_blocked') }}">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                @else
+                                    <button wire:click="confirmDelete({{ $theme->id }})" class="btn btn-sm btn-danger"
+                                        title="{{ __('dictt.delete') }}">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                @endif
                             </td>
                         </tr>
                     @endforeach

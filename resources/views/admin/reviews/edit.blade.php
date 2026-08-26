@@ -2,10 +2,14 @@
     <x-slot name="header">{{ __('dictt.review') }} {{ __('dictt.edit') }} - {{ $review->user?->name ?? ('#' . $review->id) }}</x-slot>
     <div class="card">
         <div class="card-body">
-            <h5 class="card-title">
-                <a href="{{ route('reviews_list') }}" class="btn btn-sm btn-secondary">
-                    <i class="fa fa-arrow-left"></i> {{ __('dictt.cancel') }}</a>
-            </h5>
+            <div class="row align-items-center mb-3">
+                <div class="col-sm-4 mb-2 mb-sm-0">
+                    <a href="{{ route('reviews_list') }}" class="btn btn-sm btn-secondary">
+                        <i class="fa fa-arrow-left"></i> {{ __('dictt.cancel') }}</a>
+                </div>
+                <h5 class="col-sm-4 card-title text-center mb-0">{{ __('dictt.review') }} {{ __('dictt.edit') }}</h5>
+                <div class="d-none d-sm-block col-sm-4"></div>
+            </div>
 
             <dl class="row mb-3 small">
                 <dt class="col-sm-2">{{ __('dictt.member') }}</dt>

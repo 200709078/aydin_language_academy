@@ -1,13 +1,28 @@
+@php
+    $initialLevelId = old('placement_test_level_id', $defaultLevelId);
+@endphp
+
 <x-app-layout>
     <x-slot name="header">{{ __('dictt.add_shared_content') }}</x-slot>
 
     <div class="card">
-        <div class="card-body" x-data="{ type: @js(old('type', 'text')) }">
-            <h5 class="card-title">
-                <a href="{{ route('placement_test_question_contents_list') }}" class="btn btn-sm btn-secondary">
-                    <i class="fa fa-arrow-left"></i> {{ __('dictt.back') }}
-                </a>
-            </h5>
+        <div class="card-body" x-data="{
+            type: @js(old('type', 'text')),
+            mediaFormatHints: {
+                audio: @js(__('dictt.pt_audio_formats_help')),
+                image: @js(__('dictt.pt_image_formats_help')),
+                video: @js(__('dictt.pt_video_formats_help')),
+            },
+        }">
+            <div class="row align-items-center mb-3">
+                <div class="col-sm-4 mb-2 mb-sm-0">
+                    <a href="{{ route('placement_test_question_contents_list') }}" class="btn btn-sm btn-secondary">
+                        <i class="fa fa-arrow-left"></i> {{ __('dictt.back') }}
+                    </a>
+                </div>
+                <h5 class="col-sm-4 card-title text-center mb-0">{{ __('dictt.add_shared_content') }}</h5>
+                <div class="d-none d-sm-block col-sm-4"></div>
+            </div>
 
             <form method="POST" action="{{ route('placement_test_question_contents_store') }}" enctype="multipart/form-data">
                 @csrf
@@ -19,7 +34,7 @@
                             class="form-control @error('placement_test_level_id') is-invalid @enderror" required>
                             <option value="">{{ __('dictt.select_level') }}</option>
                             @foreach ($levels as $level)
-                                <option value="{{ $level->id }}" @selected((string) old('placement_test_level_id') === (string) $level->id)>
+                                <option value="{{ $level->id }}" @selected((string) $initialLevelId === (string) $level->id)>
                                     {{ $level->code }}
                                 </option>
                             @endforeach
@@ -66,18 +81,11 @@
                         @error('media_file')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
-                        <div class="form-text">
-                            {{ __('dictt.pt_media_formats_help') }}
-                        </div>
+                        <div class="form-text" x-text="mediaFormatHints[type]"></div>
                     </div>
                 </div>
 
-                <div class="form-check form-switch mb-4">
-                    <input type="hidden" name="is_active" value="0">
-                    <input id="is_active" name="is_active" type="checkbox" class="form-check-input" value="1"
-                        @checked(old('is_active', true))>
-                    <label for="is_active" class="form-check-label">{{ __('dictt.pt_content_active_label') }}</label>
-                </div>
+                <input type="hidden" name="is_active" value="1">
 
                 <div class="form-group mt-2">
                     <button type="submit" class="btn btn-success btn-sm">{{ __('dictt.add') }}</button>

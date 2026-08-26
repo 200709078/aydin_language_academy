@@ -24,11 +24,9 @@
                     <thead>
                         <tr>
                             <th scope="col">{{ __('dictt.level') }}</th>
-                            <th scope="col">{{ __('dictt.exam') }}</th>
                             <th scope="col">{{ __('dictt.active_questions') }}</th>
                             <th scope="col">{{ __('dictt.points') }}</th>
                             <th scope="col">{{ __('dictt.pass_percentage') }}</th>
-                            <th scope="col">{{ __('dictt.status') }}</th>
                             <th scope="col">{{ __('dictt.operations') }}</th>
                         </tr>
                     </thead>
@@ -36,13 +34,6 @@
                         @forelse ($levels as $level)
                             <tr>
                                 <th scope="row">{{ $level->code }}</th>
-                                <td>
-                                    @if ($level->has_exam)
-                                        <span class="badge text-bg-primary">{{ __('dictt.exists') }}</span>
-                                    @else
-                                        <span class="badge text-bg-secondary">{{ __('dictt.none') }}</span>
-                                    @endif
-                                </td>
                                 <td>{{ $level->has_exam ? $level->active_questions_count : '—' }}</td>
                                 <td>
                                     @if (! $level->has_exam)
@@ -59,13 +50,6 @@
                                     @endif
                                 </td>
                                 <td>
-                                    @if ($level->is_active)
-                                        <span class="badge text-bg-success">{{ __('dictt.active') }}</span>
-                                    @else
-                                        <span class="badge text-bg-secondary">{{ __('dictt.passive') }}</span>
-                                    @endif
-                                </td>
-                                <td>
                                     <a href="{{ route('placement_test_levels_edit', $level) }}" class="btn btn-sm btn-primary"
                                         title="{{ __('dictt.edit') }}">
                                         <i class="fa fa-pen w-4"></i>
@@ -74,16 +58,12 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="7" class="text-center text-muted py-4">{{ __('dictt.pt_no_levels') }}</td>
+                                <td colspan="5" class="text-center text-muted py-4">{{ __('dictt.pt_no_levels') }}</td>
                             </tr>
                         @endforelse
                     </tbody>
                 </table>
             </div>
-
-            <p class="text-muted small mb-0 mt-3">
-                {{ __('dictt.pt_levels_footer_note') }}
-            </p>
         </div>
     </div>
 </x-app-layout>

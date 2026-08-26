@@ -5,5 +5,6 @@
         'action' => route('placement_test_questions_update', $placementTestQuestion),
         'method' => 'PUT',
         'submitLabel' => __('dictt.save_changes'),
+        'pageTitle' => __('dictt.placement_test') . ' — ' . __('dictt.edit_question'),
     ])
 </x-app-layout>

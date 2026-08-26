@@ -33,8 +33,6 @@
                             <th scope="col">{{ __('dictt.type') }}</th>
                             <th scope="col">{{ __('dictt.content_header') }}</th>
                             <th scope="col">{{ __('dictt.linked_questions') }}</th>
-                            <th scope="col">{{ __('dictt.history_snapshots') }}</th>
-                            <th scope="col">{{ __('dictt.status') }}</th>
                             <th scope="col">{{ __('dictt.operations') }}</th>
                         </tr>
                     </thead>
@@ -54,14 +52,6 @@
                                     @endif
                                 </td>
                                 <td>{{ $content->questions_count }}</td>
-                                <td>{{ $content->result_content_snapshots_count }}</td>
-                                <td>
-                                    @if ($content->is_active)
-                                        <span class="badge text-bg-success">{{ __('dictt.active') }}</span>
-                                    @else
-                                        <span class="badge text-bg-secondary">{{ __('dictt.passive') }}</span>
-                                    @endif
-                                </td>
                                 <td>
                                     <div class="flex gap-1">
                                         <a href="{{ route('placement_test_question_contents_edit', $content) }}"
@@ -90,7 +80,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="7" class="text-center text-muted py-4">{{ __('dictt.pt_no_contents') }}</td>
+                                <td colspan="5" class="text-center text-muted py-4">{{ __('dictt.pt_no_contents') }}</td>
                             </tr>
                         @endforelse
                     </tbody>

@@ -39,9 +39,18 @@
         }
     }
 
-    $initialLevelId = old('placement_test_level_id', $currentQuestion?->placement_test_level_id);
-    $initialContentId = old('placement_test_question_content_id', $currentQuestion?->placement_test_question_content_id);
-    $initialContentPosition = old('content_position', $currentQuestion?->content_position);
+    $initialLevelId = old(
+        'placement_test_level_id',
+        $currentQuestion?->placement_test_level_id ?? ($defaultLevelId ?? null),
+    );
+    $initialContentId = old(
+        'placement_test_question_content_id',
+        $currentQuestion?->placement_test_question_content_id ?? ($defaultContentId ?? null),
+    );
+    $initialContentPosition = old(
+        'content_position',
+        $currentQuestion?->content_position ?? ($defaultContentPosition ?? null),
+    );
     $initialCorrectOptionIndex = old('correct_option_index', $savedCorrectOptionIndex);
     $initialIsActive = old('is_active', $currentQuestion?->is_active ?? true);
     $initialPoints = (int) old('points', $currentQuestion?->points ?? 4);
@@ -58,11 +67,23 @@
         contents: @js($contents),
     })">
     <div class="card-body">
-        <h5 class="card-title">
-            <a href="{{ route('placement_test_questions_list') }}" class="btn btn-sm btn-secondary">
-                <i class="fa fa-arrow-left"></i> {{ __('dictt.back') }}
-            </a>
-        </h5>
+        @isset($pageTitle)
+            <div class="row align-items-center mb-3">
+                <div class="col-sm-4 mb-2 mb-sm-0">
+                    <a href="{{ route('placement_test_questions_list') }}" class="btn btn-sm btn-secondary">
+                        <i class="fa fa-arrow-left"></i> {{ __('dictt.back') }}
+                    </a>
+                </div>
+                <h5 class="col-sm-4 card-title text-center mb-0">{{ $pageTitle }}</h5>
+                <div class="d-none d-sm-block col-sm-4"></div>
+            </div>
+        @else
+            <h5 class="card-title">
+                <a href="{{ route('placement_test_questions_list') }}" class="btn btn-sm btn-secondary">
+                    <i class="fa fa-arrow-left"></i> {{ __('dictt.back') }}
+                </a>
+            </h5>
+        @endisset
 
         @if ($currentQuestion !== null && $currentQuestion->levelQuestionSnapshots()->exists())
             <div class="alert alert-info" role="alert">
@@ -75,9 +96,10 @@
             @if ($method !== 'POST')
                 @method($method)
             @endif
+            <input type="hidden" name="is_active" value="{{ $initialIsActive ? '1' : '0' }}">
 
             <div class="row">
-                <div class="col-md-6 mb-3">
+                <div class="col-12 mb-3">
                     <label for="placement_test_level_id" class="form-label">{{ __('dictt.level') }}</label>
                     <select id="placement_test_level_id" name="placement_test_level_id" x-model="levelId" x-on:change="clearInvalidContent()"
                         class="form-control @error('placement_test_level_id') is-invalid @enderror" required>
@@ -89,14 +111,14 @@
                     @error('placement_test_level_id')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
-                    <div class="form-text">{{ __('dictt.pt_c2_no_question') }}</div>
                 </div>
 
-                <div class="col-md-6 mb-3">
+                <div class="col-12 mb-3">
                     <label for="placement_test_question_content_id" class="form-label">{{ __('dictt.question_contents') }}</label>
                     <input type="hidden" name="placement_test_question_content_id" x-bind:value="contentId">
+                    <input type="hidden" name="content_position" x-bind:value="contentPosition">
                     <select id="placement_test_question_content_id" x-model="contentId"
-                        x-on:change="if (!$event.target.value) contentPosition = ''"
+                        x-on:change="selectQuestionContent($event.target.value)"
                         class="form-control @error('placement_test_question_content_id') is-invalid @enderror"
                         x-bind:disabled="!levelId">
                         <option value="">{{ __('dictt.independent_question') }}</option>
@@ -109,23 +131,10 @@
                     @error('placement_test_question_content_id')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
-                    <div class="form-text">{{ __('dictt.pt_contents_filter_help') }}</div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-6 mb-3" x-show="contentId" style="display: none;">
-                    <label for="content_position" class="form-label">{{ __('dictt.group_position') }}</label>
-                    <input id="content_position" name="content_position" type="number" min="1" max="65535" x-model="contentPosition"
-                        x-bind:disabled="!contentId"
-                        class="form-control @error('content_position') is-invalid @enderror">
                     @error('content_position')
-                        <div class="invalid-feedback">{{ $message }}</div>
+                        <div class="text-danger small mt-2">{{ $message }}</div>
                     @enderror
-                    <div class="form-text">{{ __('dictt.pt_group_order_help') }}</div>
                 </div>
-
-                <div class="col-md-6 mb-3" x-bind:class="contentId ? '' : 'd-none'"></div>
             </div>
 
             <div class="form-group mb-3">
@@ -137,30 +146,19 @@
                 @enderror
             </div>
 
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label for="points" class="form-label">{{ __('dictt.question_points') }}</label>
-                    <div x-data="{ points: {{ $initialPoints }} }">
-                        <div class="d-flex justify-content-between align-items-center mb-2">
-                            <span class="text-muted small">1 – 20</span>
-                            <span class="badge text-bg-primary" x-text="points">{{ $initialPoints }}</span>
-                        </div>
-                        <input id="points" name="points" type="range" min="1" max="20" step="1"
-                            class="form-range @error('points') is-invalid @enderror"
-                            x-model.number="points" value="{{ $initialPoints }}" required>
-                        @error('points')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
-                        @enderror
+            <div class="mb-3">
+                <label for="points" class="form-label">{{ __('dictt.question_points') }}</label>
+                <div x-data="{ points: {{ $initialPoints }} }">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="text-muted small">1 – 20</span>
+                        <span class="badge text-bg-primary" x-text="points">{{ $initialPoints }}</span>
                     </div>
-                </div>
-
-                <div class="col-md-6 mb-3 d-flex align-items-end">
-                    <div class="form-check form-switch mb-2">
-                        <input type="hidden" name="is_active" value="0">
-                        <input id="is_active" name="is_active" type="checkbox" class="form-check-input" value="1"
-                            @checked($initialIsActive)>
-                        <label for="is_active" class="form-check-label">{{ __('dictt.pt_question_active_label') }}</label>
-                    </div>
+                    <input id="points" name="points" type="range" min="1" max="20" step="1"
+                        class="form-range @error('points') is-invalid @enderror"
+                        x-model.number="points" value="{{ $initialPoints }}" required>
+                    @error('points')
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                    @enderror
                 </div>
             </div>
 
@@ -232,6 +230,19 @@
                     this.contentId = '';
                     this.contentPosition = '';
                 }
+            },
+
+            selectQuestionContent(contentId) {
+                this.contentId = contentId;
+
+                if (!contentId) {
+                    this.contentPosition = '';
+
+                    return;
+                }
+
+                const selectedContent = this.contents.find((content) => String(content.id) === String(contentId));
+                this.contentPosition = selectedContent?.next_position ?? '';
             },
 
             addOption() {

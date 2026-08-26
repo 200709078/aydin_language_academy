@@ -54,10 +54,13 @@
 
     <div class="card">
         <div class="card-body">
-            <a href="{{ route('themes_list') }}" class="btn btn-sm btn-secondary"><i class="fa fa-arrow-left"></i>
-                {{ __('dictt.backtothemeslist') }} </a>
-            <a href="{{ route('exercise_create', $theme_id) }}" class="btn btn-sm btn-primary float-right"><i
-                    class="fa fa-plus"></i> {{ __('dictt.addnewexercises') }}</a>
+            <div class="d-flex justify-content-between align-items-center gap-3 mb-3">
+                <a href="{{ route('themes_list') }}" class="btn btn-sm btn-secondary"><i class="fa fa-arrow-left"></i>
+                    {{ __('dictt.backtothemeslist') }} </a>
+                <h5 class="card-title mb-0 text-center flex-grow-1">{{ __('dictt.exerciseslist') }}</h5>
+                <a href="{{ route('exercise_create', $theme_id) }}" class="btn btn-sm btn-primary"><i
+                        class="fa fa-plus"></i> {{ __('dictt.addnewexercises') }}</a>
+            </div>
             <table class="table table-striped table-sm">
                 <thead>
                     <tr>
@@ -89,7 +92,7 @@
                             </th>
                             <th class="col-md-2" scope="row">{{ $exercise->video }}</th>
                             <th class="col-md-2" scope="row">{{ $exercise->voice }}</th>
-                            <th class="col-md-2" scope="row">{{ $exercise->details['questions_count'] }}</th>
+                            <th class="col-md-2" scope="row">{{ $exercise->questions_count }}</th>
                             <th>
                                 <div class="flex gap-1">
                                     <a href="{{ route('questions_list', $exercise->id) }}" class="btn btn-sm btn-warning"
@@ -98,12 +101,17 @@
                                     <a href="{{ route('exercise_edit', $exercise->id) }}" class="btn btn-sm btn-primary"
                                         title="{{ __('dictt.edit') }}">
                                         <i class="fa fa-pen w-4"></i></a>
-                                    <!--  -->
-                                    <button wire:click="confirmDelete({{ $exercise->id }})" class="btn btn-sm btn-danger"
-                                        title="{{ __('dictt.delete') }}">
-                                        <i class="fa fa-trash"></i>
-                                    </button>
-                                    <!--  -->
+                                    @if ($exercise->questions_count > 0)
+                                        <button type="button" class="btn btn-sm btn-secondary opacity-50 cursor-not-allowed" disabled
+                                            title="{{ __('dictt.exercise_delete_questions_blocked') }}">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    @else
+                                        <button wire:click="confirmDelete({{ $exercise->id }})" class="btn btn-sm btn-danger"
+                                            title="{{ __('dictt.delete') }}">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    @endif
                                 </div>
                             </th>
                         </tr>

@@ -1,22 +1,17 @@
 <x-app-layout>
     <x-slot name="header">{{ __('dictt.edit_shared_content') }}</x-slot>
 
-    @php
-        $typeLabels = [
-            'text' => __('dictt.content_type_text'),
-            'audio' => __('dictt.content_type_audio'),
-            'image' => __('dictt.content_type_image'),
-            'video' => __('dictt.content_type_video'),
-        ];
-    @endphp
-
     <div class="card">
         <div class="card-body">
-            <h5 class="card-title">
-                <a href="{{ route('placement_test_question_contents_list') }}" class="btn btn-sm btn-secondary">
-                    <i class="fa fa-arrow-left"></i> {{ __('dictt.back') }}
-                </a>
-            </h5>
+            <div class="row align-items-center mb-3">
+                <div class="col-sm-4 mb-2 mb-sm-0">
+                    <a href="{{ route('placement_test_question_contents_list') }}" class="btn btn-sm btn-secondary">
+                        <i class="fa fa-arrow-left"></i> {{ __('dictt.back') }}
+                    </a>
+                </div>
+                <h5 class="col-sm-4 card-title text-center mb-0">{{ __('dictt.edit_shared_content') }}</h5>
+                <div class="d-none d-sm-block col-sm-4"></div>
+            </div>
 
             <form method="POST" action="{{ route('placement_test_question_contents_update', $placementTestQuestionContent) }}"
                 enctype="multipart/form-data">
@@ -24,13 +19,9 @@
                 @method('PUT')
 
                 <div class="row">
-                    <div class="col-md-6 mb-3">
+                    <div class="col-12 mb-3">
                         <label for="level" class="form-label">{{ __('dictt.level') }}</label>
                         <input id="level" type="text" class="form-control" value="{{ $placementTestQuestionContent->level->code }}" readonly>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label for="type" class="form-label">{{ __('dictt.content_type') }}</label>
-                        <input id="type" type="text" class="form-control" value="{{ $typeLabels[$placementTestQuestionContent->type] }}" readonly>
                     </div>
                 </div>
 
@@ -62,15 +53,8 @@
                     </div>
                 @endif
 
-                <div class="form-check form-switch mb-4">
-                    <input type="hidden" name="is_active" value="0">
-                    <input id="is_active" name="is_active" type="checkbox" class="form-check-input" value="1"
-                        @checked(old('is_active', $placementTestQuestionContent->is_active))>
-                    <label for="is_active" class="form-check-label">{{ __('dictt.pt_content_active_label') }}</label>
-                    @error('is_active')
-                        <div class="text-danger small mt-1">{{ $message }}</div>
-                    @enderror
-                </div>
+                <input type="hidden" name="is_active"
+                    value="{{ old('is_active', $placementTestQuestionContent->is_active) ? '1' : '0' }}">
 
                 <div class="form-group mt-2">
                     <button type="submit" class="btn btn-success btn-sm">{{ __('dictt.save_settings') }}</button>

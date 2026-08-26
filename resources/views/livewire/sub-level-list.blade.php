@@ -75,12 +75,17 @@
                                         title="{{ __('dictt.edit') }}">
                                         <i class="fa fa-pen w-4"></i>
                                     </a>
-                                    <!--  -->
-                                    <button wire:click="confirmDelete({{ $sublevel->id }})" class="btn btn-sm btn-danger"
-                                        title="{{ __('dictt.delete') }}">
-                                        <i class="fa fa-trash"></i>
-                                    </button>
-                                    <!--  -->
+                                    @if ($sublevel->themes_count > 0)
+                                        <button type="button" class="btn btn-sm btn-secondary opacity-50 cursor-not-allowed" disabled
+                                            title="{{ __('dictt.sub_level_delete_themes_blocked') }}">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    @else
+                                        <button wire:click="confirmDelete({{ $sublevel->id }})" class="btn btn-sm btn-danger"
+                                            title="{{ __('dictt.delete') }}">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    @endif
                                 </div>
                             </td>
                         </tr>

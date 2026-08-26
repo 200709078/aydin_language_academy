@@ -17,12 +17,17 @@ class SubLevelList extends Component
     public $modalSuccessContent;
     public function mount()
     {
-        $this->sublevels = model_sub_levels::orderBy('updated_at', 'desc')->get();
+        $this->sublevels = model_sub_levels::withCount('themes')->orderBy('updated_at', 'desc')->get();
     }
 
     public function confirmDelete($id)
     {
-        $sublevel = model_sub_levels::find($id);
+        $sublevel = model_sub_levels::withCount('themes')->find($id);
+
+        if ($sublevel === null || $sublevel->themes_count > 0) {
+            return;
+        }
+
         $this->sublevelToDelete = $sublevel;
         $this->modalConfirmTitle = __('dictt.deleteconfirmtitle', ['type' => __('dictt.sublevel')]);
         $this->modalConfirmContent = __('dictt.deleteconfirmcontent', ['type' => Str::lower(__('dictt.sublevel')), 'name' => $sublevel->name]);
@@ -31,9 +36,20 @@ class SubLevelList extends Component
 
     public function deleteItem()
     {
-        $sublevel = $this->sublevelToDelete;
-        $this->sublevelToDelete->delete();
-        $this->sublevels = model_sub_levels::orderBy('updated_at', 'desc')->get();
+        if (! $this->sublevelToDelete) {
+            return;
+        }
+
+        $sublevel = model_sub_levels::find($this->sublevelToDelete->id);
+
+        if ($sublevel === null || $sublevel->themes()->exists()) {
+            $this->confirmingDelete = false;
+
+            return;
+        }
+
+        $sublevel->delete();
+        $this->sublevels = model_sub_levels::withCount('themes')->orderBy('updated_at', 'desc')->get();
         $this->modalSuccessTitle = __('dictt.deletesuccesstitle', ['type' => __('dictt.sublevel')]);
         $this->modalSuccessContent = __('dictt.deletesuccesscontent', ['type' => Str::lower(__('dictt.sublevel')), 'name' => $sublevel->name]);
         $this->confirmingDelete = false;

@@ -1,5 +1,5 @@
 <x-app-layout>
-    <x-slot name="header">{{ __('dictt.placement_test_attempts') }}</x-slot>
+    <x-slot name="header">{{ __('dictt.placement_test_results') }}</x-slot>
 
     @if (session('success') || session('error'))
         <div class="alert {{ session('success') ? 'alert-success' : 'alert-danger' }} alert-dismissible fade show" role="alert">
@@ -10,14 +10,13 @@
 
     <div class="card">
         <div class="card-body">
-            <h5 class="card-title mb-1">{{ __('dictt.placement_test_attempts') }}</h5>
+            <h5 class="card-title mb-1">{{ __('dictt.placement_test_results') }}</h5>
             <p class="text-muted small mb-3">{{ __('dictt.placement_test_attempts_note') }}</p>
 
             <div class="table-responsive">
                 <table class="table table-striped table-sm align-middle mb-0">
                     <thead>
                         <tr>
-                            <th scope="col">#</th>
                             <th scope="col">{{ __('dictt.member') }}</th>
                             <th scope="col">{{ __('dictt.email') }}</th>
                             <th scope="col">{{ __('dictt.placement_test_submitted_at') }}</th>
@@ -29,7 +28,6 @@
                     <tbody>
                         @forelse ($attempts as $placementTest)
                             <tr>
-                                <th scope="row">{{ $placementTest->id }}</th>
                                 <td class="text-break">{{ $placementTest->user?->name ?? ('#' . $placementTest->user_id) }}</td>
                                 <td class="text-break">{{ $placementTest->user?->email ?? '—' }}</td>
                                 <td class="text-nowrap">{{ $placementTest->submitted_at?->format('d.m.Y H:i') ?? '—' }}</td>
@@ -51,7 +49,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="7" class="text-center text-muted py-4">{{ __('dictt.placement_test_attempts_empty') }}</td>
+                                <td colspan="6" class="text-center text-muted py-4">{{ __('dictt.placement_test_attempts_empty') }}</td>
                             </tr>
                         @endforelse
                     </tbody>

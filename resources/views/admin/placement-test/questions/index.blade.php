@@ -24,9 +24,6 @@
             </a>
 
             <h5 class="card-title mb-1">{{ __('dictt.pt_questions_title') }}</h5>
-            <p class="text-muted small mb-3">
-                {{ __('dictt.pt_questions_note') }}
-            </p>
 
             <div class="table-responsive">
                 <table class="table table-striped table-sm align-middle mb-0">
@@ -35,11 +32,8 @@
                             <th scope="col">{{ __('dictt.level') }}</th>
                             <th scope="col">{{ __('dictt.question') }}</th>
                             <th scope="col">{{ __('dictt.question_contents') }}</th>
-                            <th scope="col">{{ __('dictt.group_order') }}</th>
                             <th scope="col">{{ __('dictt.points') }}</th>
                             <th scope="col">{{ __('dictt.options_col') }}</th>
-                            <th scope="col">{{ __('dictt.history_snapshots') }}</th>
-                            <th scope="col">{{ __('dictt.status') }}</th>
                             <th scope="col">{{ __('dictt.operations') }}</th>
                         </tr>
                     </thead>
@@ -58,17 +52,8 @@
                                         <span class="text-muted">{{ __('dictt.independent') }}</span>
                                     @endif
                                 </td>
-                                <td>{{ $question->content_position ?? '—' }}</td>
                                 <td>{{ number_format((float) $question->points, 2, ',', '.') }}</td>
                                 <td>{{ $question->options_count }}</td>
-                                <td>{{ $question->level_question_snapshots_count }}</td>
-                                <td>
-                                    @if ($question->is_active)
-                                        <span class="badge text-bg-success">{{ __('dictt.active') }}</span>
-                                    @else
-                                        <span class="badge text-bg-secondary">{{ __('dictt.passive') }}</span>
-                                    @endif
-                                </td>
                                 <td>
                                     @php
                                         $deletePrompt = $question->level_question_snapshots_count > 0
@@ -94,7 +79,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="9" class="text-center text-muted py-4">{{ __('dictt.pt_no_questions') }}</td>
+                                <td colspan="6" class="text-center text-muted py-4">{{ __('dictt.pt_no_questions') }}</td>
                             </tr>
                         @endforelse
                     </tbody>
