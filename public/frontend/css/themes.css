@@ -17,12 +17,12 @@
     text-decoration: underline;
     text-underline-offset: 3px;
     color: #374151;
-    transition: color 0.2s ease;
+    transition: font-weight 0.2s ease;
 }
 
 .themes-crumb .breadcrumb-item a:hover,
 .themes-crumb .breadcrumb-item a:focus-visible {
-    color: #25bebc;
+    font-weight: 700;
 }
 
 /* Tema kartları: kompakt ve modern */

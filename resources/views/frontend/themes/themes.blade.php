@@ -41,8 +41,9 @@
         <div class="container">
             <nav aria-label="breadcrumb animated slideInDown" class="mb-5 wow fadeIn" data-wow-delay="0.1s">
                 <ol class="breadcrumb text-uppercase themes-crumb mb-0 py-3 px-4">
-                    <li class="breadcrumb-item">{{ $level->name }}</li>
-                    <li class="breadcrumb-item">{{ $subLevel->name }}</li>
+                    <li class="breadcrumb-item text-primary">{{ __('dictt.documents') }}</li>
+                    <li class="breadcrumb-item text-primary">{{ $level->name }}</li>
+                    <li class="breadcrumb-item text-primary">{{ $subLevel->name }}</li>
                     <li class="breadcrumb-item text-primary active" aria-current="page">{{ __('dictt.themes') }}</li>
                 </ol>
             </nav>
@@ -83,8 +84,6 @@
 
     @include('frontend.partials.footer')
 
-    <!-- Back to Top -->
-    <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
 
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>

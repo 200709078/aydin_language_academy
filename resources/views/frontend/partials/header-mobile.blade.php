@@ -7,9 +7,16 @@
     @endphp
 
     <nav class="navbar navbar-expand-xl bg-light navbar-light sticky-top p-0 wow fadeIn" data-wow-delay="0.1s">
-        <a href="{{ route('home') }}" class="navbar-brand d-flex align-items-center px-4 px-xl-5">
+        <button type="button"
+            class="navbar-brand d-flex align-items-center px-4 px-xl-5"
+            data-bs-toggle="collapse"
+            data-bs-target="#frontendMobileNavbarCollapse"
+            aria-controls="frontendMobileNavbarCollapse"
+            aria-expanded="false"
+            aria-label="{{ $headerLocale === 'tr' ? 'Menüyü aç/kapat' : 'Toggle menu' }}">
             <img src="{{ asset('frontend/images/logo/logo-2.png') }}" alt="Aydın Language Academy" style="height: 56px; width: auto;">
-        </a>
+            <span class="frontend-brand-wordmark">ALA</span>
+        </button>
         <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#frontendMobileNavbarCollapse" aria-controls="frontendMobileNavbarCollapse" aria-expanded="false">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -47,29 +54,35 @@
                 </div>
                 <a href="{{ route($headerNavigation['placement_test']['route']) }}" class="nav-item nav-link {{ $headerNavigation['placement_test']['is_active'] ? 'active' : '' }}"><i class="fa fa-clipboard-check fa-sm fa-fw me-2" aria-hidden="true"></i>{{ $headerNavigation['placement_test']['label'] }}</a>
                 <hr class="mobile-documents-divider">
-                <section class="mobile-documents-section" aria-label="{{ __('dictt.documents') }}">
-                    <div class="mobile-documents-heading">
+                <div class="nav-item dropdown frontend-documents-dropdown">
+                    <a href="#" class="nav-link dropdown-toggle mobile-dropdown-toggle mobile-documents-heading {{ $headerHasActiveDocument ? 'active' : '' }}" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
                         <i class="fa fa-folder-open fa-sm fa-fw me-2" aria-hidden="true"></i>
                         <span>{{ __('dictt.documents') }}</span>
-                    </div>
-                    <div id="frontendMobileDocumentGroups">
+                    </a>
+                    <div id="frontendMobileDocumentGroups" class="dropdown-menu bg-light rounded-0 rounded-bottom m-0">
                         @foreach ($headerDocumentLevels as $headerDocumentLevel)
                             @php
                                 $mobileDocumentLevelCollapseId = 'frontendMobileDocumentLevel' . $headerDocumentLevel->id;
+                                $mobileDocumentSubLevels = $headerDocumentSubLevelsByLevel->get($headerDocumentLevel->id, collect());
+                                $mobileDocumentLevelIsActive = $headerActiveDocumentLevelId == $headerDocumentLevel->id;
                             @endphp
-                            <button type="button" class="nav-item nav-link mobile-document-level-toggle border-0 bg-transparent w-100 text-start" data-bs-toggle="collapse" data-bs-target="#{{ $mobileDocumentLevelCollapseId }}" aria-controls="{{ $mobileDocumentLevelCollapseId }}" aria-expanded="false"><i class="fa fa-book-open fa-sm fa-fw me-2" aria-hidden="true"></i>{{ $headerDocumentLevel->name }}</button>
+                            <button type="button" class="nav-item nav-link mobile-document-level-toggle border-0 bg-transparent w-100 text-start {{ $mobileDocumentLevelIsActive ? 'active' : '' }}" data-bs-toggle="collapse" data-bs-target="#{{ $mobileDocumentLevelCollapseId }}" aria-controls="{{ $mobileDocumentLevelCollapseId }}" aria-expanded="false"><i class="fa fa-book-open fa-sm fa-fw me-2" aria-hidden="true"></i>{{ mb_strtoupper($headerDocumentLevel->name, 'UTF-8') }}</button>
                             <div id="{{ $mobileDocumentLevelCollapseId }}" class="collapse mobile-document-level-content" data-bs-parent="#frontendMobileDocumentGroups">
-                                @foreach ($headerDocumentSubLevels as $headerDocumentSubLevel)
+                                @foreach ($mobileDocumentSubLevels as $headerDocumentSubLevel)
+                                    @php
+                                        $mobileDocumentSubLevelIsActive = $mobileDocumentLevelIsActive
+                                            && $headerActiveDocumentSubLevelId == $headerDocumentSubLevel->id;
+                                    @endphp
                                     @auth
-                                        <a href="{{ route('frontend.themes.list', [$headerDocumentLevel->slug, $headerDocumentSubLevel->slug]) }}" class="nav-item nav-link mobile-document-subitem"><i class="fa fa-circle fa-xs fa-fw me-2" aria-hidden="true"></i>{{ $headerDocumentSubLevel->name }}</a>
+                                        <a href="{{ route('frontend.themes.list', [$headerDocumentLevel->slug, $headerDocumentSubLevel->slug]) }}" class="nav-item nav-link mobile-document-subitem {{ $mobileDocumentSubLevelIsActive ? 'active' : '' }}"><i class="fa fa-circle fa-xs fa-fw me-2" aria-hidden="true"></i>{{ mb_convert_case($headerDocumentSubLevel->name, MB_CASE_TITLE, 'UTF-8') }}</a>
                                     @else
-                                        <a href="{{ route('frontend.documents') }}" class="nav-item nav-link mobile-document-subitem"><i class="fa fa-circle fa-xs fa-fw me-2" aria-hidden="true"></i>{{ $headerDocumentSubLevel->name }}</a>
+                                        <a href="{{ route('frontend.documents') }}" class="nav-item nav-link mobile-document-subitem {{ $mobileDocumentSubLevelIsActive ? 'active' : '' }}"><i class="fa fa-circle fa-xs fa-fw me-2" aria-hidden="true"></i>{{ mb_convert_case($headerDocumentSubLevel->name, MB_CASE_TITLE, 'UTF-8') }}</a>
                                     @endauth
                                 @endforeach
                             </div>
                         @endforeach
                     </div>
-                </section>
+                </div>
                 <hr class="mobile-documents-divider">
                 <a href="{{ route('changeLanguage', $headerLocale === 'tr' ? 'en' : 'tr') }}" class="nav-item nav-link">
                     <i class="fa fa-globe fa-sm fa-fw me-2" aria-hidden="true"></i>

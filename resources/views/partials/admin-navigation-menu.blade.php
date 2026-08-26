@@ -9,6 +9,10 @@
             this.sidebarOpen = !this.sidebarOpen;
             localStorage.setItem('adminSidebarOpen', this.sidebarOpen ? 'true' : 'false');
         },
+        collapseSidebar() {
+            this.sidebarOpen = false;
+            localStorage.setItem('adminSidebarOpen', 'false');
+        },
         toggleGroup(group) {
             if (!this.sidebarOpen) {
                 this.sidebarOpen = true;
@@ -20,9 +24,15 @@
         }
     }"
     :class="{ 'is-collapsed': ! sidebarOpen }"
+    @click="if ($event.target.closest('a')) collapseSidebar()"
     class="admin-navigation border-b border-gray-200 bg-white shadow-sm">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <a href="{{ route('admin') }}" class="admin-navigation-brand">
+        <a href="{{ route('admin') }}"
+            class="admin-navigation-brand"
+            role="button"
+            @click.prevent.stop="toggleSidebar()"
+            :aria-expanded="sidebarOpen.toString()"
+            aria-label="{{ app()->getLocale() === 'tr' ? 'Menüyü aç/kapat' : 'Toggle menu' }}">
             <img src="{{ asset('frontend/images/logo/favicon.png') }}" alt="AYDIN LANGUAGE ACADEMY" class="admin-navigation-brand-logo">
             <span class="admin-navigation-label">ALA</span>
         </a>

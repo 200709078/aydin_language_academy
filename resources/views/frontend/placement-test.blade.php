@@ -52,7 +52,7 @@
                         @auth
                             <p class="mb-0">{{ __('dictt.placement_test_welcome', ['name' => auth()->user()->name]) }}</p>
                         @else
-                            <p class="mb-0">{!! __('dictt.placement_test_login_prompt', ['link' => '<a class="text-primary" href="' . route('frontend.login', ['return' => request()->route()?->getName()]) . '">' . __('dictt.login') . '</a>']) !!}</p>
+                            <p class="mb-0">{!! __('dictt.placement_test_login_prompt', ['link' => '<a class="text-primary" href="' . route('frontend.login', ['return' => request()->route()?->getName()]) . '">' . __('dictt.login_uppercase') . '</a>']) !!}</p>
                         @endauth
                     </div>
 
@@ -108,8 +108,6 @@
 
     @include('frontend.partials.footer')
 
-    <!-- Back to Top -->
-    <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
 
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>

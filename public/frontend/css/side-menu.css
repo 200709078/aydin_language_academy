@@ -68,15 +68,23 @@
     gap: 0.5rem;
     width: 100%;
     padding: 0.75rem 1rem;
-    font-size: 0.875rem;
-    font-weight: 600;
-    line-height: 1.25rem;
-    letter-spacing: 0.02em;
-    color: #374151;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.5;
+    letter-spacing: normal;
+    color: var(--dark);
     text-align: left;
+    text-transform: uppercase;
     white-space: nowrap;
     background: transparent;
     border: 0;
+    transition: color 150ms ease-in-out;
+}
+
+.fsm-item:hover,
+.fsm-item:focus-visible,
+.fsm-item.active {
+    color: var(--primary);
 }
 
 .fsm-bullet {
@@ -111,14 +119,20 @@
     align-items: center;
     gap: 0.5rem;
     padding: 0.5rem 0.75rem;
-    font-size: 0.8125rem;
-    color: #6b7280;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.5;
+    letter-spacing: normal;
+    color: var(--dark);
     text-decoration: none;
+    text-transform: none;
+    transition: color 150ms ease-in-out;
 }
 
 a.fsm-subitem:hover,
-a.fsm-subitem:focus-visible {
-    color: #25bebc;
+a.fsm-subitem:focus-visible,
+a.fsm-subitem.active {
+    color: var(--primary);
 }
 
 .fsm-subbullet {
@@ -138,19 +152,29 @@ a.fsm-subitem:focus-visible {
     flex: 0 0 2.5rem;
     width: 2.5rem;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    gap: 0.5rem;
     padding: 0;
     background: transparent;
     color: inherit;
     border: 0;
     border-left: 1px solid #e5e7eb;
     cursor: pointer;
+    transition: color 150ms ease-in-out;
 }
 
 .fsm-strip:hover .fsm-strip-text,
-.fsm-strip:focus-visible .fsm-strip-text {
-    color: #111827;
+.fsm-strip:focus-visible .fsm-strip-text,
+.fsm-strip.active .fsm-strip-text {
+    color: var(--primary);
+}
+
+.fsm-strip:hover,
+.fsm-strip:focus-visible,
+.fsm-strip.active {
+    color: var(--primary);
 }
 
 .fsm-strip:focus-visible {
@@ -158,14 +182,28 @@ a.fsm-subitem:focus-visible {
 }
 
 .fsm-strip-text {
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: #d32f2f;
-    letter-spacing: 0.7em;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--dark);
+    letter-spacing: normal;
+    text-transform: uppercase;
     white-space: nowrap;
     writing-mode: vertical-rl;
     /* Harfler sola yatarak aşağıdan yukarıya okunur. */
     transform: rotate(180deg);
+    transition: color 150ms ease-in-out;
+}
+
+.fsm-strip-chevron {
+    flex-shrink: 0;
+    font-size: 0.75rem;
+    transform: rotate(90deg);
+    transition: transform 180ms ease;
+}
+
+/* Açıkken sola, kapalıyken aşağı bakar. */
+.fsm-strip[aria-expanded="false"] .fsm-strip-chevron {
+    transform: rotate(0deg);
 }
 
 .fsm-root.is-closed .fsm-strip {

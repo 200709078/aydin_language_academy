@@ -34,6 +34,7 @@ return [
     'documents_coming_soon' => 'Döküman içerikleri hazırlanıyor.',
     'documents_login_prompt' => 'İçeriği görmek için :link yapınız.',
     'placement_test_login_prompt' => 'İçeriği görmek için lütfen :link yapınız.',
+    'login_uppercase' => 'GİRİŞ',
     'placement_test_close' => 'Kapat',
     'placement_test_exam_info' => 'Sınav Bilgileri',
     'placement_test_rules_title' => 'Seviye Tespit Sınavı Kuralları',

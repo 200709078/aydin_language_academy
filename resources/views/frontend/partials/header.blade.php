@@ -9,8 +9,47 @@
     @php
         $headerLocale = session('locale') ?? config('app.locale');
         $headerReturnRoute = request()->route()?->getName();
-        $headerDocumentLevels = \App\Models\model_levels::query()->orderBy('id')->get(['id', 'name', 'slug']);
-        $headerDocumentSubLevels = \App\Models\model_sub_levels::query()->orderBy('id')->get(['id', 'name', 'slug']);
+        $headerDocumentThemePairs = \App\Models\model_themes::query()
+            ->select(['level_id', 'sub_level_id'])
+            ->whereNotNull('level_id')
+            ->whereNotNull('sub_level_id')
+            ->distinct()
+            ->with('sub_levels:id,name,slug')
+            ->orderBy('level_id')
+            ->orderBy('sub_level_id')
+            ->get();
+        $headerDocumentSubLevelsByLevel = $headerDocumentThemePairs
+            ->groupBy('level_id')
+            ->map(fn ($themePairs) => $themePairs
+                ->map(fn ($themePair) => $themePair->sub_levels)
+                ->filter()
+                ->values())
+            ->filter(fn ($subLevels) => $subLevels->isNotEmpty());
+        $headerDocumentLevels = \App\Models\model_levels::query()
+            ->whereIn('id', $headerDocumentSubLevelsByLevel->keys()->all())
+            ->orderBy('id')
+            ->get(['id', 'name', 'slug']);
+        $headerActiveDocumentLevelId = null;
+        $headerActiveDocumentSubLevelId = null;
+
+        if (request()->routeIs('frontend.themes.list')) {
+            $headerActiveDocumentLevel = $headerDocumentLevels
+                ->firstWhere('slug', request()->route('level_slug'));
+            $headerActiveDocumentSubLevel = $headerActiveDocumentLevel
+                ? $headerDocumentSubLevelsByLevel
+                    ->get($headerActiveDocumentLevel->id, collect())
+                    ->firstWhere('slug', request()->route('sub_level_slug'))
+                : null;
+
+            $headerActiveDocumentLevelId = $headerActiveDocumentLevel?->id;
+            $headerActiveDocumentSubLevelId = $headerActiveDocumentSubLevel?->id;
+        } elseif (request()->routeIs('frontend.themes.detail') && isset($theme)) {
+            $headerActiveDocumentLevelId = $theme->level_id;
+            $headerActiveDocumentSubLevelId = $theme->sub_level_id;
+        }
+
+        $headerHasActiveDocument = $headerActiveDocumentLevelId !== null
+            && $headerActiveDocumentSubLevelId !== null;
 
         $headerNavigation = [
             'home' => [
@@ -93,14 +132,20 @@
                 'headerLocale' => $headerLocale,
                 'headerReturnRoute' => $headerReturnRoute,
                 'headerDocumentLevels' => $headerDocumentLevels,
-                'headerDocumentSubLevels' => $headerDocumentSubLevels,
+                'headerDocumentSubLevelsByLevel' => $headerDocumentSubLevelsByLevel,
+                'headerActiveDocumentLevelId' => $headerActiveDocumentLevelId,
+                'headerActiveDocumentSubLevelId' => $headerActiveDocumentSubLevelId,
+                'headerHasActiveDocument' => $headerHasActiveDocument,
             ])
         </div>
     </header>
 
     @include('frontend.partials.side-menu', [
         'fsmLevels' => $headerDocumentLevels,
-        'fsmSubLevels' => $headerDocumentSubLevels,
+        'fsmSubLevelsByLevel' => $headerDocumentSubLevelsByLevel,
+        'fsmActiveLevelId' => $headerActiveDocumentLevelId,
+        'fsmActiveSubLevelId' => $headerActiveDocumentSubLevelId,
+        'fsmHasActiveDocument' => $headerHasActiveDocument,
     ])
 
     <script src="{{ asset('frontend/js/whatsapp-link.js') }}?v=1" defer></script>

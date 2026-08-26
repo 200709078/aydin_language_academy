@@ -34,6 +34,7 @@ return [
     'documents_coming_soon' => 'Document content is being prepared.',
     'documents_login_prompt' => 'Please :link to view the content.',
     'placement_test_login_prompt' => 'Please :link to view the content.',
+    'login_uppercase' => 'LOG IN',
     'placement_test_close' => 'Close',
     'placement_test_exam_info' => 'Exam Information',
     'placement_test_rules_title' => 'Placement Test Rules',
