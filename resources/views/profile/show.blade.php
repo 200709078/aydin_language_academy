@@ -1,4 +1,8 @@
-<x-app-layout>
+@php
+    $profileLayout = auth()->user()?->type === 'admin' ? 'app-layout' : 'frontend-profile-layout';
+@endphp
+
+<x-dynamic-component :component="$profileLayout">
     <x-slot name="header">
         {{__('dictt.profile')}}
     </x-slot>
@@ -44,4 +48,4 @@
             @endif
         </div>
     </div>
-</x-app-layout>
+</x-dynamic-component>

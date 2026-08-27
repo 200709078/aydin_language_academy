@@ -22,9 +22,12 @@ class CreateNewUser implements CreatesNewUsers
         Validator::make($input, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'phone' => ['required', 'string', 'max:32'],
+            'phone' => ['required', 'string', 'regex:/^\+[1-9][0-9]{7,14}$/'],
             'password' => $this->passwordRules(),
             'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['accepted', 'required'] : '',
+        ], [
+            'phone.required' => __('dictt.required_item', ['name' => __('dictt.phone')]),
+            'phone.regex' => __('dictt.phone_international_format'),
         ])->validate();
 
         return User::create([

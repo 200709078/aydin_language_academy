@@ -1,5 +1,5 @@
 <nav x-data="{
-        sidebarOpen: (function () { var v = localStorage.getItem('adminSidebarOpen'); return v === null ? true : v === 'true'; })(),
+        sidebarOpen: (function () { var v = localStorage.getItem('adminSidebarOpenV2'); return v === null ? true : v === 'true'; })(),
         themesOpen: {{ request()->routeIs('levels_list', 'sub_levels_list', 'themes_list') ? 'true' : 'false' }},
         siteSettingsOpen: {{ request()->routeIs('courses_list', 'reviews_list', 'review_edit') ? 'true' : 'false' }},
         placementOpen: {{ request()->routeIs('placement_test_levels_*', 'placement_test_question_contents_*', 'placement_test_questions_*', 'placement_test_attempts_*') ? 'true' : 'false' }},
@@ -7,12 +7,12 @@
         languageOpen: false,
         toggleSidebar() {
             this.sidebarOpen = !this.sidebarOpen;
-            localStorage.setItem('adminSidebarOpen', this.sidebarOpen ? 'true' : 'false');
+            localStorage.setItem('adminSidebarOpenV2', this.sidebarOpen ? 'true' : 'false');
         },
         toggleGroup(group) {
             if (!this.sidebarOpen) {
                 this.sidebarOpen = true;
-                localStorage.setItem('adminSidebarOpen', 'true');
+                localStorage.setItem('adminSidebarOpenV2', 'true');
                 this[group] = true;
                 return;
             }

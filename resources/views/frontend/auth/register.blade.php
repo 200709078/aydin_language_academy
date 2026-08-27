@@ -73,7 +73,10 @@
                                 </div>
                                 <div class="col-12">
                                     <label class="form-label" for="phone">{{ __('dictt.phone_number') }}</label>
-                                    <input id="phone" class="form-control border-0" type="tel" name="phone" value="{{ old('phone') }}" required autocomplete="tel" inputmode="tel" maxlength="32" style="height: 55px;">
+                                    <input id="phone" class="form-control border-0" type="tel" name="phone" value="{{ old('phone') }}"
+                                        required autocomplete="tel" inputmode="tel" maxlength="16" pattern="\+[1-9][0-9]{7,14}"
+                                        placeholder="+905XXXXXXXXX" title="{{ __('dictt.phone_international_format') }}"
+                                        data-international-phone style="height: 55px;">
                                 </div>
                                 <div class="col-12 col-sm-6">
                                     <label class="form-label" for="password">{{ __('dictt.password') }}</label>
@@ -143,6 +146,31 @@
             nameInput.addEventListener('input', () => {
                 nameInput.value = capitalizeNameWords(nameInput.value);
             });
+
+            const phoneInput = document.querySelector('[data-international-phone]');
+            const defaultPrefix = '+905';
+            const normalizePhone = (value) => {
+                const digits = value.replace(/\D/g, '');
+
+                return digits === '' ? '' : '+' + digits.slice(0, 15);
+            };
+
+            if (phoneInput) {
+                if (phoneInput.value) {
+                    phoneInput.value = normalizePhone(phoneInput.value);
+                }
+
+                phoneInput.addEventListener('focus', () => {
+                    if (!phoneInput.value) {
+                        phoneInput.value = defaultPrefix;
+                        phoneInput.setSelectionRange(defaultPrefix.length, defaultPrefix.length);
+                    }
+                });
+
+                phoneInput.addEventListener('input', () => {
+                    phoneInput.value = normalizePhone(phoneInput.value);
+                });
+            }
         });
     </script>
 </body>

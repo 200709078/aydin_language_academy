@@ -73,7 +73,8 @@
                             @csrf
                             <div class="form-floating mb-2">
                                 <input class="form-control" name="fullname" type="text"
-                                    placeholder="{{ __('dictt.fullname') }}" value="{{ old('fullname', auth()->user()?->name) }}" />
+                                    placeholder="{{ __('dictt.fullname') }}" value="{{ old('fullname', auth()->user()?->name) }}"
+                                    autocomplete="name" autocapitalize="words" data-name-titlecase />
                                 <label>{{ __('dictt.fullname') }} :</label>
                             </div>
                             <div class="form-floating mb-2">
@@ -81,7 +82,10 @@
                                 <label>{{ __('dictt.email') }} :</label>
                             </div>
                             <div class="form-floating mb-2">
-                                <input class="form-control" name="telephone" type="tel" placeholder="{{ __('dictt.phone') }}" value="{{ old('telephone', auth()->user()?->phone) }}" />
+                                <input class="form-control" name="telephone" type="tel"
+                                    placeholder="+905XXXXXXXXX" value="{{ old('telephone', auth()->user()?->phone) }}"
+                                    required autocomplete="tel" inputmode="tel" maxlength="16" pattern="\+[1-9][0-9]{7,14}"
+                                    title="{{ __('dictt.phone_international_format') }}" data-international-phone />
                                 <label>{{ __('dictt.phone') }} :</label>
                             </div>
                             <div class="form-floating mb-2">
@@ -119,6 +123,49 @@
 
     <!-- Template Javascript -->
     <script src="{{ asset('frontend/js/main.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const nameInput = document.querySelector('[data-name-titlecase]');
+
+            if (!nameInput) {
+                return;
+            }
+
+            const capitalizeNameWords = (value) => value.replace(/(^|\s)(\p{L})/gu, (match, space, letter) => (
+                space + letter.toLocaleUpperCase('tr-TR')
+            ));
+
+            nameInput.value = capitalizeNameWords(nameInput.value);
+            nameInput.addEventListener('input', () => {
+                nameInput.value = capitalizeNameWords(nameInput.value);
+            });
+
+            const phoneInput = document.querySelector('[data-international-phone]');
+            const defaultPrefix = '+905';
+            const normalizePhone = (value) => {
+                const digits = value.replace(/\D/g, '');
+
+                return digits === '' ? '' : '+' + digits.slice(0, 15);
+            };
+
+            if (phoneInput) {
+                if (phoneInput.value) {
+                    phoneInput.value = normalizePhone(phoneInput.value);
+                }
+
+                phoneInput.addEventListener('focus', () => {
+                    if (!phoneInput.value) {
+                        phoneInput.value = defaultPrefix;
+                        phoneInput.setSelectionRange(defaultPrefix.length, defaultPrefix.length);
+                    }
+                });
+
+                phoneInput.addEventListener('input', () => {
+                    phoneInput.value = normalizePhone(phoneInput.value);
+                });
+            }
+        });
+    </script>
 </body>
 
 </html>

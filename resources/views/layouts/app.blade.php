@@ -31,8 +31,6 @@
     <div class="min-h-screen bg-gray-100">
         @if (Auth::check() && Auth::user()->type === 'admin')
             @include('partials.admin-navigation-menu')
-        @else
-            @livewire('navigation-menu')
         @endif
 
         <div class="py-6">

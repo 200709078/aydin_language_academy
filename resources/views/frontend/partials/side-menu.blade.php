@@ -30,7 +30,7 @@
     $fsmHasActiveDocument ??= false;
 @endphp
 
-<div id="fsmRoot" class="fsm-root">
+<div id="fsmRoot" class="fsm-root is-closed">
     <nav id="fsmPanel" class="fsm-panel">
         <div id="fsmAccordion" class="fsm-body">
             @foreach ($fsmLevels as $fsmLevel)
@@ -58,7 +58,7 @@
             @endforeach
         </div>
         <button type="button" id="fsmStrip" class="fsm-strip {{ $fsmHasActiveDocument ? 'active' : '' }}"
-            aria-expanded="true"
+            aria-expanded="false"
             aria-label="{{ __('dictt.documents') }}">
             <i class="fa fa-chevron-down fsm-strip-chevron" aria-hidden="true"></i>
             <span class="fsm-strip-text">{{ strtoupper(__('dictt.documents')) }}</span>
@@ -66,4 +66,4 @@
     </nav>
 </div>
 
-<script src="{{ asset('frontend/js/side-menu.js') }}?v=2" defer></script>
+<script src="{{ asset('frontend/js/side-menu.js') }}?v=3" defer></script>

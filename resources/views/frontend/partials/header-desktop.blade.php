@@ -45,6 +45,11 @@
                     <i class="fa fa-globe fa-sm fa-fw me-1" aria-hidden="true"></i>
                     <span class="av-lang-badge" aria-label="{{ $headerLocale === 'tr' ? __('dictt.lang_en') : __('dictt.lang_tr') }}">{{ $headerLocale === 'tr' ? 'EN' : 'TR' }}</span>
                 </a>
+                @auth
+                    <a href="{{ route('profile.show') }}" class="nav-item nav-link {{ request()->routeIs('profile.show') ? 'active' : '' }}">
+                        <i class="fa fa-user-circle fa-sm fa-fw me-1" aria-hidden="true"></i>{{ __('dictt.profile') }}
+                    </a>
+                @endauth
             </div>
             @guest
                 <a href="{{ route('frontend.login', ['return' => $headerReturnRoute]) }}" class="btn btn-primary rounded-0 py-4 px-lg-5">{{ __('dictt.login') }}<i class="fa fa-arrow-left ms-3" aria-hidden="true"></i></a>
@@ -52,7 +57,7 @@
                 <form method="POST" action="{{ route('logout') }}" class="d-flex align-items-stretch">
                     @csrf
                     <input type="hidden" name="return" value="{{ $headerReturnRoute }}">
-                    <button type="submit" class="btn btn-primary rounded-0 py-4 px-lg-5 border-0">{{ __('dictt.logout') }}<i class="fa fa-arrow-right ms-3" aria-hidden="true"></i></button>
+                    <button type="submit" class="btn btn-primary rounded-0 py-4 px-lg-5 border-0">{{ __('dictt.logout') }}<i class="fa fa-sign-out-alt ms-3" aria-hidden="true"></i></button>
                 </form>
             @endguest
         </div>

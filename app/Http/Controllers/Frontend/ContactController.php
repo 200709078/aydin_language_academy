@@ -19,10 +19,14 @@ class ContactController extends Controller
 
     public function submit(Request $request)
     {
+        $request->merge([
+            'fullname' => $this->capitalizeNameWords((string) $request->input('fullname')),
+        ]);
+
         $request->validate([
             'fullname' => 'required|min:3|max:100|',
             'email' => 'required|email|',
-            'telephone' => 'digits:10|',
+            'telephone' => ['required', 'string', 'regex:/^\+[1-9][0-9]{7,14}$/'],
             'subject' => 'required|min:3|max:150|',
             'message' => 'required|min:10|max:2000|',
         ], [
@@ -31,7 +35,8 @@ class ContactController extends Controller
             'fullname.max' => __('dictt.maxcharacter_item', ['name' => __('dictt.fullname'), 'number' => 100]),
             'email.required' => __('dictt.required_item', ['name' => __('dictt.email')]),
             'email.email' => __('dictt.emailvalidation_item', ['name' => __('dictt.email')]),
-            'telephone.digits' => __('dictt.digit_character_item', ['name' => __('dictt.phone'), 'number' => 10]),
+            'telephone.required' => __('dictt.required_item', ['name' => __('dictt.phone')]),
+            'telephone.regex' => __('dictt.phone_international_format'),
             'subject.required' => __('dictt.required_item', ['name' => __('dictt.subject')]),
             'subject.min' => __('dictt.mincharacter_item', ['name' => __('dictt.subject'), 'number' => 3]),
             'subject.max' => __('dictt.maxcharacter_item', ['name' => __('dictt.subject'), 'number' => 150]),
@@ -63,5 +68,15 @@ class ContactController extends Controller
             ->route('frontend.contact')
             ->with('modalSuccessTitle', __('dictt.sendmessagesuccesstitle'))
             ->with('modalSuccessContent', __('dictt.sendmessagesuccesscontent'));
+    }
+
+    private function capitalizeNameWords(string $name): string
+    {
+        return preg_replace_callback(
+            '/(^|\s)(\p{L})/u',
+            static fn (array $matches): string => $matches[1]
+                . ($matches[2] === 'i' ? 'İ' : mb_strtoupper($matches[2], 'UTF-8')),
+            $name,
+        ) ?? $name;
     }
 }
