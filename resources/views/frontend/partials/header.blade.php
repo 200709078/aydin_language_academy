@@ -55,7 +55,7 @@
             'home' => [
                 'route' => 'home',
                 'label' => __('dictt.home'),
-                'is_active' => request()->routeIs('home', 'frontend.preview.home'),
+                'is_active' => request()->routeIs('home'),
             ],
             'courses_is_active' => request()->routeIs('frontend.courses.*'),
             'course_groups' => [

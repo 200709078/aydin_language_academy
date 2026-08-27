@@ -31,6 +31,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 Route::group(['middleware' => ['auth', isAdmin_middle::class], 'prefix' => 'admin'], function () {
     Route::view('/', 'dashboard')->name('admin');
+    Route::view('profile', 'profile.show')->name('admin.profile.show');
 
     Route::get('placement-test/levels', [PlacementTestLevelController::class, 'index'])
         ->name('placement_test_levels_list');
@@ -135,10 +136,6 @@ Route::group(['middleware' => ['auth', isAdmin_middle::class], 'prefix' => 'admi
     Route::put('question/{question_id}/update', [cont_questions::class, 'update'])->name('question_update');
 });
 
-Route::redirect('/dashboard', '/admin')
-    ->middleware(['auth', isAdmin_middle::class])
-    ->name('dashboard');
-
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::view('/basarilarimiz', 'frontend.achievements')->name('frontend.achievements');
 Route::view('/kampanyalarimiz', 'frontend.campaigns')->name('frontend.campaigns');
@@ -216,8 +213,6 @@ Route::get('/iletisim/{branch?}', [ContactController::class, 'show'])
     ->name('frontend.contact');
 Route::post('/iletisim', [ContactController::class, 'submit'])->name('frontend.contact.submit');
 
-Route::view('/yeni-site', 'frontend.home')->name('frontend.preview.home');
-
 Route::get('/giris', function (Request $request) {
     if ($request->user()?->type === 'admin') {
         return redirect()->route('admin');
@@ -236,11 +231,5 @@ Route::get('/giris', function (Request $request) {
     return redirect()->route('login');
 })->name('frontend.login');
 
-Route::redirect('/course/{course_id}', '/')->name('course_detail');
 Route::get('changeLanguage/{lang}', [cont_user_main::class, 'changeLanguage'])->name('changeLanguage');
-Route::redirect('about', '/')->name('about');
 Route::redirect('contact', '/iletisim')->name('contact');
-Route::post('/contactpost', [ContactController::class, 'submit'])->name('contactpost');
-Route::redirect('tab1/{theme_id}', '/')->name('tab1');
-Route::redirect('tab2/{theme_id}', '/')->name('tab2');
-Route::redirect('{level_slug}/{sub_level_slug}', '/')->name('themes');

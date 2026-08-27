@@ -32,7 +32,6 @@ final class FrontendReturnRoutes
             'frontend.branches.koycegiz' => 'frontend.branches.koycegiz',
             'frontend.reviews' => 'frontend.reviews',
             'frontend.my-reviews' => 'frontend.my-reviews',
-            'frontend.preview.home' => 'frontend.preview.home',
         ];
     }
 

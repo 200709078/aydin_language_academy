@@ -1,5 +1,5 @@
 @php
-    $profileLayout = auth()->user()?->type === 'admin' ? 'app-layout' : 'frontend-profile-layout';
+    $profileLayout = request()->routeIs('admin.profile.show') ? 'app-layout' : 'frontend-profile-layout';
 @endphp
 
 <x-dynamic-component :component="$profileLayout">

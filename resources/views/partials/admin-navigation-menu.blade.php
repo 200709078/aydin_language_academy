@@ -3,7 +3,7 @@
         themesOpen: {{ request()->routeIs('levels_list', 'sub_levels_list', 'themes_list') ? 'true' : 'false' }},
         siteSettingsOpen: {{ request()->routeIs('courses_list', 'reviews_list', 'review_edit') ? 'true' : 'false' }},
         placementOpen: {{ request()->routeIs('placement_test_levels_*', 'placement_test_question_contents_*', 'placement_test_questions_*', 'placement_test_attempts_*') ? 'true' : 'false' }},
-        userOpen: {{ request()->routeIs('profile.show') ? 'true' : 'false' }},
+        userOpen: {{ request()->routeIs('admin.profile.show') ? 'true' : 'false' }},
         languageOpen: false,
         toggleSidebar() {
             this.sidebarOpen = !this.sidebarOpen;
@@ -37,7 +37,7 @@
 
                 <div class="admin-navigation-group">
                     <button type="button"
-                        class="admin-navigation-trigger {{ request()->routeIs('profile.show') ? 'is-active' : '' }}"
+                        class="admin-navigation-trigger {{ request()->routeIs('admin.profile.show') ? 'is-active' : '' }}"
                         @click="toggleGroup('userOpen')" :aria-expanded="userOpen.toString()">
                         <i class="fas fa-user admin-navigation-icon" aria-hidden="true"></i>
                         <span class="admin-navigation-label">{{ Auth::user()->name }}</span>
@@ -46,7 +46,7 @@
                         </svg>
                     </button>
                     <div x-show="userOpen" x-transition class="admin-navigation-collapse" style="display: none;">
-                        <a href="{{ route('profile.show') }}" class="admin-navigation-collapse-link {{ request()->routeIs('profile.show') ? 'is-active' : '' }}"><i class="fas fa-user-pen admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.profile') }}</a>
+                        <a href="{{ route('admin.profile.show') }}" class="admin-navigation-collapse-link {{ request()->routeIs('admin.profile.show') ? 'is-active' : '' }}"><i class="fas fa-user-pen admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.profile') }}</a>
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
                             <button type="submit" class="admin-navigation-collapse-link w-full text-left"><i class="fas fa-right-from-bracket admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.logout') }}</button>
