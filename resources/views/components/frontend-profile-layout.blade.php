@@ -33,6 +33,81 @@
             font-family: "Open Sans", sans-serif;
         }
 
+        /* Tailwind'in collapse yardımcı sınıfı Bootstrap navbar collapse ile çakışmasın. */
+        .frontend-profile-layout .frontend-header .collapse {
+            visibility: visible;
+        }
+
+        .frontend-profile-layout .frontend-profile-form-section > div:last-child > form > div:first-child,
+        .frontend-profile-layout .frontend-profile-action-section > div:last-child > div {
+            background-color: #EFF5FF !important;
+        }
+
+        .frontend-profile-layout .frontend-profile-primary-action {
+            --bs-btn-color: #0463FA;
+            --bs-btn-border-color: #0463FA;
+            --bs-btn-hover-color: #FFFFFF;
+            --bs-btn-hover-bg: #0463FA;
+            --bs-btn-hover-border-color: #0463FA;
+            --bs-btn-focus-shadow-rgb: 4, 99, 250;
+            --bs-btn-active-color: #FFFFFF;
+            --bs-btn-active-bg: #0463FA;
+            --bs-btn-active-border-color: #0463FA;
+            --bs-btn-active-shadow: none;
+            --bs-btn-disabled-color: #0463FA;
+            --bs-btn-disabled-bg: transparent;
+            --bs-btn-disabled-border-color: #0463FA;
+            display: inline-block;
+            color: #0463FA;
+            background-color: transparent;
+            border-color: #0463FA;
+            border-radius: 8px;
+            box-shadow: none;
+            font-size: 1rem;
+            font-weight: 500;
+            line-height: 1.5;
+            letter-spacing: normal;
+            text-transform: none;
+            transition: .5s;
+        }
+
+        .frontend-profile-layout .frontend-profile-primary-action:hover,
+        .frontend-profile-layout .frontend-profile-primary-action:focus-visible,
+        .frontend-profile-layout .frontend-profile-primary-action:active {
+            color: #FFFFFF;
+            background-color: #0463FA;
+            border-color: #0463FA;
+            box-shadow: none;
+        }
+
+        .frontend-profile-layout .frontend-profile-primary-action:focus {
+            box-shadow: 0 0 0 .25rem rgba(4, 99, 250, .5);
+        }
+
+        .frontend-profile-layout .frontend-profile-avatar {
+            border: 2px solid #8CB8F9;
+        }
+
+        .frontend-profile-layout .frontend-profile-sections {
+            max-width: 60rem;
+            padding-right: 1.25rem;
+            padding-left: 1.25rem;
+        }
+
+        @media (min-width: 640px) {
+            .frontend-profile-layout .frontend-profile-sections {
+                padding-right: 1.5rem;
+                padding-left: 1.5rem;
+            }
+        }
+
+        @media (max-width: 767.98px) {
+            .frontend-profile-layout .frontend-profile-form-section > div:last-child,
+            .frontend-profile-layout .frontend-profile-action-section > div:last-child {
+                margin-top: .75rem !important;
+            }
+        }
+
         .frontend-profile-layout .footer {
             --bs-dark: #1B2C51;
             --bs-dark-rgb: 27, 44, 81;
@@ -77,7 +152,7 @@
 <body class="font-sans antialiased frontend-profile-layout">
     <x-banner />
 
-    <div class="min-h-screen bg-gray-100">
+    <div class="min-h-screen bg-white">
         @include('frontend.partials.header')
 
         <main class="frontend-profile-content py-6">

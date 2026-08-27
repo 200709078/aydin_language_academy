@@ -1,4 +1,4 @@
-<x-form-section submit="updateProfileInformation">
+<x-form-section class="frontend-profile-form-section" submit="updateProfileInformation" :inline-actions="true">
     <x-slot name="title">
         {{ __('dictt.profileinformation') }}
     </x-slot>
@@ -11,6 +11,16 @@
         <!-- Profile Photo -->
         @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
             <div x-data="{photoName: null, photoPreview: null}" class="col-span-6 sm:col-span-4">
+                @php
+                    $profilePhotoUrl = $this->user->profile_photo_path
+                        ? $this->user->profile_photo_url
+                        : 'https://ui-avatars.com/api/?' . http_build_query([
+                            'name' => $this->user->name,
+                            'color' => '1B2C51',
+                            'background' => 'BFD7FF',
+                        ]);
+                @endphp
+
                 <!-- Profile Photo File Input -->
                 <input type="file" id="photo" class="hidden"
                             wire:model.live="photo"
@@ -28,7 +38,7 @@
 
                 <!-- Current Profile Photo -->
                 <div class="mt-2" x-show="! photoPreview">
-                    <img src="{{ $this->user->profile_photo_url }}" alt="{{ $this->user->name }}" class="rounded-full size-20 object-cover">
+                    <img src="{{ $profilePhotoUrl }}" alt="{{ $this->user->name }}" class="rounded-full size-20 object-cover frontend-profile-avatar">
                 </div>
 
                 <!-- New Profile Photo Preview -->
@@ -38,9 +48,9 @@
                     </span>
                 </div>
 
-                <x-secondary-button class="mt-2 me-2" type="button" x-on:click.prevent="$refs.photo.click()">
+                <button type="button" class="btn btn-outline-primary py-2 px-3 frontend-profile-primary-action mt-2 me-2" x-on:click.prevent="$refs.photo.click()">
                     {{ __('dictt.selectphoto') }}
-                </x-secondary-button>
+                </button>
 
                 @if ($this->user->profile_photo_path)
                     <x-secondary-button type="button" class="mt-2" wire:click="deleteProfilePhoto">
@@ -53,14 +63,14 @@
         @endif
 
         <!-- Name -->
-        <div class="col-span-6 sm:col-span-4">
+        <div class="col-span-6 sm:col-span-6">
             <x-label for="name" value="{{ __('dictt.fullname') }}" />
             <x-input id="name" type="text" class="mt-1 block w-full" wire:model="state.name" required autocomplete="name" />
             <x-input-error for="name" class="mt-2" />
         </div>
 
         <!-- Email -->
-        <div class="col-span-6 sm:col-span-4">
+        <div class="col-span-6 sm:col-span-6">
             <x-label for="email" value="{{ __('dictt.email') }}" />
             <x-input id="email" type="email" class="mt-1 block w-full" wire:model="state.email" required autocomplete="username" />
             <x-input-error for="email" class="mt-2" />
@@ -84,12 +94,12 @@
     </x-slot>
 
     <x-slot name="actions">
-        <x-action-message class="me-3" on="saved">
+        <button type="submit" class="btn btn-outline-primary py-3 px-5 frontend-profile-primary-action" wire:loading.attr="disabled" wire:target="photo">
+            {{ __('dictt.save') }}
+        </button>
+
+        <x-action-message class="ms-3" on="saved">
             {{ __('Saved.') }}
         </x-action-message>
-
-        <x-button wire:loading.attr="disabled" wire:target="photo">
-            {{ __('dictt.save') }}
-        </x-button>
     </x-slot>
 </x-form-section>

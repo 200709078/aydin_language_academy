@@ -1,4 +1,4 @@
-<x-action-section>
+<x-action-section class="frontend-profile-action-section">
     <x-slot name="title">
         {{ __('dictt.browsersessions') }}
     </x-slot>
@@ -52,9 +52,9 @@
         @endif
 
         <div class="flex items-center mt-5">
-            <x-button wire:click="confirmLogout" wire:loading.attr="disabled">
+            <button type="submit" class="btn btn-outline-primary py-3 px-5 frontend-profile-primary-action" wire:click="confirmLogout" wire:loading.attr="disabled">
                 {{ __('dictt.logoutbrowsersessions') }}
-            </x-button>
+            </button>
 
             <x-action-message class="ms-3" on="loggedOut">
                 {{ __('dictt.done') }}

@@ -1,4 +1,4 @@
-<x-action-section>
+<x-action-section class="frontend-profile-action-section">
     <x-slot name="title">
         {{ __('dictt.deleteaccount') }}
     </x-slot>
