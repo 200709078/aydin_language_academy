@@ -38,6 +38,11 @@
             visibility: visible;
         }
 
+        /* Aynı Tailwind kuralı Dökümanlar menüsünün Bootstrap alt gruplarını gizlemesin. */
+        .frontend-profile-layout .fsm-collapse.collapse {
+            visibility: visible;
+        }
+
         .frontend-profile-layout .frontend-profile-form-section > div:last-child > form > div:first-child,
         .frontend-profile-layout .frontend-profile-action-section > div:last-child > div {
             background-color: #EFF5FF !important;
