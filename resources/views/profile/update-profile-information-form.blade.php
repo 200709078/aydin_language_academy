@@ -69,6 +69,31 @@
             <x-input-error for="name" class="mt-2" />
         </div>
 
+        <!-- Phone -->
+        <div class="col-span-6 sm:col-span-6"
+            x-data="{
+                defaultPrefix: '+905',
+                normalizePhone(value) {
+                    const digits = value.replace(/\D/g, '');
+                    return digits === '' ? '' : '+' + digits.slice(0, 15);
+                },
+                addDefaultPrefix(input) {
+                    if (input.value) {
+                        return;
+                    }
+
+                    input.value = this.defaultPrefix;
+                    input.setSelectionRange(this.defaultPrefix.length, this.defaultPrefix.length);
+                }
+            }">
+            <x-label for="phone" value="{{ __('dictt.phone_number') }}" />
+            <x-input id="phone" type="tel" class="mt-1 block w-full" wire:model="state.phone"
+                autocomplete="tel" inputmode="tel" maxlength="16" pattern="\+[1-9][0-9]{7,14}"
+                placeholder="+905XXXXXXXXX" title="{{ __('dictt.phone_international_format') }}"
+                x-on:focus="addDefaultPrefix($el)" x-on:input="$el.value = normalizePhone($el.value)" />
+            <x-input-error for="phone" class="mt-2" />
+        </div>
+
         <!-- Email -->
         <div class="col-span-6 sm:col-span-6">
             <x-label for="email" value="{{ __('dictt.email') }}" />
@@ -99,7 +124,7 @@
         </button>
 
         <x-action-message class="ms-3" on="saved">
-            {{ __('Saved.') }}
+            {{ __('dictt.saved') }}
         </x-action-message>
     </x-slot>
 </x-form-section>

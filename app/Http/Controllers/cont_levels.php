@@ -9,11 +9,6 @@ use Illuminate\Support\Str;
 
 class cont_levels extends Controller
 {
-    public function index()
-    {
-        //
-    }
-
     public function create()
     {
         return view('admin.levels.create');
@@ -39,11 +34,6 @@ class cont_levels extends Controller
         return redirect()->route('levels_list')
             ->with('modalSuccessTitle', $modalSuccessTitle)
             ->with('modalSuccessContent', $modalSuccessContent);
-    }
-
-    public function show(string $id)
-    {
-        //
     }
 
     public function edit(string $level_id)
@@ -73,10 +63,5 @@ class cont_levels extends Controller
         return redirect()->route('levels_list')
             ->with('modalSuccessTitle', $modalSuccessTitle)
             ->with('modalSuccessContent', $modalSuccessContent);
-    }
-
-    public function destroy(string $level_id)
-    {
-        //
     }
 }

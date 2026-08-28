@@ -70,11 +70,10 @@
 
     @include('frontend.partials.footer')
 
-
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script>
+        document.getElementById('spinner')?.classList.remove('show');
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{{ asset('frontend/vendor/wow/wow.min.js') }}"></script>
-    <script src="{{ asset('frontend/js/main.js') }}"></script>
 </body>
 
 </html>

@@ -32,40 +32,6 @@
             $('.frontend-header__desktop .navbar.sticky-top').removeClass('shadow-sm');
         }
     });
-    
-    
-    // Facts counter
-    if (typeof $.fn.counterUp === 'function') {
-        $('[data-toggle="counter-up"]').counterUp({
-            delay: 10,
-            time: 2000
-        });
-    }
-
-
-    // Date and time picker
-    $('.date').datetimepicker({
-        format: 'L'
-    });
-    $('.time').datetimepicker({
-        format: 'LT'
-    });
-
-
-    // Header carousel
-    $(".header-carousel").owlCarousel({
-        autoplay: false,
-        animateOut: 'fadeOutLeft',
-        items: 1,
-        dots: true,
-        loop: true,
-        nav : true,
-        navText : [
-            '<i class="bi bi-chevron-left"></i>',
-            '<i class="bi bi-chevron-right"></i>'
-        ]
-    });
-
     // Reviews carousel
     $(".review-carousel").owlCarousel({
         autoplay: false,

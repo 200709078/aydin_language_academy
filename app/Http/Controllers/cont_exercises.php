@@ -11,22 +11,6 @@ use Illuminate\Support\Facades\Lang;
 
 class cont_exercises extends Controller
 {
-    public function index()
-    {
-        $exercises = model_exercises::withCount('questions');
-        if (request()->get('title')) {
-            $exercises = $exercises->where('title', 'like', '%' . request()->get('title') . '%');
-        }
-        if (request()->get('status')) {
-            $exercises = $exercises->where('status', request()->get('status'));
-        }
-        $exercises = $exercises->orderByDesc('created_at')->paginate(5);
-        //return view('admin.exercises.list', compact('exercises'));
-
-
-        //$theme=model_themes::whereId( $theme_id )->with('exercises')->first()??abort(404,'EXERCISES NOT FOUND');
-        return view("admin.exercises.list", compact("exercises"));
-    }
     public function create($theme_id)
     {
         $theme = model_themes::find($theme_id);
@@ -67,12 +51,6 @@ class cont_exercises extends Controller
         return redirect()->route('exercises_list', ['theme_id' => $theme_id])
             ->with('modalSuccessTitle', $modalSuccessTitle)
             ->with('modalSuccessContent', $modalSuccessContent);
-    }
-
-    public function show(string $id)
-    {
-        $exercises = model_exercises::with('topTen.user', 'results.user')->withCount('questions')->find($id) ?? abort(404, "EXERCISES NOT FOUND.");
-        return 'GELDİM'; //  view('admin.exercises.show', compact('exercises'));
     }
 
     public function edit(string $exercise_id)
@@ -121,10 +99,5 @@ class cont_exercises extends Controller
 
 
         //return redirect()->route('exercises_list', $exercise->theme_id)->with('success', Lang::get('dictt.exercisesupdatesuccess'));
-    }
-
-    public function destroy(string $exercise_id)
-    {
-        //
     }
 }

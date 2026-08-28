@@ -19,11 +19,6 @@ class cont_themes extends Controller
         view()->share($data);
     }
 
-    public function index()
-    {
-        //
-    }
-
     public function create()
     {
         return view('admin.themes.create');
@@ -61,11 +56,6 @@ class cont_themes extends Controller
         return redirect()->route('themes_list')
             ->with('modalSuccessTitle', $modalSuccessTitle)
             ->with('modalSuccessContent', $modalSuccessContent);
-    }
-
-    public function show(string $id)
-    {
-        //
     }
 
     public function edit(string $theme_id)
@@ -109,10 +99,5 @@ class cont_themes extends Controller
         return redirect()->route('themes_list')
             ->with('modalSuccessTitle', $modalSuccessTitle)
             ->with('modalSuccessContent', $modalSuccessContent);
-    }
-
-    public function destroy(string $theme_id)
-    {
-        //
     }
 }

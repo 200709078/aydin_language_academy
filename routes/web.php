@@ -100,9 +100,6 @@ Route::group(['middleware' => ['auth', isAdmin_middle::class], 'prefix' => 'admi
     Route::get('themes/{theme_id}/declarations_list', [cont_user_main::class, 'declarations_list'])->name('declarations_list');
     Route::get('themes/{theme_id}/exercises_list', [cont_user_main::class, 'exercises_list'])->name('exercises_list');
     Route::get('exercise/{exercise_id}/questions_list', [cont_user_main::class, 'questions_list'])->name('questions_list');
-
-    Route::get('exercise/{exercise_id}/question/{question_id}', [cont_questions::class, 'destroy'])->whereNumber('question_id')->name('question_destroy');
-
     Route::get('course/create', [cont_courses::class,'create'])->name('course_create');
     Route::get('level/create', [cont_levels::class,'create'])->name('level_create');
     Route::get('sub_level/create', [cont_sub_levels::class,'create'])->name('sub_level_create');

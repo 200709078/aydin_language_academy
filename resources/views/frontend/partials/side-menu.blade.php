@@ -1,35 +1,5 @@
 {{-- Frontend sol menü: üst navbar'dan bağımsız, sabit konumlu panel --}}
 <link rel="stylesheet" href="{{ asset('frontend/css/side-menu.css') }}?v=24">
-
-@php
-    if (! isset($fsmSubLevelsByLevel)) {
-        $fsmThemePairs = \App\Models\model_themes::query()
-            ->select(['level_id', 'sub_level_id'])
-            ->whereNotNull('level_id')
-            ->whereNotNull('sub_level_id')
-            ->distinct()
-            ->with('sub_levels:id,name,slug')
-            ->orderBy('level_id')
-            ->orderBy('sub_level_id')
-            ->get();
-        $fsmSubLevelsByLevel = $fsmThemePairs
-            ->groupBy('level_id')
-            ->map(fn ($themePairs) => $themePairs
-                ->map(fn ($themePair) => $themePair->sub_levels)
-                ->filter()
-                ->values())
-            ->filter(fn ($subLevels) => $subLevels->isNotEmpty());
-    }
-
-    $fsmLevels ??= \App\Models\model_levels::query()
-        ->whereIn('id', $fsmSubLevelsByLevel->keys()->all())
-        ->orderBy('id')
-        ->get(['id', 'name', 'slug']);
-    $fsmActiveLevelId ??= null;
-    $fsmActiveSubLevelId ??= null;
-    $fsmHasActiveDocument ??= false;
-@endphp
-
 <div id="fsmRoot" class="fsm-root is-closed">
     <nav id="fsmPanel" class="fsm-panel">
         <div id="fsmAccordion" class="fsm-body">

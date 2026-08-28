@@ -17,10 +17,6 @@ class cont_courses extends Controller
         $data['sub_levels'] = model_sub_levels::all();
         view()->share($data);
     }
-    public function index()
-    {
-        //
-    }
 
     public function create()
     {
@@ -75,12 +71,6 @@ class cont_courses extends Controller
         return redirect()->route('courses_list')
             ->with('modalSuccessTitle', $modalSuccessTitle)
             ->with('modalSuccessContent', $modalSuccessContent);
-    }
-
-    public function show(string $course_id)
-    {
-        $course = model_courses::findOrFail($course_id);
-        return view('front.course_detail', compact('course'));
     }
 
     public function edit(string $course_id)
@@ -138,10 +128,5 @@ class cont_courses extends Controller
         return redirect()->route('courses_list')
             ->with('modalSuccessTitle', $modalSuccessTitle)
             ->with('modalSuccessContent', $modalSuccessContent);
-    }
-
-    public function destroy(string $course_id)
-    {
-        //
     }
 }

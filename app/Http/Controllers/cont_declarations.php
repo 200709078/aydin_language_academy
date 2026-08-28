@@ -11,11 +11,6 @@ use Illuminate\Support\Facades\Lang;
 
 class cont_declarations extends Controller
 {
-    public function index()
-    {
-        //
-    }
-
     public function create($theme_id)
     {
         $theme = model_themes::find($theme_id);
@@ -67,11 +62,6 @@ class cont_declarations extends Controller
             ->with('modalSuccessContent', $modalSuccessContent);
     }
 
-    public function show(string $id)
-    {
-        //
-    }
-
     public function edit(string $declaration_id)
     {
         $declaration = model_declarations::find($declaration_id);
@@ -121,10 +111,5 @@ class cont_declarations extends Controller
         return redirect()->route('declarations_list', ['theme_id' => $declaration->theme_id])
             ->with('modalSuccessTitle', $modalSuccessTitle)
             ->with('modalSuccessContent', $modalSuccessContent);
-    }
-
-    public function destroy(string $declaration_id)
-    {
-        //
     }
 }
