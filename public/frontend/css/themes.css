@@ -101,3 +101,62 @@
     transform: translateY(-2px);
     box-shadow: 0 6px 14px rgba(37, 190, 188, 0.4);
 }
+
+/* Tema alıştırmaları: seviye tespit sınavıyla aynı soru/şık hiyerarşisi */
+.theme-exercise-content-card,
+.theme-exercise-question-card {
+    background: #ffffff;
+    box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.07);
+}
+
+.theme-exercise-media {
+    display: block;
+    max-width: min(100%, 28rem);
+    max-height: 22rem;
+    object-fit: contain;
+}
+
+.theme-exercise-option {
+    cursor: pointer;
+    transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.theme-exercise-option:hover,
+.theme-exercise-option:focus-within {
+    border-color: var(--primary) !important;
+    background: rgba(4, 90, 162, 0.04);
+}
+
+.theme-exercise-option input:checked + .theme-exercise-option-text {
+    color: var(--primary);
+    font-weight: 700;
+}
+
+.theme-exercise-attempt-panel {
+    background: #eff5ff;
+    border: 1px solid rgba(4, 90, 162, 0.16);
+}
+
+.theme-exercise-review-summary {
+    background: #eff5ff;
+}
+
+.theme-exercise-review-option {
+    background: #ffffff;
+}
+
+.theme-exercise-review-option.is-correct {
+    border-color: #198754 !important;
+    background: rgba(25, 135, 84, 0.10);
+}
+
+.theme-exercise-review-option.is-selected-wrong {
+    border-color: #dc3545 !important;
+    background: rgba(220, 53, 69, 0.10);
+}
+
+@media (max-width: 575.98px) {
+    .theme-exercise-attempt-panel .btn {
+        flex: 1 1 auto;
+    }
+}

@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <title>{{ $theme->name }} | {{ __('dictt.ala') }}</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta content="" name="keywords">
     <meta content="" name="description">
 
@@ -49,6 +50,20 @@
                     <li class="breadcrumb-item text-primary active" aria-current="page">{{ Str::limit($theme->name, 25) }}</li>
                 </ol>
             </nav>
+
+            @if (session('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="{{ __('dictt.placement_test_close') }}"></button>
+                </div>
+            @endif
+
+            @if (session('error'))
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ session('error') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="{{ __('dictt.placement_test_close') }}"></button>
+                </div>
+            @endif
 
             <div id="themeAccordion" class="wow fadeIn" data-wow-delay="0.2s">
                 <!-- Declarations -->
@@ -109,60 +124,158 @@
                     <h5 class="text-uppercase mb-3">{{ __('dictt.exercises') }}</h5>
                     <div class="accordion">
                         @foreach ($exercises as $exercise)
+                            @php
+                                $isOpenExercise = (int) session('open_exercise_id') === (int) $exercise->id;
+                            @endphp
                             <div class="accordion-item">
                                 <h2 class="accordion-header">
-                                    <button class="accordion-button collapsed" type="button"
+                                    <button class="accordion-button {{ $isOpenExercise ? '' : 'collapsed' }}" type="button"
                                         data-bs-toggle="collapse" data-bs-target="#exercise-{{ $exercise->id }}"
-                                        aria-expanded="false">
+                                        aria-expanded="{{ $isOpenExercise ? 'true' : 'false' }}">
                                         {{ Str::limit($exercise->qtext ?: '#' . $exercise->id, 70) }}
                                     </button>
                                 </h2>
                                 <div id="exercise-{{ $exercise->id }}"
-                                    class="accordion-collapse collapse" data-bs-parent="#themeAccordion">
+                                    class="accordion-collapse collapse {{ $isOpenExercise ? 'show' : '' }}" data-bs-parent="#themeAccordion">
                                     <div class="accordion-body">
-                                    @if ($exercise->image)
-                                        <img src="{{ asset('photos/' . $exercise->image) }}" style="width:20%"
-                                            class="img-fluid mb-2" alt="">
-                                    @endif
-                                    @if ($exercise->qtext)
-                                        <p>{{ $exercise->qtext }}</p>
-                                    @endif
-                                    @if ($exercise->video)
-                                        <a href="{{ $exercise->video }}" class="btn btn-primary btn-sm m-1" target="_blank"
-                                            rel="noopener"><i class="fab fa-youtube"></i> {{ __('dictt.video') }}</a>
-                                    @endif
-                                    @if ($exercise->voice)
-                                        <a href="{{ $exercise->voice }}" class="btn btn-primary btn-sm m-1" target="_blank"
-                                            rel="noopener"><i class="fab fa-itunes-note"></i> {{ __('dictt.voice') }}</a>
-                                    @endif
-
-                                    <form method="POST" action="{{ route('exercises.result', $exercise->id) }}">
-                                        @csrf
-                                        @foreach ($exercise->questions as $question)
-                                            <p class="mb-1"><strong>{{ $loop->iteration }}) </strong>{{ $question->question }}</p>
-                                            @if ($question->image)
-                                                <img src="{{ asset('photos/' . $question->image) }}" style="width:20%"
-                                                    class="img-fluid mb-2" alt="">
-                                            @endif
-                                            @foreach (['answer1', 'answer2', 'answer3', 'answer4', 'answer5'] as $answerKey)
-                                                @if ($question->{$answerKey})
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="radio"
-                                                            name="{{ $question->id }}"
-                                                            id="q{{ $question->id }}_{{ $answerKey }}"
-                                                            value="{{ $answerKey }}">
-                                                        <label class="form-check-label"
-                                                            for="q{{ $question->id }}_{{ $answerKey }}">
-                                                            {{ $question->{$answerKey} }}
-                                                        </label>
+                                        @if ($exercise->image || $exercise->qtext || $exercise->video || $exercise->voice)
+                                            <section class="theme-exercise-content-card rounded p-3 p-lg-4 mb-4">
+                                                @if ($exercise->image)
+                                                    <img src="{{ asset('photos/' . $exercise->image) }}"
+                                                        class="theme-exercise-media img-fluid rounded mb-3" alt="">
+                                                @endif
+                                                @if ($exercise->qtext)
+                                                    <p class="text-dark lh-lg mb-3">{{ $exercise->qtext }}</p>
+                                                @endif
+                                                @if ($exercise->video || $exercise->voice)
+                                                    <div class="d-flex flex-wrap gap-2">
+                                                        @if ($exercise->video)
+                                                            <a href="{{ $exercise->video }}" class="btn btn-primary btn-sm" target="_blank"
+                                                                rel="noopener"><i class="fab fa-youtube"></i> {{ __('dictt.video') }}</a>
+                                                        @endif
+                                                        @if ($exercise->voice)
+                                                            <a href="{{ $exercise->voice }}" class="btn btn-primary btn-sm" target="_blank"
+                                                                rel="noopener"><i class="fab fa-itunes-note"></i> {{ __('dictt.voice') }}</a>
+                                                        @endif
                                                     </div>
                                                 @endif
-                                            @endforeach
-                                            <hr>
-                                        @endforeach
-                                        <button type="submit"
-                                            class="btn btn-success w-100">{{ __('dictt.check') }}</button>
-                                    </form>
+                                            </section>
+                                        @endif
+                                        @php
+                                            $openAttempt = $exercise->attempts->firstWhere('status', 'in_progress');
+                                            $completedAttemptCount = $exercise->attempts->where('status', 'completed')->count();
+                                            $attemptSummary = $openAttempt?->summaryFor($exercise->questions);
+                                            $answersByQuestion = $openAttempt?->answers->keyBy('question_id') ?? collect();
+                                        @endphp
+
+                                        <section class="theme-exercise-attempt-panel rounded p-3 p-lg-4 mb-4">
+                                            <div class="d-flex flex-column flex-lg-row align-items-lg-center justify-content-between gap-3">
+                                                <div>
+                                                    @if ($exercise->questions->isEmpty())
+                                                        <h3 class="h6 text-dark mb-1">{{ __('dictt.exercise_attempt_no_questions') }}</h3>
+                                                    @elseif ($openAttempt)
+                                                        <div class="d-flex align-items-center flex-wrap gap-2 mb-2">
+                                                            <h3 class="h6 text-dark mb-0">{{ __('dictt.exercise_attempt_status_in_progress') }}</h3>
+                                                            <span class="badge bg-primary text-white">{{ __('dictt.exercise_attempt_status_in_progress') }}</span>
+                                                        </div>
+                                                        <p class="small text-muted mb-0" data-exercise-answered-count
+                                                            data-answered-count-template="{{ __('dictt.exercise_attempt_answered_count', ['answered' => '__ANSWERED__', 'total' => '__TOTAL__']) }}">
+                                                            {{ __('dictt.exercise_attempt_answered_count', [
+                                                                'answered' => $attemptSummary['answered'],
+                                                                'total' => $attemptSummary['total'],
+                                                            ]) }}
+                                                        </p>
+                                                    @else
+                                                        <h3 class="h6 text-dark mb-1">{{ __('dictt.exercises') }}</h3>
+                                                        <p class="small text-muted mb-0">{{ __('dictt.exercise_attempt_answers_autosave_note') }}</p>
+                                                    @endif
+                                                </div>
+
+                                                <div class="d-flex flex-wrap gap-2">
+                                                    @if (! $exercise->questions->isEmpty() && ! $openAttempt)
+                                                        <form method="POST" action="{{ route('frontend.exercise-attempts.start', ['exercise' => $exercise]) }}">
+                                                            @csrf
+                                                            <button type="submit" class="btn btn-primary btn-sm">
+                                                                <i class="fa fa-play me-2" aria-hidden="true"></i>
+                                                                {{ $completedAttemptCount > 0 ? __('dictt.exercise_attempt_new') : __('dictt.exercise_attempt_start') }}
+                                                            </button>
+                                                        </form>
+                                                    @endif
+                                                    <a href="{{ route('frontend.exercise-attempts.index', ['exercise' => $exercise]) }}"
+                                                        class="btn btn-outline-primary btn-sm">
+                                                        <i class="fa fa-history me-2" aria-hidden="true"></i>{{ __('dictt.exercise_attempt_history') }}
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </section>
+
+                                        @if ($openAttempt)
+                                            <form method="POST"
+                                                action="{{ route('frontend.exercise-attempts.complete', [
+                                                    'exercise' => $exercise,
+                                                    'exerciseAttempt' => $openAttempt,
+                                                ]) }}"
+                                                data-exercise-attempt-form
+                                                data-total-questions="{{ $exercise->questions->count() }}"
+                                                data-saving-message="{{ __('dictt.exercise_attempt_saving') }}"
+                                                data-saved-message="{{ __('dictt.exercise_attempt_answer_saved') }}"
+                                                data-failed-message="{{ __('dictt.exercise_attempt_save_failed') }}"
+                                                data-retry-message="{{ __('dictt.exercise_attempt_retry_note') }}">
+                                                @csrf
+                                                @foreach ($exercise->questions as $question)
+                                                    @php
+                                                        $answer = $answersByQuestion->get($question->id);
+                                                        $selectedOptionId = $answer?->question_option_id;
+                                                    @endphp
+                                                    <section class="theme-exercise-question-card rounded p-3 p-lg-4 mb-3"
+                                                        data-exercise-question
+                                                        data-answer-url="{{ route('frontend.exercise-attempts.answer', [
+                                                            'exercise' => $exercise,
+                                                            'exerciseAttempt' => $openAttempt,
+                                                            'question' => $question,
+                                                        ]) }}">
+                                                        <div class="d-flex align-items-center gap-2 mb-3">
+                                                            <span class="badge bg-secondary">{{ $loop->iteration }}</span>
+                                                            <span class="small text-muted">{{ __('dictt.placement_test_question_label') }}</span>
+                                                        </div>
+
+                                                        <h3 class="h5 text-dark mb-4">{{ $question->question }}</h3>
+
+                                                        @if ($question->image)
+                                                            <img src="{{ asset('photos/' . $question->image) }}"
+                                                                class="theme-exercise-media img-fluid rounded mb-4" alt="">
+                                                        @endif
+
+                                                        <div class="d-flex flex-column gap-3">
+                                                            @foreach ($question->options as $option)
+                                                                <label class="theme-exercise-option border rounded p-3 d-flex align-items-start gap-3 mb-0"
+                                                                    for="attempt{{ $openAttempt->id }}_q{{ $question->id }}_o{{ $option->id }}">
+                                                                    <input class="form-check-input mt-1" type="radio"
+                                                                        name="answers[{{ $question->id }}]"
+                                                                        id="attempt{{ $openAttempt->id }}_q{{ $question->id }}_o{{ $option->id }}"
+                                                                        value="{{ $option->id }}"
+                                                                        @checked((int) $selectedOptionId === (int) $option->id)>
+                                                                    <span class="theme-exercise-option-text">{{ $option->option_text }}</span>
+                                                                </label>
+                                                            @endforeach
+                                                        </div>
+                                                    </section>
+                                                @endforeach
+
+                                                <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-3 mt-4 pt-3 border-top">
+                                                    <p class="small text-muted mb-0" data-exercise-save-status role="status" aria-live="polite">
+                                                        @if ($attemptSummary['answered'] > 0)
+                                                            <i class="fa fa-check-circle text-success" aria-hidden="true"></i> {{ __('dictt.exercise_attempt_answer_saved') }}
+                                                        @else
+                                                            {{ __('dictt.exercise_attempt_answers_autosave_note') }}
+                                                        @endif
+                                                    </p>
+                                                    <button type="submit" class="btn btn-success" data-exercise-complete-button>
+                                                        {{ __('dictt.theme_exercise_complete') }}<i class="fa fa-check ms-2" aria-hidden="true"></i>
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -200,6 +313,7 @@
 
     <!-- Template Javascript -->
     <script src="{{ asset('frontend/js/main.js') }}"></script>
+    <script src="{{ asset('frontend/js/exercise-attempt.js') }}"></script>
 </body>
 
 </html>

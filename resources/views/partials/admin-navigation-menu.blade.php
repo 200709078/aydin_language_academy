@@ -1,6 +1,6 @@
 <nav x-data="{
         sidebarOpen: (function () { var v = localStorage.getItem('adminSidebarOpenV2'); return v === null ? true : v === 'true'; })(),
-        themesOpen: {{ request()->routeIs('levels_list', 'sub_levels_list', 'themes_list') ? 'true' : 'false' }},
+        themesOpen: {{ request()->routeIs('levels_list', 'sub_levels_list', 'themes_list', 'admin.exercise-attempts.*') ? 'true' : 'false' }},
         siteSettingsOpen: {{ request()->routeIs('reviews_list', 'review_edit', 'admin.messages.*') ? 'true' : 'false' }},
         placementOpen: {{ request()->routeIs('placement_test_levels_*', 'placement_test_question_contents_*', 'placement_test_questions_*', 'placement_test_attempts_*') ? 'true' : 'false' }},
         userOpen: {{ request()->routeIs('admin.profile.show') ? 'true' : 'false' }},
@@ -76,7 +76,7 @@
 
                 <div class="admin-navigation-group">
                     <button type="button"
-                        class="admin-navigation-trigger {{ request()->routeIs('levels_list', 'sub_levels_list', 'themes_list') ? 'is-active' : '' }}"
+                        class="admin-navigation-trigger {{ request()->routeIs('levels_list', 'sub_levels_list', 'themes_list', 'admin.exercise-attempts.*') ? 'is-active' : '' }}"
                         @click="toggleGroup('themesOpen')" :aria-expanded="themesOpen.toString()">
                         <i class="fas fa-layer-group admin-navigation-icon" aria-hidden="true"></i>
                         <span class="admin-navigation-label">{{ __('dictt.themes') }}</span>
@@ -88,6 +88,7 @@
                         <a href="{{ route('levels_list') }}" class="admin-navigation-collapse-link {{ request()->routeIs('levels_list') ? 'is-active' : '' }}"><i class="fas fa-list-ol admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.levels') }}</a>
                         <a href="{{ route('sub_levels_list') }}" class="admin-navigation-collapse-link {{ request()->routeIs('sub_levels_list') ? 'is-active' : '' }}"><i class="fas fa-sitemap admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.sublevels') }}</a>
                         <a href="{{ route('themes_list') }}" class="admin-navigation-collapse-link {{ request()->routeIs('themes_list') ? 'is-active' : '' }}"><i class="fas fa-palette admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.themes') }}</a>
+                        <a href="{{ route('admin.exercise-attempts.index') }}" class="admin-navigation-collapse-link {{ request()->routeIs('admin.exercise-attempts.*') ? 'is-active' : '' }}"><i class="fas fa-clipboard-list admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.exercise_attempt_results') }}</a>
                     </div>
                 </div>
 

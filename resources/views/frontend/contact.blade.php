@@ -94,12 +94,12 @@
                             </div>
                             <div class="form-floating mb-2">
                                 <input class="form-control" name="subject" type="text"
-                                    placeholder="{{ __('dictt.subject') }}" value="{{ old('subject', 'ALA Web Sitesi - Bilgi Talebi') }}" />
+                                    placeholder="{{ __('dictt.subject') }}" value="{{ old('subject', __('dictt.contact_default_subject')) }}" />
                                 <label>{{ __('dictt.subject') }} :</label>
                             </div>
                             <div class="form-floating">
                                 <textarea class="form-control" name="message" placeholder="{{ __('dictt.message') }}"
-                                    style="height: 12rem">{{ old('message', 'Selamlar, ALA web sitesi üzerinden yazıyorum.') }}</textarea>
+                                    style="height: 12rem">{{ old('message', __('dictt.contact_default_message')) }}</textarea>
                                 <label>{{ __('dictt.message') }} :</label>
                             </div>
                             <br />

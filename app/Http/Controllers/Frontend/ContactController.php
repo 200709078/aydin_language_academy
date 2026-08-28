@@ -59,6 +59,7 @@ class ContactController extends Controller
             'email' => $request->email,
             'telephone' => $request->telephone,
             'branch' => $branch,
+            'locale' => in_array(app()->getLocale(), ['tr', 'en'], true) ? app()->getLocale() : 'tr',
             'subject' => $request->subject,
             'message' => $request->message,
         ]);

@@ -19,17 +19,18 @@ class model_exercises extends Model
         'video',
         'qtext'
     ];
-    protected $appends = ['details'];
 
-    public function getDetailsAttribute()
-    {
-        return [
-            'questions_count' => $this->questions()->count(),
-        ];
-    }
     public function questions()
     {
         return $this->hasMany(model_questions::class, 'exercise_id');
+    }
+    public function attempts()
+    {
+        return $this->hasMany(ExerciseAttempt::class, 'exercise_id');
+    }
+    public function theme()
+    {
+        return $this->belongsTo(model_themes::class, 'theme_id');
     }
     public function sluggable(): array
     {

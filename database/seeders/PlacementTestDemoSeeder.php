@@ -1,152 +1,77 @@
 <?php
+
 namespace Database\Seeders;
+
 use App\Models\PlacementTest;
 use App\Models\PlacementTestLevel;
 use App\Models\PlacementTestLevelQuestion;
 use App\Models\PlacementTestLevelResult;
 use App\Models\PlacementTestLevelResultContent;
 use App\Models\PlacementTestQuestion;
-use App\Models\PlacementTestQuestionContent;
 use App\Models\PlacementTestQuestionOption;
 use App\Models\User;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 use LogicException;
 
 class PlacementTestDemoSeeder extends Seeder
 {
     public function run(): void
     {
-        $this->call(PlacementTestLevelSeeder::class);
+        $this->call(PlacementTestMasterDataSeeder::class);
 
-        $levels = PlacementTestLevel::query()->get()->keyBy('code');
-        $admin = $this->findOrCreateDemoUser([
-            'name' => 'Placement Demo Admin',
-            'email' => 'placement-demo-admin@demo.ala.test',
-            'phone' => '+900000000001',
-            'type' => 'admin',
-        ]);
-        $studentA2 = $this->findOrCreateDemoUser([
-            'name' => 'Placement Demo Öğrenci A2',
-            'email' => 'placement-demo-a2@demo.ala.test',
-            'phone' => '+900000000002',
-            'type' => 'user',
-        ]);
-        $studentC2 = $this->findOrCreateDemoUser([
-            'name' => 'Placement Demo Öğrenci C2',
-            'email' => 'placement-demo-c2@demo.ala.test',
-            'phone' => '+900000000003',
-            'type' => 'user',
-        ]);
-        $studentProgress = $this->findOrCreateDemoUser([
-            'name' => 'Placement Demo Öğrenci Devam Eden',
-            'email' => 'placement-demo-progress@demo.ala.test',
-            'phone' => '+900000000004',
-            'type' => 'user',
-        ]);
+        $levels = PlacementTestLevel::query()
+            ->orderBy('sequence')
+            ->get()
+            ->keyBy('code');
 
-        $this->seedQuestionBank($levels);
-        $this->seedApprovedA2Attempt($studentA2, $admin, $levels);
+        $admin = $this->findDemoUser('placement-demo-admin@demo.ala.test');
+        $studentA2 = $this->findDemoUser('placement-demo-a2@demo.ala.test');
+        $studentC2 = $this->findDemoUser('placement-demo-c2@demo.ala.test');
+        $studentProgress = $this->findDemoUser('placement-demo-progress@demo.ala.test');
+
+        $this->seedApprovedA2Attempt(
+            $studentA2,
+            $admin,
+            $this->level($levels, 'A1'),
+            $this->level($levels, 'A2'),
+        );
         $this->seedPendingC2Attempt($studentC2, $levels);
-        $this->seedInProgressAttempt($studentProgress, $levels);
+        $this->seedInProgressAttempt($studentProgress, $this->level($levels, 'A1'));
     }
 
-    /**
-     * @param  array{name: string, email: string, phone: string, type: string}  $attributes
-     */
-    private function findOrCreateDemoUser(array $attributes): User
+    private function findDemoUser(string $email): User
     {
-        $user = User::query()->where('email', $attributes['email'])->first();
+        $user = User::query()->where('email', $email)->first();
 
-        if ($user !== null) {
-            return $user;
+        if ($user === null) {
+            throw new LogicException("Demo user {$email} not found. Run DatabaseSeeder first.");
         }
-
-        $user = new User;
-        $user->name = $attributes['name'];
-        $user->email = $attributes['email'];
-        $user->phone = $attributes['phone'];
-        $user->email_verified_at = now();
-        $user->password = Hash::make('placement-demo-password');
-        $user->type = $attributes['type'];
-        $user->save();
 
         return $user;
     }
 
-    /**
-     * @param  \Illuminate\Support\Collection<string, PlacementTestLevel>  $levels
-     */
-    private function seedQuestionBank($levels): void
+    private function level($levels, string $code): PlacementTestLevel
     {
-        foreach ($this->questionBank() as $levelCode => $definition) {
-            $level = $levels->get($levelCode);
+        $level = $levels->get($code);
 
-            if ($level === null) {
-                throw new LogicException("Demo level {$levelCode} bulunamadı.");
-            }
-
-            $contentsByKey = [];
-
-            foreach ($definition['contents'] as $key => $contentData) {
-                $contentsByKey[$key] = PlacementTestQuestionContent::query()->firstOrCreate(
-                    [
-                        'placement_test_level_id' => $level->id,
-                        'type' => $contentData['type'],
-                        'text_content' => $contentData['text_content'],
-                    ],
-                    [
-                        'media_disk' => null,
-                        'media_path' => null,
-                        'is_active' => true,
-                    ],
-                );
-            }
-
-            foreach ($definition['questions'] as $questionData) {
-                $content = $questionData['content_key'] === null
-                    ? null
-                    : $contentsByKey[$questionData['content_key']];
-
-                $question = PlacementTestQuestion::query()->firstOrCreate(
-                    [
-                        'placement_test_level_id' => $level->id,
-                        'question_text' => $questionData['question_text'],
-                    ],
-                    [
-                        'placement_test_question_content_id' => $content?->id,
-                        'content_position' => $questionData['content_position'],
-                        'points' => $questionData['points'],
-                        'is_active' => true,
-                    ],
-                );
-
-                foreach ($questionData['options'] as $position => $option) {
-                    PlacementTestQuestionOption::query()->firstOrCreate(
-                        [
-                            'placement_test_question_id' => $question->id,
-                            'display_position' => $position + 1,
-                        ],
-                        [
-                            'option_text' => $option['text'],
-                            'is_correct' => $option['is_correct'],
-                        ],
-                    );
-                }
-            }
+        if (! $level instanceof PlacementTestLevel) {
+            throw new LogicException("Demo level {$code} not found.");
         }
+
+        return $level;
     }
 
-    /**
-     * @param  \Illuminate\Support\Collection<string, PlacementTestLevel>  $levels
-     */
-    private function seedApprovedA2Attempt(User $student, User $admin, $levels): void
-    {
+    private function seedApprovedA2Attempt(
+        User $student,
+        User $admin,
+        PlacementTestLevel $a1,
+        PlacementTestLevel $a2,
+    ): void {
         $startedAt = CarbonImmutable::parse('2026-01-10 09:00:00');
         $test = $this->findOrCreateTest($student, [
             'status' => 'approved',
-            'result_level_id' => $levels->get('A2')->id,
+            'result_level_id' => $a2->id,
             'started_at' => $startedAt,
             'submitted_at' => CarbonImmutable::parse('2026-01-10 09:28:00'),
             'approved_at' => CarbonImmutable::parse('2026-01-10 10:00:00'),
@@ -155,29 +80,26 @@ class PlacementTestDemoSeeder extends Seeder
 
         $this->seedLevelResult(
             $test,
-            $levels->get('A1'),
-            ['correct', 'correct', 'correct', 'wrong', 'blank'],
+            $a1,
+            $this->answerStatusesForOutcome($a1, true),
             $startedAt,
             CarbonImmutable::parse('2026-01-10 09:12:00'),
         );
         $this->seedLevelResult(
             $test,
-            $levels->get('A2'),
-            ['correct', 'correct', 'wrong', 'wrong', 'blank'],
+            $a2,
+            $this->answerStatusesForOutcome($a2, false),
             CarbonImmutable::parse('2026-01-10 09:13:00'),
             CarbonImmutable::parse('2026-01-10 09:28:00'),
         );
     }
 
-    /**
-     * @param  \Illuminate\Support\Collection<string, PlacementTestLevel>  $levels
-     */
     private function seedPendingC2Attempt(User $student, $levels): void
     {
         $startedAt = CarbonImmutable::parse('2026-02-14 10:00:00');
         $test = $this->findOrCreateTest($student, [
             'status' => 'pending_approval',
-            'result_level_id' => $levels->get('C2')->id,
+            'result_level_id' => $this->level($levels, 'C2')->id,
             'started_at' => $startedAt,
             'submitted_at' => CarbonImmutable::parse('2026-02-14 11:20:00'),
             'approved_at' => null,
@@ -185,22 +107,20 @@ class PlacementTestDemoSeeder extends Seeder
         ]);
 
         foreach (['A1', 'A2', 'B1', 'B2', 'C1'] as $offset => $levelCode) {
+            $level = $this->level($levels, $levelCode);
             $levelStartedAt = $startedAt->addMinutes($offset * 15);
 
             $this->seedLevelResult(
                 $test,
-                $levels->get($levelCode),
-                ['correct', 'correct', 'correct', 'wrong', 'blank'],
+                $level,
+                $this->answerStatusesForOutcome($level, true),
                 $levelStartedAt,
                 $levelStartedAt->addMinutes(14),
             );
         }
     }
 
-    /**
-     * @param  \Illuminate\Support\Collection<string, PlacementTestLevel>  $levels
-     */
-    private function seedInProgressAttempt(User $student, $levels): void
+    private function seedInProgressAttempt(User $student, PlacementTestLevel $a1): void
     {
         $startedAt = CarbonImmutable::parse('2026-03-03 14:00:00');
         $test = $this->findOrCreateTest($student, [
@@ -214,11 +134,78 @@ class PlacementTestDemoSeeder extends Seeder
 
         $this->seedLevelResult(
             $test,
-            $levels->get('A1'),
-            ['correct', 'wrong', 'blank', 'blank', 'blank'],
+            $a1,
+            $this->answerStatusesForInProgress($a1),
             $startedAt,
             null,
         );
+    }
+
+    /**
+     * @return list<string>
+     */
+    private function answerStatusesForOutcome(PlacementTestLevel $level, bool $shouldPass): array
+    {
+        $questions = $this->activeQuestionsForLevel($level);
+
+        if ($questions === []) {
+            throw new LogicException("{$level->code} seviyesi için aktif demo sorusu bulunamadı.");
+        }
+
+        $passPercentage = (float) $level->pass_percentage;
+
+        if ($passPercentage <= 0) {
+            throw new LogicException("{$level->code} seviyesi için geçerli bir geçme yüzdesi bulunamadı.");
+        }
+
+        $points = array_map(
+            fn (PlacementTestQuestion $question): int => $this->pointsToCents($question->points),
+            $questions,
+        );
+        $requiredCorrectPoints = (int) ceil((array_sum($points) * $passPercentage) / 100);
+        $statuses = array_fill(0, count($questions), 'blank');
+        $correctPoints = 0;
+
+        foreach ($points as $index => $questionPoints) {
+            if (
+                ($shouldPass && $correctPoints < $requiredCorrectPoints)
+                || (! $shouldPass && ($correctPoints + $questionPoints) < $requiredCorrectPoints)
+            ) {
+                $statuses[$index] = 'correct';
+                $correctPoints += $questionPoints;
+            }
+        }
+
+        if (! $shouldPass) {
+            $wrongIndex = array_search('blank', $statuses, true);
+
+            if ($wrongIndex !== false) {
+                $statuses[$wrongIndex] = 'wrong';
+            }
+        }
+
+        return $statuses;
+    }
+
+    /**
+     * @return list<string>
+     */
+    private function answerStatusesForInProgress(PlacementTestLevel $level): array
+    {
+        $questions = $this->activeQuestionsForLevel($level);
+
+        if ($questions === []) {
+            throw new LogicException("{$level->code} seviyesi için aktif demo sorusu bulunamadı.");
+        }
+
+        $statuses = array_fill(0, count($questions), 'blank');
+        $statuses[0] = 'correct';
+
+        if (count($statuses) > 1) {
+            $statuses[1] = 'wrong';
+        }
+
+        return $statuses;
     }
 
     /**
@@ -469,117 +456,5 @@ class PlacementTestDemoSeeder extends Seeder
     private function centsToDecimal(int $cents): string
     {
         return sprintf('%d.%02d', intdiv($cents, 100), $cents % 100);
-    }
-
-    /**
-     * @return array<string, array{contents: array<string, array{type: string, text_content: string}>, questions: list<array{question_text: string, options: list<array{text: string, is_correct: bool}>, points: string, content_key: ?string, content_position: ?int}>}>
-     */
-    private function questionBank(): array
-    {
-        return [
-            'A1' => [
-                'contents' => [
-                    'a1-reading-1' => [
-                        'type' => 'text',
-                        'text_content' => 'Read the text: Ayşe is eleven years old. She lives in Ortaca with her family. Every Saturday, she visits the library and borrows a book.',
-                    ],
-                ],
-                'questions' => [
-                    $this->question('How old is Ayşe?', ['Eleven', 'Twelve', 'Thirteen', 'Ten'], 1, '2.50', 'a1-reading-1', 1),
-                    $this->question('Where does Ayşe go every Saturday?', ['To the park', 'To the library', 'To school', 'To the beach'], 2, '2.50', 'a1-reading-1', 2),
-                    $this->question('I ___ a student.', ['am', 'is', 'are', 'be'], 1, '1.00'),
-                    $this->question('Choose the correct article: ___ apple.', ['A', 'An', 'The', 'No article'], 2, '1.50'),
-                    $this->question('There ___ three books on the table.', ['are', 'is', 'am', 'be'], 1, '2.50'),
-                ],
-            ],
-            'A2' => [
-                'contents' => [
-                    'a2-reading-1' => [
-                        'type' => 'text',
-                        'text_content' => 'Read the text: Last Saturday, Emre travelled to Dalaman by bus. He met his cousin, had lunch near the marina, and returned home in the evening.',
-                    ],
-                ],
-                'questions' => [
-                    $this->question('Where did Emre travel last Saturday?', ['To Ortaca', 'To Dalaman', 'To Muğla', 'To İzmir'], 2, '2.50', 'a2-reading-1', 1),
-                    $this->question('How did Emre travel?', ['By car', 'By train', 'By bus', 'By plane'], 3, '2.50', 'a2-reading-1', 2),
-                    $this->question('Yesterday, we ___ to the park.', ['go', 'went', 'gone', 'going'], 2, '1.00'),
-                    $this->question('My brother is ___ than me.', ['tall', 'taller', 'tallest', 'more tall'], 2, '1.50'),
-                    $this->question('I ___ TV when you called.', ['watch', 'watched', 'was watching', 'am watching'], 3, '2.50'),
-                ],
-            ],
-            'B1' => [
-                'contents' => [
-                    'b1-reading-1' => [
-                        'type' => 'text',
-                        'text_content' => 'Read the text: Deniz joined the school environmental club because she wants to protect the local beach. The club is organising a clean-up event for Saturday morning.',
-                    ],
-                ],
-                'questions' => [
-                    $this->question('Why did Deniz join the club?', ['To make new uniforms', 'To protect the local beach', 'To travel abroad', 'To learn to swim'], 2, '2.50', 'b1-reading-1', 1),
-                    $this->question('When is the clean-up event?', ['Saturday morning', 'Friday evening', 'Sunday afternoon', 'Monday morning'], 1, '2.50', 'b1-reading-1', 2),
-                    $this->question('If it ___ tomorrow, we will stay home.', ['rain', 'rains', 'rained', 'raining'], 2, '1.00'),
-                    $this->question('The book ___ by a famous author.', ['wrote', 'was written', 'is writing', 'writes'], 2, '1.50'),
-                    $this->question('I look forward to ___ from you.', ['hear', 'hearing', 'heard', 'be heard'], 2, '2.50'),
-                ],
-            ],
-            'B2' => [
-                'contents' => [
-                    'b2-reading-1' => [
-                        'type' => 'text',
-                        'text_content' => 'Read the text: A company introduced a remote-work policy for three months. Its report found that productivity remained stable, while most employees valued the additional flexibility.',
-                    ],
-                ],
-                'questions' => [
-                    $this->question('What happened to productivity?', ['It increased sharply', 'It remained stable', 'It stopped completely', 'It was not measured'], 2, '2.50', 'b2-reading-1', 1),
-                    $this->question('What did most employees value?', ['A shorter report', 'Additional flexibility', 'New uniforms', 'Longer meetings'], 2, '2.50', 'b2-reading-1', 2),
-                    $this->question('By the time we arrived, the film ___.', ['started', 'had started', 'has started', 'starting'], 2, '1.00'),
-                    $this->question('Not only ___ late, but he also forgot the documents.', ['he arrived', 'did he arrive', 'he did arrive', 'arrived he'], 2, '1.50'),
-                    $this->question('The manager suggested that the report ___ revised.', ['is', 'be', 'was', 'being'], 2, '2.50'),
-                ],
-            ],
-            'C1' => [
-                'contents' => [
-                    'c1-reading-1' => [
-                        'type' => 'text',
-                        'text_content' => 'Read the text: Researchers argue that urban green spaces are not merely decorative. When planned well, they can reduce heat, support biodiversity, and give residents places to recover from daily stress.',
-                    ],
-                ],
-                'questions' => [
-                    $this->question('What is the central claim of the text?', ['Green spaces are too expensive', 'Green spaces have practical benefits', 'Cities should remove parks', 'Only biodiversity matters'], 2, '2.50', 'c1-reading-1', 1),
-                    $this->question('Which benefit is mentioned?', ['Reducing heat', 'Increasing traffic', 'Replacing homes', 'Extending work hours'], 1, '2.50', 'c1-reading-1', 2),
-                    $this->question('The findings are ___ with previous research.', ['consistent', 'consist', 'consistency', 'consistently'], 1, '1.00'),
-                    $this->question('Had I known, I ___ differently.', ['would act', 'would have acted', 'acted', 'had acted'], 2, '1.50'),
-                    $this->question('The committee reached a ___ after lengthy discussion.', ['consensus', 'consent', 'consequence', 'concession'], 1, '2.50'),
-                ],
-            ],
-        ];
-    }
-
-    /**
-     * @param  list<string>  $options
-     * @return array{question_text: string, options: list<array{text: string, is_correct: bool}>, points: string, content_key: ?string, content_position: ?int}
-     */
-    private function question(
-        string $questionText,
-        array $options,
-        int $correctPosition,
-        string $points,
-        ?string $contentKey = null,
-        ?int $contentPosition = null,
-    ): array {
-        return [
-            'question_text' => $questionText,
-            'options' => array_map(
-                static fn (string $option, int $index): array => [
-                    'text' => $option,
-                    'is_correct' => $index + 1 === $correctPosition,
-                ],
-                $options,
-                array_keys($options),
-            ),
-            'points' => $points,
-            'content_key' => $contentKey,
-            'content_position' => $contentPosition,
-        ];
     }
 }

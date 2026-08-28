@@ -7,8 +7,6 @@ use App\Models\model_exercises;
 use App\Models\model_levels;
 use App\Models\model_sub_levels;
 use App\Models\model_themes;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Lang;
 
 class cont_user_main extends Controller
 {
@@ -18,12 +16,6 @@ class cont_user_main extends Controller
         $data['sub_levels'] = model_sub_levels::all();
 
         view()->share($data);
-    }
-
-    public function exercises_result(Request $request, $theme_id)
-    {
-    $exercises = model_exercises::with('questions')->whereId($theme_id)->first() ?? abort(404, Lang::get('dictt.exercisesnotfound'));
-    return Lang::get('dictt.commingsoon');
     }
 
     public function levels_list()
@@ -68,12 +60,7 @@ class cont_user_main extends Controller
     }
     public function questions_list($exercise_id)
     {
-
-        $exercise = model_exercises::with([
-            'questions' => function ($query) {
-                $query->orderBy('updated_at', 'desc');
-            }
-        ])->findOrFail($exercise_id);
+        $exercise = model_exercises::findOrFail($exercise_id);
         $theme_id = $exercise->theme_id;
 
         return view("admin.questions.list", compact('exercise_id', 'exercise', 'theme_id'));

@@ -14,8 +14,6 @@ use Laravel\Sanctum\HasApiTokens;
 class User extends Authenticatable
 {
     use HasApiTokens;
-
-    /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory;
     use HasProfilePhoto;
     use Notifiable;
@@ -29,6 +27,11 @@ class User extends Authenticatable
     public function approvedPlacementTests(): HasMany
     {
         return $this->hasMany(PlacementTest::class, 'approved_by');
+    }
+
+    public function exerciseAttempts(): HasMany
+    {
+        return $this->hasMany(ExerciseAttempt::class);
     }
 
     public function reviews(): HasMany

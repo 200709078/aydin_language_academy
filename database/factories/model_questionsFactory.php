@@ -2,8 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\model_exercises;
+use App\Models\model_questions;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Faker\Factory as Faker;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\model_questions>
@@ -17,17 +18,33 @@ class model_questionsFactory extends Factory
      */
     public function definition(): array
     {
-        $faker = Faker::create();
         return [
             'question' => fake()->sentence(rand(3, 7)),
-            'image' => rand(0, 9).'.jpg',
-            'answer1' => fake()->sentence(rand(1, 3)),
-            'answer2' => fake()->sentence(rand(1, 3)),
-            'answer3' => fake()->sentence(rand(1, 3)),
-            'answer4' => fake()->sentence(rand(1, 3)),
-            'answer5' => fake()->sentence(rand(1, 3)),
-            'correct_answer' => 'answer' . rand(1, 5),
-            'exercise_id' => rand(1, 100)
+            'image' => fake()->boolean(60) ? fake()->numberBetween(0, 9) . '.jpg' : null,
+            'exercise_id' => model_exercises::factory(),
         ];
+    }
+
+    public function configure(): static
+    {
+        return $this->afterCreating(function (model_questions $question): void {
+            $optionTexts = fake()->boolean(20)
+                ? ['True', 'False']
+                : collect(range(1, fake()->numberBetween(2, 5)))
+                    ->map(fn (): string => fake()->sentence(fake()->numberBetween(1, 3)))
+                    ->all();
+            $correctPosition = fake()->numberBetween(1, count($optionTexts));
+
+            $question->options()->createMany(
+                collect($optionTexts)
+                    ->values()
+                    ->map(fn (string $optionText, int $index): array => [
+                        'option_text' => $optionText,
+                        'display_position' => $index + 1,
+                        'is_correct' => ($index + 1) === $correctPosition,
+                    ])
+                    ->all(),
+            );
+        });
     }
 }

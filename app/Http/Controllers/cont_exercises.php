@@ -7,7 +7,6 @@ use App\Models\model_exercises;
 use Illuminate\Http\Request;
 use App\Models\model_themes;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Lang;
 
 class cont_exercises extends Controller
 {
@@ -95,9 +94,5 @@ class cont_exercises extends Controller
         return redirect()->route('exercises_list', ['theme_id' => $exercise->theme_id])
             ->with('modalSuccessTitle', $modalSuccessTitle)
             ->with('modalSuccessContent', $modalSuccessContent);
-
-
-
-        //return redirect()->route('exercises_list', $exercise->theme_id)->with('success', Lang::get('dictt.exercisesupdatesuccess'));
     }
 }

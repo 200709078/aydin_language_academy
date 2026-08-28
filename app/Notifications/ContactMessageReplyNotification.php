@@ -11,6 +11,7 @@ class ContactMessageReplyNotification extends Notification
         private readonly string $recipientName,
         private readonly string $subjectLine,
         private readonly string $body,
+        private readonly string $messageLocale,
     ) {
     }
 
@@ -26,7 +27,7 @@ class ContactMessageReplyNotification extends Notification
     {
         $message = (new MailMessage)
             ->subject($this->subjectLine)
-            ->greeting('Merhaba ' . $this->recipientName . ',');
+            ->greeting(__('dictt.contact_reply_greeting', ['name' => $this->recipientName], $this->messageLocale));
 
         foreach (preg_split('/\R{2,}/u', trim($this->body)) ?: [] as $paragraph) {
             $message->line($paragraph);

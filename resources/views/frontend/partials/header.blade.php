@@ -46,6 +46,9 @@
         } elseif (request()->routeIs('frontend.themes.detail') && isset($theme)) {
             $headerActiveDocumentLevelId = $theme->level_id;
             $headerActiveDocumentSubLevelId = $theme->sub_level_id;
+        } elseif (request()->routeIs('frontend.exercise-attempts.*') && isset($exercise)) {
+            $headerActiveDocumentLevelId = $exercise->theme?->level_id;
+            $headerActiveDocumentSubLevelId = $exercise->theme?->sub_level_id;
         }
 
         $headerHasActiveDocument = $headerActiveDocumentLevelId !== null

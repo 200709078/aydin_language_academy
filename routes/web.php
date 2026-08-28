@@ -10,9 +10,11 @@ use App\Http\Controllers\cont_themes;
 use App\Http\Controllers\cont_user_main;
 use App\Http\Controllers\AdminContactMessageController;
 use App\Http\Controllers\Frontend\ContactController;
+use App\Http\Controllers\Frontend\ExerciseAttemptController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\ReviewController;
 use App\Http\Controllers\Frontend\ThemeListController;
+use App\Http\Controllers\ExerciseAttemptReviewController;
 use App\Http\Controllers\PlacementTestAttemptController;
 use App\Http\Controllers\PlacementTestLevelController;
 use App\Http\Controllers\PlacementTestQuestionController;
@@ -22,10 +24,6 @@ use App\Http\Middleware\isAdmin_middle;
 use App\Support\FrontendReturnRoutes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
-Route::group(['middleware' => 'auth'], function () {
-    Route::post('exercises/{slug}/result', [cont_user_main::class, 'exercises_result'])->name('exercises.result');
-});
 
 Route::group(['middleware' => ['auth', isAdmin_middle::class], 'prefix' => 'admin'], function () {
     Route::view('/', 'dashboard')->name('admin');
@@ -87,6 +85,12 @@ Route::group(['middleware' => ['auth', isAdmin_middle::class], 'prefix' => 'admi
     Route::put('placement-test/attempts/{placementTest}/approve', [PlacementTestReviewController::class, 'approve'])
         ->whereNumber('placementTest')
         ->name('placement_test_attempts_approve');
+
+    Route::get('exercise-attempts', [ExerciseAttemptReviewController::class, 'index'])
+        ->name('admin.exercise-attempts.index');
+    Route::get('exercise-attempts/{exerciseAttempt}', [ExerciseAttemptReviewController::class, 'show'])
+        ->whereNumber('exerciseAttempt')
+        ->name('admin.exercise-attempts.show');
 
     Route::get('levels_list', [cont_user_main::class, 'levels_list'])->name('levels_list');
     Route::get('sub_levels_list', [cont_user_main::class, 'sub_levels_list'])->name('sub_levels_list');
@@ -204,6 +208,27 @@ Route::get('/tema/{theme_id}', [ThemeListController::class, 'show'])
     ->whereNumber('theme_id')
     ->middleware('auth')
     ->name('frontend.themes.detail');
+Route::middleware('auth')->prefix('alistirmalar')->group(function (): void {
+    Route::post('/{exercise}/baslat', [ExerciseAttemptController::class, 'start'])
+        ->whereNumber('exercise')
+        ->name('frontend.exercise-attempts.start');
+    Route::get('/{exercise}/denemeler', [ExerciseAttemptController::class, 'history'])
+        ->whereNumber('exercise')
+        ->name('frontend.exercise-attempts.index');
+    Route::get('/{exercise}/denemeler/{exerciseAttempt}', [ExerciseAttemptController::class, 'show'])
+        ->whereNumber('exercise')
+        ->whereNumber('exerciseAttempt')
+        ->name('frontend.exercise-attempts.show');
+    Route::put('/{exercise}/denemeler/{exerciseAttempt}/sorular/{question}', [ExerciseAttemptController::class, 'saveAnswer'])
+        ->whereNumber('exercise')
+        ->whereNumber('exerciseAttempt')
+        ->whereNumber('question')
+        ->name('frontend.exercise-attempts.answer');
+    Route::post('/{exercise}/denemeler/{exerciseAttempt}/tamamla', [ExerciseAttemptController::class, 'complete'])
+        ->whereNumber('exercise')
+        ->whereNumber('exerciseAttempt')
+        ->name('frontend.exercise-attempts.complete');
+});
 Route::view('/dokumanlar', 'frontend.documents')->name('frontend.documents');
 Route::view('/subelerimiz/ortaca', 'frontend.branches.ortaca')->name('frontend.branches.ortaca');
 Route::view('/subelerimiz/dalaman', 'frontend.branches.dalaman')->name('frontend.branches.dalaman');

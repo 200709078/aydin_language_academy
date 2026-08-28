@@ -47,6 +47,7 @@ class SendContactMessageReply implements ShouldQueue
                 $reply->message?->fullname ?? '',
                 $reply->subject,
                 $reply->body,
+                in_array($reply->message?->locale, ['tr', 'en'], true) ? $reply->message->locale : 'tr',
             ),
         );
 

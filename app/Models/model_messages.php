@@ -31,6 +31,7 @@ class model_messages extends Model
         'email',
         'telephone',
         'branch',
+        'locale',
         'subject',
         'message',
     ];

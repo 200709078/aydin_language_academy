@@ -100,6 +100,12 @@ class AdminContactMessageController extends Controller
 
         $message->forceFill($updates)->save();
 
+        if ($validated['status'] === model_messages::STATUS_UNREAD) {
+            return redirect()
+                ->route('admin.messages.index', ['filter' => model_messages::STATUS_UNREAD])
+                ->with('success', __('dictt.contact_message_status_updated'));
+        }
+
         return redirect()
             ->route('admin.messages.show', $message)
             ->with('success', __('dictt.contact_message_status_updated'));

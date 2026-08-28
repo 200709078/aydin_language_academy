@@ -26,12 +26,13 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
-        $types=['admin','user'];
+        $types = ['admin', 'user'];
+
         return [
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
-            'type' => $types[rand(0,1)],
+            'type' => $types[rand(0, 1)],
             'password' => static::$password ??= Hash::make('password'),
             'two_factor_secret' => null,
             'two_factor_recovery_codes' => null,
@@ -63,7 +64,7 @@ class UserFactory extends Factory
         return $this->has(
             Team::factory()
                 ->state(fn (array $attributes, User $user) => [
-                    'name' => $user->name.'\'s Team',
+                    'name' => $user->name . "'s Team",
                     'user_id' => $user->id,
                     'personal_team' => true,
                 ])

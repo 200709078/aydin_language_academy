@@ -42,7 +42,16 @@ class ThemeListController extends Controller
 
         $exercises = model_exercises::query()
             ->where('theme_id', $theme->id)
-            ->with('questions')
+            ->with([
+                'questions' => fn ($query) => $query
+                    ->with('options')
+                    ->orderBy('id'),
+                'attempts' => fn ($query) => $query
+                    ->where('user_id', auth()->id())
+                    ->with('answers.selectedOption')
+                    ->latest('id'),
+            ])
+            ->orderBy('id')
             ->get();
 
         return view('frontend.themes.detail', [

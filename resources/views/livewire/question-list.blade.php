@@ -63,11 +63,7 @@
                     <tr>
                         <th scope="col">{{ __('dictt.questions') }}</th>
                         <th scope="col">{{ __('dictt.image') }}</th>
-                        <th scope="col">{{ __('dictt.answer') }} 1</th>
-                        <th scope="col">{{ __('dictt.answer') }} 2</th>
-                        <th scope="col">{{ __('dictt.answer') }} 3</th>
-                        <th scope="col">{{ __('dictt.answer') }} 4</th>
-                        <th scope="col">{{ __('dictt.answer') }} 5</th>
+                        <th scope="col">{{ __('dictt.options_title') }}</th>
                         <th scope="col">{{ __('dictt.correctanswer') }}</th>
                         <th scope="col">{{ __('dictt.operations') }}</th>
                     </tr>
@@ -88,23 +84,25 @@
                                         style="width:120px" class="img-responsive">
                                 @endif
                             </th>
-                            <th class="col-md-3" scope="row">{{ $question->answer1 }}</th>
-                            <th class="col-md-3" scope="row">{{ $question->answer2 }}</th>
-                            <th class="col-md-3" scope="row">{{ $question->answer3 }}</th>
-                            <th class="col-md-3" scope="row">{{ $question->answer4 }}</th>
-                            <th class="col-md-3" scope="row">{{ $question->answer5 }}</th>
-                            <th class="col-md-3" scope="row">{{ $question->correct_answer }}</th>
+                            <td class="text-wrap">
+                                <ol class="mb-0 ps-3">
+                                    @foreach ($question->options as $option)
+                                        <li>{{ $option->option_text }}</li>
+                                    @endforeach
+                                </ol>
+                            </td>
+                            <td class="text-wrap">
+                                {{ $question->options->firstWhere('is_correct', true)?->option_text ?? '—' }}
+                            </td>
                             <td>
                                 <div class="flex gap-1">
                                     <a href="{{ route('question_edit', $question->id) }}" class="btn btn-sm btn-primary"
                                         title="{{ __('dictt.edit') }}">
                                         <i class="fa fa-pen w-4"></i></a>
-                                    <!--  -->
                                     <button wire:click="confirmDelete({{ $question->id }})" class="btn btn-sm btn-danger"
                                         title="{{ __('dictt.delete') }}">
                                         <i class="fa fa-trash"></i>
                                     </button>
-                                    <!--  -->
                                 </div>
                             </td>
                         </tr>

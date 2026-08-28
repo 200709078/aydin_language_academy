@@ -54,6 +54,9 @@ class GenerateSitemap extends Command
             ['/subelerimiz/koycegiz', 0.8],
             ['/seviye-tespit-sinavi', 0.8],
             ['/iletisim', 0.7],
+            ['/iletisim/ortaca', 0.7],
+            ['/iletisim/dalaman', 0.7],
+            ['/iletisim/koycegiz', 0.7],
         ];
 
         foreach ($staticUrls as [$path, $priority]) {

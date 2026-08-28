@@ -37,7 +37,6 @@ class QuestionList extends Component
         if ($this->questionToDelete) {
             $question= $this->questionToDelete;
             $this->questionToDelete->delete();
-            $this->questions = model_questions::all();
             $this->modalSuccessTitle = __('dictt.deletesuccesstitle', ['type' => __('dictt.question')]);
             $this->modalSuccessContent = __('dictt.deletesuccesscontent', ['type' => Str::lower(__('dictt.question')), 'name' => $question->question]);
             $this->confirmingDelete = false;
@@ -47,6 +46,7 @@ class QuestionList extends Component
     public function render()
     {
         $questions = model_questions::where('exercise_id', $this->exercise_id)
+            ->with('options')
             ->orderBy('created_at', 'desc')
             ->get();
         return view('livewire.question-list', [
