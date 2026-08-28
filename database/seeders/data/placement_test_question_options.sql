@@ -98,7 +98,7 @@ INSERT INTO `placement_test_question_options` (`id`, `placement_test_question_id
 (221, 52, 'The park was too large for one afternoon.', 1, 0, '2026-08-26 11:38:36', '2026-08-26 11:38:36'),
 (222, 52, 'The family should return before the next sports event.', 2, 0, '2026-08-26 11:38:36', '2026-08-26 11:38:36'),
 (223, 52, 'The bad weather made their day more interesting.', 3, 0, '2026-08-26 11:38:36', '2026-08-26 11:38:36'),
-(224, 52, 'A slower, flexible plan worked well for the group. PART B 1. Vocabulary in Context', 4, 1, '2026-08-26 11:38:36', '2026-08-26 11:38:36'),
+(224, 52, 'A slower, flexible plan worked well for the group.', 4, 1, '2026-08-26 11:38:36', '2026-08-26 11:38:36'),
 (225, 53, 'appointment', 1, 1, '2026-08-26 11:38:36', '2026-08-26 11:38:36'),
 (226, 53, 'agreement', 2, 0, '2026-08-26 11:38:36', '2026-08-26 11:38:36'),
 (227, 53, 'invitation', 3, 0, '2026-08-26 11:38:36', '2026-08-26 11:38:36'),
