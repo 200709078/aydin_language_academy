@@ -8,5 +8,12 @@
     "Whoops!": "Bir sorun oluştu!",
     "Regards,": "Saygılarımızla,",
     "If you're having trouble clicking the \":actionText\" button, copy and paste the URL below\ninto your web browser:": "\":actionText\" düğmesine tıklamakta sorun yaşıyorsanız aşağıdaki URL'yi kopyalayıp tarayıcınıza yapıştırın:",
-    "All rights reserved.": "Tüm hakları saklıdır."
+    "All rights reserved.": "Tüm hakları saklıdır.",
+    "Your email address is unverified.": "E-posta adresiniz doğrulanmadı.",
+    "Click here to re-send the verification email.": "Doğrulama e-postasını yeniden göndermek için buraya tıklayın.",
+    "A new verification link has been sent to your email address.": "E-posta adresinize yeni bir doğrulama bağlantısı gönderildi.",
+    "The provided password does not match your current password.": "Girilen şifre mevcut şifrenizle eşleşmiyor.",
+    "The provided password was incorrect.": "Girilen şifre doğru değil.",
+    "This password does not match our records.": "Bu şifre kayıtlarımızla eşleşmiyor.",
+    "Unknown": "Bilinmiyor"
 }
