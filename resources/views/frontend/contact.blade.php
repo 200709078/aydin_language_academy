@@ -69,8 +69,12 @@
                             <h6 class="text-primary text-uppercase mb-2">{{ __('dictt.contactus') }}</h6>
                             <p class="mb-0 text-uppercase">{{ $branchName }}</p>
                         </div>
-                        <form method="post" action="{{ route('frontend.contact.submit') }}" id="contactForm">
+                        <form method="post" action="{{ route('frontend.contact.submit', ['branch' => $branch]) }}" id="contactForm">
                             @csrf
+                            <div class="visually-hidden" aria-hidden="true">
+                                <label for="contact-website">Website</label>
+                                <input id="contact-website" name="website" type="text" tabindex="-1" autocomplete="off" />
+                            </div>
                             <div class="form-floating mb-2">
                                 <input class="form-control" name="fullname" type="text"
                                     placeholder="{{ __('dictt.fullname') }}" value="{{ old('fullname', auth()->user()?->name) }}"

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\model_courses;
 use App\Models\model_exercises;
 use App\Models\model_levels;
 use App\Models\model_sub_levels;
@@ -27,11 +26,6 @@ class cont_user_main extends Controller
     return Lang::get('dictt.commingsoon');
     }
 
-    public function courses_list()
-    {
-        $courses = model_courses::get();
-        return view("admin.courses.list", compact('courses'));
-    }
     public function levels_list()
     {
         $levels = model_levels::get();
@@ -83,20 +77,6 @@ class cont_user_main extends Controller
         $theme_id = $exercise->theme_id;
 
         return view("admin.questions.list", compact('exercise_id', 'exercise', 'theme_id'));
-    }
-
-    public function exercises_join($slug)
-    {
-        $exercises = model_exercises::whereSlug($slug)->with('questions.my_answer', 'my_result')->first() ?? abort(404, Lang::get('dictt.exercisesnotfound'));
-        if ($exercises->my_result != null) {
-            return view('exercises_result', compact('exercises'));
-        }
-        return view('exercises_join', compact('exercises'));
-    }
-    public function exercises_detail($slug)
-    {
-        $exercises = model_exercises::whereSlug($slug)->with('my_result', 'topTen.user')->withCount('questions')->first() ?? abort(404, Lang::get('dictt.exercisesnotfound'));
-        return view("exercises_detail", compact('exercises'));
     }
 
     public function changeLanguage($lang)

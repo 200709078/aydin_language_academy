@@ -4,21 +4,28 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\model_messages;
+use App\Services\AdminApprovalNotificationService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
 
 class ContactController extends Controller
 {
+    public function __construct(private readonly AdminApprovalNotificationService $adminNotifications)
+    {
+    }
+
     public function show(?string $branch = null)
     {
         $branchNames = ['ortaca' => 'Ortaca', 'dalaman' => 'Dalaman', 'koycegiz' => 'Köyceğiz'];
-        $branchName = $branchNames[$branch ?? 'ortaca'];
+        $branch = $branch ?? 'ortaca';
+        $branchName = $branchNames[$branch] ?? $branchNames['ortaca'];
 
-        return view('frontend.contact', ['branchName' => $branchName]);
+        return view('frontend.contact', compact('branch', 'branchName'));
     }
 
-    public function submit(Request $request)
+    public function submit(Request $request, ?string $branch = null)
     {
+        $branch = $branch ?? 'ortaca';
+
         $request->merge([
             'fullname' => $this->capitalizeNameWords((string) $request->input('fullname')),
         ]);
@@ -29,6 +36,7 @@ class ContactController extends Controller
             'telephone' => ['required', 'string', 'regex:/^\+[1-9][0-9]{7,14}$/'],
             'subject' => 'required|min:3|max:150|',
             'message' => 'required|min:10|max:2000|',
+            'website' => ['prohibited'],
         ], [
             'fullname.required' => __('dictt.required_item', ['name' => __('dictt.fullname')]),
             'fullname.min' => __('dictt.mincharacter_item', ['name' => __('dictt.fullname'), 'number' => 3]),
@@ -43,29 +51,23 @@ class ContactController extends Controller
             'message.required' => __('dictt.required_item', ['name' => __('dictt.message')]),
             'message.min' => __('dictt.mincharacter_item', ['name' => __('dictt.message'), 'number' => 10]),
             'message.max' => __('dictt.maxcharacter_item', ['name' => __('dictt.message'), 'number' => 2000]),
+            'website.prohibited' => __('dictt.contact_message_spam'),
         ]);
 
-        $newMessage = new model_messages();
-        $newMessage->fullname = $request->fullname;
-        $newMessage->email = $request->email;
-        $newMessage->telephone = $request->telephone;
-        $newMessage->subject = $request->subject;
-        $newMessage->message = $request->message;
+        $newMessage = new model_messages([
+            'fullname' => $request->fullname,
+            'email' => $request->email,
+            'telephone' => $request->telephone,
+            'branch' => $branch,
+            'subject' => $request->subject,
+            'message' => $request->message,
+        ]);
         $newMessage->save();
 
-        Mail::send([], [], function ($message) use ($request) {
-            $message->to('learnenglishwithala@gmail.com', 'Adem VAROL')
-                ->subject($request->subject)
-                ->html(
-                    "<b>Ad Soyad:</b> {$request->fullname}<br>
-             <b>Email:</b> {$request->email}<br>
-             <b>Telefon:</b> {$request->telephone}<br><br>
-             <b>Mesaj:</b><br>" . nl2br(e($request->message))
-                );
-        });
+        $this->adminNotifications->contactMessageCreated($newMessage);
 
         return redirect()
-            ->route('frontend.contact')
+            ->route('frontend.contact', ['branch' => $branch])
             ->with('modalSuccessTitle', __('dictt.sendmessagesuccesstitle'))
             ->with('modalSuccessContent', __('dictt.sendmessagesuccesscontent'));
     }

@@ -21,10 +21,6 @@ class User extends Authenticatable
     use Notifiable;
     use TwoFactorAuthenticatable;
 
-    public function results(){
-        return $this->hasMany(model_results::class,'user_id');
-    }
-
     public function placementTests(): HasMany
     {
         return $this->hasMany(PlacementTest::class);

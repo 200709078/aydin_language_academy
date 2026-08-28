@@ -76,39 +76,6 @@ return new class extends Migration {
             $table->timestamps();
         });
 
-        Schema::create('courses', function (Blueprint $table) {
-            $table->id();
-            $table->string('title_tr');
-            $table->string('title_en');
-            $table->string('slogan_tr');
-            $table->string('slogan_en');
-            $table->longText('description_tr');
-            $table->longText('description_en');
-            $table->longText('image')->nullable();
-            $table->timestamps();
-        });
-
-        /*         Schema::create('user_answers', function (Blueprint $table) {
-                    $table->id();
-                    $table->unsignedBigInteger('user_id');
-                    $table->unsignedBigInteger('question_id');
-                    $table->enum('user_answer', ['answer1', 'answer2', 'answer3', 'answer4', 'answer5']);
-                    $table->timestamps();
-                    $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-                    $table->foreign('question_id')->references('id')->on('questions')->onDelete('cascade');
-                });
-                Schema::create('user_results', function (Blueprint $table) {
-                    $table->id();
-                    $table->unsignedBigInteger('user_id');
-                    $table->unsignedBigInteger('exercise_id');
-                    $table->integer('point');
-                    $table->integer('correct_number');
-                    $table->integer('wrong_number');
-                    $table->timestamps();
-                    $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-                    $table->foreign('exercise_id')->references('id')->on('exercises')->onDelete('cascade');
-                }); */
-
         Schema::create('messages', function (Blueprint $table) {
             $table->id();
             $table->string('fullname');
@@ -128,12 +95,5 @@ return new class extends Migration {
         Schema::dropIfExists('themes');
         Schema::dropIfExists('levels');
         Schema::dropIfExists('sub_levels');
-        
-        Schema::dropIfExists('courses');
-
-
-        /*         Schema::dropIfExists('user_answers');
-                Schema::dropIfExists('user_results'); */
-
     }
 };

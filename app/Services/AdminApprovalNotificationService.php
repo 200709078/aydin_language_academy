@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\PlacementTest;
 use App\Models\Review;
+use App\Models\model_messages;
 use App\Notifications\AdminApprovalRequiredNotification;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
@@ -39,6 +40,24 @@ class AdminApprovalNotificationService
             $review,
             $wasRejected ? 'Yorum tekrar onaya gönderildi' : 'Onay bekleyen yorum güncellendi',
             $wasRejected ? 'İşlem: Reddedilmiş yorum tekrar gönderildi' : 'İşlem: Onay bekleyen yorum güncellendi',
+        );
+    }
+
+    public function contactMessageCreated(model_messages $message): void
+    {
+        $this->send(
+            subject: 'Yeni iletişim mesajı #' . $message->id,
+            lines: [
+                'Ad Soyad: ' . $message->fullname,
+                'E-posta: ' . $message->email,
+                'Telefon: ' . $message->telephone,
+                'Şube: ' . $message->branchLabel(),
+                'Konu: ' . $message->subject,
+                'Mesaj: ' . $message->message,
+                'Gönderim zamanı: ' . ($message->created_at?->format('d.m.Y H:i') ?: '-'),
+            ],
+            actionLabel: 'Mesajı İncele',
+            actionUrl: route('admin.messages.show', $message),
         );
     }
 

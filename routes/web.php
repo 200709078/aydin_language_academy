@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\cont_courses;
 use App\Http\Controllers\cont_declarations;
 use App\Http\Controllers\cont_exercises;
 use App\Http\Controllers\cont_levels;
@@ -9,6 +8,7 @@ use App\Http\Controllers\cont_reviews;
 use App\Http\Controllers\cont_sub_levels;
 use App\Http\Controllers\cont_themes;
 use App\Http\Controllers\cont_user_main;
+use App\Http\Controllers\AdminContactMessageController;
 use App\Http\Controllers\Frontend\ContactController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\ReviewController;
@@ -24,8 +24,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => 'auth'], function () {
-    Route::get('exercises/detail/{slug}', [cont_user_main::class, 'exercises_detail'])->name('exercises.detail');
-    Route::get('exercises/{slug}', [cont_user_main::class, 'exercises_join'])->name('exercises.join');
     Route::post('exercises/{slug}/result', [cont_user_main::class, 'exercises_result'])->name('exercises.result');
 });
 
@@ -90,17 +88,25 @@ Route::group(['middleware' => ['auth', isAdmin_middle::class], 'prefix' => 'admi
         ->whereNumber('placementTest')
         ->name('placement_test_attempts_approve');
 
-    Route::get('courses_list', [cont_user_main::class, 'courses_list'])->name('courses_list');
     Route::get('levels_list', [cont_user_main::class, 'levels_list'])->name('levels_list');
     Route::get('sub_levels_list', [cont_user_main::class, 'sub_levels_list'])->name('sub_levels_list');
     Route::get('themes_list', [cont_user_main::class, 'themes_list'])->name('themes_list');
     Route::get('reviews_list', [cont_reviews::class, 'index'])->name('reviews_list');
     Route::get('review/{review_id}/edit', [cont_reviews::class, 'edit'])->whereNumber('review_id')->name('review_edit');
     Route::put('review/{review_id}/update', [cont_reviews::class, 'update'])->whereNumber('review_id')->name('review_update');
+    Route::get('messages', [AdminContactMessageController::class, 'index'])->name('admin.messages.index');
+    Route::get('messages/{message}', [AdminContactMessageController::class, 'show'])
+        ->whereNumber('message')
+        ->name('admin.messages.show');
+    Route::put('messages/{message}/status', [AdminContactMessageController::class, 'updateStatus'])
+        ->whereNumber('message')
+        ->name('admin.messages.status.update');
+    Route::post('messages/{message}/replies', [AdminContactMessageController::class, 'reply'])
+        ->whereNumber('message')
+        ->name('admin.messages.replies.store');
     Route::get('themes/{theme_id}/declarations_list', [cont_user_main::class, 'declarations_list'])->name('declarations_list');
     Route::get('themes/{theme_id}/exercises_list', [cont_user_main::class, 'exercises_list'])->name('exercises_list');
     Route::get('exercise/{exercise_id}/questions_list', [cont_user_main::class, 'questions_list'])->name('questions_list');
-    Route::get('course/create', [cont_courses::class,'create'])->name('course_create');
     Route::get('level/create', [cont_levels::class,'create'])->name('level_create');
     Route::get('sub_level/create', [cont_sub_levels::class,'create'])->name('sub_level_create');
     Route::get('theme/create', [cont_themes::class,'create'])->name('theme_create');
@@ -108,7 +114,6 @@ Route::group(['middleware' => ['auth', isAdmin_middle::class], 'prefix' => 'admi
     Route::get('exercise/{theme_id}/create', [cont_exercises::class,'create'])->whereNumber('theme_id')->name('exercise_create');
     Route::get('question/{exercise_id}/create', [cont_questions::class,'create'])->whereNumber('exercise_id')->name('question_create');
 
-    Route::post('course', [cont_courses::class, 'store'])->name('course_store');
     Route::post('level', [cont_levels::class, 'store'])->name('level_store');
     Route::post('sub_level', [cont_sub_levels::class, 'store'])->name('sub_level_store');
     Route::post('theme', [cont_themes::class, 'store'])->name('theme_store');
@@ -116,7 +121,6 @@ Route::group(['middleware' => ['auth', isAdmin_middle::class], 'prefix' => 'admi
     Route::post('exercise/{theme_id}/store', [cont_exercises::class, 'store'])->whereNumber('theme_id')->name('exercise_store');
     Route::post('question/{exercise_id}/store', [cont_questions::class, 'store'])->whereNumber('exercise_id')->name('question_store');
     
-    Route::get('course/{course_id}/edit', [cont_courses::class,'edit'])->name('course_edit');
     Route::get('level/{level_id}/edit', [cont_levels::class,'edit'])->name('level_edit');
     Route::get('sub_level/{sub_level_id}/edit', [cont_sub_levels::class,'edit'])->name('sub_level_edit');
     Route::get('theme/{theme_id}/edit', [cont_themes::class,'edit'])->name('theme_edit');
@@ -124,7 +128,6 @@ Route::group(['middleware' => ['auth', isAdmin_middle::class], 'prefix' => 'admi
     Route::get('exercise/{exercise_id}/edit', [cont_exercises::class,'edit'])->name('exercise_edit');
     Route::get('question/{question_id}/edit', [cont_questions::class,'edit'])->name('question_edit');
 
-    Route::put('course/{course_id}/update', [cont_courses::class, 'update'])->name('course_update');
     Route::put('level/{level_id}/update', [cont_levels::class, 'update'])->name('level_update');
     Route::put('sub_level/{sub_level_id}/update', [cont_sub_levels::class, 'update'])->name('sub_level_update');
     Route::put('theme/{theme_id}/update', [cont_themes::class, 'update'])->name('theme_update');
@@ -208,7 +211,10 @@ Route::view('/subelerimiz/koycegiz', 'frontend.branches.koycegiz')->name('fronte
 Route::get('/iletisim/{branch?}', [ContactController::class, 'show'])
     ->where('branch', 'ortaca|dalaman|koycegiz')
     ->name('frontend.contact');
-Route::post('/iletisim', [ContactController::class, 'submit'])->name('frontend.contact.submit');
+Route::post('/iletisim/{branch?}', [ContactController::class, 'submit'])
+    ->where('branch', 'ortaca|dalaman|koycegiz')
+    ->middleware('throttle:5,1')
+    ->name('frontend.contact.submit');
 
 Route::get('/giris', function (Request $request) {
     if ($request->user()?->type === 'admin') {
