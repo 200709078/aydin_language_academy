@@ -255,8 +255,8 @@
                 </div>
 
                 <div class="d-flex justify-content-center align-items-center mt-4 wow fadeInUp" data-wow-delay="0.15s">
-                    <button type="button" class="btn btn-outline-primary btn-lg-square rounded-circle me-2 d-inline-flex align-items-center justify-content-center review-prev" aria-label="{{ __('dictt.previous') }}">&lt;</button>
-                    <button type="button" class="btn btn-outline-primary btn-lg-square rounded-circle d-inline-flex align-items-center justify-content-center review-next" aria-label="{{ __('dictt.next') }}">&gt;</button>
+                    <button type="button" class="btn btn-outline-primary btn-lg-square rounded-circle me-2 d-inline-flex align-items-center justify-content-center review-prev" aria-label="{{ __('dictt.previous') }}"><i class="fa fa-angle-left" aria-hidden="true"></i></button>
+                    <button type="button" class="btn btn-outline-primary btn-lg-square rounded-circle d-inline-flex align-items-center justify-content-center review-next" aria-label="{{ __('dictt.next') }}"><i class="fa fa-angle-right" aria-hidden="true"></i></button>
                 </div>
             @elseif (($latestReview ?? null) || ($previousReview ?? null) || ($firstReview ?? null))
                 <div class="row g-4 justify-content-center wow fadeInUp" data-wow-delay="0.1s">

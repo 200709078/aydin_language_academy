@@ -10,6 +10,7 @@ return [
     'brand_title' => 'AYDIN',
     'brand_subtitle' => 'Language Academy',
     'allrightreserved.' => 'All right reserved.',
+    'reorganized_by.' => 'Reorganized By',
     'designed_by' => 'Designed By',
     'quick_links' => 'Quick Links',
     'ourcourses' => 'Our Courses',

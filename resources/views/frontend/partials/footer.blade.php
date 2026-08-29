@@ -53,7 +53,7 @@
                         &copy; <a class="border-bottom" href="{{ route('home') }}">Aydın Language Academy</a>, {{ __('dictt.allrightreserved.') }}
                     </div>
                     <div class="col-md-4 text-center mb-3 mb-md-0">
-                        Reserved By <a class="border-bottom" href="https://www.madematik.com" target="_blank" rel="noopener noreferrer">mADEMatik</a>
+                        {{ __('dictt.reorganized_by.') }} <a class="border-bottom" href="https://www.madematik.com" target="_blank" rel="noopener noreferrer">mADEMatik</a>
                     </div>
                     <div class="col-md-4 text-center text-md-end">
                         <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->

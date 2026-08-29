@@ -10,6 +10,7 @@ return [
     'brand_title' => 'AYDIN',
     'brand_subtitle' => 'Dil Akademisi',
     'allrightreserved.' => 'Tüm hakları saklıdır.',
+    'reorganized_by.' => 'Düzenleme:',
     'designed_by' => 'Tasarım:',
     'quick_links' => 'Hızlı Bağlantılar',
     'ourcourses' => 'Kurslarımız',
