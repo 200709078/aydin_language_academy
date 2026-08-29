@@ -716,11 +716,40 @@ body.frontend-home * {
 }
 
 .frontend-brand-wordmark {
-    color: #25BEBC;
-    font-size: 56px;
-    font-weight: 800;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
     line-height: 1;
+    color: #25BEBC;
     white-space: nowrap;
+}
+
+.frontend-brand-wordmark__main {
+    color: #25BEBC;
+    font-size: 38px;
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.frontend-brand-wordmark__sub {
+    color: #25BEBC;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: 0.02em;
+}
+
+@media (max-width: 575.98px) {
+    .frontend-brand-wordmark__main {
+        font-size: 30px;
+    }
+
+    .frontend-brand-wordmark__sub {
+        font-size: 13px;
+    }
 }
 
 .navbar .navbar-nav .nav-link {

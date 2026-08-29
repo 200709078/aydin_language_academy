@@ -9,7 +9,10 @@
     <nav class="navbar navbar-expand-xl bg-light navbar-light sticky-top p-0 wow fadeIn" data-wow-delay="0.1s">
         <a href="{{ route('home') }}" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
             <img src="{{ asset('frontend/images/logo/logo-2.png') }}" alt="Aydın Language Academy" style="height: 56px; width: auto;">
-            <span class="frontend-brand-wordmark">ALA</span>
+            <span class="frontend-brand-wordmark">
+                <span class="frontend-brand-wordmark__main">{{ __('dictt.brand_title') }}</span>
+                <span class="frontend-brand-wordmark__sub">{{ __('dictt.brand_subtitle') }}</span>
+            </span>
         </a>
         <div class="navbar-collapse">
             <div class="navbar-nav mx-auto p-4 p-lg-0">
