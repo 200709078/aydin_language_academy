@@ -48,12 +48,17 @@
                                 $exercise = $exerciseAttempt->exercise;
                                 $summary = $exercise ? $exerciseAttempt->summaryFor($exercise->questions) : null;
                                 $exerciseText = $exercise ? ($exercise->qtext ?: $exercise->title) : null;
+                                $themeName = $exercise?->theme?->name ?? '—';
                             @endphp
                             <tr>
                                 <td class="text-break">{{ $exerciseAttempt->user?->name ?? ($exerciseAttempt->user_id ? '#' . $exerciseAttempt->user_id : '—') }}</td>
                                 <td class="text-break">{{ $exerciseAttempt->user?->email ?? '—' }}</td>
-                                <td class="text-break">{{ $exercise?->theme?->name ?? '—' }}</td>
-                                <td class="text-break">{{ $exerciseText ? \Illuminate\Support\Str::limit($exerciseText, 70) : '—' }}</td>
+                                <td class="admin-exercise-attempt-theme-cell" title="{{ $themeName }}">
+                                    <span class="admin-table-cell-ellipsis">{{ $themeName }}</span>
+                                </td>
+                                <td class="admin-exercise-attempt-exercise-cell" title="{{ $exerciseText ?? '—' }}">
+                                    <span class="admin-table-cell-ellipsis">{{ $exerciseText ?? '—' }}</span>
+                                </td>
                                 <td class="text-nowrap">{{ $exerciseAttempt->started_at?->format('d.m.Y H:i') ?? '—' }}</td>
                                 <td class="text-nowrap">{{ $exerciseAttempt->completed_at?->format('d.m.Y H:i') ?? '—' }}</td>
                                 <td class="text-success fw-semibold">{{ $summary['correct'] ?? '—' }}</td>

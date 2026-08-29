@@ -41,9 +41,9 @@
                             <tr>
                                 <th scope="row">{{ $content->level->code }}</th>
                                 <td>{{ $typeLabels[$content->type] }}</td>
-                                <td class="text-break">
+                                <td class="admin-question-content-cell">
                                     @if ($content->type === 'text')
-                                        {{ \Illuminate\Support\Str::limit($content->text_content, 120) }}
+                                        <span class="admin-table-cell-ellipsis" title="{{ $content->text_content }}">{{ $content->text_content }}</span>
                                     @else
                                         <a href="{{ route('placement_test_question_contents_media', $content) }}" target="_blank"
                                             class="btn btn-sm btn-outline-secondary">

@@ -29,11 +29,70 @@
     <link href="{{ asset('frontend/css/bootstrap.min.css') }}" rel="stylesheet">
 
     <!-- Template Stylesheet -->
-    <link href="{{ asset('frontend/css/style.css') }}?v=20260829" rel="stylesheet">
+    <link href="{{ asset('frontend/css/style.css') }}?v=20260829-turquoise-actions-courses" rel="stylesheet">
 </head>
 
-<body>
+<body class="frontend-home">
     @include('frontend.partials.header')
+
+    <!-- Header Start -->
+    <div class="container-fluid header ala-slider-shell p-0 mb-5">
+        <div class="row g-0 align-items-center flex-column-reverse flex-lg-row">
+            <div class="col-lg-6 p-5 wow fadeIn ala-slider-summary" data-wow-delay="0.1s">
+                <h1 class="display-4 text-white mb-5">İngilizceyi öğrenme.<br>Onu yaşamaya başla.</h1>
+                <div class="row g-4">
+                    <div class="col-4 col-sm-4">
+                        <div class="border-start border-light ps-4">
+                            <h2 class="text-white mb-1" data-toggle="counter-up">3</h2>
+                            <p class="text-light mb-0">Şube</p>
+                        </div>
+                    </div>
+                    <div class="col-4 col-sm-4">
+                        <div class="border-start border-light ps-4">
+                            <h2 class="text-white mb-1"><span data-toggle="counter-up">200</span>+</h2>
+                            <p class="text-light mb-0">Aktif Öğrenci</p>
+                        </div>
+                    </div>
+                    <div class="col-4 col-sm-4">
+                        <div class="border-start border-light ps-4">
+                            <h2 class="text-white mb-1">%<span data-toggle="counter-up">95</span></h2>
+                            <p class="text-light mb-0">Yerleştirme Başarısı</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
+                <div class="owl-carousel header-carousel">
+                    <div class="owl-carousel-item position-relative">
+                        <img class="img-fluid" src="{{ asset('frontend/images/slider-1.jpg') }}" alt="">
+                        <div class="owl-carousel-text">
+                            <h1 class="display-1 text-white mb-0">
+                                <a class="header-carousel-branch-link" href="{{ route('frontend.branches.ortaca') }}">Ortaca</a>
+                            </h1>
+                        </div>
+                    </div>
+                    <div class="owl-carousel-item position-relative">
+                        <img class="img-fluid" src="{{ asset('frontend/images/slider-2.jpg') }}" alt="">
+                        <div class="owl-carousel-text">
+                            <h1 class="display-1 text-white mb-0">
+                                <a class="header-carousel-branch-link" href="{{ route('frontend.branches.dalaman') }}">Dalaman</a>
+                            </h1>
+                        </div>
+                    </div>
+                    <div class="owl-carousel-item position-relative">
+                        <img class="img-fluid" src="{{ asset('frontend/images/slider-3.jpg') }}" alt="">
+                        <div class="owl-carousel-text">
+                            <h1 class="display-1 text-white mb-0">
+                                <a class="header-carousel-branch-link" href="{{ route('frontend.branches.koycegiz') }}">Köyceğiz</a>
+                            </h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Header End -->
+
     @include('frontend.partials.about')
 
     <section class="ala-brand-band" aria-label="Aydın Language Academy">
@@ -43,7 +102,7 @@
     </section>
 
     <!-- Why Us Start -->
-    <div class="container-xxl py-5">
+    <div class="container-xxl py-5 ala-courses">
         <div class="container">
             <div class="row g-5">
                 <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
@@ -251,7 +310,7 @@
     <script src="{{ asset('frontend/vendor/tempusdominus/js/tempusdominus-bootstrap-4.min.js') }}"></script>
 
     <!-- Template Javascript -->
-    <script src="{{ asset('frontend/js/main.js') }}?v=20260825"></script>
+    <script src="{{ asset('frontend/js/main.js') }}?v=20260829-slider"></script>
 </body>
 
 </html>

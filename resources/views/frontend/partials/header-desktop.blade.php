@@ -52,12 +52,12 @@
                 @endauth
             </div>
             @guest
-                <a href="{{ route('frontend.login', ['return' => $headerReturnRoute]) }}" class="btn btn-primary rounded-0 py-4 px-lg-5">{{ __('dictt.login') }}<i class="fa fa-arrow-left ms-3" aria-hidden="true"></i></a>
+                <a href="{{ route('frontend.login', ['return' => $headerReturnRoute]) }}" class="btn btn-primary frontend-header-action rounded-0 py-4 px-lg-5">{{ __('dictt.login') }}<i class="fa fa-arrow-left ms-3" aria-hidden="true"></i></a>
             @else
                 <form method="POST" action="{{ route('logout') }}" class="d-flex align-items-stretch">
                     @csrf
                     <input type="hidden" name="return" value="{{ $headerReturnRoute }}">
-                    <button type="submit" class="btn btn-primary rounded-0 py-4 px-lg-5 border-0">{{ __('dictt.logout') }}<i class="fa fa-sign-out-alt ms-3" aria-hidden="true"></i></button>
+                    <button type="submit" class="btn btn-primary frontend-header-action rounded-0 py-4 px-lg-5 border-0">{{ __('dictt.logout') }}<i class="fa fa-sign-out-alt ms-3" aria-hidden="true"></i></button>
                 </form>
             @endguest
         </div>

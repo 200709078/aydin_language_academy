@@ -13,9 +13,10 @@
         </div>
 
         <div class="mt-5">
-            <x-danger-button wire:click="confirmUserDeletion" wire:loading.attr="disabled">
-                {{ __('dictt.deleteaccount') }}
-            </x-danger-button>
+            <button type="button" class="btn btn-outline-primary frontend-profile-primary-action frontend-profile-danger-action py-3 px-5"
+                wire:click="confirmUserDeletion" wire:loading.attr="disabled">
+                {{ __('dictt.delete_my_account') }}
+            </button>
         </div>
 
         <!-- Delete User Confirmation Modal -->
@@ -44,9 +45,10 @@
                     {{ __('dictt.cancel') }}
                 </x-secondary-button>
 
-                <x-danger-button class="ms-3" wire:click="deleteUser" wire:loading.attr="disabled">
-                    {{ __('dictt.deleteaccount') }}
-                </x-danger-button>
+                <button type="button" class="btn btn-outline-primary frontend-profile-primary-action frontend-profile-danger-action py-2 px-3 ms-3"
+                    wire:click="deleteUser" wire:loading.attr="disabled">
+                    {{ __('dictt.delete_my_account') }}
+                </button>
             </x-slot>
         </x-dialog-modal>
     </x-slot>

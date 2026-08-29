@@ -39,6 +39,38 @@ table th {
     white-space: normal;
 }
 
+.admin-main-content .admin-review-content-cell {
+    width: 22.5rem;
+    max-width: 22.5rem;
+}
+
+.admin-main-content .admin-exercise-attempt-theme-cell {
+    width: 12rem;
+    max-width: 12rem;
+}
+
+.admin-main-content .admin-exercise-attempt-exercise-cell {
+    width: 18rem;
+    max-width: 18rem;
+}
+
+.admin-main-content .admin-question-content-cell {
+    width: 24rem;
+    max-width: 24rem;
+}
+
+.admin-main-content .admin-placement-question-cell {
+    width: 24rem;
+    max-width: 24rem;
+}
+
+.admin-main-content .admin-table-cell-ellipsis {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 .admin-navigation-trigger {
     border: 0;
     background: transparent;
@@ -297,6 +329,31 @@ table th {
     .admin-main-content .table-responsive > .table,
     .admin-main-content .admin-table-scroll > .table {
         min-width: 42rem;
+    }
+
+    .admin-main-content .admin-review-content-cell {
+        width: 13rem;
+        max-width: 13rem;
+    }
+
+    .admin-main-content .admin-exercise-attempt-theme-cell {
+        width: 10rem;
+        max-width: 10rem;
+    }
+
+    .admin-main-content .admin-exercise-attempt-exercise-cell {
+        width: 12rem;
+        max-width: 12rem;
+    }
+
+    .admin-main-content .admin-question-content-cell {
+        width: 14rem;
+        max-width: 14rem;
+    }
+
+    .admin-main-content .admin-placement-question-cell {
+        width: 14rem;
+        max-width: 14rem;
     }
 
     .admin-main-content .d-flex.justify-content-between,

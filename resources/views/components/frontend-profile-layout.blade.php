@@ -89,6 +89,35 @@
             box-shadow: 0 0 0 .25rem rgba(4, 99, 250, .5);
         }
 
+        .frontend-profile-layout .frontend-profile-danger-action {
+            --bs-btn-color: #bd5961;
+            --bs-btn-border-color: #bd5961;
+            --bs-btn-hover-color: #FFFFFF;
+            --bs-btn-hover-bg: #bd5961;
+            --bs-btn-hover-border-color: #bd5961;
+            --bs-btn-focus-shadow-rgb: 189, 89, 97;
+            --bs-btn-active-color: #FFFFFF;
+            --bs-btn-active-bg: #a94d55;
+            --bs-btn-active-border-color: #a94d55;
+            --bs-btn-disabled-color: #bd5961;
+            --bs-btn-disabled-bg: transparent;
+            --bs-btn-disabled-border-color: #bd5961;
+            color: #bd5961;
+            border-color: #bd5961;
+        }
+
+        .frontend-profile-layout .frontend-profile-danger-action:hover,
+        .frontend-profile-layout .frontend-profile-danger-action:focus-visible,
+        .frontend-profile-layout .frontend-profile-danger-action:active {
+            color: #FFFFFF;
+            background-color: #bd5961;
+            border-color: #bd5961;
+        }
+
+        .frontend-profile-layout .frontend-profile-danger-action:focus {
+            box-shadow: 0 0 0 .25rem rgba(189, 89, 97, .35);
+        }
+
         .frontend-profile-layout .frontend-profile-avatar {
             border: 2px solid #8CB8F9;
         }

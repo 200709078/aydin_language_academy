@@ -542,6 +542,7 @@ return [
     'logoutbrowsersessions' => "Diğer Tarayıcı Oturumlarından Çıkış Yap",
     'logoutbrowsersessionplease' => "Lütfen tüm cihazlarınızdaki diğer tarayıcı oturumlarınızdan çıkış yapmak istediğinizi onaylamak için şifrenizi girin.",
     'deleteaccount' => "Hesabı Sil",
+    'delete_my_account' => "Hesabımı Sil",
     'deleteaccountdesc' => "Hesabınızı kalıcı olarak silin.",
     'deleteaccountonce' => "Hesabınız bir kez silindiğinde, tüm kaynakları ve verileri kalıcı olarak silinecektir. Hesabınızı silmeden önce, lütfen saklamak istediğiniz tüm verilerinizi veya bilgileri indirin.",
     'deleteaccountsure' => "Hesabınızı silmek istediğinizden emin misiniz? Hesabınız silindiğinde, tüm kaynakları ve verileri kalıcı olarak silinecektir. Hesabınızı kalıcı olarak silmek istediğinizi onaylamak için lütfen şifrenizi girin.",

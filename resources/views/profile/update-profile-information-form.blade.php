@@ -53,9 +53,10 @@
                 </button>
 
                 @if ($this->user->profile_photo_path)
-                    <x-secondary-button type="button" class="mt-2" wire:click="deleteProfilePhoto">
+                    <button type="button" class="btn btn-outline-primary frontend-profile-primary-action frontend-profile-danger-action py-2 px-3 mt-2"
+                        wire:click="deleteProfilePhoto" wire:loading.attr="disabled" wire:target="deleteProfilePhoto">
                         {{ __('dictt.delphoto') }}
-                    </x-secondary-button>
+                    </button>
                 @endif
 
                 <x-input-error for="photo" class="mt-2" />

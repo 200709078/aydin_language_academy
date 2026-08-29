@@ -41,7 +41,9 @@
                         @forelse ($questions as $question)
                             <tr>
                                 <th scope="row">{{ $question->level?->code ?? '—' }}</th>
-                                <td class="text-break">{{ \Illuminate\Support\Str::limit($question->question_text, 110) }}</td>
+                                <td class="admin-placement-question-cell">
+                                    <span class="admin-table-cell-ellipsis" title="{{ $question->question_text }}">{{ $question->question_text }}</span>
+                                </td>
                                 <td>
                                     @if ($question->questionContent)
                                         <a href="{{ route('placement_test_question_contents_edit', $question->questionContent) }}"

@@ -542,6 +542,7 @@ return [
     'logoutbrowsersessions' => "Log Out Other Browser Sessions",
     'logoutbrowsersessionplease' => "Please enter your password to confirm you would like to log out of your other browser sessions across all of your devices.",
     'deleteaccount' => "Delete Account",
+    'delete_my_account' => "Delete My Account",
     'deleteaccountdesc' => "Permanently delete your account.",
     'deleteaccountonce' => "Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.",
     'deleteaccountsure' => "Are you sure you want to delete your account? Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.",

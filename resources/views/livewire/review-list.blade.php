@@ -98,7 +98,9 @@
                                         <i class="{{ $i <= $review->rating ? 'fas' : 'far' }} fa-star {{ $i <= $review->rating ? 'text-warning' : 'text-muted' }}"></i>
                                     @endfor
                                 </td>
-                                <td style="max-width: 360px;">{{ \Illuminate\Support\Str::limit($review->content, 120) }}</td>
+                                <td class="admin-review-content-cell">
+                                    <span class="admin-table-cell-ellipsis">{{ \Illuminate\Support\Str::limit($review->content, 120) }}</span>
+                                </td>
                                 <td>
                                     @if ($review->status === \App\Models\Review::STATUS_APPROVED)
                                         <span class="badge text-bg-success">{{ __('dictt.status_approved') }}</span>
