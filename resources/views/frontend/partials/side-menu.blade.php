@@ -1,5 +1,5 @@
 {{-- Frontend sol menü: üst navbar'dan bağımsız, sabit konumlu panel --}}
-<link rel="stylesheet" href="{{ asset('frontend/css/side-menu.css') }}?v=24">
+<link rel="stylesheet" href="{{ asset('frontend/css/side-menu.css') }}?v=26">
 <div id="fsmRoot" class="fsm-root is-closed">
     <nav id="fsmPanel" class="fsm-panel">
         <div id="fsmAccordion" class="fsm-body">

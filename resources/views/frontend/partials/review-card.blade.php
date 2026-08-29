@@ -1,6 +1,6 @@
 <div class="testimonial-item text-center h-100 w-100 d-flex flex-column">
     <div class="d-flex align-items-center justify-content-center bg-light rounded-circle mx-auto mb-4" style="width: 100px; height: 100px;">
-        <i class="fa fa-user text-primary" style="font-size: 2.2rem;"></i>
+        <i class="fa fa-user ala-review-avatar-icon" style="font-size: 2.2rem;"></i>
     </div>
     <div class="testimonial-text bg-light rounded text-center p-4 flex-grow-1 d-flex flex-column">
         <p>{{ $review->content }}</p>

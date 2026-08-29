@@ -29,7 +29,7 @@
     <link href="{{ asset('frontend/css/bootstrap.min.css') }}" rel="stylesheet">
 
     <!-- Template Stylesheet -->
-    <link href="{{ asset('frontend/css/style.css') }}?v=20260829-turquoise-actions-courses" rel="stylesheet">
+    <link href="{{ asset('frontend/css/style.css') }}?v=20260829-turquoise-primary" rel="stylesheet">
 </head>
 
 <body class="frontend-home">
@@ -102,7 +102,7 @@
     </section>
 
     <!-- Why Us Start -->
-    <div class="container-xxl py-5 ala-courses">
+    <div class="container-xxl py-5">
         <div class="container">
             <div class="row g-5">
                 <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
@@ -122,7 +122,7 @@
 
 
     <!-- Service Start -->
-    <div class="container-xxl py-5">
+    <div class="container-xxl py-5 ala-courses">
         <div class="container">
             <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
                 <h1>{{ __('dictt.ourcourses') }}</h1>

@@ -29,7 +29,7 @@
     <link href="{{ asset('frontend/css/bootstrap.min.css') }}" rel="stylesheet">
 
     <!-- Template Stylesheet -->
-    <link href="{{ asset('frontend/css/style.css') }}?v=20260824" rel="stylesheet">
+    <link href="{{ asset('frontend/css/style.css') }}?v=20260829-turquoise-primary" rel="stylesheet">
 </head>
 
 <body>

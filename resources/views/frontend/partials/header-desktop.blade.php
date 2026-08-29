@@ -13,13 +13,13 @@
         </a>
         <div class="navbar-collapse">
             <div class="navbar-nav mx-auto p-4 p-lg-0">
-                <a href="{{ route($headerNavigation['home']['route']) }}" class="nav-item nav-link {{ $headerNavigation['home']['is_active'] ? 'active' : '' }}"><i class="fa fa-home fa-sm fa-fw me-1" aria-hidden="true"></i>{{ $headerNavigation['home']['label'] }}</a>
+                <a href="{{ route($headerNavigation['home']['route']) }}" class="nav-item nav-link frontend-header-home-link {{ $headerNavigation['home']['is_active'] ? 'active' : '' }}"><i class="fa fa-home fa-sm fa-fw me-1" aria-hidden="true"></i>{{ $headerNavigation['home']['label'] }}</a>
                 <div class="nav-item dropdown frontend-courses-dropdown">
                     <a href="#" class="nav-link dropdown-toggle {{ $headerNavigation['courses_is_active'] ? 'active' : '' }}" data-bs-toggle="dropdown"><i class="fa fa-graduation-cap fa-sm fa-fw me-1" aria-hidden="true"></i>{{ __('dictt.ourcourses') }}</a>
                     <div class="dropdown-menu bg-light rounded-0 rounded-bottom m-0">
                         @foreach ($headerNavigation['course_groups'] as $courseGroup)
                             <div class="dropdown-submenu">
-                                <span class="dropdown-item dropdown-submenu-toggle {{ $courseGroup['is_active'] ? 'active' : '' }}"><i class="fa fa-graduation-cap fa-sm fa-fw me-1" aria-hidden="true"></i>{{ $courseGroup['label'] }}</span>
+                                <span class="dropdown-item dropdown-submenu-toggle {{ $courseGroup['label'] === __('dictt.academic_exam_prep') ? 'frontend-header-academic-exam-link' : '' }} {{ $courseGroup['is_active'] ? 'active' : '' }}"><i class="fa fa-graduation-cap fa-sm fa-fw me-1" aria-hidden="true"></i>{{ $courseGroup['label'] }}</span>
                                 <div class="dropdown-menu bg-light rounded-0 m-0">
                                     @foreach ($courseGroup['items'] as $course)
                                         <a href="{{ route($course['route']) }}" class="dropdown-item {{ $course['is_active'] ? 'active' : '' }}"><i class="fa fa-graduation-cap fa-sm fa-fw me-1" aria-hidden="true"></i>{{ $course['label'] }}</a>

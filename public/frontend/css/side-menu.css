@@ -1,4 +1,5 @@
 .fsm-root {
+    --fsm-accent: #2bb8ba;
     position: fixed;
     /* Üst navbar 75px yüksekliğinde; menü onun alt çizgisinden başlar. */
     inset: 75px auto 0 0;
@@ -78,13 +79,18 @@
     white-space: nowrap;
     background: transparent;
     border: 0;
-    transition: color 150ms ease-in-out;
+    transition: color .3s ease, letter-spacing .3s ease;
 }
 
 .fsm-item:hover,
-.fsm-item:focus-visible,
+.fsm-item:focus-visible {
+    color: var(--fsm-accent);
+    letter-spacing: 1px;
+    box-shadow: none;
+}
+
 .fsm-item.active {
-    color: var(--primary);
+    color: var(--fsm-accent);
 }
 
 .fsm-bullet {
@@ -126,13 +132,18 @@
     color: var(--dark);
     text-decoration: none;
     text-transform: none;
-    transition: color 150ms ease-in-out;
+    transition: color .3s ease, letter-spacing .3s ease;
 }
 
 a.fsm-subitem:hover,
-a.fsm-subitem:focus-visible,
+a.fsm-subitem:focus-visible {
+    color: var(--fsm-accent);
+    letter-spacing: 1px;
+    box-shadow: none;
+}
+
 a.fsm-subitem.active {
-    color: var(--primary);
+    color: var(--fsm-accent);
 }
 
 .fsm-subbullet {
@@ -162,19 +173,27 @@ a.fsm-subitem.active {
     border: 0;
     border-left: 1px solid #e5e7eb;
     cursor: pointer;
-    transition: color 150ms ease-in-out;
+    transition: color .3s ease;
 }
 
 .fsm-strip:hover .fsm-strip-text,
-.fsm-strip:focus-visible .fsm-strip-text,
+.fsm-strip:focus-visible .fsm-strip-text {
+    color: var(--fsm-accent);
+    letter-spacing: 1px;
+}
+
 .fsm-strip.active .fsm-strip-text {
-    color: var(--primary);
+    color: var(--fsm-accent);
 }
 
 .fsm-strip:hover,
-.fsm-strip:focus-visible,
+.fsm-strip:focus-visible {
+    color: var(--fsm-accent);
+    box-shadow: none;
+}
+
 .fsm-strip.active {
-    color: var(--primary);
+    color: var(--fsm-accent);
 }
 
 .fsm-strip:focus-visible {
@@ -191,7 +210,7 @@ a.fsm-subitem.active {
     writing-mode: vertical-rl;
     /* Harfler sola yatarak aşağıdan yukarıya okunur. */
     transform: rotate(180deg);
-    transition: color 150ms ease-in-out;
+    transition: color .3s ease, letter-spacing .3s ease;
 }
 
 .fsm-strip-chevron {

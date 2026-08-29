@@ -1,8 +1,200 @@
 /********** Template CSS **********/
 :root {
-    --primary: #0463FA;
+    --primary: #2bb8ba;
+    --primary-dark: #208f91;
+    --primary-rgb: 43, 184, 186;
+    --bs-primary: #2bb8ba;
+    --bs-primary-rgb: 43, 184, 186;
+    --bs-link-color: #2bb8ba;
+    --bs-link-hover-color: #208f91;
     --light: #EFF5FF;
     --dark: #1B2C51;
+}
+
+/*** Public frontend primary theme ***/
+a {
+    color: var(--primary);
+}
+
+a:hover,
+a:focus-visible {
+    color: var(--primary-dark);
+}
+
+:focus-visible {
+    outline-color: var(--primary);
+}
+
+.text-primary {
+    color: var(--primary) !important;
+}
+
+.bg-primary {
+    background-color: var(--primary) !important;
+}
+
+.border-primary {
+    border-color: var(--primary) !important;
+}
+
+.link-primary,
+.btn-link {
+    color: var(--primary);
+}
+
+.link-primary:hover,
+.link-primary:focus,
+.btn-link:hover,
+.btn-link:focus {
+    color: var(--primary-dark);
+}
+
+.btn-primary {
+    color: #FFFFFF;
+    background-color: var(--primary);
+    border-color: var(--primary);
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-check:focus + .btn-primary,
+.btn-check:checked + .btn-primary,
+.btn-check:active + .btn-primary,
+.btn-primary:active,
+.btn-primary.active,
+.show > .btn-primary.dropdown-toggle {
+    color: #FFFFFF;
+    background-color: var(--primary-dark);
+    border-color: var(--primary-dark);
+}
+
+.btn-primary:focus,
+.btn-check:focus + .btn-primary,
+.btn-check:checked + .btn-primary:focus,
+.btn-check:active + .btn-primary:focus,
+.btn-primary:active:focus,
+.btn-primary.active:focus,
+.show > .btn-primary.dropdown-toggle:focus {
+    box-shadow: 0 0 0 .25rem rgba(var(--primary-rgb), .5);
+}
+
+.btn-primary:disabled,
+.btn-primary.disabled {
+    color: #FFFFFF;
+    background-color: var(--primary);
+    border-color: var(--primary);
+}
+
+.btn-outline-primary {
+    color: var(--primary);
+    border-color: var(--primary);
+}
+
+.btn-outline-primary:hover,
+.btn-outline-primary:focus,
+.btn-check:focus + .btn-outline-primary,
+.btn-check:checked + .btn-outline-primary,
+.btn-check:active + .btn-outline-primary,
+.btn-outline-primary:active,
+.btn-outline-primary.active,
+.show > .btn-outline-primary.dropdown-toggle {
+    color: #FFFFFF;
+    background-color: var(--primary-dark);
+    border-color: var(--primary-dark);
+}
+
+.btn-outline-primary:focus,
+.btn-check:focus + .btn-outline-primary,
+.btn-check:checked + .btn-outline-primary:focus,
+.btn-check:active + .btn-outline-primary:focus,
+.btn-outline-primary:active:focus,
+.btn-outline-primary.active:focus,
+.show > .btn-outline-primary.dropdown-toggle:focus {
+    box-shadow: 0 0 0 .25rem rgba(var(--primary-rgb), .5);
+}
+
+.btn-outline-primary:disabled,
+.btn-outline-primary.disabled {
+    color: var(--primary);
+    background-color: transparent;
+    border-color: var(--primary);
+}
+
+.form-control:focus,
+.form-select:focus,
+.form-check-input:focus {
+    border-color: #7bd4d5;
+    box-shadow: 0 0 0 .25rem rgba(var(--primary-rgb), .25);
+}
+
+.form-check-input:checked {
+    background-color: var(--primary);
+    border-color: var(--primary);
+}
+
+.form-range::-webkit-slider-thumb {
+    background-color: var(--primary);
+}
+
+.form-range::-moz-range-thumb {
+    background-color: var(--primary);
+}
+
+.form-range:focus::-webkit-slider-thumb {
+    box-shadow: 0 0 0 1px #FFFFFF, 0 0 0 .25rem rgba(var(--primary-rgb), .25);
+}
+
+.form-range:focus::-moz-range-thumb {
+    box-shadow: 0 0 0 1px #FFFFFF, 0 0 0 .25rem rgba(var(--primary-rgb), .25);
+}
+
+.dropdown-item.active,
+.dropdown-item:active,
+.nav-pills .nav-link.active,
+.nav-pills .show > .nav-link,
+.list-group-item.active,
+.page-item.active .page-link,
+.progress-bar {
+    color: #FFFFFF;
+    background-color: var(--primary);
+    border-color: var(--primary);
+}
+
+.page-link {
+    color: var(--primary);
+}
+
+.page-link:hover,
+.page-link:focus {
+    color: var(--primary-dark);
+    background-color: rgba(var(--primary-rgb), .1);
+    border-color: rgba(var(--primary-rgb), .35);
+    box-shadow: 0 0 0 .25rem rgba(var(--primary-rgb), .25);
+}
+
+.accordion-button:not(.collapsed) {
+    color: var(--primary-dark);
+    background-color: rgba(var(--primary-rgb), .1);
+}
+
+.accordion-button:not(.collapsed)::after {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23208f91'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/path%3e%3c/svg%3e");
+}
+
+.accordion-button:focus,
+.btn-close:focus {
+    border-color: #7bd4d5;
+    box-shadow: 0 0 0 .25rem rgba(var(--primary-rgb), .25);
+}
+
+.bootstrap-datetimepicker-widget table td.today::before {
+    border-bottom-color: var(--primary);
+}
+
+.bootstrap-datetimepicker-widget table td.active,
+.bootstrap-datetimepicker-widget table td.active:hover,
+.bootstrap-datetimepicker-widget table td span.active {
+    background-color: var(--primary);
 }
 
 body,
@@ -308,6 +500,10 @@ body.frontend-home * {
 
 
 /*** Navbar ***/
+.frontend-header {
+    --primary: #2bb8ba;
+}
+
 .frontend-header__desktop {
     display: block;
 }
@@ -654,6 +850,22 @@ body.frontend-home * {
     }
 
 }
+
+/* Footer şube bağlantılarındaki hover etkisi, yalnız header navigasyonuna uygulanır. */
+.frontend-header .navbar .navbar-nav .nav-link,
+.frontend-header .navbar .dropdown-menu .dropdown-item {
+    transition: color .3s ease, letter-spacing .3s ease;
+}
+
+.frontend-header .navbar .navbar-nav .nav-link:hover,
+.frontend-header .navbar .navbar-nav .nav-link:focus-visible,
+.frontend-header .navbar .dropdown-menu .dropdown-item:hover,
+.frontend-header .navbar .dropdown-menu .dropdown-item:focus-visible {
+    color: var(--primary);
+    letter-spacing: 1px;
+    box-shadow: none;
+}
+
 .breadcrumb-item + .breadcrumb-item::before {
     color: var(--light);
 }
@@ -686,7 +898,7 @@ body.frontend-home * {
 }
 
 /* Ana sayfadaki Kurslarımız kartlarının ikonları. */
-.ala-courses .text-primary {
+.ala-courses .service-item > div > .text-primary {
     color: #2bb8ba !important;
 }
 /*** Footer ***/
@@ -699,7 +911,7 @@ body.frontend-home * {
     font-size: 15px;
     font-weight: normal;
     text-transform: capitalize;
-    transition: .3s;
+    transition: color .3s ease, letter-spacing .3s ease;
 }
 
 .footer .btn.btn-link::before {
@@ -710,8 +922,20 @@ body.frontend-home * {
     margin-right: 10px;
 }
 
-.footer .btn.btn-link:hover {
+.footer .btn.btn-link:hover,
+.footer .btn.btn-link:focus-visible {
     color: var(--primary);
+    letter-spacing: 1px;
+    box-shadow: none;
+}
+
+.footer a.text-light {
+    transition: color .3s ease, letter-spacing .3s ease;
+}
+
+.footer a.text-light:hover,
+.footer a.text-light:focus-visible {
+    color: var(--primary) !important;
     letter-spacing: 1px;
     box-shadow: none;
 }
@@ -724,10 +948,19 @@ body.frontend-home * {
 
 .footer .copyright a {
     color: var(--light);
+    transition: color .3s ease, letter-spacing .3s ease;
 }
 
-.footer .copyright a:hover {
+.footer .copyright a:hover,
+.footer .copyright a:focus-visible {
     color: var(--primary);
+    letter-spacing: 1px;
+    box-shadow: none;
+}
+
+/* Ana sayfa ve tüm yorumlar sayfasındaki kullanıcı avatarı. */
+.ala-review-avatar-icon {
+    color: #2bb8ba;
 }
 /*** Review Carousel ***/
 .review-carousel .owl-stage {

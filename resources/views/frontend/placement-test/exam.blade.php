@@ -79,13 +79,13 @@
         }
 
         .placement-question-progress-segment.is-answered {
-            background: #045aa2;
+            background: var(--primary);
             color: #ffffff;
         }
 
         .placement-question-progress-segment.is-current {
-            background: #fca5a5;
-            color: #7f1d1d;
+            background: rgba(var(--primary-rgb), 0.28);
+            color: #176869;
         }
 
         .placement-question-progress-link {
@@ -114,7 +114,7 @@
 
         .placement-option:hover {
             border-color: var(--primary) !important;
-            background: rgba(4, 90, 162, 0.04);
+            background: rgba(var(--primary-rgb), 0.04);
         }
 
         .placement-option input:checked + .placement-option-text {

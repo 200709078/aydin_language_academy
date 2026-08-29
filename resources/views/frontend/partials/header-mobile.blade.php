@@ -22,7 +22,7 @@
         </button>
         <div class="collapse navbar-collapse" id="frontendMobileNavbarCollapse">
             <div class="navbar-nav mx-auto p-4 p-xl-0">
-                <a href="{{ route($headerNavigation['home']['route']) }}" class="nav-item nav-link {{ $headerNavigation['home']['is_active'] ? 'active' : '' }}"><i class="fa fa-home fa-sm fa-fw me-2" aria-hidden="true"></i>{{ $headerNavigation['home']['label'] }}</a>
+                <a href="{{ route($headerNavigation['home']['route']) }}" class="nav-item nav-link frontend-header-home-link {{ $headerNavigation['home']['is_active'] ? 'active' : '' }}"><i class="fa fa-home fa-sm fa-fw me-2" aria-hidden="true"></i>{{ $headerNavigation['home']['label'] }}</a>
                 <div class="nav-item dropdown frontend-courses-dropdown">
                     <a href="#" class="nav-link dropdown-toggle mobile-dropdown-toggle {{ $headerNavigation['courses_is_active'] ? 'active' : '' }}" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false"><i class="fa fa-graduation-cap fa-sm fa-fw me-2" aria-hidden="true"></i>{{ __('dictt.ourcourses') }}</a>
                     <div id="frontendMobileCourseGroups" class="dropdown-menu bg-light rounded-0 rounded-bottom m-0">
@@ -31,7 +31,7 @@
                                 $mobileCourseGroupCollapseId = 'frontendMobileCourseGroup' . $loop->index;
                             @endphp
                             <div class="dropdown-submenu">
-                                <button type="button" class="dropdown-item dropdown-submenu-toggle mobile-course-submenu-toggle text-start {{ $courseGroup['is_active'] ? 'active' : '' }}" data-bs-toggle="collapse" data-bs-target="#{{ $mobileCourseGroupCollapseId }}" aria-controls="{{ $mobileCourseGroupCollapseId }}" aria-expanded="false"><i class="fa fa-graduation-cap fa-sm fa-fw me-2" aria-hidden="true"></i>{{ $courseGroup['label'] }}</button>
+                                <button type="button" class="dropdown-item dropdown-submenu-toggle mobile-course-submenu-toggle text-start {{ $courseGroup['label'] === __('dictt.academic_exam_prep') ? 'frontend-header-academic-exam-link' : '' }} {{ $courseGroup['is_active'] ? 'active' : '' }}" data-bs-toggle="collapse" data-bs-target="#{{ $mobileCourseGroupCollapseId }}" aria-controls="{{ $mobileCourseGroupCollapseId }}" aria-expanded="false"><i class="fa fa-graduation-cap fa-sm fa-fw me-2" aria-hidden="true"></i>{{ $courseGroup['label'] }}</button>
                                 <div id="{{ $mobileCourseGroupCollapseId }}" class="collapse mobile-course-submenu-content" data-bs-parent="#frontendMobileCourseGroups">
                                     @foreach ($courseGroup['items'] as $course)
                                         <a href="{{ route($course['route']) }}" class="dropdown-item {{ $course['is_active'] ? 'active' : '' }}"><i class="fa fa-graduation-cap fa-sm fa-fw me-2" aria-hidden="true"></i>{{ $course['label'] }}</a>

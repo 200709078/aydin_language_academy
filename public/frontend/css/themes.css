@@ -6,7 +6,7 @@
 
 /* Template, ayraçları koyu zemin için beyaz yapıyor; açık şeritte görünmez. */
 .themes-crumb .breadcrumb-item + .breadcrumb-item::before {
-    color: #25bebc;
+    color: var(--primary);
 }
 
 .themes-crumb .breadcrumb-item {
@@ -66,8 +66,8 @@
     height: auto;
     padding: 0.25rem 0.9rem;
     border-radius: 50rem;
-    background: #25bebc;
-    border-color: #25bebc;
+    background: var(--primary);
+    border-color: var(--primary);
     overflow: visible;
     white-space: nowrap;
     transition: background-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
@@ -75,12 +75,12 @@
 
 /* Detay sayfası: accordion vurgusu tema rengiyle */
 .accordion-button:not(.collapsed) {
-    color: #25bebc;
-    background: #eff5ff;
+    color: var(--primary-dark);
+    background: rgba(var(--primary-rgb), 0.1);
 }
 
 .accordion-button:focus {
-    box-shadow: 0 0 0 0.2rem rgba(37, 190, 188, 0.25);
+    box-shadow: 0 0 0 0.2rem rgba(var(--primary-rgb), 0.25);
 }
 
 /* Kapalı kartta ok sola baksın; açık kartta aşağı dönsün */
@@ -95,11 +95,11 @@
 /* Hover/focus'ta koyulaşma + hafif yükselme */
 .service-item.theme-card .theme-btn:hover,
 .service-item.theme-card .theme-btn:focus-visible {
-    background: #1b9e9c;
-    border-color: #1b9e9c;
+    background: var(--primary-dark);
+    border-color: var(--primary-dark);
     color: #ffffff;
     transform: translateY(-2px);
-    box-shadow: 0 6px 14px rgba(37, 190, 188, 0.4);
+    box-shadow: 0 6px 14px rgba(var(--primary-rgb), 0.4);
 }
 
 /* Tema alıştırmaları: seviye tespit sınavıyla aynı soru/şık hiyerarşisi */
@@ -124,7 +124,7 @@
 .theme-exercise-option:hover,
 .theme-exercise-option:focus-within {
     border-color: var(--primary) !important;
-    background: rgba(4, 90, 162, 0.04);
+    background: rgba(var(--primary-rgb), 0.04);
 }
 
 .theme-exercise-option input:checked + .theme-exercise-option-text {
@@ -134,7 +134,7 @@
 
 .theme-exercise-attempt-panel {
     background: #eff5ff;
-    border: 1px solid rgba(4, 90, 162, 0.16);
+    border: 1px solid rgba(var(--primary-rgb), 0.16);
 }
 
 .theme-exercise-review-summary {
