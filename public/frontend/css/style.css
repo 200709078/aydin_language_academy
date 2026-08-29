@@ -21,6 +21,31 @@ select,
     -webkit-user-drag: auto;
 }
 
+/*** Homepage Brand Band ***/
+.ala-brand-band {
+    background: linear-gradient(135deg, #f3fcfc 0%, #ffffff 100%);
+    border-top: 1px solid rgba(43, 184, 186, 0.12);
+    border-bottom: 1px solid rgba(43, 184, 186, 0.12);
+    padding: 1.5rem 0;
+}
+
+.ala-brand-band img {
+    display: block;
+    width: min(100%, 340px);
+    height: auto;
+    margin: 0 auto;
+}
+
+@media (max-width: 575.98px) {
+    .ala-brand-band {
+        padding: 1.25rem 0;
+    }
+
+    .ala-brand-band img {
+        width: min(82vw, 260px);
+    }
+}
+
 .fw-bold {
     font-weight: 700 !important;
 }

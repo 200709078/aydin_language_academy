@@ -59,7 +59,8 @@
                 <a href="{{ route('theme_create') }}" class="btn btn-sm btn-primary">
                     <i class="fa fa-plus"></i> {{ __('dictt.addnewtheme') }}</a>
             </div>
-            <table class="table table-striped table-sm">
+            <div class="admin-table-scroll">
+                <table class="table table-striped table-sm">
                 <thead>
                     <tr>
                         <th scope="col">{{ __('dictt.levelname') }}</th>
@@ -114,9 +115,10 @@
                         </tr>
                     @endforeach
                 </tbody>
-            </table>
+                </table>
+            </div>
 
-            <div class="flex items-center justify-between mt-4">
+            <div class="mt-4 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                     {{ __('dictt.pagination_info', [
     'from' => $themes->firstItem(),

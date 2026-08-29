@@ -41,7 +41,7 @@
                     <i class="fas fa-check-circle mr-2"></i>
                     {!! session('modalSuccessTitle') ?? $modalSuccessTitle !!}
                 </h2>
-                <button onclick="this.parentElement.parentElement.remove()" class="text-gray-500 hover:text-red-600 ml-4">
+                <button type="button" wire:click="dismissSuccess" class="text-gray-500 hover:text-red-600 ml-4">
                     <i class="fas fa-times"></i>
                 </button>
             </div>

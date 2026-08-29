@@ -9,6 +9,36 @@ table th {
     width: 100%;
 }
 
+.admin-main-content .table-responsive,
+.admin-main-content .admin-table-scroll {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+}
+
+.admin-main-content .table-responsive > .table,
+.admin-main-content .admin-table-scroll > .table {
+    width: max-content;
+    min-width: 100%;
+    table-layout: auto;
+}
+
+.admin-main-content .table-responsive > .table td,
+.admin-main-content .table-responsive > .table th,
+.admin-main-content .admin-table-scroll > .table td,
+.admin-main-content .admin-table-scroll > .table th {
+    overflow: visible;
+    text-overflow: clip;
+}
+
+.admin-main-content .table-responsive .text-break,
+.admin-main-content .admin-table-scroll .text-break {
+    white-space: normal;
+}
+
 .admin-navigation-trigger {
     border: 0;
     background: transparent;
@@ -57,6 +87,9 @@ table th {
     flex-direction: column;
     margin: 0;
     padding: 1rem;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
 }
 
 .admin-navigation-brand {
@@ -244,4 +277,34 @@ table th {
 
 .admin-navigation.is-collapsed + .py-6 {
     margin-left: 4.5rem;
+}
+
+@media (max-width: 767.98px) {
+    .admin-navigation:not(.is-collapsed) + .admin-main-content {
+        margin-left: 0;
+    }
+
+    .admin-navigation.is-collapsed + .admin-main-content {
+        margin-left: 4.5rem;
+    }
+
+    .admin-main-content {
+        min-width: 0;
+        padding-right: 0.75rem;
+        padding-left: 0.75rem;
+    }
+
+    .admin-main-content .table-responsive > .table,
+    .admin-main-content .admin-table-scroll > .table {
+        min-width: 42rem;
+    }
+
+    .admin-main-content .d-flex.justify-content-between,
+    .admin-main-content .btn-group {
+        flex-wrap: wrap;
+    }
+
+    .admin-main-content .d-flex.justify-content-between {
+        row-gap: 0.75rem;
+    }
 }

@@ -69,7 +69,7 @@ class cont_reviews extends Controller
         $review->save();
 
         $modalSuccessTitle = __('dictt.updatesuccesstitle', ['type' => __('dictt.review')]);
-        $modalSuccessContent = __('dictt.updatesuccesscontent', ['type' => __('dictt.review'), 'name' => $displayName]);
+        $modalSuccessContent = __('dictt.admin_review_update_success', ['name' => $displayName]);
 
         return redirect()->route('reviews_list')
             ->with('modalSuccessTitle', $modalSuccessTitle)

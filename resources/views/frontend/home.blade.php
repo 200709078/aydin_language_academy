@@ -29,13 +29,18 @@
     <link href="{{ asset('frontend/css/bootstrap.min.css') }}" rel="stylesheet">
 
     <!-- Template Stylesheet -->
-    <link href="{{ asset('frontend/css/style.css') }}?v=20260825" rel="stylesheet">
+    <link href="{{ asset('frontend/css/style.css') }}?v=20260829" rel="stylesheet">
 </head>
 
 <body>
     @include('frontend.partials.header')
     @include('frontend.partials.about')
 
+    <section class="ala-brand-band" aria-label="Aydın Language Academy">
+        <div class="container">
+            <img src="{{ asset('frontend/images/logo/logo-1.png') }}" alt="Aydın Language Academy">
+        </div>
+    </section>
 
     <!-- Why Us Start -->
     <div class="container-xxl py-5">

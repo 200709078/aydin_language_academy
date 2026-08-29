@@ -33,7 +33,10 @@
             @include('partials.admin-navigation-menu')
         @endif
 
-        <div class="py-6">
+        <div @class([
+            'py-6',
+            'admin-main-content' => Auth::check() && Auth::user()->type === 'admin',
+        ])>
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <!-- Errors Start -->
                 @if ($errors->any())

@@ -44,7 +44,7 @@ class ReviewList extends Component
             $review->save();
 
             $this->modalSuccessTitle = __('dictt.updatesuccesstitle', ['type' => __('dictt.review')]);
-            $this->modalSuccessContent = __('dictt.updatesuccesscontent', ['type' => __('dictt.review'), 'name' => $this->displayName($review)]);
+            $this->modalSuccessContent = __('dictt.admin_review_approve_success', ['name' => $this->displayName($review)]);
         }
 
         $this->loadReviews();
@@ -61,7 +61,7 @@ class ReviewList extends Component
             $review->save();
 
             $this->modalSuccessTitle = __('dictt.updatesuccesstitle', ['type' => __('dictt.review')]);
-            $this->modalSuccessContent = __('dictt.updatesuccesscontent', ['type' => __('dictt.review'), 'name' => $this->displayName($review)]);
+            $this->modalSuccessContent = __('dictt.admin_review_reject_success', ['name' => $this->displayName($review)]);
         }
 
         $this->loadReviews();
@@ -89,6 +89,14 @@ class ReviewList extends Component
         }
 
         $this->loadReviews();
+    }
+
+    public function dismissSuccess(): void
+    {
+        $this->modalSuccessTitle = null;
+        $this->modalSuccessContent = null;
+
+        session()->forget(['modalSuccessTitle', 'modalSuccessContent']);
     }
 
     private function displayName(Review $review): string

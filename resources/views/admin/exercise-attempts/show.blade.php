@@ -20,7 +20,7 @@
                 <dt class="col-sm-3">{{ __('dictt.member') }}</dt>
                 <dd class="col-sm-9">{{ $exerciseAttempt->user?->name ?? ($exerciseAttempt->user_id ? '#' . $exerciseAttempt->user_id : '—') }}</dd>
                 <dt class="col-sm-3">{{ __('dictt.email') }}</dt>
-                <dd class="col-sm-9">{{ $exerciseAttempt->user?->email ?? '—' }}</dd>
+                <dd class="col-sm-9 text-break">{{ $exerciseAttempt->user?->email ?? '—' }}</dd>
                 <dt class="col-sm-3">{{ __('dictt.theme') }}</dt>
                 <dd class="col-sm-9">{{ $theme?->name ?? '—' }}</dd>
                 <dt class="col-sm-3">{{ __('dictt.exercise') }}</dt>

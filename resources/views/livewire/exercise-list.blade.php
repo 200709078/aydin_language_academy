@@ -61,7 +61,8 @@
                 <a href="{{ route('exercise_create', $theme_id) }}" class="btn btn-sm btn-primary"><i
                         class="fa fa-plus"></i> {{ __('dictt.addnewexercises') }}</a>
             </div>
-            <table class="table table-striped table-sm">
+            <div class="admin-table-scroll">
+                <table class="table table-striped table-sm">
                 <thead>
                     <tr>
                         <th scope="col">{{ __('dictt.title') }}</th>
@@ -117,7 +118,8 @@
                         </tr>
                     @endforeach
                 </tbody>
-            </table>
+                </table>
+            </div>
         </div>
     </div>
 </div>

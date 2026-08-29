@@ -33,7 +33,7 @@
                 <dt class="col-sm-3">{{ __('dictt.member') }}</dt>
                 <dd class="col-sm-9">{{ $placementTest->user?->name ?? ('#' . $placementTest->user_id) }}</dd>
                 <dt class="col-sm-3">{{ __('dictt.email') }}</dt>
-                <dd class="col-sm-9">{{ $placementTest->user?->email ?? '—' }}</dd>
+                <dd class="col-sm-9 text-break">{{ $placementTest->user?->email ?? '—' }}</dd>
                 <dt class="col-sm-3">{{ __('dictt.placement_test_started_at') }}</dt>
                 <dd class="col-sm-9">{{ $placementTest->started_at?->format('d.m.Y H:i:s') ?? '—' }}</dd>
                 <dt class="col-sm-3">{{ __('dictt.placement_test_submitted_at') }}</dt>

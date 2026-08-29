@@ -58,7 +58,8 @@
                 <a href="{{ route('sub_level_create') }}" class="btn btn-sm btn-primary">
                     <i class="fa fa-plus"></i> {{ __('dictt.addnewsublevel') }}</a>
             </div>
-            <table class="table table-striped table-sm">
+            <div class="admin-table-scroll">
+                <table class="table table-striped table-sm">
                 <thead>
                     <tr>
                         <th scope="col">{{ __('dictt.sublevelname') }}</th>
@@ -91,7 +92,8 @@
                         </tr>
                     @endforeach
                 </tbody>
-            </table>
+                </table>
+            </div>
         </div>
     </div>
 </div>

@@ -58,7 +58,8 @@
                 <i class="fa fa-arrow-left"></i> {{ __('dictt.backtoexerciseslist') }}</a>
             <a href="{{ route('question_create', $exercise_id) }}" class="btn btn-sm btn-primary float-right">
                 <i class="fa fa-plus"></i> {{ __('dictt.addnewquestion') }}</a>
-            <table class="table table-striped">
+            <div class="admin-table-scroll">
+                <table class="table table-striped">
                 <thead>
                     <tr>
                         <th scope="col">{{ __('dictt.questions') }}</th>
@@ -108,7 +109,8 @@
                         </tr>
                     @endforeach
                 </tbody>
-            </table>
+                </table>
+            </div>
         </div>
     </div>
 </div>
