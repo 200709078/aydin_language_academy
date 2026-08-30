@@ -178,6 +178,13 @@ Görüntüleme kuralları:
 - Ana sayfa Reviews bölümü (public): üç kart. SOL = ilk yapılan yorum (en eski), ORTA = en son yapılan yorum, SAĞ = en sondan bir önceki yorum. Yeterli onaylı yorum yoksa eksik slot gizlenir; hiç onaylı yorum yoksa mevcut statik içerik gösterilir.
 - Tüm Yorumlar sayfası (public, login gerekmez): /yorumlar — tüm onaylı yorumlar sayfalı olarak; şubeye göre filtre içerir. Ana sayfada bu sayfaya "Tümünü Gör" linki olur.
 
+Yayın/SEO temizliği — ayrı onay bekleyen TODO:
+- Yayındaki mevcut yorum kayıtları önce salt-okunur olarak incelenir; demo/test, pending, rejected ve gerçek approved yorumlar kesin olarak ayrılır.
+- Ana sayfa ve /yorumlar public sorguları yalnız silinmemiş `status=approved` kayıtları döndürmelidir. Pending, rejected, demo/test kayıtları ve statik demo fallback'i public HTML çıktısında yer alamaz.
+- Demo/test kayıtları, kullanıcı tarafından hedefleri onaylandıktan sonra tercihen soft-delete veya public olmayan duruma alınır; gerçek approved yorumlara dokunulmaz.
+- Değişiklikten sonra girişsiz ziyaretçiyle ana sayfa, /yorumlar, sayfalama ve HTML kaynak çıktısı doğrulanır; demo/test/pending/rejected metinlerin hiçbiri görünmemelidir.
+- Ana sayfa indekslenmeye devam eder; bu iş için ana sayfaya `noindex` veya robots.txt engeli eklenmez. Canlı çıktı temizlendikten sonra sitemap güncellemesi ve Search Console yeniden tarama isteği uygulanır.
+
 Admin listeleme sıralaması:
 1) Önce onaysızlar: pending, created_at ASC (ilk yapılan bekleyen yorum üstte).
 2) Sonra onaylılar: approved, created_at DESC (en yeni onaylı üstte).
@@ -196,3 +203,51 @@ Aşamalar (her aşama ayrıca onaylanarak ilerler):
 1) Migration + Review modeli + ilişkiler + admin CRUD/onay/red/sil + admin menüsü aktifleştirme + listeleme sıralaması.
 2) Ana sayfa üç kartı + /yorumlar public sayfası + Tümünü Gör linki.
 3) Üye yorum formu + /yorumlarim + policy + throttle.
+
+13. Public frontend geliştirme yol haritası
+Durum: Aşağıdaki sıra, uygulanabilirliği nispeten kolay olandan zora doğru planlanmış TODO listesidir. Her aşama kullanıcı tarafından ayrıca onaylanmadan kodlanmaz; mevcut ALA uygulaması, admin, authentication ve legacy alanlar korunur.
+
+Genel ilkeler:
+- Gerçek olmayan öğrenci sayısı, başarı oranı, yorum, eğitmen veya görsel production'da kullanılmaz. Önce kaynak, güncellik ve gerekli açık izinler belirlenir.
+- Yeni içerik yapıları yalnız gerçekten yönetim ihtiyacı oluştuğunda eklenir; onaysız genel CMS/refactor veya yeni frontend framework kurulmaz.
+- Yeni public/admin route eklenmeden önce mevcut route'lar incelenir; internal linkler route helper, görseller asset()/mevcut güvenli medya yaklaşımı ile kullanılır.
+- Reviews ile editoryal başarı hikâyeleri aynı veri modeli değildir. Reviews moderasyonlu kullanıcı içeriği olarak 12. bölümdeki kurallara; başarı hikâyeleri kurumun izinli/doğrulanmış editoryal içeriğine tabidir.
+
+Aşamalar (kolaydan zora, her biri ayrı onayla):
+1) İçerik ve izin envanteri — kodsuz hazırlık
+   - Her şube için kullanılabilecek gerçek sınıf/etkinlik görselleri, eğitmen bilgileri, izinli öğrenci başarıları, güncel istatistikler ve sorumlu kişileri listelenir.
+   - Hero, Başarılarımız, eğitmenler ve şube kartları için görsel oranı, minimum çözünürlük ve onaylanan kısa metin ihtiyacı netleştirilir.
+   - 12. bölümdeki yayın/SEO yorum temizliği bu envanterden bağımsız öncelikli bakım işidir.
+
+2) Statik güven ve yönlendirme bölümleri
+   - Mevcut ALA kimliğini koruyarak CEFR yolculuğu (A1 → A2 → B1 → B2 → C1 → C2) ve “ALA’da eğitim nasıl ilerliyor?” dört adımlı açıklaması eklenebilir.
+   - Bu alanlar önce onaylı, sabit içerik olarak yapılır; mevcut placement test sonuçları kullanılmaya başlandığında seviyeler için ikinci, çelişen bir kaynak oluşturulmaz.
+   - Bu aşama gerçek eğitim/başarı vaadi uydurmaz; mevcut genel İngilizce ve seviye tespit tanıtımına bağlanır.
+
+3) Başarılarımız sayfasının editoryal dönüşümü
+   - Mevcut /basarilarimiz URL'si korunur; izinli ve doğrulanmış öğrenci/veli başarı hikâyeleri, başlangıç–sonuç, yıl, ilgili program/şube ve izinli medya ile sunulur.
+   - İlk sürüm içerik yeterliyse kontrollü Blade içeriğiyle başlayabilir; hemen yeni admin/CMS kurmak zorunlu değildir.
+   - Kısa kullanıcı yorumları yerine geçmez ve otomatik olarak Reviews verisinden türetilmez.
+
+4) “Sana uygun programı bul” — hafif yönlendirme aracı
+   - Önce programların yaş grubu, amaç ve varsa hedef seviye eşleşmesi kesinleştirilir.
+   - Giriş, AI veya kişisel veri saklama gerektirmeyen 3–4 soruluk akış: kimin için, amaç, seviye → uygun program kartı + mevcut danışmanlık/iletişim CTA'sı.
+   - Giriş yapmış kullanıcının mevcut placement testinde kesinleşmiş sonucu varsa bu sonuç seviye girdisi olarak kullanılır. Sonuç yoksa, sınavı yarım/pending durumdaysa veya ziyaretçi giriş yapmamışsa kullanıcı kendi seviyesini beyan eder.
+   - Yeni/ikinci bir seviye tespit sınavı, soru havuzu, sınav motoru veya ayrı admin sistemi bu yol haritası kapsamında geliştirilmez. Sonuç “program önerisi” olarak açıkça sunulur; resmî test sonucu ile karıştırılmaz.
+
+5) Haberler MVP'si — ilk dinamik editoryal özellik
+   - Bağımsız haber modeli/admin CRUD planlanır; mevcut kampanya veya legacy yapılara zorla bağlanmaz.
+   - İlk alanlar: title, benzersiz slug, short summary, body, cover image, status veya is_active, published_at, nullable sort_order ve display_location.
+   - display_location tek seçimdir: none (yalnız Haberler listesi/detayı), homepage veya hero. Admin arayüzünde segmented control/radio kullanılır; aynı haber iki öne çıkarma alanında aynı anda yer alamaz.
+   - Ana sayfa için seçili haberler sort_order ASC, eşitse published_at DESC ile; Haberler listesi published_at DESC ile sıralanır. Hero'da en fazla 1–2 haber yer alır; haber yoksa mevcut sabit ALA/şube slaytları güvenli varsayılan olarak kalır.
+   - Haber listesi/detayı, admin yönetimi, medya, slug, public görünürlük ve sitemap etkisi bu aşamanın kapsamındadır; route çakışması ve mevcut sitemap akışı önce incelenir.
+
+6) Eğitmen profilleri
+   - Yalnız gerçek ve izinli içerik hazır olduğunda bağımsız editoryal eğitmen profilleri eklenir: ad, görev/uzmanlık, kısa biyografi, fotoğraf, aktiflik, sıralama ve gerekirse şube ilişkisi.
+   - Eğitmenler giriş yapan User hesaplarına bağlanmaz; authentication, user rolleri ve mevcut admin kullanıcıları değiştirilmez.
+   - Önce ana sayfada sınırlı kartlar, ihtiyaç doğrulanırsa ayrıntı sayfası/admin yönetimi düşünülür.
+
+7) Merkezi şube yönetimi (yalnız ihtiyaç oluşursa)
+   - Ortaca, Dalaman ve Köyceğiz şubeleri şu anda statik yapı/route'larla çalışır; yalnız metin veya görsel güncellemesi için CMS'e taşınmaz.
+   - Yeni şube açılması veya adres, telefon, harita, sosyal bağlantı, görsel ve istatistiklerin admin tarafından sık güncellenmesi gerektiğinde ayrı Branch CMS değerlendirilir.
+   - Böyle bir geçiş header, footer, ana sayfa sliderı, iletişim, reviews ve mevcut şube linklerindeki hard-code kullanımları etkileyebileceğinden kapsam/route denetimiyle ayrı proje olarak ele alınır.

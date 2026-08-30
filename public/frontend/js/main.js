@@ -24,11 +24,13 @@
     new WOW().init();
 
 
-    // Facts counter
-    $('[data-toggle="counter-up"]').counterUp({
-        delay: 10,
-        time: 2000
-    });
+    // Facts counter (eklenti yalnız sayaç kullanılan sayfalarda yüklenir).
+    if ($.fn.counterUp) {
+        $('[data-toggle="counter-up"]').counterUp({
+            delay: 10,
+            time: 2000
+        });
+    }
 
 
     // Header carousel

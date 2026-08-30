@@ -401,6 +401,14 @@ body.frontend-home * {
     transform: translateY(-1px);
 }
 
+/* Owl Carousel'ın mobil sürüklemesinde Chrome'un pasif touchmove uyarısını önler. */
+@media (max-width: 1199.98px) {
+    .header-carousel.owl-drag .owl-item {
+        -ms-touch-action: pan-y;
+        touch-action: pan-y;
+    }
+}
+
 @media (max-width: 991.98px) {
     .header .col-lg-6.p-5 {
         padding: 2rem !important;
@@ -931,6 +939,10 @@ body.frontend-home * {
     color: #2bb8ba !important;
 }
 /*** Footer ***/
+.footer {
+    background-color: #0d4f50 !important;
+}
+
 .footer .btn.btn-link {
     display: block;
     margin-bottom: 5px;
@@ -967,6 +979,12 @@ body.frontend-home * {
     color: var(--primary) !important;
     letter-spacing: 1px;
     box-shadow: none;
+}
+
+/* E-posta adresleri hover'da satır kırılmaması için harf aralığını korur. */
+.footer a.text-light.footer-email-link:hover,
+.footer a.text-light.footer-email-link:focus-visible {
+    letter-spacing: normal;
 }
 
 .footer .copyright {
