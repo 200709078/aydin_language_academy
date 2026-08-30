@@ -29,7 +29,7 @@
     <link href="{{ asset('frontend/css/bootstrap.min.css') }}" rel="stylesheet">
 
     <!-- Template Stylesheet -->
-    <link href="{{ asset('frontend/css/style.css') }}?v=20260829-turquoise-primary" rel="stylesheet">
+    <link href="{{ asset('frontend/css/style.css') }}?v=20260830-program-finder" rel="stylesheet">
 </head>
 
 <body class="frontend-home">
@@ -126,6 +126,18 @@
         <div class="container">
             <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
                 <h1>{{ __('dictt.ourcourses') }}</h1>
+            </div>
+            <div class="ala-program-finder-home wow fadeInUp" data-wow-delay="0.15s">
+                <div class="ala-program-finder-home__content">
+                    <span class="ala-program-finder-home__icon"><i class="fa fa-compass" aria-hidden="true"></i></span>
+                    <div>
+                        <h2 class="h4">{{ __('dictt.program_finder_title') }}</h2>
+                        <p>{{ __('dictt.program_finder_home_intro') }}</p>
+                    </div>
+                </div>
+                <a href="{{ route('frontend.program-finder') }}" class="btn btn-primary flex-shrink-0">
+                    {{ __('dictt.program_finder_home_cta') }}<i class="fa fa-arrow-right ms-2" aria-hidden="true"></i>
+                </a>
             </div>
             <div class="row g-4">
                 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">

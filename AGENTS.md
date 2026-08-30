@@ -229,11 +229,11 @@ Aşamalar (kolaydan zora, her biri ayrı onayla):
    - İlk sürüm içerik yeterliyse kontrollü Blade içeriğiyle başlayabilir; hemen yeni admin/CMS kurmak zorunlu değildir.
    - Kısa kullanıcı yorumları yerine geçmez ve otomatik olarak Reviews verisinden türetilmez.
 
-4) “Sana uygun programı bul” — hafif yönlendirme aracı
-   - Önce programların yaş grubu, amaç ve varsa hedef seviye eşleşmesi kesinleştirilir.
-   - Giriş, AI veya kişisel veri saklama gerektirmeyen 3–4 soruluk akış: kimin için, amaç, seviye → uygun program kartı + mevcut danışmanlık/iletişim CTA'sı.
-   - Giriş yapmış kullanıcının mevcut placement testinde kesinleşmiş sonucu varsa bu sonuç seviye girdisi olarak kullanılır. Sonuç yoksa, sınavı yarım/pending durumdaysa veya ziyaretçi giriş yapmamışsa kullanıcı kendi seviyesini beyan eder.
-   - Yeni/ikinci bir seviye tespit sınavı, soru havuzu, sınav motoru veya ayrı admin sistemi bu yol haritası kapsamında geliştirilmez. Sonuç “program önerisi” olarak açıkça sunulur; resmî test sonucu ile karıştırılmaz.
+4) “Sana uygun programı bul” — tamamlandı
+   - Public `/sana-uygun-programi-bul` akışı, giriş/AI/kişisel veri kaydı gerektirmeyen 3–4 kısa seçimle uygun program kartını üretir.
+   - Giriş yapmış kullanıcının en güncel onaylı placement test sonucu seviye girdisi olarak kullanılır. Sonuç yoksa, sınav yarım/pending ise veya ziyaretçi giriş yapmamışsa kullanıcı kendi seviyesini beyan eder.
+   - Sonuç ekranında program kartı, uygun olduğunda alternatif program ve üç şubeye doğrudan görüşme bağlantıları bulunur; ana sayfa ve footer’dan erişilebilir.
+   - Yeni/ikinci seviye tespit sınavı, soru havuzu, sınav motoru, ayrı admin sistemi veya veritabanı kaydı oluşturulmadı. Sonuç açıkça program önerisi olarak sunulur; resmî sınav sonucu ile karıştırılmaz.
 
 5) Haberler MVP'si — ilk dinamik editoryal özellik
    - Bağımsız haber modeli/admin CRUD planlanır; mevcut kampanya veya legacy yapılara zorla bağlanmaz.

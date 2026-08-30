@@ -12,6 +12,7 @@ use App\Http\Controllers\AdminContactMessageController;
 use App\Http\Controllers\Frontend\ContactController;
 use App\Http\Controllers\Frontend\ExerciseAttemptController;
 use App\Http\Controllers\Frontend\HomeController;
+use App\Http\Controllers\Frontend\ProgramFinderController;
 use App\Http\Controllers\Frontend\ReviewController;
 use App\Http\Controllers\Frontend\ThemeListController;
 use App\Http\Controllers\ExerciseAttemptReviewController;
@@ -149,6 +150,11 @@ Route::view('/yorumlarim', 'frontend.my-reviews')
     ->name('frontend.my-reviews');
 Route::get('/seviye-tespit-sinavi', [PlacementTestAttemptController::class, 'landing'])
     ->name('frontend.placement-test');
+Route::get('/sana-uygun-programi-bul', [ProgramFinderController::class, 'show'])
+    ->name('frontend.program-finder');
+Route::post('/sana-uygun-programi-bul', [ProgramFinderController::class, 'recommend'])
+    ->middleware('throttle:20,1')
+    ->name('frontend.program-finder.recommend');
 
 Route::middleware('auth')->prefix('seviye-tespit-sinavi')->group(function (): void {
     Route::post('/baslat', [PlacementTestAttemptController::class, 'start'])

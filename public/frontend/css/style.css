@@ -1021,3 +1021,171 @@ body.frontend-home * {
 .review-carousel .owl-item > * {
     width: 100%;
 }
+
+/*** Program Finder ***/
+.ala-program-finder-home {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    margin: 0 auto 2.5rem;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, rgba(var(--primary-rgb), .12), #ffffff);
+    border: 1px solid rgba(var(--primary-rgb), .28);
+    border-radius: .5rem;
+}
+
+.ala-program-finder-home__content {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.ala-program-finder-home__icon,
+.program-finder-choice__icon,
+.program-finder-level-summary__icon {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    background: rgba(var(--primary-rgb), .12);
+    border-radius: 50%;
+}
+
+.ala-program-finder-home__icon {
+    width: 3.5rem;
+    height: 3.5rem;
+    font-size: 1.4rem;
+}
+
+.ala-program-finder-home__content h2 {
+    margin-bottom: .3rem;
+}
+
+.ala-program-finder-home__content p {
+    margin-bottom: 0;
+}
+
+.program-finder-hero {
+    background: linear-gradient(135deg, rgba(var(--primary-rgb), .16), #ffffff);
+    border: 1px solid rgba(var(--primary-rgb), .25);
+}
+
+.program-finder-hero p {
+    max-width: 680px;
+}
+
+.program-finder-eyebrow {
+    display: inline-block;
+    color: var(--primary-dark);
+    font-size: .8rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.program-finder-card {
+    box-shadow: 0 .125rem .75rem rgba(0, 0, 0, .06);
+}
+
+.program-finder-info,
+.program-finder-level-summary {
+    background: rgba(var(--primary-rgb), .09);
+    border: 1px solid rgba(var(--primary-rgb), .24);
+}
+
+.program-finder-progress {
+    height: .65rem;
+    background-color: rgba(var(--primary-rgb), .16);
+}
+
+.program-finder-step--hidden,
+.program-finder-step--skipped {
+    display: none !important;
+}
+
+.program-finder-choice {
+    cursor: pointer;
+    background: #ffffff;
+    transition: border-color .2s ease, background-color .2s ease, box-shadow .2s ease, transform .2s ease;
+}
+
+.program-finder-choice:hover,
+.program-finder-choice:focus-within,
+.program-finder-choice.is-selected {
+    background: rgba(var(--primary-rgb), .06);
+    border-color: var(--primary) !important;
+    box-shadow: 0 .25rem .75rem rgba(var(--primary-rgb), .13);
+}
+
+.program-finder-choice:hover {
+    transform: translateY(-2px);
+}
+
+.program-finder-choice__body {
+    display: flex;
+    align-items: flex-start;
+    gap: .8rem;
+}
+
+.program-finder-choice__icon {
+    width: 2.25rem;
+    height: 2.25rem;
+    font-size: .95rem;
+}
+
+.program-finder-choice__content {
+    display: grid;
+    gap: .2rem;
+}
+
+.program-finder-choice__content strong {
+    color: var(--dark);
+}
+
+.program-finder-choice__content span {
+    color: #6c757d;
+    font-size: .9rem;
+    line-height: 1.45;
+}
+
+.program-finder-choice input:checked + .program-finder-choice__body strong {
+    color: var(--primary-dark);
+}
+
+.program-finder-level-summary__icon {
+    width: 2.5rem;
+    height: 2.5rem;
+}
+
+.program-finder-result-card__icon {
+    width: 4rem;
+    height: 4rem;
+}
+
+.program-finder-consultation {
+    border: 1px solid rgba(var(--primary-rgb), .2);
+}
+
+@media (max-width: 767.98px) {
+    .ala-program-finder-home {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .ala-program-finder-home .btn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .program-finder-choice__body {
+        gap: .65rem;
+    }
+
+    .program-finder-result-card__icon {
+        width: 3.25rem;
+        height: 3.25rem;
+    }
+}
