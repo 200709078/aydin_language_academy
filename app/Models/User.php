@@ -38,6 +38,22 @@ class User extends Authenticatable
     {
         return $this->hasMany(Review::class);
     }
+
+    public function authoredNews(): HasMany
+    {
+        return $this->hasMany(News::class, 'author_id');
+    }
+
+    public function publishedNews(): HasMany
+    {
+        return $this->hasMany(News::class, 'published_by');
+    }
+
+    public function uploadedMediaAssets(): HasMany
+    {
+        return $this->hasMany(MediaAsset::class, 'uploaded_by');
+    }
+
     /**
      * The attributes that are mass assignable.
      *
