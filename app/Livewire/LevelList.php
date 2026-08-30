@@ -8,18 +8,12 @@ use Illuminate\Support\Str;
 
 class LevelList extends Component
 {
-    public $levels;
     public $confirmingDelete = false;
     public $levelToDelete = null;
     public $modalConfirmTitle;
     public $modalConfirmContent;
     public $modalSuccessTitle;
     public $modalSuccessContent;
-    public function mount()
-    {
-        $this->levels = model_levels::withCount('themes')->orderBy('updated_at', 'desc')->get();
-    }
-
     public function confirmDelete($id)
     {
         $level = model_levels::withCount('themes')->find($id);
@@ -49,7 +43,6 @@ class LevelList extends Component
         }
 
         $level->delete();
-        $this->levels = model_levels::withCount('themes')->orderBy('updated_at', 'desc')->get();
         $this->modalSuccessTitle = __('dictt.deletesuccesstitle', ['type' => __('dictt.level')]);
         $this->modalSuccessContent = __('dictt.deletesuccesscontent', ['type' => Str::lower(__('dictt.level')), 'name' => $level->name]);
         $this->confirmingDelete = false;
@@ -57,6 +50,8 @@ class LevelList extends Component
 
     public function render()
     {
-        return view('livewire.level-list');
+        return view('livewire.level-list', [
+            'levels' => model_levels::withCount('themes')->orderBy('updated_at', 'desc')->get(),
+        ]);
     }
 }

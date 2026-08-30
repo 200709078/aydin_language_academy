@@ -23,6 +23,12 @@ class MyReviews extends Component
 
     public string $successMessage = '';
 
+    public bool $confirmingArchive = false;
+
+    public ?int $reviewToArchive = null;
+
+    public string $reviewToArchiveName = '';
+
     public function mount()
     {
         $this->loadReviews();
@@ -127,9 +133,26 @@ class MyReviews extends Component
         $this->resetForm();
     }
 
-    public function archive($id)
+    public function confirmArchive($id): void
     {
         $review = Review::findOrFail($id);
+
+        Gate::authorize('delete', $review);
+
+        $this->reviewToArchive = $review->id;
+        $this->reviewToArchiveName = $review->user?->name ?? ('#' . $review->id);
+        $this->confirmingArchive = true;
+    }
+
+    public function archive(): void
+    {
+        if (! $this->reviewToArchive) {
+            $this->cancelArchive();
+
+            return;
+        }
+
+        $review = Review::findOrFail($this->reviewToArchive);
 
         Gate::authorize('delete', $review);
 
@@ -139,8 +162,16 @@ class MyReviews extends Component
             $this->resetForm();
         }
 
+        $this->cancelArchive();
         $this->successMessage = __('dictt.review_archive_success');
         $this->loadReviews();
+    }
+
+    public function cancelArchive(): void
+    {
+        $this->confirmingArchive = false;
+        $this->reviewToArchive = null;
+        $this->reviewToArchiveName = '';
     }
 
     private function rules(): array

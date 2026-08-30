@@ -68,7 +68,7 @@
                 </thead>
                 <tbody>
                     @foreach ($sublevels as $sublevel)
-                        <tr class="align-middle">
+                        <tr wire:key="sublevel-row-{{ $sublevel->id }}" class="align-middle">
                             <th class="col-md-3" scope="row">{{ $sublevel->name }}</th>
                             <td>
                                 <div class="flex gap-1">

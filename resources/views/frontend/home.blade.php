@@ -39,7 +39,7 @@
     <div class="container-fluid header ala-slider-shell p-0 mb-5">
         <div class="row g-0 align-items-center flex-column-reverse flex-lg-row">
             <div class="col-lg-6 p-5 wow fadeIn ala-slider-summary" data-wow-delay="0.1s">
-                <h1 class="display-4 text-white mb-5">İngilizceyi öğrenme.<br>Onu yaşamaya başla.</h1>
+                <h1 class="display-4 text-white mb-5">{{ __('dictt.primary_slogan') }}</h1>
                 <div class="row g-4">
                     <div class="col-4 col-sm-4">
                         <div class="border-start border-light ps-4">
@@ -381,7 +381,7 @@
     <script src="{{ asset('frontend/vendor/tempusdominus/js/tempusdominus-bootstrap-4.min.js') }}"></script>
 
     <!-- Template Javascript -->
-    <script src="{{ asset('frontend/js/main.js') }}?v=20260830-news-dots-1"></script>
+    <script src="{{ asset('frontend/js/main.js') }}?v=20260831-news-loop-1"></script>
 </body>
 
 </html>

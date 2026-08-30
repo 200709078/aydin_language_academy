@@ -60,7 +60,7 @@
                                 </div>
                                 <div class="ms-3">
                                     <p class="mb-1">{{ __('dictt.branch_call_us') }}</p>
-                                    <h5 class="mb-0"><span class="text-dark text-break">(546) 828 4884</span></h5>
+                                    <h5 class="mb-0"><span class="text-dark text-break">+905468284884</span></h5>
                                 </div>
                             </div>
                         </a>

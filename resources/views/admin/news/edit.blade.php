@@ -102,11 +102,18 @@
                                             <i class="fa fa-pen" aria-hidden="true"></i>
                                             <span class="visually-hidden">{{ __('dictt.edit') }}</span>
                                         </a>
-                                        <form method="POST" action="{{ route('admin.news.blocks.destroy', [$news, $block]) }}"
-                                            onsubmit="return confirm(@js(__('dictt.news_block_delete_confirm')));">
+                                        <form id="news-block-delete-{{ $block->id }}" method="POST"
+                                            action="{{ route('admin.news.blocks.destroy', [$news, $block]) }}">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-danger" title="{{ __('dictt.delete') }}">
+                                            <button type="button" class="btn btn-sm btn-danger" title="{{ __('dictt.delete') }}"
+                                                data-action-confirmation
+                                                data-confirm-form="news-block-delete-{{ $block->id }}"
+                                                data-confirm-title="{{ __('dictt.delete') }}"
+                                                data-confirm-content="{{ __('dictt.news_block_delete_confirm') }}"
+                                                data-confirm-action="{{ __('dictt.delete') }}"
+                                                data-confirm-icon="fa-trash-alt"
+                                                data-confirm-tone="danger">
                                                 <i class="fa fa-trash" aria-hidden="true"></i>
                                                 <span class="visually-hidden">{{ __('dictt.delete') }}</span>
                                             </button>
@@ -124,4 +131,6 @@
             </div>
         </div>
     </div>
+
+    <x-action-confirmation-modal />
 </x-app-layout>

@@ -1,4 +1,25 @@
 <div>
+    @if ($confirmingArchive)
+        <x-review-action-modal wire:model="confirmingArchive">
+            <x-slot name="title">{{ __('dictt.review_archive_action') }}</x-slot>
+
+            <x-slot name="content">
+                {{ __('dictt.review_archive_confirm', ['name' => $reviewToArchiveName]) }}
+            </x-slot>
+
+            <x-slot name="footer">
+                <button type="button" wire:click="cancelArchive"
+                    class="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition">
+                    <i class="fa fa-ban mr-1"></i> {{ __('dictt.cancel') }}
+                </button>
+                <button type="button" wire:click="archive"
+                    class="px-4 py-2 bg-secondary text-white rounded-md hover:bg-gray-700 transition">
+                    <i class="fa fa-archive mr-1"></i> {{ __('dictt.review_archive_action') }}
+                </button>
+            </x-slot>
+        </x-review-action-modal>
+    @endif
+
     @if ($successMessage)
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             {{ $successMessage }}
@@ -87,8 +108,7 @@
                                         <i class="fa fa-pen w-4"></i>
                                     </button>
                                 @endcan
-                                <button type="button" wire:click="archive({{ $review->id }})"
-                                    wire:confirm="{{ __('dictt.review_archive_confirm', ['name' => $review->user?->name ?? ('#' . $review->id)]) }}"
+                                <button type="button" wire:click="confirmArchive({{ $review->id }})"
                                     class="btn btn-sm btn-outline-secondary" title="{{ __('dictt.review_archive_action') }}">
                                     <i class="fa fa-archive w-4" aria-hidden="true"></i>
                                     <span class="visually-hidden">{{ __('dictt.review_archive_action') }}</span>

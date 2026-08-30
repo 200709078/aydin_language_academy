@@ -20,7 +20,7 @@
         </div>
 
         <!-- Delete User Confirmation Modal -->
-        <x-dialog-modal wire:model.live="confirmingUserDeletion">
+        <x-review-action-modal wire:model.live="confirmingUserDeletion">
             <x-slot name="title">
                 {{ __('dictt.deleteaccount') }}
             </x-slot>
@@ -41,15 +41,16 @@
             </x-slot>
 
             <x-slot name="footer">
-                <x-secondary-button wire:click="$toggle('confirmingUserDeletion')" wire:loading.attr="disabled">
-                    {{ __('dictt.cancel') }}
-                </x-secondary-button>
+                <button type="button" wire:click="$toggle('confirmingUserDeletion')" wire:loading.attr="disabled"
+                    class="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition">
+                    <i class="fa fa-ban mr-1"></i> {{ __('dictt.cancel') }}
+                </button>
 
-                <button type="button" class="btn btn-outline-primary frontend-profile-primary-action frontend-profile-danger-action py-2 px-3 ms-3"
-                    wire:click="deleteUser" wire:loading.attr="disabled">
-                    {{ __('dictt.delete_my_account') }}
+                <button type="button" wire:click="deleteUser" wire:loading.attr="disabled"
+                    class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition">
+                    <i class="fa fa-trash-alt mr-1"></i> {{ __('dictt.delete_my_account') }}
                 </button>
             </x-slot>
-        </x-dialog-modal>
+        </x-review-action-modal>
     </x-slot>
 </x-action-section>

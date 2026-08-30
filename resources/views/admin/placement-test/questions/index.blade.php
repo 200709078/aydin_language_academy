@@ -68,11 +68,18 @@
                                             title="{{ __('dictt.edit') }}">
                                             <i class="fa fa-pen w-4"></i>
                                         </a>
-                                        <form method="POST" action="{{ route('placement_test_questions_destroy', $question) }}"
-                                            onsubmit="return confirm(@js($deletePrompt));">
+                                        <form id="placement-question-delete-{{ $question->id }}" method="POST"
+                                            action="{{ route('placement_test_questions_destroy', $question) }}">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-danger" title="{{ __('dictt.delete') }}">
+                                            <button type="button" class="btn btn-sm btn-danger" title="{{ __('dictt.delete') }}"
+                                                data-action-confirmation
+                                                data-confirm-form="placement-question-delete-{{ $question->id }}"
+                                                data-confirm-title="{{ __('dictt.delete') }}"
+                                                data-confirm-content="{{ $deletePrompt }}"
+                                                data-confirm-action="{{ __('dictt.delete') }}"
+                                                data-confirm-icon="fa-trash-alt"
+                                                data-confirm-tone="danger">
                                                 <i class="fa fa-trash"></i>
                                             </button>
                                         </form>
@@ -95,4 +102,6 @@
             @endif
         </div>
     </div>
+
+    <x-action-confirmation-modal />
 </x-app-layout>

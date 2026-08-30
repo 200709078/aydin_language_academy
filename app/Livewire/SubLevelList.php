@@ -8,18 +8,12 @@ use Illuminate\Support\Str;
 
 class SubLevelList extends Component
 {
-    public $sublevels;
     public $confirmingDelete = false;
     public $sublevelToDelete = null;
     public $modalConfirmTitle;
     public $modalConfirmContent;
     public $modalSuccessTitle;
     public $modalSuccessContent;
-    public function mount()
-    {
-        $this->sublevels = model_sub_levels::withCount('themes')->orderBy('updated_at', 'desc')->get();
-    }
-
     public function confirmDelete($id)
     {
         $sublevel = model_sub_levels::withCount('themes')->find($id);
@@ -49,7 +43,6 @@ class SubLevelList extends Component
         }
 
         $sublevel->delete();
-        $this->sublevels = model_sub_levels::withCount('themes')->orderBy('updated_at', 'desc')->get();
         $this->modalSuccessTitle = __('dictt.deletesuccesstitle', ['type' => __('dictt.sublevel')]);
         $this->modalSuccessContent = __('dictt.deletesuccesscontent', ['type' => Str::lower(__('dictt.sublevel')), 'name' => $sublevel->name]);
         $this->confirmingDelete = false;
@@ -57,6 +50,8 @@ class SubLevelList extends Component
 
     public function render()
     {
-        return view('livewire.sub-level-list');
+        return view('livewire.sub-level-list', [
+            'sublevels' => model_sub_levels::withCount('themes')->orderBy('updated_at', 'desc')->get(),
+        ]);
     }
 }

@@ -9,6 +9,8 @@ return [
     'ala' => 'AYDIN LANGUAGE ACADEMY | English Classes for Kids & Adults',
     'brand_title' => 'AYDIN',
     'brand_subtitle' => 'Language Academy',
+    'primary_slogan' => 'Master language, empower success.',
+    'secondary_slogan' => "Don't just learn a language, start living it.",
     'allrightreserved.' => 'All right reserved.',
     'reorganized_by.' => 'Reorganized By',
     'designed_by' => 'Designed By',

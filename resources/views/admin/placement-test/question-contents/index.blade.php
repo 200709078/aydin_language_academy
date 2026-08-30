@@ -60,12 +60,18 @@
                                         </a>
 
                                         @if ($content->questions_count === 0)
-                                            <form method="POST"
-                                                action="{{ route('placement_test_question_contents_destroy', $content) }}"
-                                                onsubmit="return confirm(@js(__('dictt.pt_content_delete_confirm')));">
+                                            <form id="placement-content-delete-{{ $content->id }}" method="POST"
+                                                action="{{ route('placement_test_question_contents_destroy', $content) }}">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-danger" title="{{ __('dictt.delete') }}">
+                                                <button type="button" class="btn btn-sm btn-danger" title="{{ __('dictt.delete') }}"
+                                                    data-action-confirmation
+                                                    data-confirm-form="placement-content-delete-{{ $content->id }}"
+                                                    data-confirm-title="{{ __('dictt.delete') }}"
+                                                    data-confirm-content="{{ __('dictt.pt_content_delete_confirm') }}"
+                                                    data-confirm-action="{{ __('dictt.delete') }}"
+                                                    data-confirm-icon="fa-trash-alt"
+                                                    data-confirm-tone="danger">
                                                     <i class="fa fa-trash"></i>
                                                 </button>
                                             </form>
@@ -94,4 +100,6 @@
             @endif
         </div>
     </div>
+
+    <x-action-confirmation-modal />
 </x-app-layout>

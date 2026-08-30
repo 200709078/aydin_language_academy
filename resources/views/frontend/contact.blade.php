@@ -40,6 +40,9 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-8 wow fadeIn" data-wow-delay="0.1s">
+                    @php
+                        $contactSubmitted = session('modalSuccessTitle') && session('modalSuccessContent');
+                    @endphp
                     @if (session('modalSuccessTitle') && session('modalSuccessContent'))
                         <div class="alert alert-success alert-dismissible fade show" role="alert">
                             <h4 class="alert-heading">
@@ -77,29 +80,29 @@
                             </div>
                             <div class="form-floating mb-2">
                                 <input class="form-control" name="fullname" type="text"
-                                    placeholder="{{ __('dictt.fullname') }}" value="{{ old('fullname', auth()->user()?->name) }}"
+                                    placeholder="{{ __('dictt.fullname') }}" value="{{ old('fullname', $contactSubmitted ? '' : auth()->user()?->name) }}"
                                     autocomplete="name" autocapitalize="words" data-name-titlecase />
                                 <label>{{ __('dictt.fullname') }} :</label>
                             </div>
                             <div class="form-floating mb-2">
-                                <input class="form-control" name="email" type="email" placeholder="{{ __('dictt.email') }}" value="{{ old('email', auth()->user()?->email) }}" />
+                                <input class="form-control" name="email" type="email" placeholder="{{ __('dictt.email') }}" value="{{ old('email', $contactSubmitted ? '' : auth()->user()?->email) }}" />
                                 <label>{{ __('dictt.email') }} :</label>
                             </div>
                             <div class="form-floating mb-2">
                                 <input class="form-control" name="telephone" type="tel"
-                                    placeholder="+905XXXXXXXXX" value="{{ old('telephone', auth()->user()?->phone) }}"
+                                    placeholder="+905XXXXXXXXX" value="{{ old('telephone', $contactSubmitted ? '' : auth()->user()?->phone) }}"
                                     required autocomplete="tel" inputmode="tel" maxlength="16" pattern="\+[1-9][0-9]{7,14}"
                                     title="{{ __('dictt.phone_international_format') }}" data-international-phone />
                                 <label>{{ __('dictt.phone') }} :</label>
                             </div>
                             <div class="form-floating mb-2">
                                 <input class="form-control" name="subject" type="text"
-                                    placeholder="{{ __('dictt.subject') }}" value="{{ old('subject', __('dictt.contact_default_subject')) }}" />
+                                    placeholder="{{ __('dictt.subject') }}" value="{{ old('subject', $contactSubmitted ? '' : __('dictt.contact_default_subject')) }}" />
                                 <label>{{ __('dictt.subject') }} :</label>
                             </div>
                             <div class="form-floating">
                                 <textarea class="form-control" name="message" placeholder="{{ __('dictt.message') }}"
-                                    style="height: 12rem">{{ old('message', __('dictt.contact_default_message')) }}</textarea>
+                                    style="height: 12rem">{{ old('message', $contactSubmitted ? '' : __('dictt.contact_default_message')) }}</textarea>
                                 <label>{{ __('dictt.message') }} :</label>
                             </div>
                             <br />

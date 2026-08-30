@@ -18,11 +18,18 @@
                 </div>
 
                 @if ($placementTest->status === 'pending_approval')
-                    <form method="POST" action="{{ route('placement_test_attempts_approve', $placementTest) }}"
-                        onsubmit="return confirm(@js(__('dictt.placement_test_attempt_approve_confirm')));">
+                    <form id="placement-test-approve" method="POST"
+                        action="{{ route('placement_test_attempts_approve', $placementTest) }}">
                         @csrf
                         @method('PUT')
-                        <button type="submit" class="btn btn-success">
+                        <button type="button" class="btn btn-success"
+                            data-action-confirmation
+                            data-confirm-form="placement-test-approve"
+                            data-confirm-title="{{ __('dictt.approve') }}"
+                            data-confirm-content="{{ __('dictt.placement_test_attempt_approve_confirm') }}"
+                            data-confirm-action="{{ __('dictt.approve') }}"
+                            data-confirm-icon="fa-check"
+                            data-confirm-tone="success">
                             <i class="fa fa-check" aria-hidden="true"></i> {{ __('dictt.approve') }}
                         </button>
                     </form>
@@ -210,4 +217,6 @@
     @empty
         <div class="alert alert-warning" role="alert">{{ __('dictt.placement_test_attempt_questions_empty') }}</div>
     @endforelse
+
+    <x-action-confirmation-modal />
 </x-app-layout>

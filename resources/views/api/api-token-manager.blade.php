@@ -157,13 +157,15 @@
         </x-slot>
 
         <x-slot name="footer">
-            <x-secondary-button wire:click="$toggle('confirmingApiTokenDeletion')" wire:loading.attr="disabled">
-                {{ __('Cancel') }}
-            </x-secondary-button>
+            <button type="button" wire:click="$toggle('confirmingApiTokenDeletion')" wire:loading.attr="disabled"
+                class="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition">
+                <i class="fa fa-ban mr-1"></i> {{ __('Cancel') }}
+            </button>
 
-            <x-danger-button class="ms-3" wire:click="deleteApiToken" wire:loading.attr="disabled">
-                {{ __('Delete') }}
-            </x-danger-button>
+            <button type="button" wire:click="deleteApiToken" wire:loading.attr="disabled"
+                class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition">
+                <i class="fa fa-trash-alt mr-1"></i> {{ __('Delete') }}
+            </button>
         </x-slot>
     </x-confirmation-modal>
 </div>

@@ -62,7 +62,7 @@
         </div>
 
         <!-- Log Out Other Devices Confirmation Modal -->
-        <x-dialog-modal wire:model.live="confirmingLogout">
+        <x-review-action-modal wire:model.live="confirmingLogout">
             <x-slot name="title">
                 {{ __('dictt.logoutbrowsersessions') }}
             </x-slot>
@@ -93,6 +93,6 @@
                     {{ __('dictt.logoutbrowsersessions') }}
                 </x-button>
             </x-slot>
-        </x-dialog-modal>
+        </x-review-action-modal>
     </x-slot>
 </x-action-section>

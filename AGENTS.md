@@ -42,6 +42,11 @@ Responsive davranışı ve yararlı animasyonları koru.
 Onaysız yeni frontend framework veya gereksiz paket ekleme.
 Kullanıcı istemedikçe metinlerin yerine yeni pazarlama metni uydurma.
 
+ALA marka sloganları:
+- Primary slogan: Türkçe `Dil öğren, dünyanı genişlet.` / İngilizce `Master language, empower success.`
+- Secondary slogan: Türkçe `Sadece dil öğrenme. Onu yaşamaya başla.` / İngilizce `Don't just learn a language, start living it.`
+- Ana sayfa hero alanında, kullanıcı aksini istemedikçe primary slogan kullanılır. Secondary slogan ancak açıkça istenen başka bir bağlamda kullanılır.
+
 4. Authentication akışı
 Public frontend
     ↓
@@ -142,6 +147,11 @@ Kullanıcı yalnızca analiz istiyorsa dosya değiştirme, write operation yapma
 
 Frontend'de en az sayfanın hatasız render edilmesini, CSS/JS/görselleri, desktop/mobil görünümü, internal linkleri ve korumalı linklerin mevcut auth akışını kullanmasını test et.
 
+Onay ekranı standardı — [YAPILDI]:
+- Kullanıcı başlatmalı arşivleme, silme, kalıcı silme ve geri döndürülemez yönetici işlemlerinin onayı, yorumlardaki sayfa içi ALA modalı ile aynı görünüm ve davranışta olmalıdır.
+- Normal Blade/form akışları `x-action-confirmation-modal`, Livewire akışları `x-review-action-modal` veya aynı görsel kabuğu kullanır. Yeni paralel onay tasarımı, tarayıcı `confirm()` veya Livewire `wire:confirm` kullanılmaz.
+- Mevcut eşdeğer Livewire silme modalları bu standardı zaten karşılar. Parola/2FA gibi güvenlik doğrulaması gereken akışlarda parola/ikinci doğrulama zorunluluğu korunur; yalnız modalın görsel kabuğu bu standarda uyar.
+
 10. Tahmin etme
 Belirsizse projeyi incele. Özellikle mevcut route isimleri, login redirect'i, authenticated home, mevcut frontend ve görsel kullanımını uydurma.
 
@@ -240,6 +250,10 @@ Kalan aşamalar — kolaydan zora, her biri ayrı onayla:
 8) Seçilmiş editoryal başarı hikâyeleri — [TODO]
    - `success_stories` yıllık kazanan girdisine isteğe bağlı bağlanabilir ancak ayrı draft/published/featured yaşam döngüsü, başlangıç–sonuç metni, yıl/şube/program alanları ve ayrı hikâye/medya izinleri taşır.
    - Bir kazananın public kaydı otomatik hikâyeye dönüşmez; hikâye ve fotoğraf yalnız açık izinle, gerektiğinde insan onayıyla yayınlanır.
+   - Public sayfanın ana omurgası yıl bazlı, doğrulanmış başarı listesidir. Başarı hikâyeleri bu listenin yerine geçen ya da otomatik üretilen içerikler değil; yalnız seçilmiş az sayıdaki öğrenci için gösterilen ayrı “Öne Çıkan Başarı Hikâyeleri” kartları ve gerekirse detaylarıdır.
+   - Hikâye, öğrencinin başlangıç/hedef/süreç/sonuç anlatımı, izinli kısa alıntısı ve yalnız ayrı izin varsa görsel, video veya ses içerebilir. Gerçek olmayan başarı vaadi, doldurma amacıyla hikâye, izinsiz öğrenci bilgisi veya statik demo kullanılmaz.
+   - İsim gösterme izni; hikâye metni, alıntı, fotoğraf, video, ses, sosyal paylaşım metası veya broşür izni anlamına gelmez. Her yayın türü için kaynak/izin, izin tarihi, sürümü ve iç denetim notu ayrı saklanır; izin yoksa hikâye taslakta kalır veya anonim/medyasız biçimde ayrıca onaylanır.
+   - Uygulama sırası: önce onaylı hikâye içerik/izin envanteri; sonra `success_stories` veri sözleşmesi ve admin taslak-yayın akışı; ardından Başarılarımız sayfasındaki kart/liste görünümü; en son gerekli görülürse public hikâye detayı, paylaşım metaları ve izinli medya. Her aşama ayrı onay gerektirir.
 
 9) Broşür ve dışa aktarımlar — [TODO]
    - “Broşür hazırla / dışa aktar” yalnız veritabanındaki seçili yıl/kayıtlardan üretilir. Public/paylaşılabilir Excel, PDF ve JPG aynı public-güvenli gösterim/anonimleştirme kuralını kullanır.
@@ -257,3 +271,65 @@ Kalan aşamalar — kolaydan zora, her biri ayrı onayla:
 12) Merkezi şube yönetimi — [TODO, yalnız ihtiyaç oluşursa]
    - Ortaca, Dalaman ve Köyceğiz bugün statik yapı/route'larla çalışır; yalnız metin veya görsel değişikliği için CMS'e taşınmaz.
    - Yeni şube veya sık adres/iletişim/harita/görsel/istatistik güncellemesi ihtiyacı oluşursa ayrı kapsam ve route denetimiyle Branch CMS değerlendirilir.
+
+14. Public SEO ve arama görünürlüğü
+Durum: [TODO — içerik onayı ve ayrı uygulama adımları gerekli]
+
+İlkeler:
+- `meta name="keywords"` Google Search tarafından sıralama veya indeksleme için kullanılmaz. Anahtar kelime doldurma, keyword stuffing veya sayfa başına anahtar kelime listesi üretme işi yapılmaz.
+- Eski public/guest Blade head'lerindeki boş ya da dolu tüm `meta name="keywords"` etiketleri, ayrı ve düşük riskli bir SEO bakım adımında kaldırılır. Bu işlem anlamlı title, description veya robots etiketlerini değiştirmez.
+- SEO metinleri gerçek ALA içeriğine, mevcut hizmete, doğrulanmış şube bilgilerine ve seçili dile dayanır; yalnız arama trafiği için pazarlama metni uydurulmaz.
+- Giriş, kayıt, kullanıcı profili, üye alanı, admin ve sınavın kişisel sonuç/kayıt ekranları indexlenmez; public sayfaların index kuralları bunlardan ayrı değerlendirilir.
+
+Uygulama sırası — her adım ayrıca onaylanır:
+1) Metadata envanteri ve keyword temizliği — [TODO]
+   - Tüm indexlenebilir public route'lar için mevcut `title`, `meta description`, canonical, robots ve sosyal paylaşım metaları envanteri çıkarılır.
+   - `meta name="keywords"` etiketleri kaldırılır; yalnız Google açısından etkisiz olan bu etiketler yerine yeni bir meta etiketi eklenmez.
+   - Mevcut `robots.txt`, sitemap üretimi, dil URL'leri ve auth gerektiren URL'ler salt-okunur olarak denetlenir; noindex kararları açıkça doğrulanır.
+
+2) Sayfa bazlı title ve description — [TODO]
+   - Ana Sayfa, Kurslarımız ve tekil kurslar, Şubelerimiz ve tekil şubeler, Başarılarımız, Kampanyalarımız, Haberler ve haber detayı için özgün, açıklayıcı, locale uyumlu title/description metinleri hazırlanır.
+   - Metinler içerik sahibi tarafından onaylanır; her sayfaya aynı açıklama veya anahtar kelime dizisi kopyalanmaz.
+   - Haber detayındaki mevcut dinamik title/description yaklaşımı korunur; yeni içerik yapılarıyla çelişen ikinci bir kaynak oluşturulmaz.
+
+3) Canonical ve paylaşım görünümü — [TODO]
+   - Her indexlenebilir public sayfa kendi route helper tabanlı canonical URL'sine sahip olur; query/filter veya dil varyasyonları önce mevcut route yapısı incelenerek ele alınır.
+   - Open Graph/Twitter paylaşım başlığı, açıklaması ve görseli eklenir. Varsayılan ALA görseli ile haberlerin izinli kapak görseli ayrılır; private medya ya da izinsiz öğrenci görseli paylaşım metasına verilmez.
+
+4) Yapılandırılmış veri ve yerel görünürlük — [TODO, doğrulanmış veri şart]
+   - Kurum ve şube bilgileri kesinleştikten sonra `Organization` ve uygun olduğunda her şube için `LocalBusiness` yapılandırılmış verisi değerlendirilir.
+   - Adres, telefon, çalışma saati, harita URL'si, logo ve sosyal bağlantılar doğrulanmadan schema eklenmez. Yorum, puan veya başarı verisi gerçek ve yayın izni açık olmadıkça schema ile işaretlenmez.
+
+5) Canlı doğrulama — [TODO]
+   - Yayın sonrası rendered HTML, canonical/robots, sitemap, mobil görünüm ve sosyal paylaşım ön izlemesi kontrol edilir.
+   - Search Console URL Denetimi ve sitemap raporu ile indekslenebilir public sayfalar doğrulanır; demo, pending, rejected, archived veya üyeye özel içeriklerin indekslenmediği yeniden kontrol edilir.
+
+15. KVKK, gizlilik ve yayın izinleri
+Durum: [TODO — hukukî metin ve işleme şartları kurumun KVKK danışmanı/avukatı tarafından onaylanmadan uygulanmaz]
+
+Temel ayrım:
+- `KVKK Aydınlatma Metni`, kişisel veri toplanırken yapılan zorunlu bilgilendirmedir; veri sorumlusu, amaç, aktarım, toplama yöntemi/hukukî sebep ve ilgili kişi haklarını ALA'nın gerçek uygulamasına göre açıklar.
+- Açık rıza yalnız gerçekten rıza gerektiren belirli ve isteğe bağlı işlemler için alınır. Aydınlatma metni ile aynı checkbox/metin yapılmaz; hizmet, üyelik veya iletişim talebi gereksiz pazarlama/yayın rızasına bağlanmaz.
+- İsim, yorum, başarı kaydı, hikâye, fotoğraf, video, ses ve ticari ileti izni birbirinin yerine geçmez. Öğrenci reşit değilse veli/vasi doğrulama ve izin süreci hukukî olarak ayrıca belirlenir.
+
+Yerleşim ve kapsam:
+1) Kalıcı erişim — [TODO]
+   - Public footer'a `KVKK Aydınlatma Metni`, `KVKK Başvuru / İlgili Kişi Hakları` ve hukuken/onaylı şekilde gerekli ise `Gizlilik Politikası` ile `Çerez Politikası` bağlantıları eklenir.
+   - Metinlerin sorumlu kişi/iletişim kanalı, güncelleme tarihi ve sürümü kurumca doğrulanır. Genel footer bağlantısı, form anındaki bağlamsal aydınlatmanın yerine geçmez.
+
+2) Form bazlı aydınlatma — [TODO]
+   - İletişim formunda gönder düğmesinin yanında/üstünde ad, iletişim bilgisi, şube ve mesajın talebi yanıtlamak amacıyla işlendiğini açıklayan kısa metin ve ilgili sayfaya link bulunur.
+   - Üyelik, profil fotoğrafı ve hesap yönetimi akışlarında hesap/güvenlik/iletişim verileri için kayıt öncesi veya veri elde edilirken bağlamsal aydınlatma eklenir. Mevcut Jetstream/Fortify akışı hukukî metin onayı olmadan değiştirilmez.
+   - Yorum formu, onaylanan yorumun public HTML'de ve arama motorlarında görünür olabileceğini açıkça bildirir. Moderasyon, yorum sahibinin adı veya başka kişisel bilgisinin yayın izni değildir.
+   - Seviye tespit başlatılmadan önce cevap/sonuç geçmişinin eğitim değerlendirmesi amacıyla saklanmasına ilişkin bağlamsal aydınlatma verilir. Mevcut sınav/sonuç verisinin yayınlanması veya pazarlama amacıyla kullanılması için ayrı dayanak gerekir.
+   - “Sana uygun programı bul” bugün kalıcı kişisel veri kaydetmez; gelecekte danışmanlık lead'i, geri arama veya iletişim alanı eklenirse aynı form bazlı aydınlatma ve gerekirse ayrı rıza akışı kurulmadan veri saklanmaz.
+
+3) Ayrı rıza ve kanıt kaydı — [TODO]
+   - İsteğe bağlı e-posta/SMS/WhatsApp/arama pazarlaması için zorunlu olmayan, önceden işaretlenmemiş, amaç kanalı açık ayrı rıza alınır. İletişim talebini yanıtlamak için gereken veri işleme ile pazarlama izni birleştirilmez.
+   - Başarılarımız, başarı hikâyeleri, haber görselleri ve sosyal paylaşım için her isim, alıntı, fotoğraf, video, ses ve dışa aktarım kullanımının izin durumu/kanıtı/tarihi/metin sürümü saklanır. İzin bilinmiyorsa public, SEO, sitemap ve paylaşılabilir çıktı anonim veya kapalı kalır.
+   - Analytics, reklam pikseli veya zorunlu olmayan üçüncü taraf çerezleri eklenirse, bunlar için ayrı çerez değerlendirmesi ve gerekiyorsa rıza yönetimi yapılır. Bugün böyle bir sistem olduğu varsayılmaz.
+
+4) Uygulama ve denetim sırası — [TODO]
+   - Önce mevcut veri envanteri, saklama süreleri, veri sorumlusu bilgisi, aktarım noktaları ve hukukî dayanaklar kurum tarafından doğrulanır; metinler hukukî danışman tarafından onaylanır.
+   - Ardından public politika/başvuru sayfaları, footer bağlantıları ve form bazlı kısa aydınlatmalar tasarlanır; gerekli olan açık rızalar bağımsız checkbox ve kanıt kaydıyla uygulanır.
+   - Son olarak girişsiz, üye ve admin görünümü; veri gönderimi; izin geri çekme/başvuru kanalı; public HTML/SEO/sitemap görünürlüğü test edilir. Yeni bir alan veya medya türü eklenince bu envanter ve izin kapsamı yeniden değerlendirilir.
