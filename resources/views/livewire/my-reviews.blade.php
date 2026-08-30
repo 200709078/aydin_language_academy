@@ -60,17 +60,8 @@
     <div class="row g-4 justify-content-center">
         @forelse ($reviews as $review)
             <div class="col-lg-4 col-md-6 d-flex">
-                <div class="testimonial-item text-center h-100 w-100 position-relative">
-                    <div class="mt-2">
-                        @if ($review->status === \App\Models\Review::STATUS_APPROVED)
-                            <span class="badge bg-success text-white">{{ __('dictt.status_approved') }}</span>
-                        @elseif ($review->status === \App\Models\Review::STATUS_REJECTED)
-                            <span class="badge bg-danger text-white">{{ __('dictt.status_rejected') }}</span>
-                        @else
-                            <span class="badge bg-warning text-dark">{{ __('dictt.status_pending') }}</span>
-                        @endif
-                    </div>
-                    <div class="testimonial-text bg-light rounded text-center p-4 mt-2 h-100">
+                <div class="testimonial-item text-center h-100 w-100 d-flex flex-column">
+                    <div class="testimonial-text bg-light rounded text-center p-4 flex-grow-1 d-flex flex-column">
                         <p>{{ $review->content }}</p>
                         <div class="mb-2">
                             @for ($i = 1; $i <= 5; $i++)
@@ -79,18 +70,29 @@
                         </div>
                         <span class="fst-italic d-block mb-3">{{ $review->branchLabel() }} · {{ $review->created_at?->format('d.m.Y H:i') }}</span>
 
-                        <div class="d-flex justify-content-center gap-2">
-                            @can('update', $review)
-                                <button type="button" wire:click="edit({{ $review->id }})"
-                                    class="btn btn-sm btn-primary" title="{{ __('dictt.edit') }}">
-                                    <i class="fa fa-pen w-4"></i>
+                        <div class="d-flex align-items-center justify-content-between gap-2 mt-auto">
+                            <div>
+                                @if ($review->status === \App\Models\Review::STATUS_APPROVED)
+                                    <span class="badge bg-success text-white">{{ __('dictt.status_approved') }}</span>
+                                @elseif ($review->status === \App\Models\Review::STATUS_REJECTED)
+                                    <span class="badge bg-danger text-white">{{ __('dictt.status_rejected') }}</span>
+                                @else
+                                    <span class="badge bg-warning text-dark">{{ __('dictt.status_pending') }}</span>
+                                @endif
+                            </div>
+                            <div class="d-flex gap-2">
+                                @can('update', $review)
+                                    <button type="button" wire:click="edit({{ $review->id }})"
+                                        class="btn btn-sm btn-primary" title="{{ __('dictt.edit') }}">
+                                        <i class="fa fa-pen w-4"></i>
+                                    </button>
+                                @endcan
+                                <button type="button" wire:click="confirmDelete({{ $review->id }})"
+                                    wire:confirm="{{ __('dictt.review_delete_confirm') }}"
+                                    class="btn btn-sm btn-danger" title="{{ __('dictt.delete') }}">
+                                    <i class="fa fa-trash w-4"></i>
                                 </button>
-                            @endcan
-                            <button type="button" wire:click="confirmDelete({{ $review->id }})"
-                                wire:confirm="{{ __('dictt.review_delete_confirm') }}"
-                                class="btn btn-sm btn-danger" title="{{ __('dictt.delete') }}">
-                                <i class="fa fa-trash w-4"></i>
-                            </button>
+                            </div>
                         </div>
                     </div>
                 </div>
