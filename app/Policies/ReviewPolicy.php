@@ -15,6 +15,7 @@ class ReviewPolicy
 
     public function delete(User $user, Review $review): bool
     {
-        return $review->user_id === $user->id;
+        return $review->user_id === $user->id
+            && $review->status !== Review::STATUS_ARCHIVED;
     }
 }

@@ -29,7 +29,7 @@
     <link href="{{ asset('frontend/css/bootstrap.min.css') }}" rel="stylesheet">
 
     <!-- Template Stylesheet -->
-    <link href="{{ asset('frontend/css/style.css') }}?v=20260830-program-finder" rel="stylesheet">
+    <link href="{{ asset('frontend/css/style.css') }}?v=20260830-news-dots-1" rel="stylesheet">
 </head>
 
 <body class="frontend-home">
@@ -63,6 +63,27 @@
             </div>
             <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
                 <div class="owl-carousel header-carousel">
+                    @if (($heroNews ?? collect())->isNotEmpty())
+                        @foreach ($heroNews as $news)
+                            <div class="owl-carousel-item position-relative">
+                                @if ($news->coverMediaAsset?->kind === \App\Models\MediaAsset::KIND_IMAGE)
+                                    <img class="img-fluid"
+                                        src="{{ route('frontend.news.media', ['news' => $news->slug, 'mediaAsset' => $news->coverMediaAsset->id]) }}"
+                                        alt="{{ $news->title }}">
+                                @else
+                                    <div class="header-carousel-news-placeholder" aria-hidden="true"></div>
+                                @endif
+                                <div class="owl-carousel-text">
+                                    <h1 class="header-carousel-news-title display-1 text-white mb-0">
+                                        <a class="header-carousel-branch-link header-carousel-news-link"
+                                            href="{{ route('frontend.news.show', ['news' => $news->slug]) }}">
+                                            {{ $news->title }}
+                                        </a>
+                                    </h1>
+                                </div>
+                            </div>
+                        @endforeach
+                    @endif
                     <div class="owl-carousel-item position-relative">
                         <img class="img-fluid" src="{{ asset('frontend/images/slider-1.jpg') }}" alt="">
                         <div class="owl-carousel-text">
@@ -250,11 +271,54 @@
     <!-- Service End -->
 
 
+    @if (($homepageNews ?? collect())->isNotEmpty())
+        <!-- News Start -->
+        <section class="container-xxl py-5 ala-news-section">
+            <div class="container">
+                <div class="text-center mx-auto mb-3 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 720px;">
+                    <div class="ala-news-heading">
+                        @if ($homepageNews->count() > 1)
+                            <button type="button" class="btn btn-outline-primary btn-lg-square rounded-circle d-inline-flex align-items-center justify-content-center news-prev" aria-label="{{ __('dictt.previous') }}"><i class="fa fa-angle-left" aria-hidden="true"></i></button>
+                        @endif
+                        <h1 class="mb-0">{{ __('dictt.news') }}</h1>
+                        @if ($homepageNews->count() > 1)
+                            <button type="button" class="btn btn-outline-primary btn-lg-square rounded-circle d-inline-flex align-items-center justify-content-center news-next" aria-label="{{ __('dictt.next') }}"><i class="fa fa-angle-right" aria-hidden="true"></i></button>
+                        @endif
+                    </div>
+                    @if ($homepageNews->count() > 1)
+                        <div class="news-carousel-dots" aria-label="{{ __('dictt.news') }}"></div>
+                    @endif
+                </div>
+
+                <div class="owl-carousel news-carousel wow fadeInUp" data-wow-delay="0.1s">
+                    @foreach ($homepageNews as $news)
+                        <div class="h-100 d-flex">
+                            @include('frontend.partials.news-card', ['news' => $news])
+                        </div>
+                    @endforeach
+                </div>
+
+                <div class="text-center mt-4 wow fadeInUp" data-wow-delay="0.15s">
+                    <a class="btn btn-outline-primary py-3 px-5" href="{{ route('frontend.news.index') }}">{{ __('dictt.view_all') }}</a>
+                </div>
+            </div>
+        </section>
+        <!-- News End -->
+    @endif
+
     <!-- Testimonial Start -->
     <div class="container-xxl py-5">
         <div class="container">
             <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
-                <h1>{{ __('dictt.testimonials') }}</h1>
+                <div class="ala-review-heading">
+                    @if (($reviewCarousel ?? collect())->count() > 3)
+                        <button type="button" class="btn btn-outline-primary btn-lg-square rounded-circle d-inline-flex align-items-center justify-content-center review-prev" aria-label="{{ __('dictt.previous') }}"><i class="fa fa-angle-left" aria-hidden="true"></i></button>
+                    @endif
+                    <h1 class="mb-0">{{ __('dictt.testimonials') }}</h1>
+                    @if (($reviewCarousel ?? collect())->count() > 3)
+                        <button type="button" class="btn btn-outline-primary btn-lg-square rounded-circle d-inline-flex align-items-center justify-content-center review-next" aria-label="{{ __('dictt.next') }}"><i class="fa fa-angle-right" aria-hidden="true"></i></button>
+                    @endif
+                </div>
             </div>
 
             @if (($reviewCarousel ?? collect())->count() > 3)
@@ -264,11 +328,6 @@
                             @include('frontend.partials.review-card', ['review' => $review])
                         </div>
                     @endforeach
-                </div>
-
-                <div class="d-flex justify-content-center align-items-center mt-4 wow fadeInUp" data-wow-delay="0.15s">
-                    <button type="button" class="btn btn-outline-primary btn-lg-square rounded-circle me-2 d-inline-flex align-items-center justify-content-center review-prev" aria-label="{{ __('dictt.previous') }}"><i class="fa fa-angle-left" aria-hidden="true"></i></button>
-                    <button type="button" class="btn btn-outline-primary btn-lg-square rounded-circle d-inline-flex align-items-center justify-content-center review-next" aria-label="{{ __('dictt.next') }}"><i class="fa fa-angle-right" aria-hidden="true"></i></button>
                 </div>
             @elseif (($latestReview ?? null) || ($previousReview ?? null) || ($firstReview ?? null))
                 <div class="row g-4 justify-content-center wow fadeInUp" data-wow-delay="0.1s">
@@ -322,7 +381,7 @@
     <script src="{{ asset('frontend/vendor/tempusdominus/js/tempusdominus-bootstrap-4.min.js') }}"></script>
 
     <!-- Template Javascript -->
-    <script src="{{ asset('frontend/js/main.js') }}?v=20260829-slider"></script>
+    <script src="{{ asset('frontend/js/main.js') }}?v=20260830-news-dots-1"></script>
 </body>
 
 </html>

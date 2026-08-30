@@ -1,14 +1,14 @@
 <div>
-    <!-- Delete Modal Start-->
+    <!-- Archive / permanent delete modal start -->
     @if ($modalConfirmContent && $modalConfirmTitle)
-        <x-modal wire:model="confirmingDelete">
+        <x-modal wire:model="confirmingAction">
             <div class="bg-white rounded-2xl shadow-2xl p-6 sm:p-8 w-full relative">
                 <div class="flex items-center justify-between mb-4">
                     <h2 class="text-xl font-bold text-orange-500 flex items-center">
                         <i class="fas fa-exclamation-circle mr-2"></i>
                         {!! $modalConfirmTitle !!}
                     </h2>
-                    <button wire:click="$set('confirmingDelete', false)"
+                    <button wire:click="$set('confirmingAction', false)"
                         class="text-gray-400 hover:text-red-500 transition">
                         <i class="fas fa-times text-lg"></i>
                     </button>
@@ -17,19 +17,20 @@
                     {!! $modalConfirmContent !!}
                 </div>
                 <div class="mt-6 flex justify-end space-x-3">
-                    <button wire:click="$set('confirmingDelete', false)"
+                    <button wire:click="$set('confirmingAction', false)"
                         class="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition">
                         <i class="fa fa-ban mr-1"></i> {{ __('dictt.cancel') }}
                     </button>
-                    <button wire:click="deleteItem"
-                        class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition">
-                        <i class="fa fa-trash-alt mr-1"></i> {{ __('dictt.delete') }}
+                    <button wire:click="executePendingAction"
+                        class="px-4 py-2 text-white rounded-md transition {{ $pendingAction === 'force-delete' ? 'bg-red-600 hover:bg-red-700' : 'bg-secondary hover:bg-gray-700' }}">
+                        <i class="fa {{ $pendingAction === 'force-delete' ? 'fa-trash-alt' : 'fa-archive' }} mr-1"></i>
+                        {{ $pendingAction === 'force-delete' ? __('dictt.review_permanently_delete') : __('dictt.review_archive_action') }}
                     </button>
                 </div>
             </div>
         </x-modal>
     @endif
-    <!-- Delete Modal End -->
+    <!-- Archive / permanent delete modal end -->
     <!-- Success Start -->
     @if ((session('modalSuccessTitle') && session('modalSuccessContent')) || ($modalSuccessTitle && $modalSuccessContent))
         <div class="relative bg-green-100 text-green-800 px-6 py-4 rounded-lg shadow mb-6 w-full">
@@ -73,6 +74,9 @@
                 <button type="button" wire:click="$set('statusFilter', 'rejected')"
                     class="btn {{ $statusFilter === 'rejected' ? 'btn-primary' : 'btn-outline-primary' }}">
                     {{ __('dictt.status_rejected') }}</button>
+                <button type="button" wire:click="$set('statusFilter', 'archived')"
+                    class="btn {{ $statusFilter === 'archived' ? 'btn-primary' : 'btn-outline-primary' }}">
+                    {{ __('dictt.review_archive') }}</button>
             </div>
 
             <div class="table-responsive">
@@ -85,7 +89,7 @@
                             <th scope="col">{{ __('dictt.content') }}</th>
                             <th scope="col">{{ __('dictt.status') }}</th>
                             <th scope="col">{{ __('dictt.date') }}</th>
-                            <th scope="col">{{ __('dictt.operations') }}</th>
+                            <th scope="col" class="text-end">{{ __('dictt.operations') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -102,7 +106,9 @@
                                     <span class="admin-table-cell-ellipsis">{{ \Illuminate\Support\Str::limit($review->content, 120) }}</span>
                                 </td>
                                 <td>
-                                    @if ($review->status === \App\Models\Review::STATUS_APPROVED)
+                                    @if ($review->status === \App\Models\Review::STATUS_ARCHIVED || $review->trashed())
+                                        <span class="badge text-bg-secondary">{{ __('dictt.status_archived') }}</span>
+                                    @elseif ($review->status === \App\Models\Review::STATUS_APPROVED)
                                         <span class="badge text-bg-success">{{ __('dictt.status_approved') }}</span>
                                     @elseif ($review->status === \App\Models\Review::STATUS_REJECTED)
                                         <span class="badge text-bg-danger">{{ __('dictt.status_rejected') }}</span>
@@ -111,28 +117,37 @@
                                     @endif
                                 </td>
                                 <td class="text-nowrap">{{ $review->created_at?->format('d.m.Y H:i') }}</td>
-                                <td>
-                                    <div class="flex gap-1">
-                                        @if ($review->status !== \App\Models\Review::STATUS_APPROVED)
+                                <td class="text-end">
+                                    <div class="d-flex justify-content-end gap-1">
+                                        @if ($review->status === \App\Models\Review::STATUS_ARCHIVED || $review->trashed())
+                                            <button type="button" wire:click="confirmForceDelete({{ $review->id }})"
+                                                class="btn btn-sm btn-danger" title="{{ __('dictt.review_permanently_delete') }}">
+                                                <i class="fa fa-trash w-4" aria-hidden="true"></i>
+                                                <span class="visually-hidden">{{ __('dictt.review_permanently_delete') }}</span>
+                                            </button>
+                                        @else
+                                            @if ($review->status !== \App\Models\Review::STATUS_APPROVED)
                                             <button type="button" wire:click="approve({{ $review->id }})"
                                                 class="btn btn-sm btn-success" title="{{ __('dictt.approve') }}">
                                                 <i class="fa fa-check w-4"></i>
                                             </button>
-                                        @endif
-                                        @if ($review->status !== \App\Models\Review::STATUS_REJECTED)
+                                            @endif
+                                            @if ($review->status !== \App\Models\Review::STATUS_REJECTED)
                                             <button type="button" wire:click="reject({{ $review->id }})"
                                                 class="btn btn-sm btn-warning" title="{{ __('dictt.reject') }}">
                                                 <i class="fa fa-ban w-4"></i>
                                             </button>
+                                            @endif
+                                            <a href="{{ route('review_edit', $review->id) }}"
+                                                class="btn btn-sm btn-primary" title="{{ __('dictt.edit') }}">
+                                                <i class="fa fa-pen w-4"></i>
+                                            </a>
+                                            <button type="button" wire:click="confirmArchive({{ $review->id }})"
+                                                class="btn btn-sm btn-outline-secondary" title="{{ __('dictt.review_archive_action') }}">
+                                                <i class="fa fa-archive w-4" aria-hidden="true"></i>
+                                                <span class="visually-hidden">{{ __('dictt.review_archive_action') }}</span>
+                                            </button>
                                         @endif
-                                        <a href="{{ route('review_edit', $review->id) }}"
-                                            class="btn btn-sm btn-primary" title="{{ __('dictt.edit') }}">
-                                            <i class="fa fa-pen w-4"></i>
-                                        </a>
-                                        <button type="button" wire:click="confirmDelete({{ $review->id }})"
-                                            class="btn btn-sm btn-danger" title="{{ __('dictt.delete') }}">
-                                            <i class="fa fa-trash w-4"></i>
-                                        </button>
                                     </div>
                                 </td>
                             </tr>

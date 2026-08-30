@@ -11,9 +11,11 @@ class ReviewList extends Component
 
     public $reviews;
 
-    public $confirmingDelete = false;
+    public bool $confirmingAction = false;
 
-    public $reviewToDelete = null;
+    public ?int $reviewToActOn = null;
+
+    public ?string $pendingAction = null;
 
     public $modalConfirmTitle;
 
@@ -37,6 +39,8 @@ class ReviewList extends Component
     {
         $review = Review::findOrFail($id);
 
+        $this->ensureReviewIsActive($review);
+
         if ($review->status !== Review::STATUS_APPROVED) {
             $review->status = Review::STATUS_APPROVED;
             $review->approved_by = auth()->id();
@@ -54,6 +58,8 @@ class ReviewList extends Component
     {
         $review = Review::findOrFail($id);
 
+        $this->ensureReviewIsActive($review);
+
         if ($review->status !== Review::STATUS_REJECTED) {
             $review->status = Review::STATUS_REJECTED;
             $review->approved_by = null;
@@ -67,27 +73,59 @@ class ReviewList extends Component
         $this->loadReviews();
     }
 
-    public function confirmDelete($id)
+    public function confirmArchive($id): void
     {
         $review = Review::findOrFail($id);
-        $this->reviewToDelete = $review;
-        $this->modalConfirmTitle = __('dictt.deleteconfirmtitle', ['type' => __('dictt.review')]);
-        $this->modalConfirmContent = __('dictt.deleteconfirmcontent', ['type' => __('dictt.review'), 'name' => $this->displayName($review)]);
-        $this->confirmingDelete = true;
+
+        $this->ensureReviewIsActive($review);
+
+        $this->reviewToActOn = $review->id;
+        $this->pendingAction = 'archive';
+        $this->modalConfirmTitle = __('dictt.review_archive_action');
+        $this->modalConfirmContent = __('dictt.review_archive_confirm', ['name' => $this->displayName($review)]);
+        $this->confirmingAction = true;
     }
 
-    public function deleteItem()
+    public function confirmForceDelete($id): void
     {
-        if ($this->reviewToDelete) {
-            $review = $this->reviewToDelete;
-            $name = $this->displayName($review);
-            $review->delete();
-            $this->reviewToDelete = null;
-            $this->modalSuccessTitle = __('dictt.deletesuccesstitle', ['type' => __('dictt.review')]);
-            $this->modalSuccessContent = __('dictt.deletesuccesscontent', ['type' => __('dictt.review'), 'name' => $name]);
-            $this->confirmingDelete = false;
+        $review = Review::withTrashed()->findOrFail($id);
+
+        $this->ensureReviewIsArchived($review);
+
+        $this->reviewToActOn = $review->id;
+        $this->pendingAction = 'force-delete';
+        $this->modalConfirmTitle = __('dictt.review_permanently_delete');
+        $this->modalConfirmContent = __('dictt.review_force_delete_confirm', ['name' => $this->displayName($review)]);
+        $this->confirmingAction = true;
+    }
+
+    public function executePendingAction(): void
+    {
+        if (! $this->reviewToActOn || ! $this->pendingAction) {
+            $this->clearPendingAction();
+
+            return;
         }
 
+        if ($this->pendingAction === 'archive') {
+            $review = Review::findOrFail($this->reviewToActOn);
+            $this->ensureReviewIsActive($review);
+
+            $review->update(['status' => Review::STATUS_ARCHIVED]);
+            $this->modalSuccessTitle = __('dictt.review_archive_action');
+            $this->modalSuccessContent = __('dictt.review_archived');
+        }
+
+        if ($this->pendingAction === 'force-delete') {
+            $review = Review::withTrashed()->findOrFail($this->reviewToActOn);
+            $this->ensureReviewIsArchived($review);
+
+            $review->forceDelete();
+            $this->modalSuccessTitle = __('dictt.review_permanently_delete');
+            $this->modalSuccessContent = __('dictt.review_permanently_deleted');
+        }
+
+        $this->clearPendingAction();
         $this->loadReviews();
     }
 
@@ -133,6 +171,19 @@ class ReviewList extends Component
             return;
         }
 
+        if ($this->statusFilter === Review::STATUS_ARCHIVED) {
+            $this->reviews = Review::withTrashed()
+                ->with('user')
+                ->where(function ($query): void {
+                    $query->where('status', Review::STATUS_ARCHIVED)
+                        ->orWhereNotNull('deleted_at');
+                })
+                ->orderByDesc('updated_at')
+                ->get();
+
+            return;
+        }
+
         $pending = Review::with('user')
             ->where('status', Review::STATUS_PENDING)
             ->orderBy('created_at')
@@ -144,6 +195,27 @@ class ReviewList extends Component
             ->get();
 
         $this->reviews = $pending->concat($approved);
+    }
+
+    private function ensureReviewIsActive(Review $review): void
+    {
+        if ($review->status === Review::STATUS_ARCHIVED || $review->trashed()) {
+            abort(404);
+        }
+    }
+
+    private function ensureReviewIsArchived(Review $review): void
+    {
+        if ($review->status !== Review::STATUS_ARCHIVED && ! $review->trashed()) {
+            abort(404);
+        }
+    }
+
+    private function clearPendingAction(): void
+    {
+        $this->reviewToActOn = null;
+        $this->pendingAction = null;
+        $this->confirmingAction = false;
     }
 
     public function render()

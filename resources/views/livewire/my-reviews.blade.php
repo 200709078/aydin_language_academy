@@ -44,12 +44,12 @@
                 </div>
 
                 <div class="d-flex gap-2 mt-4">
-                    <button type="submit" class="btn btn-primary px-5">
-                        {{ $editingId ? __('dictt.update') : __('dictt.send') }}
-                    </button>
                     @if ($editingId)
                         <button type="button" wire:click="cancelEdit" class="btn btn-secondary">{{ __('dictt.cancel') }}</button>
                     @endif
+                    <button type="submit" class="btn btn-primary px-5">
+                        {{ $editingId ? __('dictt.update') : __('dictt.send') }}
+                    </button>
                 </div>
             </form>
         </div>
@@ -87,10 +87,11 @@
                                         <i class="fa fa-pen w-4"></i>
                                     </button>
                                 @endcan
-                                <button type="button" wire:click="confirmDelete({{ $review->id }})"
-                                    wire:confirm="{{ __('dictt.review_delete_confirm') }}"
-                                    class="btn btn-sm btn-danger" title="{{ __('dictt.delete') }}">
-                                    <i class="fa fa-trash w-4"></i>
+                                <button type="button" wire:click="archive({{ $review->id }})"
+                                    wire:confirm="{{ __('dictt.review_archive_confirm', ['name' => $review->user?->name ?? ('#' . $review->id)]) }}"
+                                    class="btn btn-sm btn-outline-secondary" title="{{ __('dictt.review_archive_action') }}">
+                                    <i class="fa fa-archive w-4" aria-hidden="true"></i>
+                                    <span class="visually-hidden">{{ __('dictt.review_archive_action') }}</span>
                                 </button>
                             </div>
                         </div>

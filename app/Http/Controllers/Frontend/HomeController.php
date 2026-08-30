@@ -3,14 +3,34 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Models\News;
 use App\Models\Review;
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\Collection;
 
 class HomeController extends Controller
 {
     public function index(): View
     {
+        $homepageNews = News::query()
+            ->publiclyAvailable()
+            ->where('display_location', News::DISPLAY_HOMEPAGE)
+            ->with('coverMediaAsset')
+            ->orderByRaw('sort_order IS NULL')
+            ->orderBy('sort_order')
+            ->orderByDesc('published_at')
+            ->get();
+
+        $heroNews = News::query()
+            ->publiclyAvailable()
+            ->where('display_location', News::DISPLAY_HERO)
+            ->with('coverMediaAsset')
+            ->orderByRaw('sort_order IS NULL')
+            ->orderBy('sort_order')
+            ->orderByDesc('published_at')
+            ->orderByDesc('id')
+            ->limit(2)
+            ->get();
+
         $approved = Review::query()
             ->where('status', Review::STATUS_APPROVED)
             ->with('user')
@@ -24,6 +44,8 @@ class HomeController extends Controller
         }
 
         return view('frontend.home', [
+            'heroNews' => $heroNews,
+            'homepageNews' => $homepageNews,
             'latestReview' => $approved->last(),
             'previousReview' => $approved->count() >= 2 ? $approved->slice(-2, 1)->first() : null,
             'firstReview' => $approved->count() >= 3 ? $approved->first() : null,

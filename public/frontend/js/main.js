@@ -35,7 +35,9 @@
 
     // Header carousel
     $(".header-carousel").owlCarousel({
-        autoplay: false,
+        autoplay: true,
+        autoplayTimeout: 5000,
+        autoplayHoverPause: true,
         animateOut: 'fadeOutLeft',
         items: 1,
         dots: true,
@@ -86,6 +88,79 @@
         $(".review-carousel").trigger("next.owl.carousel");
     });
 
-    
+    // News carousel: cards stop at both ends instead of returning to the first card.
+    var $newsCarousels = $(".news-carousel");
+
+    var syncNewsCarouselControls = function ($carousel) {
+        var owl = $carousel.data("owl.carousel");
+        if (!owl) {
+            return;
+        }
+
+        var current = owl.relative(owl.current());
+        var maximum = owl.maximum(true);
+        var $section = $carousel.closest(".ala-news-section");
+        var atStart = current <= 0;
+        var atEnd = current >= maximum;
+
+        $section.find(".news-prev")
+            .prop("disabled", atStart)
+            .toggleClass("disabled", atStart);
+        $section.find(".news-next")
+            .prop("disabled", atEnd)
+            .toggleClass("disabled", atEnd);
+    };
+
+    if ($newsCarousels.length > 0 && $.fn.owlCarousel) {
+        $newsCarousels.each(function () {
+            var $carousel = $(this);
+            var hasMultipleNewsItems = $carousel.children().length > 1;
+            var $dotsContainer = $carousel.closest(".ala-news-section").find(".news-carousel-dots").first();
+
+            $carousel.on("initialized.owl.carousel changed.owl.carousel resized.owl.carousel refreshed.owl.carousel", function () {
+                window.setTimeout(function () {
+                    syncNewsCarouselControls($carousel);
+                }, 0);
+            });
+
+            $carousel.owlCarousel({
+                autoplay: true,
+                autoplayTimeout: 5000,
+                autoplayHoverPause: true,
+                smartSpeed: 700,
+                loop: false,
+                rewind: false,
+                margin: 24,
+                dots: hasMultipleNewsItems,
+                dotsContainer: hasMultipleNewsItems ? $dotsContainer : false,
+                nav: false,
+                slideBy: 1,
+                responsive: {
+                    0: {
+                        items: 1
+                    },
+                    768: {
+                        items: 2
+                    },
+                    992: {
+                        items: 3
+                    }
+                }
+            });
+        });
+
+        $(".news-prev").on("click", function () {
+            if (!$(this).prop("disabled")) {
+                $(this).closest(".ala-news-section").find(".news-carousel").first().trigger("prev.owl.carousel");
+            }
+        });
+
+        $(".news-next").on("click", function () {
+            if (!$(this).prop("disabled")) {
+                $(this).closest(".ala-news-section").find(".news-carousel").first().trigger("next.owl.carousel");
+            }
+        });
+    }
+
 })(jQuery);
 

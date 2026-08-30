@@ -9,9 +9,11 @@ use App\Http\Controllers\cont_sub_levels;
 use App\Http\Controllers\cont_themes;
 use App\Http\Controllers\cont_user_main;
 use App\Http\Controllers\AdminContactMessageController;
+use App\Http\Controllers\AdminNewsController;
 use App\Http\Controllers\Frontend\ContactController;
 use App\Http\Controllers\Frontend\ExerciseAttemptController;
 use App\Http\Controllers\Frontend\HomeController;
+use App\Http\Controllers\Frontend\NewsController;
 use App\Http\Controllers\Frontend\ProgramFinderController;
 use App\Http\Controllers\Frontend\ReviewController;
 use App\Http\Controllers\Frontend\ThemeListController;
@@ -109,6 +111,50 @@ Route::group(['middleware' => ['auth', isAdmin_middle::class], 'prefix' => 'admi
     Route::post('messages/{message}/replies', [AdminContactMessageController::class, 'reply'])
         ->whereNumber('message')
         ->name('admin.messages.replies.store');
+
+    Route::prefix('news')->name('admin.news.')->group(function (): void {
+        Route::get('/', [AdminNewsController::class, 'index'])->name('index');
+        Route::get('/create', [AdminNewsController::class, 'create'])->name('create');
+        Route::post('/', [AdminNewsController::class, 'store'])->name('store');
+        Route::get('/media-assets/{mediaAsset}', [AdminNewsController::class, 'media'])
+            ->whereNumber('mediaAsset')
+            ->name('media.show');
+        Route::get('/{news}/blocks/create', [AdminNewsController::class, 'createBlock'])
+            ->whereNumber('news')
+            ->name('blocks.create');
+        Route::post('/{news}/blocks', [AdminNewsController::class, 'storeBlock'])
+            ->whereNumber('news')
+            ->name('blocks.store');
+        Route::get('/{news}/blocks/{newsContentBlock}/edit', [AdminNewsController::class, 'editBlock'])
+            ->whereNumber('news')
+            ->whereNumber('newsContentBlock')
+            ->name('blocks.edit');
+        Route::put('/{news}/blocks/{newsContentBlock}', [AdminNewsController::class, 'updateBlock'])
+            ->whereNumber('news')
+            ->whereNumber('newsContentBlock')
+            ->name('blocks.update');
+        Route::delete('/{news}/blocks/{newsContentBlock}', [AdminNewsController::class, 'destroyBlock'])
+            ->whereNumber('news')
+            ->whereNumber('newsContentBlock')
+            ->name('blocks.destroy');
+        Route::post('/{news}/blocks/{newsContentBlock}/move', [AdminNewsController::class, 'moveBlock'])
+            ->whereNumber('news')
+            ->whereNumber('newsContentBlock')
+            ->name('blocks.move');
+        Route::get('/{news}/edit', [AdminNewsController::class, 'edit'])
+            ->whereNumber('news')
+            ->name('edit');
+        Route::put('/{news}', [AdminNewsController::class, 'update'])
+            ->whereNumber('news')
+            ->name('update');
+        Route::patch('/{news}/archive', [AdminNewsController::class, 'archive'])
+            ->whereNumber('news')
+            ->name('archive');
+        Route::delete('/{news}/archive', [AdminNewsController::class, 'forceDestroy'])
+            ->whereNumber('news')
+            ->name('force-destroy');
+    });
+
     Route::get('themes/{theme_id}/declarations_list', [cont_user_main::class, 'declarations_list'])->name('declarations_list');
     Route::get('themes/{theme_id}/exercises_list', [cont_user_main::class, 'exercises_list'])->name('exercises_list');
     Route::get('exercise/{exercise_id}/questions_list', [cont_user_main::class, 'questions_list'])->name('questions_list');
@@ -144,6 +190,11 @@ Route::group(['middleware' => ['auth', isAdmin_middle::class], 'prefix' => 'admi
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::view('/basarilarimiz', 'frontend.achievements')->name('frontend.achievements');
 Route::view('/kampanyalarimiz', 'frontend.campaigns')->name('frontend.campaigns');
+Route::get('/haberler', [NewsController::class, 'index'])->name('frontend.news.index');
+Route::get('/haberler/{news:slug}/medya/{mediaAsset}', [NewsController::class, 'media'])
+    ->whereNumber('mediaAsset')
+    ->name('frontend.news.media');
+Route::get('/haberler/{news:slug}', [NewsController::class, 'show'])->name('frontend.news.show');
 Route::get('/yorumlar', [ReviewController::class, 'index'])->name('frontend.reviews');
 Route::view('/yorumlarim', 'frontend.my-reviews')
     ->middleware('auth')

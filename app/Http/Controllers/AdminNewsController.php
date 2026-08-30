@@ -1,0 +1,641 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\MediaAsset;
+use App\Models\News;
+use App\Models\NewsContentBlock;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
+use Illuminate\View\View;
+use RuntimeException;
+
+class AdminNewsController extends Controller
+{
+    private const MEDIA_DISK = 'local';
+
+    private const MEDIA_PATH_PREFIX = 'news/media-assets/';
+
+    private const SOURCE_UPLOAD = 'upload';
+
+    private const SOURCE_EXTERNAL = 'external';
+
+    /**
+     * List all non-deleted news records for administrators.
+     */
+    public function index(Request $request): View
+    {
+        $filter = (string) $request->query('filter', 'all');
+        $allowedFilters = [
+            'all',
+            News::STATUS_DRAFT,
+            News::STATUS_PUBLISHED,
+            News::STATUS_ARCHIVED,
+            'scheduled',
+        ];
+
+        if (! in_array($filter, $allowedFilters, true)) {
+            $filter = 'all';
+        }
+
+        $search = trim((string) $request->query('q', ''));
+
+        $news = News::query()
+            ->with('coverMediaAsset')
+            ->withCount('contentBlocks');
+
+        if ($filter === 'scheduled') {
+            $news->where('status', News::STATUS_PUBLISHED)
+                ->where('published_at', '>', now());
+        } elseif ($filter === News::STATUS_PUBLISHED) {
+            $news->where('status', News::STATUS_PUBLISHED)
+                ->where('published_at', '<=', now());
+        } elseif ($filter !== 'all') {
+            $news->where('status', $filter);
+        }
+
+        if ($search !== '') {
+            $news->where(function (Builder $query) use ($search): void {
+                $query->where('title', 'like', "%{$search}%")
+                    ->orWhere('slug', 'like', "%{$search}%");
+            });
+        }
+
+        $news = $news
+            ->orderByRaw("CASE status WHEN 'draft' THEN 0 WHEN 'published' THEN 1 WHEN 'archived' THEN 2 ELSE 3 END")
+            ->orderByDesc('updated_at')
+            ->paginate(20)
+            ->withQueryString();
+
+        return view('admin.news.index', compact('filter', 'news', 'search'));
+    }
+
+    /**
+     * Show the admin form for a new news record.
+     */
+    public function create(): View
+    {
+        return view('admin.news.create');
+    }
+
+    /**
+     * Store one news record and an optional cover image.
+     */
+    public function store(Request $request): RedirectResponse
+    {
+        $attributes = $this->validatedNews($request);
+
+        if ($request->hasFile('cover_image')) {
+            $attributes['cover_media_asset_id'] = $this->storeMediaAsset(
+                $request->file('cover_image'),
+                MediaAsset::KIND_IMAGE,
+                (int) $request->user()->id,
+            )->id;
+        }
+
+        $attributes['author_id'] = $request->user()->id;
+
+        if ($attributes['status'] === News::STATUS_PUBLISHED) {
+            $attributes['published_by'] = $request->user()->id;
+        }
+
+        $news = News::create($attributes);
+
+        return redirect()
+            ->route('admin.news.edit', $news)
+            ->with('success', __('dictt.news_created'));
+    }
+
+    /**
+     * Show one news record and its ordered content blocks for editing.
+     */
+    public function edit(News $news): View
+    {
+        $news->load([
+            'coverMediaAsset',
+            'contentBlocks.mediaAsset',
+        ]);
+
+        return view('admin.news.edit', compact('news'));
+    }
+
+    /**
+     * Update news metadata and optionally replace or remove the cover image.
+     */
+    public function update(Request $request, News $news): RedirectResponse
+    {
+        $attributes = $this->validatedNews($request, $news);
+
+        if ($request->hasFile('cover_image')) {
+            $attributes['cover_media_asset_id'] = $this->storeMediaAsset(
+                $request->file('cover_image'),
+                MediaAsset::KIND_IMAGE,
+                (int) $request->user()->id,
+            )->id;
+        } elseif ($request->boolean('remove_cover_image')) {
+            $attributes['cover_media_asset_id'] = null;
+        }
+
+        if (
+            $attributes['status'] === News::STATUS_PUBLISHED
+            && ($news->status !== News::STATUS_PUBLISHED || $news->published_by === null)
+        ) {
+            $attributes['published_by'] = $request->user()->id;
+        }
+
+        $news->update($attributes);
+
+        return redirect()
+            ->route('admin.news.edit', $news)
+            ->with('success', __('dictt.news_updated'));
+    }
+
+    /**
+     * Move one news record out of the active list without deleting its content.
+     */
+    public function archive(News $news): RedirectResponse
+    {
+        $news->update([
+            'status' => News::STATUS_ARCHIVED,
+        ]);
+
+        return redirect()
+            ->route('admin.news.index', ['filter' => News::STATUS_ARCHIVED])
+            ->with('success', __('dictt.news_archived'));
+    }
+
+    /**
+     * Permanently delete an archived news record and its content blocks.
+     * Uploaded media assets are deliberately retained for separate cleanup.
+     */
+    public function forceDestroy(News $news): RedirectResponse
+    {
+        if ($news->status !== News::STATUS_ARCHIVED) {
+            abort(404);
+        }
+
+        DB::transaction(function () use ($news): void {
+            NewsContentBlock::query()
+                ->where('news_id', $news->id)
+                ->delete();
+
+            $news->forceDelete();
+        });
+
+        return redirect()
+            ->route('admin.news.index', ['filter' => News::STATUS_ARCHIVED])
+            ->with('success', __('dictt.news_permanently_deleted'));
+    }
+
+    /**
+     * Show the form for one new ordered content block.
+     */
+    public function createBlock(News $news): View
+    {
+        $nextPosition = $this->nextBlockPosition($news);
+
+        return view('admin.news.blocks.create', compact('news', 'nextPosition'));
+    }
+
+    /**
+     * Store one rich-text, media, or external-link block.
+     */
+    public function storeBlock(Request $request, News $news): RedirectResponse
+    {
+        $attributes = $this->validatedBlock($request);
+        $attributes['news_id'] = $news->id;
+        $attributes['position'] = $this->nextBlockPosition($news);
+
+        NewsContentBlock::create($attributes);
+
+        return redirect()
+            ->route('admin.news.edit', $news)
+            ->with('success', __('dictt.news_block_created'));
+    }
+
+    /**
+     * Show the form for one existing content block.
+     */
+    public function editBlock(News $news, NewsContentBlock $newsContentBlock): View
+    {
+        $this->ensureBlockBelongsToNews($news, $newsContentBlock);
+        $newsContentBlock->load('mediaAsset');
+
+        return view('admin.news.blocks.edit', compact('news', 'newsContentBlock'));
+    }
+
+    /**
+     * Update one content block without changing its position.
+     */
+    public function updateBlock(
+        Request $request,
+        News $news,
+        NewsContentBlock $newsContentBlock,
+    ): RedirectResponse {
+        $this->ensureBlockBelongsToNews($news, $newsContentBlock);
+
+        $newsContentBlock->load('mediaAsset');
+        $newsContentBlock->update($this->validatedBlock($request, $newsContentBlock));
+
+        return redirect()
+            ->route('admin.news.edit', $news)
+            ->with('success', __('dictt.news_block_updated'));
+    }
+
+    /**
+     * Delete one block but retain any uploaded source file for deliberate cleanup later.
+     */
+    public function destroyBlock(News $news, NewsContentBlock $newsContentBlock): RedirectResponse
+    {
+        $this->ensureBlockBelongsToNews($news, $newsContentBlock);
+        $newsContentBlock->delete();
+
+        return redirect()
+            ->route('admin.news.edit', $news)
+            ->with('success', __('dictt.news_block_deleted'));
+    }
+
+    /**
+     * Move a block one position earlier or later without violating the unique position index.
+     */
+    public function moveBlock(
+        Request $request,
+        News $news,
+        NewsContentBlock $newsContentBlock,
+    ): RedirectResponse {
+        $this->ensureBlockBelongsToNews($news, $newsContentBlock);
+
+        $direction = $request->validate([
+            'direction' => ['required', Rule::in(['up', 'down'])],
+        ])['direction'];
+
+        $moved = DB::transaction(function () use ($direction, $news, $newsContentBlock): bool {
+            $block = NewsContentBlock::query()
+                ->where('news_id', $news->id)
+                ->whereKey($newsContentBlock->id)
+                ->lockForUpdate()
+                ->firstOrFail();
+
+            $neighborQuery = NewsContentBlock::query()
+                ->where('news_id', $news->id);
+
+            if ($direction === 'up') {
+                $neighborQuery->where('position', '<', $block->position)
+                    ->orderByDesc('position');
+            } else {
+                $neighborQuery->where('position', '>', $block->position)
+                    ->orderBy('position');
+            }
+
+            $neighbor = $neighborQuery->lockForUpdate()->first();
+
+            if ($neighbor === null) {
+                return false;
+            }
+
+            $blockPosition = (int) $block->position;
+            $neighborPosition = (int) $neighbor->position;
+            $temporaryPosition = ((int) NewsContentBlock::query()
+                ->where('news_id', $news->id)
+                ->max('position')) + 1;
+
+            $block->update(['position' => $temporaryPosition]);
+            $neighbor->update(['position' => $blockPosition]);
+            $block->update(['position' => $neighborPosition]);
+
+            return true;
+        });
+
+        return redirect()
+            ->route('admin.news.edit', $news)
+            ->with($moved ? 'success' : 'error', $moved ? __('dictt.news_block_moved') : __('dictt.news_block_move_unavailable'));
+    }
+
+    /**
+     * Stream a locally stored news-media file to an authenticated administrator.
+     */
+    public function media(MediaAsset $mediaAsset)
+    {
+        $path = trim((string) $mediaAsset->path);
+
+        if (
+            $mediaAsset->disk !== self::MEDIA_DISK
+            || ! $this->isSafeNewsMediaPath($path)
+        ) {
+            abort(404);
+        }
+
+        $disk = Storage::disk(self::MEDIA_DISK);
+
+        if (! $disk->exists($path)) {
+            abort(404);
+        }
+
+        return $disk->response($path, $mediaAsset->original_filename, [
+            'Content-Type' => $mediaAsset->mime_type,
+        ]);
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function validatedNews(Request $request, ?News $currentNews = null): array
+    {
+        $validated = $request->validate([
+            'title' => ['required', 'string', 'max:255'],
+            'slug' => ['nullable', 'string', 'max:191'],
+            'excerpt' => ['nullable', 'string', 'max:2000'],
+            'status' => ['required', Rule::in(News::statuses())],
+            'published_at' => [
+                Rule::requiredIf($request->input('status') === News::STATUS_PUBLISHED),
+                'nullable',
+                'date',
+            ],
+            'unpublished_at' => ['nullable', 'date', 'after:published_at'],
+            'display_location' => ['required', Rule::in(News::displayLocations())],
+            'sort_order' => ['nullable', 'integer', 'min:0'],
+            'seo_title' => ['nullable', 'string', 'max:255'],
+            'seo_description' => ['nullable', 'string', 'max:320'],
+            'canonical_url' => ['nullable', 'url', 'max:2048'],
+            'cover_image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:10240'],
+            'remove_cover_image' => ['nullable', 'boolean'],
+        ], [
+            'published_at.required' => __('dictt.news_published_at_required'),
+            'unpublished_at.after' => __('dictt.news_unpublished_after'),
+            'cover_image.image' => __('dictt.news_cover_image_invalid'),
+            'cover_image.mimes' => __('dictt.news_cover_image_invalid'),
+            'cover_image.max' => __('dictt.news_upload_max'),
+        ]);
+
+        $title = trim((string) $validated['title']);
+        $slugSource = trim((string) ($validated['slug'] ?? ''));
+        $slug = Str::slug($slugSource !== '' ? $slugSource : $title);
+
+        if ($title === '') {
+            throw ValidationException::withMessages([
+                'title' => __('dictt.required_item', ['name' => __('dictt.news_title')]),
+            ]);
+        }
+
+        if ($slug === '') {
+            throw ValidationException::withMessages([
+                'slug' => __('dictt.news_slug_invalid'),
+            ]);
+        }
+
+        $slugQuery = News::withTrashed()->where('slug', $slug);
+
+        if ($currentNews !== null) {
+            $slugQuery->whereKeyNot($currentNews->id);
+        }
+
+        if ($slugQuery->exists()) {
+            throw ValidationException::withMessages([
+                'slug' => __('dictt.news_slug_taken'),
+            ]);
+        }
+
+        unset($validated['cover_image'], $validated['remove_cover_image']);
+
+        return [
+            ...$validated,
+            'title' => $title,
+            'slug' => $slug,
+        ];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function validatedBlock(Request $request, ?NewsContentBlock $currentBlock = null): array
+    {
+        $validated = $request->validate([
+            'type' => ['required', Rule::in(NewsContentBlock::types())],
+            'heading' => ['nullable', 'string', 'max:255'],
+            'body' => ['nullable', 'string'],
+            'link_label' => ['nullable', 'string', 'max:255'],
+            'is_active' => ['required', 'boolean'],
+        ]);
+
+        $type = $validated['type'];
+
+        if ($currentBlock !== null && $type !== $currentBlock->type) {
+            throw ValidationException::withMessages([
+                'type' => __('dictt.news_block_type_immutable'),
+            ]);
+        }
+
+        $attributes = [
+            'type' => $type,
+            'content_format' => NewsContentBlock::CONTENT_FORMAT_PLAIN,
+            'heading' => $this->nullableTrimmedValue($validated['heading'] ?? null),
+            'body' => $validated['body'] ?? null,
+            'link_label' => $this->nullableTrimmedValue($validated['link_label'] ?? null),
+            'is_active' => $request->boolean('is_active'),
+            'metadata' => null,
+        ];
+
+        if ($type === NewsContentBlock::TYPE_RICH_TEXT) {
+            $body = trim((string) ($validated['body'] ?? ''));
+
+            if ($body === '') {
+                throw ValidationException::withMessages([
+                    'body' => __('dictt.news_block_body_required'),
+                ]);
+            }
+
+            return [
+                ...$attributes,
+                'body' => $body,
+                'media_asset_id' => null,
+                'external_url' => null,
+            ];
+        }
+
+        if ($type === NewsContentBlock::TYPE_EXTERNAL_LINK) {
+            return [
+                ...$attributes,
+                'media_asset_id' => null,
+                'external_url' => $this->validatedHttpsUrl($request),
+            ];
+        }
+
+        $sourceMode = $request->validate([
+            'source_mode' => ['required', Rule::in([self::SOURCE_UPLOAD, self::SOURCE_EXTERNAL])],
+        ])['source_mode'];
+
+        if ($sourceMode === self::SOURCE_EXTERNAL) {
+            $request->validate([
+                'media_file' => ['prohibited'],
+            ]);
+
+            return [
+                ...$attributes,
+                'media_asset_id' => null,
+                'external_url' => $this->validatedHttpsUrl($request),
+            ];
+        }
+
+        $needsNewUpload = $currentBlock === null || $currentBlock->media_asset_id === null;
+        $mediaFile = $this->validatedMediaFile($request, $type, $needsNewUpload);
+
+        if ($mediaFile !== null) {
+            $mediaAssetId = $this->storeMediaAsset(
+                $mediaFile,
+                $type,
+                (int) $request->user()->id,
+            )->id;
+        } else {
+            $mediaAssetId = $currentBlock?->media_asset_id;
+        }
+
+        if ($mediaAssetId === null) {
+            throw ValidationException::withMessages([
+                'media_file' => __('dictt.news_block_media_required'),
+            ]);
+        }
+
+        return [
+            ...$attributes,
+            'media_asset_id' => $mediaAssetId,
+            'external_url' => null,
+        ];
+    }
+
+    private function validatedHttpsUrl(Request $request): string
+    {
+        $validated = $request->validate([
+            'external_url' => [
+                'required',
+                'string',
+                'max:2048',
+                static function (string $attribute, mixed $value, \Closure $fail): void {
+                    $url = trim((string) $value);
+                    $parts = parse_url($url);
+
+                    if (
+                        filter_var($url, FILTER_VALIDATE_URL) === false
+                        || strtolower((string) ($parts['scheme'] ?? '')) !== 'https'
+                        || ! isset($parts['host'])
+                    ) {
+                        $fail(__('dictt.news_external_url_https'));
+                    }
+                },
+            ],
+        ]);
+
+        return trim($validated['external_url']);
+    }
+
+    private function validatedMediaFile(Request $request, string $type, bool $required): ?UploadedFile
+    {
+        $validated = $request->validate([
+            'media_file' => [
+                $required ? 'required' : 'nullable',
+                ...$this->mediaRules($type),
+            ],
+        ], $this->mediaMessages());
+
+        return $validated['media_file'] ?? null;
+    }
+
+    /**
+     * @return list<string>
+     */
+    private function mediaRules(string $type): array
+    {
+        return match ($type) {
+            NewsContentBlock::TYPE_IMAGE => ['image', 'mimes:jpg,jpeg,png,webp', 'max:10240'],
+            NewsContentBlock::TYPE_AUDIO => ['file', 'mimes:mp3,wav,ogg,m4a,aac', 'max:10240'],
+            NewsContentBlock::TYPE_VIDEO => ['file', 'mimes:mp4,webm,ogv', 'max:10240'],
+            NewsContentBlock::TYPE_FILE => ['file', 'mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,txt,csv', 'max:10240'],
+            default => throw new RuntimeException('Geçersiz medya içerik türü.'),
+        };
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    private function mediaMessages(): array
+    {
+        return [
+            'media_file.required' => __('dictt.news_block_media_required'),
+            'media_file.file' => __('dictt.news_media_file_invalid'),
+            'media_file.image' => __('dictt.news_media_file_invalid'),
+            'media_file.mimes' => __('dictt.news_media_file_invalid'),
+            'media_file.max' => __('dictt.news_upload_max'),
+            'media_file.uploaded' => __('dictt.news_media_upload_failed'),
+        ];
+    }
+
+    private function storeMediaAsset(UploadedFile $file, string $kind, int $uploadedBy): MediaAsset
+    {
+        $path = $file->store(self::MEDIA_PATH_PREFIX.$kind, self::MEDIA_DISK);
+
+        if ($path === false) {
+            throw new RuntimeException('Haber medyası sunucuya kaydedilemedi.');
+        }
+
+        $realPath = $file->getRealPath();
+        $dimensions = $kind === MediaAsset::KIND_IMAGE && is_string($realPath)
+            ? @getimagesize($realPath)
+            : false;
+        $checksum = is_string($realPath) ? hash_file('sha256', $realPath) : false;
+
+        return MediaAsset::create([
+            'disk' => self::MEDIA_DISK,
+            'path' => $path,
+            'kind' => $kind,
+            'visibility' => MediaAsset::VISIBILITY_PRIVATE,
+            'original_filename' => $file->getClientOriginalName(),
+            'mime_type' => $file->getMimeType() ?: 'application/octet-stream',
+            'size_bytes' => $file->getSize() ?: 0,
+            'width' => is_array($dimensions) ? $dimensions[0] : null,
+            'height' => is_array($dimensions) ? $dimensions[1] : null,
+            'duration_seconds' => null,
+            'checksum' => is_string($checksum) ? $checksum : null,
+            'metadata' => null,
+            'uploaded_by' => $uploadedBy,
+        ]);
+    }
+
+    private function ensureBlockBelongsToNews(News $news, NewsContentBlock $newsContentBlock): void
+    {
+        if ((int) $newsContentBlock->news_id !== (int) $news->id) {
+            abort(404);
+        }
+    }
+
+    private function nextBlockPosition(News $news): int
+    {
+        return ((int) $news->contentBlocks()->max('position')) + 1;
+    }
+
+    private function nullableTrimmedValue(?string $value): ?string
+    {
+        $value = trim((string) $value);
+
+        return $value === '' ? null : $value;
+    }
+
+    private function isSafeNewsMediaPath(string $path): bool
+    {
+        if (
+            $path === ''
+            || ! str_starts_with($path, self::MEDIA_PATH_PREFIX)
+            || str_contains($path, '\\')
+            || str_contains(strtolower($path), '://')
+        ) {
+            return false;
+        }
+
+        return ! in_array('..', explode('/', $path), true);
+    }
+}

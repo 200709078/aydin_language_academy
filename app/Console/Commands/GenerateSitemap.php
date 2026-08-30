@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\News;
 use GuzzleHttp\Psr7\Uri;
 use Illuminate\Console\Command;
 use Illuminate\Routing\Route;
@@ -68,6 +69,7 @@ class GenerateSitemap extends Command
             ->getSitemap();
 
         $this->addPublicStaticRoutes($sitemap, $baseUrl);
+        $this->addPublishedNewsRoutes($sitemap, $baseUrl);
         $sitemap->writeToFile($outputPath);
 
         $this->info("Generated sitemap at {$outputPath}.");
@@ -81,7 +83,7 @@ class GenerateSitemap extends Command
             return false;
         }
 
-        $path = '/' . trim($url->getPath(), '/');
+        $path = '/'.trim($url->getPath(), '/');
 
         foreach ([
             '/admin',
@@ -112,7 +114,7 @@ class GenerateSitemap extends Command
             '/email',
             '/two-factor-challenge',
         ] as $excludedPath) {
-            if ($path === $excludedPath || str_starts_with($path, $excludedPath . '/')) {
+            if ($path === $excludedPath || str_starts_with($path, $excludedPath.'/')) {
                 return false;
             }
         }
@@ -136,7 +138,7 @@ class GenerateSitemap extends Command
                 continue;
             }
 
-            $url = new Uri($baseUrl . ($path === '/' ? '/' : '/' . ltrim($path, '/')));
+            $url = new Uri($baseUrl.($path === '/' ? '/' : '/'.ltrim($path, '/')));
 
             if (! $this->shouldCrawl($url)) {
                 continue;
@@ -149,9 +151,27 @@ class GenerateSitemap extends Command
         }
     }
 
+    private function addPublishedNewsRoutes(Sitemap $sitemap, string $baseUrl): void
+    {
+        News::query()
+            ->publiclyAvailable()
+            ->select(['id', 'slug', 'updated_at'])
+            ->lazyById(100)
+            ->each(function (News $news) use ($sitemap, $baseUrl): void {
+                $path = route('frontend.news.show', ['news' => $news->slug], false);
+                $url = new Uri($baseUrl.'/'.ltrim($path, '/'));
+
+                $sitemap->add(
+                    Url::create($this->canonicalizeUrl((string) $url, $baseUrl))
+                        ->setLastModificationDate($news->updated_at ?? now())
+                        ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
+                );
+            });
+    }
+
     private function canonicalizeUrl(string $url, string $baseUrl): string
     {
-        return rtrim($url, '/') === $baseUrl ? $baseUrl . '/' : $url;
+        return rtrim($url, '/') === $baseUrl ? $baseUrl.'/' : $url;
     }
 
     private function requiresAuthentication(Route $route): bool

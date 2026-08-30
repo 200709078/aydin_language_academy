@@ -16,6 +16,8 @@ class Review extends Model
 
     public const STATUS_REJECTED = 'rejected';
 
+    public const STATUS_ARCHIVED = 'archived';
+
     public const BRANCHES = ['ortaca', 'dalaman', 'koycegiz'];
 
     protected $fillable = [
@@ -62,6 +64,7 @@ class Review extends Model
             self::STATUS_PENDING => __('dictt.status_pending'),
             self::STATUS_APPROVED => __('dictt.status_approved'),
             self::STATUS_REJECTED => __('dictt.status_rejected'),
+            self::STATUS_ARCHIVED => __('dictt.status_archived'),
             default => $this->status,
         };
     }

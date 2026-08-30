@@ -32,6 +32,7 @@ class MyReviews extends Component
     {
         $this->reviews = Review::query()
             ->where('user_id', auth()->id())
+            ->where('status', '!=', Review::STATUS_ARCHIVED)
             ->orderByDesc('created_at')
             ->get();
     }
@@ -126,20 +127,19 @@ class MyReviews extends Component
         $this->resetForm();
     }
 
-    public function confirmDelete($id)
+    public function archive($id)
     {
         $review = Review::findOrFail($id);
 
         Gate::authorize('delete', $review);
 
-        $name = $review->user?->name ?? ('#' . $review->id);
-        $review->delete();
+        $review->update(['status' => Review::STATUS_ARCHIVED]);
 
         if ($this->editingId === $review->id) {
             $this->resetForm();
         }
 
-        $this->successMessage = __('dictt.review_delete_success');
+        $this->successMessage = __('dictt.review_archive_success');
         $this->loadReviews();
     }
 

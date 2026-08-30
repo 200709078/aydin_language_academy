@@ -16,14 +16,18 @@ class cont_reviews extends Controller
 
     public function edit(string $review_id): View
     {
-        $review = Review::with(['user', 'approver'])->findOrFail($review_id);
+        $review = Review::with(['user', 'approver'])
+            ->where('status', '!=', Review::STATUS_ARCHIVED)
+            ->findOrFail($review_id);
 
         return view('admin.reviews.edit', compact('review'));
     }
 
     public function update(Request $request, string $review_id): RedirectResponse
     {
-        $review = Review::with(['user', 'approver'])->findOrFail($review_id);
+        $review = Review::with(['user', 'approver'])
+            ->where('status', '!=', Review::STATUS_ARCHIVED)
+            ->findOrFail($review_id);
 
         $validated = $request->validate([
             'content' => ['required', 'string', 'min:3', 'max:2000'],

@@ -39,11 +39,12 @@
                     <h5 class="text-light mb-4"><span class="btn btn-link footer-branch" style="font-size: 1.35rem; font-weight: 600; cursor: default;">{{ __('dictt.quick_links') }}</span></h5>
                     <a class="btn btn-link" href="{{ route('home') }}">{{ __('dictt.home') }}</a>
                     <a class="btn btn-link" href="{{ route('frontend.courses.preschool') }}">{{ __('dictt.ourcourses') }}</a>
-                    <a class="btn btn-link" href="{{ route('frontend.program-finder') }}">{{ __('dictt.program_finder_title') }}</a>
                     <a class="btn btn-link" href="{{ route('frontend.achievements') }}">{{ __('dictt.achievements') }}</a>
                     <a class="btn btn-link" href="{{ route('frontend.campaigns') }}">{{ __('dictt.campaigns') }}</a>
                     <a class="btn btn-link" href="{{ route('frontend.branches.ortaca') }}">{{ __('dictt.branches') }}</a>
                     <a class="btn btn-link" href="{{ route('frontend.placement-test') }}">{{ __('dictt.placement_test') }}</a>
+                    <a class="btn btn-link" href="{{ route('frontend.program-finder') }}">{{ __('dictt.program_finder_title') }}</a>
+                    <a class="btn btn-link" href="{{ route('frontend.news.index') }}">{{ __('dictt.news') }}</a>
                 </div>
             </div>
         </div>
