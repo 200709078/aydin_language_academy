@@ -49,14 +49,14 @@
                     </div>
                     <div class="col-4 col-sm-4">
                         <div class="border-start border-light ps-4">
-                            <h2 class="text-white mb-1"><span data-toggle="counter-up">200</span>+</h2>
-                            <p class="text-light mb-0">Aktif Öğrenci</p>
+                            <h2 class="text-white mb-1">%<span data-toggle="counter-up">95</span></h2>
+                            <p class="text-light mb-0">Yerleştirme Başarısı</p>
                         </div>
                     </div>
                     <div class="col-4 col-sm-4">
                         <div class="border-start border-light ps-4">
-                            <h2 class="text-white mb-1">%<span data-toggle="counter-up">95</span></h2>
-                            <p class="text-light mb-0">Yerleştirme Başarısı</p>
+                            <h2 class="text-white mb-1"><span data-toggle="counter-up">200</span>+</h2>
+                            <p class="text-light mb-0">Aktif Öğrenci</p>
                         </div>
                     </div>
                 </div>
@@ -118,7 +118,7 @@
 
     <section class="ala-brand-band" aria-label="Aydın Language Academy">
         <div class="container">
-            <img src="{{ asset('frontend/images/logo/logo-1.png') }}" alt="Aydın Language Academy">
+            <img src="{{ asset(__('dictt.primary_logo_asset')) }}" alt="Aydın Language Academy">
         </div>
     </section>
 

@@ -11,6 +11,7 @@ return [
     'brand_subtitle' => 'Dil Akademisi',
     'primary_slogan' => 'Dil öğren, dünyanı genişlet.',
     'secondary_slogan' => 'Sadece dil öğrenme. Onu yaşamaya başla.',
+    'primary_logo_asset' => 'frontend/images/logo/primary_TR.png',
     'allrightreserved.' => 'Tüm hakları saklıdır.',
     'reorganized_by.' => 'Düzenleme:',
     'designed_by' => 'Tasarım:',

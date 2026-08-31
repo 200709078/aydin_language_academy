@@ -11,6 +11,7 @@ return [
     'brand_subtitle' => 'Language Academy',
     'primary_slogan' => 'Master language, empower success.',
     'secondary_slogan' => "Don't just learn a language, start living it.",
+    'primary_logo_asset' => 'frontend/images/logo/primary_EN.png',
     'allrightreserved.' => 'All right reserved.',
     'reorganized_by.' => 'Reorganized By',
     'designed_by' => 'Designed By',
