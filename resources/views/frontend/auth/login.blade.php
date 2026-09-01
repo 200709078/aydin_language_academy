@@ -87,7 +87,7 @@
                                     @endif
                                 </div>
                                 <div class="col-12">
-                                    <button class="btn btn-primary w-100 py-3" type="submit">{{ __('dictt.login_now') }}</button>
+                                    <button class="btn btn-primary w-100 py-3" type="submit" title="{{ __('dictt.login_now') }}">{{ __('dictt.login_now') }}</button>
                                 </div>
                             </div>
                         </form>

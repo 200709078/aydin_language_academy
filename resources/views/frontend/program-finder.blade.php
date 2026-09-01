@@ -138,7 +138,7 @@
                                                 <span class="text-primary fw-bold small text-uppercase">{{ __('dictt.program_finder_result_primary') }}</span>
                                                 <h3 class="h4 mt-1">{{ __($recommendation['primary']['title_key']) }}</h3>
                                                 <p class="mb-4">{{ __($recommendation['primary']['description_key']) }}</p>
-                                                <a href="{{ route($recommendation['primary']['route']) }}" class="btn btn-outline-primary fw-bold">
+                                                <a href="{{ route($recommendation['primary']['route']) }}" class="btn btn-outline-primary fw-bold" title="{{ __('dictt.program_finder_view_program') }}">
                                                     {{ __('dictt.program_finder_view_program') }}<i class="fa fa-arrow-right ms-2" aria-hidden="true"></i>
                                                 </a>
                                             </div>
@@ -157,7 +157,7 @@
                                                     <span class="text-primary fw-bold small text-uppercase">{{ __('dictt.program_finder_result_alternative') }}</span>
                                                     <h3 class="h4 mt-1">{{ __($recommendation['alternative']['title_key']) }}</h3>
                                                     <p class="mb-4">{{ __($recommendation['alternative']['description_key']) }}</p>
-                                                    <a href="{{ route($recommendation['alternative']['route']) }}" class="btn btn-outline-primary fw-bold">
+                                                    <a href="{{ route($recommendation['alternative']['route']) }}" class="btn btn-outline-primary fw-bold" title="{{ __('dictt.program_finder_view_program') }}">
                                                         {{ __('dictt.program_finder_view_program') }}<i class="fa fa-arrow-right ms-2" aria-hidden="true"></i>
                                                     </a>
                                                 </div>
@@ -174,7 +174,7 @@
                                 <div class="row g-3 justify-content-center">
                                     @foreach ($branches as $branch)
                                         <div class="col-md-4">
-                                            <a href="{{ route('frontend.contact', ['branch' => $branch['slug']]) }}" class="btn btn-outline-primary w-100">
+                                            <a href="{{ route('frontend.contact', ['branch' => $branch['slug']]) }}" class="btn btn-outline-primary w-100" title="{{ __('dictt.program_finder_contact_branch', ['branch' => __($branch['label_key'])]) }}">
                                                 <i class="fa fa-comment-dots me-2" aria-hidden="true"></i>{{ __('dictt.program_finder_contact_branch', ['branch' => __($branch['label_key'])]) }}
                                             </a>
                                         </div>
@@ -183,7 +183,7 @@
                             </section>
 
                             <div class="text-center mt-4">
-                                <a href="{{ route('frontend.program-finder') }}" class="btn btn-link text-decoration-none">
+                                <a href="{{ route('frontend.program-finder') }}" class="btn btn-link text-decoration-none" title="{{ __('dictt.program_finder_restart') }}">
                                     <i class="fa fa-redo me-2" aria-hidden="true"></i>{{ __('dictt.program_finder_restart') }}
                                 </a>
                             </div>
@@ -352,14 +352,14 @@
                             @endunless
 
                             <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3 mt-4 pt-4 border-top" data-program-finder-controls>
-                                <button type="button" class="btn btn-outline-primary" data-program-finder-back hidden>
+                                <button type="button" class="btn btn-outline-primary" data-program-finder-back hidden title="{{ __('dictt.program_finder_previous') }}">
                                     <i class="fa fa-arrow-left me-2" aria-hidden="true"></i>{{ __('dictt.program_finder_previous') }}
                                 </button>
                                 <div class="d-flex flex-column flex-sm-row gap-2 ms-sm-auto">
-                                    <button type="button" class="btn btn-primary" data-program-finder-next hidden>
+                                    <button type="button" class="btn btn-primary" data-program-finder-next hidden title="{{ __('dictt.program_finder_next') }}">
                                         {{ __('dictt.program_finder_next') }}<i class="fa fa-arrow-right ms-2" aria-hidden="true"></i>
                                     </button>
-                                    <button type="submit" class="btn btn-primary" data-program-finder-submit>
+                                    <button type="submit" class="btn btn-primary" data-program-finder-submit title="{{ __('dictt.program_finder_show_result') }}">
                                         {{ __('dictt.program_finder_show_result') }}<i class="fa fa-arrow-right ms-2" aria-hidden="true"></i>
                                     </button>
                                 </div>

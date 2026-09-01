@@ -29,7 +29,7 @@
     <main class="container-xxl py-5 ala-news-listing">
         <div class="container">
             <div class="news-listing__heading mb-5 wow fadeInUp" data-wow-delay="0.1s">
-                <a class="news-listing__back btn btn-sm btn-outline-primary" href="{{ route('home') }}">
+                <a class="news-listing__back btn btn-sm btn-outline-primary" href="{{ route('home') }}" title="{{ __('dictt.news_back_to_home') }}">
                     <i class="fa fa-arrow-left me-2" aria-hidden="true"></i>{{ __('dictt.news_back_to_home') }}
                 </a>
                 <h1 class="mb-0">{{ __('dictt.news') }}</h1>

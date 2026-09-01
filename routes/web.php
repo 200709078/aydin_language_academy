@@ -12,6 +12,7 @@ use App\Http\Controllers\AdminContactMessageController;
 use App\Http\Controllers\AdminAchievementController;
 use App\Http\Controllers\AdminCampaignController;
 use App\Http\Controllers\AdminNewsController;
+use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\Frontend\ContactController;
 use App\Http\Controllers\Frontend\AchievementController;
 use App\Http\Controllers\Frontend\CampaignController;
@@ -102,6 +103,7 @@ Route::group(['middleware' => ['auth', isAdmin_middle::class], 'prefix' => 'admi
     Route::get('levels_list', [cont_user_main::class, 'levels_list'])->name('levels_list');
     Route::get('sub_levels_list', [cont_user_main::class, 'sub_levels_list'])->name('sub_levels_list');
     Route::get('themes_list', [cont_user_main::class, 'themes_list'])->name('themes_list');
+    Route::get('users', [AdminUserController::class, 'index'])->name('admin.users.index');
     Route::get('reviews_list', [cont_reviews::class, 'index'])->name('reviews_list');
     Route::get('review/{review_id}/edit', [cont_reviews::class, 'edit'])->whereNumber('review_id')->name('review_edit');
     Route::put('review/{review_id}/update', [cont_reviews::class, 'update'])->whereNumber('review_id')->name('review_update');

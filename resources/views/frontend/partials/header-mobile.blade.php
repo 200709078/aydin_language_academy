@@ -99,7 +99,7 @@
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
                             <input type="hidden" name="return" value="{{ $headerReturnRoute }}">
-                            <button type="submit" class="nav-link border-0 bg-transparent w-100 text-start"><i class="fa fa-sign-out-alt me-2" aria-hidden="true"></i>{{ __('dictt.logout') }}</button>
+                            <button type="submit" class="nav-link border-0 bg-transparent w-100 text-start" title="{{ __('dictt.logout') }}"><i class="fa fa-sign-out-alt me-2" aria-hidden="true"></i>{{ __('dictt.logout') }}</button>
                         </form>
                     </div>
                 @endguest

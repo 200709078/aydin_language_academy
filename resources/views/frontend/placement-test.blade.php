@@ -43,7 +43,7 @@
                     @if (session('error'))
                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
                             {{ session('error') }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="{{ __('dictt.placement_test_close') }}"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="{{ __('dictt.placement_test_close') }}" title="{{ __('dictt.placement_test_close') }}"></button>
                         </div>
                     @endif
 
@@ -80,22 +80,22 @@
                                 <p class="text-muted mb-3">{{ __('dictt.placement_test_in_progress_note') }}</p>
                                 <form method="POST" action="{{ route('frontend.placement-test.start') }}">
                                     @csrf
-                                    <button type="submit" class="btn btn-primary py-3 px-5">{{ __('dictt.placement_test_continue') }}</button>
+                                    <button type="submit" class="btn btn-primary py-3 px-5" title="{{ __('dictt.placement_test_continue') }}">{{ __('dictt.placement_test_continue') }}</button>
                                 </form>
                             @elseif (($openAttempt ?? null)?->status === 'pending_approval')
-                                <a href="{{ route('frontend.placement-test.completed', $openAttempt) }}" class="btn btn-outline-primary">
+                                <a href="{{ route('frontend.placement-test.completed', $openAttempt) }}" class="btn btn-outline-primary" title="{{ __('dictt.placement_test_view_status') }}">
                                     {{ __('dictt.placement_test_view_status') }}
                                 </a>
                             @else
                                 <form method="POST" action="{{ route('frontend.placement-test.start') }}">
                                     @csrf
-                                    <button type="submit" class="btn btn-primary py-3 px-5">{{ __('dictt.placement_test_start') }}</button>
+                                    <button type="submit" class="btn btn-primary py-3 px-5" title="{{ __('dictt.placement_test_start') }}">{{ __('dictt.placement_test_start') }}</button>
                                 </form>
                             @endif
                         </div>
 
                         <div class="text-center mt-3">
-                            <a href="{{ route('frontend.placement-test.attempts') }}" class="btn btn-outline-primary">
+                            <a href="{{ route('frontend.placement-test.attempts') }}" class="btn btn-outline-primary" title="{{ __('dictt.placement_test_my_attempts') }}">
                                 <i class="fa fa-history me-2" aria-hidden="true"></i>{{ __('dictt.placement_test_my_attempts') }}
                             </a>
                         </div>

@@ -53,17 +53,17 @@
                     </select>
                 </div>
                 <div class="col-auto">
-                    <button type="submit" class="btn btn-primary">{{ __('dictt.apply_filter') }}</button>
+                    <button type="submit" class="btn btn-primary" title="{{ __('dictt.apply_filter') }}">{{ __('dictt.apply_filter') }}</button>
                 </div>
             </form>
 
             <div class="text-center mb-5 wow fadeInUp" data-wow-delay="0.2s">
                 @auth
-                    <a href="{{ route('frontend.my-reviews') }}" class="btn btn-outline-primary py-3 px-5">{{ __('dictt.write_review') }}</a>
+                    <a href="{{ route('frontend.my-reviews') }}" class="btn btn-outline-primary py-3 px-5" title="{{ __('dictt.write_review') }}">{{ __('dictt.write_review') }}</a>
                 @endauth
                 @guest
                     <a href="{{ route('frontend.login', ['return' => 'frontend.reviews']) }}"
-                        class="btn btn-outline-primary py-3 px-5">{{ __('dictt.guest_review_cta') }}</a>
+                        class="btn btn-outline-primary py-3 px-5" title="{{ __('dictt.guest_review_cta') }}">{{ __('dictt.guest_review_cta') }}</a>
                 @endguest
             </div>
 
