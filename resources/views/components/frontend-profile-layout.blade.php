@@ -202,7 +202,7 @@
                                 {{ __('dictt.errors') }}
                             </h2>
                             <button onclick="this.parentElement.parentElement.remove()"
-                                class="text-gray-500 hover:text-red-600 ml-4">
+                                class="text-gray-500 hover:text-red-600 ml-4" title="{{ __('dictt.close') }}">
                                 <i class="fas fa-times"></i>
                             </button>
                         </div>

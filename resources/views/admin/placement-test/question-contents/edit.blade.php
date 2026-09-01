@@ -6,7 +6,7 @@
             <div class="row align-items-center mb-3">
                 <div class="col-sm-4 mb-2 mb-sm-0">
                     <a href="{{ route('placement_test_question_contents_list') }}" class="btn btn-sm btn-secondary">
-                        <i class="fa fa-arrow-left"></i> {{ __('dictt.back') }}
+                        <i class="fa fa-arrow-left"></i> {{ __('dictt.back_short') }}
                     </a>
                 </div>
                 <h5 class="col-sm-4 card-title text-center mb-0">{{ __('dictt.edit_shared_content') }}</h5>
@@ -33,6 +33,7 @@
                         @error('text_content')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
+                        <div class="form-text">{{ __('dictt.pt_shared_text_help') }}</div>
                     </div>
                 @else
                     <div class="form-group mb-3">

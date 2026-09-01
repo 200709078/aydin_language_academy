@@ -20,7 +20,7 @@
                 <span class="frontend-brand-wordmark__sub">{{ __('dictt.brand_subtitle') }}</span>
             </span>
         </button>
-        <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#frontendMobileNavbarCollapse" aria-controls="frontendMobileNavbarCollapse" aria-expanded="false">
+        <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#frontendMobileNavbarCollapse" aria-controls="frontendMobileNavbarCollapse" aria-expanded="false" aria-label="{{ $headerLocale === 'tr' ? 'Menüyü aç/kapat' : 'Toggle menu' }}" title="{{ $headerLocale === 'tr' ? 'Menüyü aç/kapat' : 'Toggle menu' }}">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="frontendMobileNavbarCollapse">

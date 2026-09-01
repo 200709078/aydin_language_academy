@@ -48,7 +48,7 @@
                             <th scope="col">{{ __('dictt.campaign_title_tr') }}</th>
                             <th scope="col">{{ __('dictt.campaign_title_en') }}</th>
                             <th scope="col">{{ __('dictt.campaign_link_type') }}</th>
-                            <th scope="col">{{ __('dictt.status') }}</th>
+                            <th scope="col">{{ __('dictt.campaign_publication_status') }}</th>
                             <th scope="col">{{ __('dictt.operations') }}</th>
                         </tr>
                     </thead>
@@ -65,7 +65,27 @@
                                 <td class="text-break">{{ $campaign->title_tr }}</td>
                                 <td class="text-break">{{ $campaign->title_en }}</td>
                                 <td>{{ $linkTypeLabels[$campaign->link_type] ?? $campaign->link_type }}</td>
-                                <td><span class="badge {{ $statusClass }}">{{ $statusLabels[$campaign->status] ?? $campaign->status }}</span></td>
+                                <td>
+                                    <div class="d-flex flex-wrap align-items-center gap-2">
+                                        <form method="POST" action="{{ route('admin.campaigns.status.update', $campaign) }}" class="d-inline-block">
+                                            @csrf
+                                            @method('PATCH')
+                                            <input type="hidden" name="is_published" value="0">
+                                            <div class="form-check form-switch admin-list-switch mb-0">
+                                                <input id="campaign-status-{{ $campaign->id }}" type="checkbox"
+                                                    class="form-check-input" name="is_published" value="1" role="switch"
+                                                    @checked($campaign->status === \App\Models\Campaign::STATUS_PUBLISHED)
+                                                    onchange="this.form.submit()"
+                                                    aria-label="{{ __('dictt.campaign_publication_status') }}"
+                                                    title="{{ __('dictt.campaign_publication_status') }}">
+                                            </div>
+                                            <noscript>
+                                                <button type="submit" class="btn btn-sm btn-outline-secondary mt-1" title="{{ __('dictt.update') }}">{{ __('dictt.update') }}</button>
+                                            </noscript>
+                                        </form>
+                                        <span class="badge {{ $statusClass }}">{{ $statusLabels[$campaign->status] ?? $campaign->status }}</span>
+                                    </div>
+                                </td>
                                 <td>
                                     <div class="d-flex flex-wrap align-items-center gap-2">
                                         <a href="{{ route('admin.campaigns.edit', $campaign) }}" class="btn btn-sm btn-outline-primary"
@@ -73,41 +93,42 @@
                                             <i class="fa fa-pen" aria-hidden="true"></i>
                                             <span class="visually-hidden">{{ __('dictt.edit') }}</span>
                                         </a>
-                                        <form method="POST" action="{{ route('admin.campaigns.status.update', $campaign) }}" class="d-inline-block">
+                                        <form id="campaign-delete-{{ $campaign->id }}" method="POST"
+                                            action="{{ route('admin.campaigns.destroy', $campaign) }}">
                                             @csrf
-                                            @method('PATCH')
-                                            <input type="hidden" name="is_published" value="0">
-                                            <div class="form-check form-switch mb-0">
-                                                <input id="campaign-status-{{ $campaign->id }}" type="checkbox"
-                                                    class="form-check-input" name="is_published" value="1" role="switch"
-                                                    @checked($campaign->status === \App\Models\Campaign::STATUS_PUBLISHED)
-                                                    onchange="this.form.submit()"
-                                                    aria-label="{{ __('dictt.campaign_publication_status') }}">
-                                            </div>
-                                            <noscript>
-                                                <button type="submit" class="btn btn-sm btn-outline-secondary mt-1">{{ __('dictt.update') }}</button>
-                                            </noscript>
+                                            @method('DELETE')
+                                            <button type="button" class="btn btn-sm btn-outline-danger admin-danger-action"
+                                                title="{{ __('dictt.campaign_delete') }}"
+                                                data-action-confirmation
+                                                data-confirm-form="campaign-delete-{{ $campaign->id }}"
+                                                data-confirm-title="{{ __('dictt.campaign_delete') }}"
+                                                data-confirm-content="{{ __('dictt.campaign_delete_confirm', ['title' => $campaign->title_tr]) }}"
+                                                data-confirm-action="{{ __('dictt.campaign_delete') }}"
+                                                data-confirm-icon="fa-trash-alt"
+                                                data-confirm-tone="danger">
+                                                <i class="fa fa-trash" aria-hidden="true"></i>
+                                                <span class="visually-hidden">{{ __('dictt.campaign_delete') }}</span>
+                                            </button>
                                         </form>
-                                        <div class="d-flex flex-column gap-1">
-                                            <form method="POST" action="{{ route('admin.campaigns.move', $campaign) }}">
-                                                @csrf
-                                                <input type="hidden" name="direction" value="up">
-                                                <button type="submit" class="btn btn-sm btn-outline-secondary"
+                                        <form method="POST" action="{{ route('admin.campaigns.move', $campaign) }}"
+                                            class="d-inline-block">
+                                            @csrf
+                                            <div class="btn-group-vertical btn-group-sm" role="group"
+                                                aria-label="{{ __('dictt.move_up') }} / {{ __('dictt.move_down') }}">
+                                                <button type="submit" name="direction" value="up"
+                                                    class="btn btn-outline-secondary px-2 py-0"
                                                     @disabled(! $canMoveUp) title="{{ __('dictt.move_up') }}">
-                                                    <i class="fa fa-arrow-up" aria-hidden="true"></i>
+                                                    <i class="fa-solid fa-chevron-up fa-xs" aria-hidden="true"></i>
                                                     <span class="visually-hidden">{{ __('dictt.move_up') }}</span>
                                                 </button>
-                                            </form>
-                                            <form method="POST" action="{{ route('admin.campaigns.move', $campaign) }}">
-                                                @csrf
-                                                <input type="hidden" name="direction" value="down">
-                                                <button type="submit" class="btn btn-sm btn-outline-secondary"
+                                                <button type="submit" name="direction" value="down"
+                                                    class="btn btn-outline-secondary px-2 py-0"
                                                     @disabled(! $canMoveDown) title="{{ __('dictt.move_down') }}">
-                                                    <i class="fa fa-arrow-down" aria-hidden="true"></i>
+                                                    <i class="fa-solid fa-chevron-down fa-xs" aria-hidden="true"></i>
                                                     <span class="visually-hidden">{{ __('dictt.move_down') }}</span>
                                                 </button>
-                                            </form>
-                                        </div>
+                                            </div>
+                                        </form>
                                     </div>
                                 </td>
                             </tr>
@@ -125,4 +146,6 @@
             @endif
         </div>
     </div>
+
+    <x-action-confirmation-modal />
 </x-app-layout>

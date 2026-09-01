@@ -37,36 +37,13 @@
                 </a>
             </div>
 
-            <div class="d-flex flex-column gap-3 mb-4">
-                <div class="d-flex flex-wrap gap-2">
-                    @foreach ($filters as $filterKey => $filterLabel)
-                        <a href="{{ route('admin.news.index', array_filter(['filter' => $filterKey, 'q' => $search], static fn ($value): bool => $value !== '')) }}"
-                            class="btn btn-sm {{ $filter === $filterKey ? 'btn-primary' : 'btn-outline-primary' }}">
-                            {{ $filterLabel }}
-                        </a>
-                    @endforeach
-                </div>
-
-                <form method="GET" action="{{ route('admin.news.index') }}" class="row g-2 align-items-center">
-                    <input type="hidden" name="filter" value="{{ $filter }}">
-                    <div class="col-sm-8 col-md-6 col-lg-5">
-                        <label for="news-search" class="visually-hidden">{{ __('dictt.search') }}</label>
-                        <input id="news-search" type="search" name="q" value="{{ $search }}" class="form-control"
-                            placeholder="{{ __('dictt.news_search_placeholder') }}">
-                    </div>
-                    <div class="col-auto">
-                        <button type="submit" class="btn btn-sm btn-outline-secondary">
-                            <i class="fa fa-magnifying-glass" aria-hidden="true"></i> {{ __('dictt.search') }}
-                        </button>
-                    </div>
-                    @if ($search !== '')
-                        <div class="col-auto">
-                            <a href="{{ route('admin.news.index', ['filter' => $filter]) }}" class="btn btn-sm btn-link">
-                                {{ __('dictt.clear') }}
-                            </a>
-                        </div>
-                    @endif
-                </form>
+            <div class="d-flex flex-wrap gap-2 mb-4">
+                @foreach ($filters as $filterKey => $filterLabel)
+                    <a href="{{ route('admin.news.index', ['filter' => $filterKey]) }}"
+                        class="btn btn-sm {{ $filter === $filterKey ? 'btn-primary' : 'btn-outline-primary' }}">
+                        {{ $filterLabel }}
+                    </a>
+                @endforeach
             </div>
 
             <div class="table-responsive">

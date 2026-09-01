@@ -13,6 +13,7 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <script src="{{ asset('frontend/js/button-titles.js') }}" defer></script>
 
         <!-- Styles -->
         @livewireStyles

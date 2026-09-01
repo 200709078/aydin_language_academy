@@ -9,7 +9,7 @@
                         {!! $modalConfirmTitle !!}
                     </h2>
                     <button wire:click="$set('confirmingDelete', false)"
-                        class="text-gray-400 hover:text-red-500 transition">
+                        class="text-gray-400 hover:text-red-500 transition" title="{{ __('dictt.close') }}">
                         <i class="fas fa-times text-lg"></i>
                     </button>
                 </div>
@@ -41,7 +41,7 @@
                     <i class="fas fa-check-circle mr-2"></i>
                     {!! session('modalSuccessTitle') ?? $modalSuccessTitle !!}
                 </h2>
-                <button onclick="this.parentElement.parentElement.remove()" class="text-gray-500 hover:text-red-600 ml-4">
+                <button onclick="this.parentElement.parentElement.remove()" class="text-gray-500 hover:text-red-600 ml-4" title="{{ __('dictt.close') }}">
                     <i class="fas fa-times"></i>
                 </button>
             </div>

@@ -24,13 +24,13 @@
                 @if ($isEditing)
                     <div class="d-flex align-items-center gap-2">
                         <a href="{{ route('admin.news.index') }}" class="btn btn-sm btn-secondary">
-                            <i class="fa fa-arrow-left" aria-hidden="true"></i> {{ __('dictt.cancel') }}
+                            <i class="fa fa-arrow-left" aria-hidden="true"></i> {{ __('dictt.back_short') }}
                         </a>
                         <button type="submit" form="news-form" class="btn btn-success btn-sm">{{ $submitLabel }}</button>
                     </div>
                 @else
                     <a href="{{ route('admin.news.index') }}" class="btn btn-sm btn-secondary">
-                        <i class="fa fa-arrow-left" aria-hidden="true"></i> {{ __('dictt.back') }}
+                        <i class="fa fa-arrow-left" aria-hidden="true"></i> {{ __('dictt.back_short') }}
                     </a>
                 @endif
             </div>

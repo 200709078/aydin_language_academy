@@ -5,7 +5,7 @@
             <div class="row align-items-center mb-3">
                 <div class="col-sm-4 mb-2 mb-sm-0 d-flex gap-2">
                     <a href="{{ route('reviews_list') }}" class="btn btn-sm btn-secondary">
-                        <i class="fa fa-arrow-left"></i> {{ __('dictt.cancel') }}</a>
+                        <i class="fa fa-arrow-left"></i> {{ __('dictt.back_short') }}</a>
                     <button type="submit" form="review-form" class="btn btn-success btn-sm">
                         {{ __('dictt.update') }}</button>
                 </div>

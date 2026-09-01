@@ -15,6 +15,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
     <link href="{{ asset('frontend/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('frontend/css/style.css') }}" rel="stylesheet">
+    <script src="{{ asset('frontend/js/button-titles.js') }}" defer></script>
 
     <style>
         body {

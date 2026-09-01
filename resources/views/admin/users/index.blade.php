@@ -11,6 +11,11 @@
         $nameSortTitle = $nextNameDirection === 'asc'
             ? __('dictt.sort_name_ascending')
             : __('dictt.sort_name_descending');
+        $isRegistrationDateSorted = $sort === 'created_at';
+        $nextRegistrationDateDirection = $isRegistrationDateSorted && $direction === 'asc' ? 'desc' : 'asc';
+        $registrationDateSortTitle = $nextRegistrationDateDirection === 'asc'
+            ? __('dictt.sort_registration_date_ascending')
+            : __('dictt.sort_registration_date_descending');
     @endphp
 
     <div class="card">
@@ -32,7 +37,13 @@
                             <th scope="col">{{ __('dictt.email') }}</th>
                             <th scope="col">{{ __('dictt.phone') }}</th>
                             <th scope="col">{{ __('dictt.type') }}</th>
-                            <th scope="col">{{ __('dictt.created_at') }}</th>
+                            <th scope="col" aria-sort="{{ $isRegistrationDateSorted ? ($direction === 'asc' ? 'ascending' : 'descending') : 'none' }}">
+                                <a href="{{ route('admin.users.index', ['sort' => 'created_at', 'direction' => $nextRegistrationDateDirection]) }}"
+                                    class="text-decoration-none text-reset" title="{{ $registrationDateSortTitle }}">
+                                    {{ __('dictt.created_at') }}
+                                    <span class="ms-1 text-muted" aria-hidden="true">{{ $isRegistrationDateSorted ? ($direction === 'asc' ? '↑' : '↓') : '↕' }}</span>
+                                </a>
+                            </th>
                             <th scope="col">{{ __('dictt.updated_at') }}</th>
                         </tr>
                     </thead>

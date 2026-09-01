@@ -112,6 +112,18 @@ class AdminCampaignController extends Controller
     }
 
     /**
+     * Permanently remove a campaign from the admin list.
+     */
+    public function destroy(Campaign $campaign): RedirectResponse
+    {
+        $campaign->delete();
+
+        return redirect()
+            ->route('admin.campaigns.index')
+            ->with('success', __('dictt.campaign_deleted'));
+    }
+
+    /**
      * Swap a campaign with its immediately adjacent global neighbour.
      */
     public function move(Request $request, Campaign $campaign): RedirectResponse

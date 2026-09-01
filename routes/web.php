@@ -179,6 +179,9 @@ Route::group(['middleware' => ['auth', isAdmin_middle::class], 'prefix' => 'admi
         Route::put('/{campaign}', [AdminCampaignController::class, 'update'])
             ->whereNumber('campaign')
             ->name('update');
+        Route::delete('/{campaign}', [AdminCampaignController::class, 'destroy'])
+            ->whereNumber('campaign')
+            ->name('destroy');
         Route::patch('/{campaign}/status', [AdminCampaignController::class, 'updateStatus'])
             ->whereNumber('campaign')
             ->name('status.update');

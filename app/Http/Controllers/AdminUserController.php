@@ -13,8 +13,10 @@ class AdminUserController extends Controller
      */
     public function index(Request $request): View
     {
-        $sort = $request->query('sort') === 'name' ? 'name' : null;
-        $direction = $request->query('direction') === 'desc' ? 'desc' : 'asc';
+        $sort = in_array($request->query('sort'), ['name', 'created_at'], true)
+            ? $request->query('sort')
+            : 'created_at';
+        $direction = $request->query('direction') === 'asc' ? 'asc' : 'desc';
 
         $usersQuery = User::query()
             ->select([
@@ -28,11 +30,7 @@ class AdminUserController extends Controller
                 'updated_at',
             ]);
 
-        if ($sort === 'name') {
-            $usersQuery->orderBy('name', $direction)->orderBy('id');
-        } else {
-            $usersQuery->latest('created_at');
-        }
+        $usersQuery->orderBy($sort, $direction)->orderBy('id');
 
         $users = $usersQuery
             ->paginate(20)
