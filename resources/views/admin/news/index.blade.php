@@ -32,7 +32,7 @@
         <div class="card-body">
             <div class="d-flex flex-column flex-lg-row align-items-lg-center justify-content-between gap-3 mb-4">
                 <h5 class="card-title mb-0">{{ __('dictt.news') }}</h5>
-                <a href="{{ route('admin.news.create') }}" class="btn btn-sm btn-primary">
+                <a href="{{ route('admin.news.create') }}" class="btn btn-sm btn-outline-primary">
                     <i class="fa fa-plus" aria-hidden="true"></i> {{ __('dictt.news_add') }}
                 </a>
             </div>
@@ -108,7 +108,7 @@
                                 <td class="text-nowrap">{{ $item->updated_at?->format('d.m.Y H:i') ?? '—' }}</td>
                                 <td>
                                     <div class="d-flex gap-1">
-                                        <a href="{{ route('admin.news.edit', $item) }}" class="btn btn-sm btn-primary"
+                                        <a href="{{ route('admin.news.edit', $item) }}" class="btn btn-sm btn-outline-primary"
                                             title="{{ __('dictt.edit') }}">
                                             <i class="fa fa-pen" aria-hidden="true"></i>
                                             <span class="visually-hidden">{{ __('dictt.edit') }}</span>
@@ -118,7 +118,7 @@
                                                 action="{{ route('admin.news.force-destroy', $item) }}">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="button" class="btn btn-sm btn-danger"
+                                                <button type="button" class="btn btn-sm btn-outline-primary admin-danger-action"
                                                     title="{{ __('dictt.news_permanently_delete') }}"
                                                     data-action-confirmation
                                                     data-confirm-form="news-force-delete-{{ $item->id }}"

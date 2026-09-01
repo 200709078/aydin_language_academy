@@ -41,7 +41,7 @@
                                 </td>
                                 <td>
                                     <a href="{{ route('placement_test_attempts_show', $placementTest) }}"
-                                        class="btn btn-sm btn-primary" title="{{ __('dictt.placement_test_review') }}">
+                                        class="btn btn-sm btn-outline-primary" title="{{ __('dictt.placement_test_review') }}">
                                         <i class="fa fa-eye" aria-hidden="true"></i>
                                         <span class="visually-hidden">{{ __('dictt.placement_test_review') }}</span>
                                     </a>

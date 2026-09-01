@@ -55,7 +55,7 @@
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-start gap-3 mb-3">
                 <h5 class="card-title mb-1">{{ __('dictt.levels_title') }}</h5>
-                <a href="{{ route('level_create') }}" class="btn btn-sm btn-primary">
+                <a href="{{ route('level_create') }}" class="btn btn-sm btn-outline-primary">
                     <i class="fa fa-plus"></i> {{ __('dictt.addnewlevel') }}</a>
             </div>
             <div class="admin-table-scroll">
@@ -72,7 +72,7 @@
                             <th class="col-md-3" scope="row">{{ $level->name }}</th>
                             <td>
                                 <div class="flex gap-1">
-                                    <a href="{{ route('level_edit', $level->id) }}" class="btn btn-sm btn-primary"
+                                    <a href="{{ route('level_edit', $level->id) }}" class="btn btn-sm btn-outline-primary"
                                         title="{{ __('dictt.edit') }}">
                                         <i class="fa fa-pen w-4"></i>
                                     </a>
@@ -82,7 +82,7 @@
                                             <i class="fa fa-trash"></i>
                                         </button>
                                     @else
-                                        <button wire:click="confirmDelete({{ $level->id }})" class="btn btn-sm btn-danger"
+                                        <button wire:click="confirmDelete({{ $level->id }})" class="btn btn-sm btn-outline-primary admin-danger-action"
                                             title="{{ __('dictt.delete') }}">
                                             <i class="fa fa-trash"></i>
                                         </button>

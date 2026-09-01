@@ -74,7 +74,7 @@
                                     @endif
                                 </td>
                                 <td>
-                                    <a href="{{ route('admin.messages.show', $message) }}" class="btn btn-sm btn-primary" title="{{ __('dictt.details') }}">
+                                    <a href="{{ route('admin.messages.show', $message) }}" class="btn btn-sm btn-outline-primary" title="{{ __('dictt.details') }}">
                                         <i class="fa fa-eye" aria-hidden="true"></i>
                                         <span class="visually-hidden">{{ __('dictt.details') }}</span>
                                     </a>

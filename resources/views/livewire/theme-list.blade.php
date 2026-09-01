@@ -56,7 +56,7 @@
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-start gap-3 mb-3">
                 <h5 class="card-title mb-1">{{ __('dictt.themes_title') }}</h5>
-                <a href="{{ route('theme_create') }}" class="btn btn-sm btn-primary">
+                <a href="{{ route('theme_create') }}" class="btn btn-sm btn-outline-primary">
                     <i class="fa fa-plus"></i> {{ __('dictt.addnewtheme') }}</a>
             </div>
             <div class="admin-table-scroll">
@@ -97,7 +97,7 @@
                                 <a href="{{ route('exercises_list', $theme->id) }}" class="btn btn-sm btn-warning"
                                     title="{{ __('dictt.exerciseslist') }}">
                                     <i class="fa fa-list w-4"></i></a>
-                                <a href="{{ route('theme_edit', $theme->id) }}" class="btn btn-sm btn-primary"
+                                <a href="{{ route('theme_edit', $theme->id) }}" class="btn btn-sm btn-outline-primary"
                                     title="{{ __('dictt.edit') }}">
                                     <i class="fa fa-pen w-4"></i></a>
                                 @if ($theme->declarations_count > 0 || $theme->exercises_count > 0)
@@ -106,7 +106,7 @@
                                         <i class="fa fa-trash"></i>
                                     </button>
                                 @else
-                                    <button wire:click="confirmDelete({{ $theme->id }})" class="btn btn-sm btn-danger"
+                                    <button wire:click="confirmDelete({{ $theme->id }})" class="btn btn-sm btn-outline-primary admin-danger-action"
                                         title="{{ __('dictt.delete') }}">
                                         <i class="fa fa-trash"></i>
                                     </button>

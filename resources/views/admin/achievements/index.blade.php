@@ -30,7 +30,7 @@
                         <i class="fa fa-gear" aria-hidden="true"></i>
                         <span class="visually-hidden">{{ __('dictt.achievement_page_settings') }}</span>
                     </a>
-                    <a href="{{ route('admin.achievements.create') }}" class="btn btn-sm btn-primary">
+                    <a href="{{ route('admin.achievements.create') }}" class="btn btn-sm btn-outline-primary">
                         <i class="fa fa-plus" aria-hidden="true"></i> {{ __('dictt.achievement_year_add') }}
                     </a>
                 </div>
@@ -42,7 +42,7 @@
                         <tr>
                             <th scope="col">{{ __('dictt.achievement_year') }}</th>
                             <th scope="col">{{ __('dictt.achievement_year_title') }}</th>
-                            <th scope="col">{{ __('dictt.status') }}</th>
+                            <th scope="col">{{ __('dictt.achievement_publication_status') }}</th>
                             <th scope="col">{{ __('dictt.achievement_entries_count') }}</th>
                             <th scope="col">{{ __('dictt.operations') }}</th>
                         </tr>
@@ -65,27 +65,14 @@
                                         <div class="small text-muted">{{ \Illuminate\Support\Str::limit($item->description, 70) }}</div>
                                     @endif
                                 </td>
-                                <td><span class="badge {{ $statusClass }}">{{ $statusLabel }}</span></td>
-                                <td>{{ $item->entries_count }}</td>
                                 <td>
                                     <div class="d-flex flex-wrap align-items-center gap-2">
-                                        <a href="{{ route('admin.achievements.entries.index', $item) }}"
-                                            class="btn btn-sm btn-outline-primary"
-                                            title="{{ __('dictt.achievement_entries_list') }}">
-                                            <i class="fa fa-users" aria-hidden="true"></i>
-                                            <span class="visually-hidden">{{ __('dictt.achievement_entries_list') }}</span>
-                                        </a>
-                                        <a href="{{ route('admin.achievements.edit', $item) }}" class="btn btn-sm btn-primary"
-                                            title="{{ __('dictt.edit') }}">
-                                            <i class="fa fa-pen" aria-hidden="true"></i>
-                                            <span class="visually-hidden">{{ __('dictt.edit') }}</span>
-                                        </a>
                                         <form method="POST" action="{{ route('admin.achievements.status.update', $item) }}"
                                             class="d-inline-block">
                                             @csrf
                                             @method('PATCH')
                                             <input type="hidden" name="is_published" value="0">
-                                            <div class="form-check form-switch mb-0">
+                                            <div class="form-check form-switch admin-list-switch mb-0">
                                                 <input id="achievement-status-{{ $item->id }}" type="checkbox"
                                                     class="form-check-input" name="is_published" value="1" role="switch"
                                                     @checked($item->status === \App\Models\Achievement::STATUS_PUBLISHED)
@@ -98,26 +85,42 @@
                                                 </button>
                                             </noscript>
                                         </form>
-                                        <div class="d-flex flex-column gap-1">
-                                            <form method="POST" action="{{ route('admin.achievements.move', $item) }}">
-                                                @csrf
-                                                <input type="hidden" name="direction" value="up">
-                                                <button type="submit" class="btn btn-sm btn-outline-secondary"
+                                        <span class="badge {{ $statusClass }}">{{ $statusLabel }}</span>
+                                    </div>
+                                </td>
+                                <td>{{ $item->entries_count }}</td>
+                                <td>
+                                    <div class="d-flex flex-wrap align-items-center gap-2">
+                                        <a href="{{ route('admin.achievements.entries.index', $item) }}"
+                                            class="btn btn-sm btn-outline-primary"
+                                            title="{{ __('dictt.achievement_entries_list') }}">
+                                            <i class="fa fa-users" aria-hidden="true"></i>
+                                            <span class="visually-hidden">{{ __('dictt.achievement_entries_list') }}</span>
+                                        </a>
+                                        <a href="{{ route('admin.achievements.edit', $item) }}" class="btn btn-sm btn-outline-primary"
+                                            title="{{ __('dictt.edit') }}">
+                                            <i class="fa fa-pen" aria-hidden="true"></i>
+                                            <span class="visually-hidden">{{ __('dictt.edit') }}</span>
+                                        </a>
+                                        <form method="POST" action="{{ route('admin.achievements.move', $item) }}"
+                                            class="d-inline-block">
+                                            @csrf
+                                            <div class="btn-group-vertical btn-group-sm" role="group"
+                                                aria-label="{{ __('dictt.move_up') }} / {{ __('dictt.move_down') }}">
+                                                <button type="submit" name="direction" value="up"
+                                                    class="btn btn-outline-secondary px-2 py-0"
                                                     @disabled(! $canMoveUp) title="{{ __('dictt.move_up') }}">
-                                                    <i class="fa fa-arrow-up" aria-hidden="true"></i>
+                                                    <i class="fa-solid fa-chevron-up fa-xs" aria-hidden="true"></i>
                                                     <span class="visually-hidden">{{ __('dictt.move_up') }}</span>
                                                 </button>
-                                            </form>
-                                            <form method="POST" action="{{ route('admin.achievements.move', $item) }}">
-                                                @csrf
-                                                <input type="hidden" name="direction" value="down">
-                                                <button type="submit" class="btn btn-sm btn-outline-secondary"
+                                                <button type="submit" name="direction" value="down"
+                                                    class="btn btn-outline-secondary px-2 py-0"
                                                     @disabled(! $canMoveDown) title="{{ __('dictt.move_down') }}">
-                                                    <i class="fa fa-arrow-down" aria-hidden="true"></i>
+                                                    <i class="fa-solid fa-chevron-down fa-xs" aria-hidden="true"></i>
                                                     <span class="visually-hidden">{{ __('dictt.move_down') }}</span>
                                                 </button>
-                                            </form>
-                                        </div>
+                                            </div>
+                                        </form>
                                     </div>
                                 </td>
                             </tr>

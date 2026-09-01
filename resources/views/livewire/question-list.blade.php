@@ -56,7 +56,7 @@
         <div class="card-body">
             <a href="{{ route('exercises_list', $theme_id) }}" class="btn btn-sm btn-secondary">
                 <i class="fa fa-arrow-left"></i> {{ __('dictt.backtoexerciseslist') }}</a>
-            <a href="{{ route('question_create', $exercise_id) }}" class="btn btn-sm btn-primary float-right">
+            <a href="{{ route('question_create', $exercise_id) }}" class="btn btn-sm btn-outline-primary float-right">
                 <i class="fa fa-plus"></i> {{ __('dictt.addnewquestion') }}</a>
             <div class="admin-table-scroll">
                 <table class="table table-striped">
@@ -97,10 +97,10 @@
                             </td>
                             <td>
                                 <div class="flex gap-1">
-                                    <a href="{{ route('question_edit', $question->id) }}" class="btn btn-sm btn-primary"
+                                    <a href="{{ route('question_edit', $question->id) }}" class="btn btn-sm btn-outline-primary"
                                         title="{{ __('dictt.edit') }}">
                                         <i class="fa fa-pen w-4"></i></a>
-                                    <button wire:click="confirmDelete({{ $question->id }})" class="btn btn-sm btn-danger"
+                                    <button wire:click="confirmDelete({{ $question->id }})" class="btn btn-sm btn-outline-primary admin-danger-action"
                                         title="{{ __('dictt.delete') }}">
                                         <i class="fa fa-trash"></i>
                                     </button>

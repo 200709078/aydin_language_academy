@@ -121,7 +121,7 @@
                                     <div class="d-flex justify-content-end gap-1">
                                         @if ($review->status === \App\Models\Review::STATUS_ARCHIVED || $review->trashed())
                                             <button type="button" wire:click="confirmForceDelete({{ $review->id }})"
-                                                class="btn btn-sm btn-danger" title="{{ __('dictt.review_permanently_delete') }}">
+                                                class="btn btn-sm btn-outline-primary admin-danger-action" title="{{ __('dictt.review_permanently_delete') }}">
                                                 <i class="fa fa-trash w-4" aria-hidden="true"></i>
                                                 <span class="visually-hidden">{{ __('dictt.review_permanently_delete') }}</span>
                                             </button>
@@ -139,7 +139,7 @@
                                             </button>
                                             @endif
                                             <a href="{{ route('review_edit', $review->id) }}"
-                                                class="btn btn-sm btn-primary" title="{{ __('dictt.edit') }}">
+                                                class="btn btn-sm btn-outline-primary" title="{{ __('dictt.edit') }}">
                                                 <i class="fa fa-pen w-4"></i>
                                             </a>
                                             <button type="button" wire:click="confirmArchive({{ $review->id }})"

@@ -327,6 +327,29 @@ class AdminAchievementController extends Controller
     }
 
     /**
+     * Update one student record's name publication permission directly from its list.
+     */
+    public function updateEntryNamePermission(
+        Request $request,
+        Achievement $achievementYear,
+        AchievementEntry $achievementEntry,
+    ): RedirectResponse {
+        $this->ensureEntryBelongsToAchievement($achievementYear, $achievementEntry);
+
+        $request->validate([
+            'name_permission_granted' => ['required', 'boolean'],
+        ]);
+
+        $achievementEntry->update([
+            'name_permission_status' => $request->boolean('name_permission_granted')
+                ? AchievementEntry::NAME_PERMISSION_GRANTED
+                : AchievementEntry::NAME_PERMISSION_DENIED,
+        ]);
+
+        return redirect()->back();
+    }
+
+    /**
      * Move one student record one position earlier or later in its visible list.
      */
     public function moveEntry(

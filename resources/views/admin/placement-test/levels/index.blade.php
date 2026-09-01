@@ -50,7 +50,7 @@
                                     @endif
                                 </td>
                                 <td>
-                                    <a href="{{ route('placement_test_levels_edit', $level) }}" class="btn btn-sm btn-primary"
+                                    <a href="{{ route('placement_test_levels_edit', $level) }}" class="btn btn-sm btn-outline-primary"
                                         title="{{ __('dictt.edit') }}">
                                         <i class="fa fa-pen w-4"></i>
                                     </a>

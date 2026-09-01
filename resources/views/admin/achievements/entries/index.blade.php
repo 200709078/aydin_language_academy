@@ -44,7 +44,7 @@
                     </p>
                 </div>
                 <div class="flex-shrink-0">
-                    <a href="{{ route('admin.achievements.entries.create', $achievementYear) }}" class="btn btn-sm btn-primary">
+                    <a href="{{ route('admin.achievements.entries.create', $achievementYear) }}" class="btn btn-sm btn-outline-primary">
                         <i class="fa fa-plus" aria-hidden="true"></i> {{ __('dictt.achievement_entry_add_short') }}
                     </a>
                 </div>
@@ -64,10 +64,10 @@
                     <thead>
                         <tr>
                             <th scope="col">{{ __('dictt.achievement_entry_student') }}</th>
-                            <th scope="col">{{ __('dictt.achievement_name_permission') }}</th>
                             <th scope="col">{{ __('dictt.achievement_entry_placement') }}</th>
                             <th scope="col">{{ __('dictt.branch') }}</th>
-                            <th scope="col">{{ __('dictt.status') }}</th>
+                            <th scope="col">{{ __('dictt.achievement_name_permission') }}</th>
+                            <th scope="col">{{ __('dictt.achievement_publication_status') }}</th>
                             <th scope="col">{{ __('dictt.operations') }}</th>
                         </tr>
                     </thead>
@@ -91,11 +91,6 @@
                                     <div class="fw-semibold">{{ $entry->full_name }}</div>
                                     <span class="badge text-bg-warning">{{ __('dictt.achievement_private') }}</span>
                                 </td>
-                                <td>
-                                    <span class="badge {{ $permissionClass }}">
-                                        {{ $permissionLabels[$entry->name_permission_status] ?? $entry->name_permission_status }}
-                                    </span>
-                                </td>
                                 <td class="text-break" style="min-width: 15rem;">
                                     @if ($entry->university_name)
                                         <div class="fw-semibold">{{ $entry->university_name }}</div>
@@ -108,21 +103,41 @@
                                     @endif
                                 </td>
                                 <td>{{ $branchLabels[$entry->branch] ?? '—' }}</td>
-                                <td><span class="badge {{ $statusClass }}">{{ $statusLabel }}</span></td>
                                 <td>
-                                    <div class="d-flex align-items-center gap-2">
-                                        <a href="{{ route('admin.achievements.entries.edit', [$achievementYear, $entry]) }}"
-                                            class="btn btn-sm btn-primary" title="{{ __('dictt.edit') }}">
-                                            <i class="fa fa-pen" aria-hidden="true"></i>
-                                            <span class="visually-hidden">{{ __('dictt.edit') }}</span>
-                                        </a>
+                                    <div class="d-flex flex-wrap align-items-center gap-2">
+                                        <form method="POST"
+                                            action="{{ route('admin.achievements.entries.name-permission.update', [$achievementYear, $entry]) }}"
+                                            class="d-inline-block">
+                                            @csrf
+                                            @method('PATCH')
+                                            <input type="hidden" name="name_permission_granted" value="0">
+                                            <div class="form-check form-switch admin-list-switch mb-0">
+                                                <input id="achievement-entry-name-permission-{{ $entry->id }}" type="checkbox"
+                                                    class="form-check-input" name="name_permission_granted" value="1" role="switch"
+                                                    @checked($entry->name_permission_status === \App\Models\AchievementEntry::NAME_PERMISSION_GRANTED)
+                                                    onchange="this.form.submit()"
+                                                    aria-label="{{ __('dictt.achievement_name_permission') }}">
+                                            </div>
+                                            <noscript>
+                                                <button type="submit" class="btn btn-sm btn-outline-secondary mt-1">
+                                                    {{ __('dictt.update') }}
+                                                </button>
+                                            </noscript>
+                                        </form>
+                                        <span class="badge {{ $permissionClass }}">
+                                            {{ $permissionLabels[$entry->name_permission_status] ?? $entry->name_permission_status }}
+                                        </span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="d-flex flex-wrap align-items-center gap-2">
                                         <form method="POST"
                                             action="{{ route('admin.achievements.entries.status.update', [$achievementYear, $entry]) }}"
                                             class="d-inline-block">
                                             @csrf
                                             @method('PATCH')
                                             <input type="hidden" name="is_published" value="0">
-                                            <div class="form-check form-switch mb-0">
+                                            <div class="form-check form-switch admin-list-switch mb-0">
                                                 <input id="achievement-entry-status-{{ $entry->id }}" type="checkbox"
                                                     class="form-check-input" name="is_published" value="1" role="switch"
                                                     @checked($entry->status === \App\Models\AchievementEntry::STATUS_PUBLISHED)
@@ -135,34 +150,38 @@
                                                 </button>
                                             </noscript>
                                         </form>
-                                        <div class="d-flex flex-column gap-1">
-                                            <form method="POST" action="{{ route('admin.achievements.entries.move', [
+                                        <span class="badge {{ $statusClass }}">{{ $statusLabel }}</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center gap-2">
+                                        <a href="{{ route('admin.achievements.entries.edit', [$achievementYear, $entry]) }}"
+                                            class="btn btn-sm btn-outline-primary" title="{{ __('dictt.edit') }}">
+                                            <i class="fa fa-pen" aria-hidden="true"></i>
+                                            <span class="visually-hidden">{{ __('dictt.edit') }}</span>
+                                        </a>
+                                        <form method="POST" action="{{ route('admin.achievements.entries.move', [
                                                 'achievementYear' => $achievementYear,
                                                 'achievementEntry' => $entry,
                                                 'entry_filter' => $entryFilter,
-                                            ]) }}">
-                                                @csrf
-                                                <input type="hidden" name="direction" value="up">
-                                                <button type="submit" class="btn btn-sm btn-outline-secondary"
+                                            ]) }}" class="d-inline-block">
+                                            @csrf
+                                            <div class="btn-group-vertical btn-group-sm" role="group"
+                                                aria-label="{{ __('dictt.move_up') }} / {{ __('dictt.move_down') }}">
+                                                <button type="submit" name="direction" value="up"
+                                                    class="btn btn-outline-secondary px-2 py-0"
                                                     @disabled(! $canMoveUp) title="{{ __('dictt.move_up') }}">
-                                                    <i class="fa fa-arrow-up" aria-hidden="true"></i>
+                                                    <i class="fa-solid fa-chevron-up fa-xs" aria-hidden="true"></i>
                                                     <span class="visually-hidden">{{ __('dictt.move_up') }}</span>
                                                 </button>
-                                            </form>
-                                            <form method="POST" action="{{ route('admin.achievements.entries.move', [
-                                                'achievementYear' => $achievementYear,
-                                                'achievementEntry' => $entry,
-                                                'entry_filter' => $entryFilter,
-                                            ]) }}">
-                                                @csrf
-                                                <input type="hidden" name="direction" value="down">
-                                                <button type="submit" class="btn btn-sm btn-outline-secondary"
+                                                <button type="submit" name="direction" value="down"
+                                                    class="btn btn-outline-secondary px-2 py-0"
                                                     @disabled(! $canMoveDown) title="{{ __('dictt.move_down') }}">
-                                                    <i class="fa fa-arrow-down" aria-hidden="true"></i>
+                                                    <i class="fa-solid fa-chevron-down fa-xs" aria-hidden="true"></i>
                                                     <span class="visually-hidden">{{ __('dictt.move_down') }}</span>
                                                 </button>
-                                            </form>
-                                        </div>
+                                            </div>
+                                        </form>
                                     </div>
                                 </td>
                             </tr>

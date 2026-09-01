@@ -73,7 +73,7 @@
                                 </td>
                                 <td>
                                     <a href="{{ route('admin.exercise-attempts.show', $exerciseAttempt) }}"
-                                        class="btn btn-sm btn-primary" title="{{ __('dictt.exercise_attempt_review') }}">
+                                        class="btn btn-sm btn-outline-primary" title="{{ __('dictt.exercise_attempt_review') }}">
                                         <i class="fa fa-eye" aria-hidden="true"></i>
                                         <span class="visually-hidden">{{ __('dictt.exercise_attempt_review') }}</span>
                                     </a>

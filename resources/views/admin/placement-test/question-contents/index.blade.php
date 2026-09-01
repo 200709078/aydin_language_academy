@@ -19,7 +19,7 @@
 
     <div class="card">
         <div class="card-body">
-            <a href="{{ route('placement_test_question_contents_create') }}" class="btn btn-sm btn-primary float-right">
+            <a href="{{ route('placement_test_question_contents_create') }}" class="btn btn-sm btn-outline-primary float-right">
                 <i class="fa fa-plus"></i> {{ __('dictt.add_shared_content') }}
             </a>
 
@@ -55,7 +55,7 @@
                                 <td>
                                     <div class="flex gap-1">
                                         <a href="{{ route('placement_test_question_contents_edit', $content) }}"
-                                            class="btn btn-sm btn-primary" title="{{ __('dictt.edit') }}">
+                                            class="btn btn-sm btn-outline-primary" title="{{ __('dictt.edit') }}">
                                             <i class="fa fa-pen w-4"></i>
                                         </a>
 
@@ -64,7 +64,7 @@
                                                 action="{{ route('placement_test_question_contents_destroy', $content) }}">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="button" class="btn btn-sm btn-danger" title="{{ __('dictt.delete') }}"
+                                                <button type="button" class="btn btn-sm btn-outline-primary admin-danger-action" title="{{ __('dictt.delete') }}"
                                                     data-action-confirmation
                                                     data-confirm-form="placement-content-delete-{{ $content->id }}"
                                                     data-confirm-title="{{ __('dictt.delete') }}"

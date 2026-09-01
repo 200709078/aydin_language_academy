@@ -34,7 +34,7 @@
                     <h5 class="card-title mb-1">{{ __('dictt.news_content_blocks') }}</h5>
                     <p class="text-muted small mb-0">{{ __('dictt.news_content_blocks_help') }}</p>
                 </div>
-                <a href="{{ route('admin.news.blocks.create', $news) }}" class="btn btn-sm btn-primary">
+                <a href="{{ route('admin.news.blocks.create', $news) }}" class="btn btn-sm btn-outline-primary">
                     <i class="fa fa-plus" aria-hidden="true"></i> {{ __('dictt.news_block_add') }}
                 </a>
             </div>
@@ -97,7 +97,7 @@
                                                 <span class="visually-hidden">{{ __('dictt.move_down') }}</span>
                                             </button>
                                         </form>
-                                        <a href="{{ route('admin.news.blocks.edit', [$news, $block]) }}" class="btn btn-sm btn-primary"
+                                        <a href="{{ route('admin.news.blocks.edit', [$news, $block]) }}" class="btn btn-sm btn-outline-primary"
                                             title="{{ __('dictt.edit') }}">
                                             <i class="fa fa-pen" aria-hidden="true"></i>
                                             <span class="visually-hidden">{{ __('dictt.edit') }}</span>
@@ -106,7 +106,7 @@
                                             action="{{ route('admin.news.blocks.destroy', [$news, $block]) }}">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="button" class="btn btn-sm btn-danger" title="{{ __('dictt.delete') }}"
+                                            <button type="button" class="btn btn-sm btn-outline-primary admin-danger-action" title="{{ __('dictt.delete') }}"
                                                 data-action-confirmation
                                                 data-confirm-form="news-block-delete-{{ $block->id }}"
                                                 data-confirm-title="{{ __('dictt.delete') }}"

@@ -35,7 +35,7 @@
                         <i class="fa fa-gear" aria-hidden="true"></i>
                         <span class="visually-hidden">{{ __('dictt.campaign_page_settings') }}</span>
                     </a>
-                    <a href="{{ route('admin.campaigns.create') }}" class="btn btn-sm btn-primary">
+                    <a href="{{ route('admin.campaigns.create') }}" class="btn btn-sm btn-outline-primary">
                         <i class="fa fa-plus" aria-hidden="true"></i> {{ __('dictt.campaign_add') }}
                     </a>
                 </div>
@@ -68,7 +68,7 @@
                                 <td><span class="badge {{ $statusClass }}">{{ $statusLabels[$campaign->status] ?? $campaign->status }}</span></td>
                                 <td>
                                     <div class="d-flex flex-wrap align-items-center gap-2">
-                                        <a href="{{ route('admin.campaigns.edit', $campaign) }}" class="btn btn-sm btn-primary"
+                                        <a href="{{ route('admin.campaigns.edit', $campaign) }}" class="btn btn-sm btn-outline-primary"
                                             title="{{ __('dictt.edit') }}">
                                             <i class="fa fa-pen" aria-hidden="true"></i>
                                             <span class="visually-hidden">{{ __('dictt.edit') }}</span>

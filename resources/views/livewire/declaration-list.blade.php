@@ -58,7 +58,7 @@
                 <a href="{{ route('themes_list') }}" class="btn btn-sm btn-secondary"><i class="fa fa-arrow-left"></i>
                     {{ __('dictt.backtothemeslist') }}</a>
                 <h5 class="card-title mb-0 text-center flex-grow-1">{{ __('dictt.declarationslist') }}</h5>
-                <a href="{{ route('declaration_create', $theme_id) }}" class="btn btn-sm btn-primary">
+                <a href="{{ route('declaration_create', $theme_id) }}" class="btn btn-sm btn-outline-primary">
                     <i class="fa fa-plus"></i> {{ __('dictt.addnewdeclaration') }}</a>
             </div>
             <div class="admin-table-scroll">
@@ -97,10 +97,10 @@
                             <td>
                                 <div class="flex gap-1">
                                     <a href="{{ route('declaration_edit', $declaration->id) }}"
-                                        class="btn btn-sm btn-primary" title="{{ __('dictt.edit') }}">
+                                        class="btn btn-sm btn-outline-primary" title="{{ __('dictt.edit') }}">
                                         <i class="fa fa-pen w-4"></i></a>
                                     <!--  -->
-                                    <button wire:click="confirmDelete({{ $declaration->id }})" class="btn btn-sm btn-danger"
+                                    <button wire:click="confirmDelete({{ $declaration->id }})" class="btn btn-sm btn-outline-primary admin-danger-action"
                                         title="{{ __('dictt.delete') }}">
                                         <i class="fa fa-trash"></i>
                                     </button>

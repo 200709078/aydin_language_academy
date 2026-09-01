@@ -22,7 +22,7 @@
     @livewireStyles
 
     <!-- My Styles -->
-    <link rel="stylesheet" href="{{ asset('css/myStyles.css') }}?v=20260830-admin-profile-danger">
+    <link rel="stylesheet" href="{{ asset('css/myStyles.css') }}?v=20260901-admin-danger-actions-light">
 </head>
 
 <body class="font-sans antialiased">

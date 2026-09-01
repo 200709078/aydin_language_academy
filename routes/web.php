@@ -219,6 +219,10 @@ Route::group(['middleware' => ['auth', isAdmin_middle::class], 'prefix' => 'admi
             ->whereNumber('achievementYear')
             ->whereNumber('achievementEntry')
             ->name('entries.status.update');
+        Route::patch('/{achievementYear}/entries/{achievementEntry}/name-permission', [AdminAchievementController::class, 'updateEntryNamePermission'])
+            ->whereNumber('achievementYear')
+            ->whereNumber('achievementEntry')
+            ->name('entries.name-permission.update');
         Route::get('/{achievementYear}/edit', [AdminAchievementController::class, 'edit'])
             ->whereNumber('achievementYear')
             ->name('edit');
