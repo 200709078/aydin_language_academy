@@ -1,7 +1,7 @@
 <nav x-data="{
         sidebarOpen: (function () { var v = localStorage.getItem('adminSidebarOpenV2'); return v === null ? true : v === 'true'; })(),
         themesOpen: {{ request()->routeIs('levels_list', 'sub_levels_list', 'themes_list', 'admin.exercise-attempts.*') ? 'true' : 'false' }},
-        siteSettingsOpen: {{ request()->routeIs('reviews_list', 'review_edit', 'admin.messages.*', 'admin.news.*') ? 'true' : 'false' }},
+        siteSettingsOpen: {{ request()->routeIs('reviews_list', 'review_edit', 'admin.messages.*', 'admin.news.*', 'admin.campaigns.*', 'admin.achievements.*') ? 'true' : 'false' }},
         placementOpen: {{ request()->routeIs('placement_test_levels_*', 'placement_test_question_contents_*', 'placement_test_questions_*', 'placement_test_attempts_*') ? 'true' : 'false' }},
         userOpen: {{ request()->routeIs('admin.profile.show') ? 'true' : 'false' }},
         languageOpen: false,
@@ -58,7 +58,7 @@
 
                 <div class="admin-navigation-group">
                     <button type="button"
-                        class="admin-navigation-trigger {{ request()->routeIs('reviews_list', 'review_edit', 'admin.messages.*', 'admin.news.*') ? 'is-active' : '' }}"
+                        class="admin-navigation-trigger {{ request()->routeIs('reviews_list', 'review_edit', 'admin.messages.*', 'admin.news.*', 'admin.campaigns.*', 'admin.achievements.*') ? 'is-active' : '' }}"
                         @click="toggleGroup('siteSettingsOpen')" :aria-expanded="siteSettingsOpen.toString()">
                         <i class="fas fa-gear admin-navigation-icon" aria-hidden="true"></i>
                         <span class="admin-navigation-label">{{ __('dictt.site_settings') }}</span>
@@ -70,6 +70,8 @@
                         <a href="{{ route('reviews_list') }}" class="admin-navigation-collapse-link {{ request()->routeIs('reviews_list', 'review_edit') ? 'is-active' : '' }}"><i class="fas fa-star admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.reviews') }}</a>
                         <a href="{{ route('admin.messages.index') }}" class="admin-navigation-collapse-link {{ request()->routeIs('admin.messages.*') ? 'is-active' : '' }}"><i class="fas fa-envelope admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.contact_messages') }}</a>
                         <a href="{{ route('admin.news.index') }}" class="admin-navigation-collapse-link {{ request()->routeIs('admin.news.*') ? 'is-active' : '' }}"><i class="fas fa-newspaper admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.news') }}</a>
+                        <a href="{{ route('admin.campaigns.index') }}" class="admin-navigation-collapse-link {{ request()->routeIs('admin.campaigns.*') ? 'is-active' : '' }}"><i class="fas fa-tags admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.campaigns') }}</a>
+                        <a href="{{ route('admin.achievements.index') }}" class="admin-navigation-collapse-link {{ request()->routeIs('admin.achievements.*') ? 'is-active' : '' }}"><i class="fas fa-trophy admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.achievements') }}</a>
                     </div>
                 </div>
 

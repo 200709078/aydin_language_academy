@@ -44,18 +44,11 @@
                     <p class="mt-4 mb-0 clearfix"><i class="fa fa-book-open text-primary fs-4 float-start me-3" aria-hidden="true"></i>{{ __('dictt.shared_course_image_text') }}</p>
                 </div>
                 <div class="col-lg-6 order-1 wow fadeIn" data-wow-delay="0.1s">
-                    <h1 class="mb-4">{{ __('dictt.middle_school') }}</h1>
-                    <p>{{ __('dictt.middle_school_intro') }}</p>
-                    <p class="mb-2 fw-bold"><i class="far fa-check-circle text-primary me-3"></i>{{ __('dictt.middle_school_section_1_title') }}</p>
-                    <p class="mb-4">{{ __('dictt.middle_school_section_1_text') }}</p>
-                    <p class="mb-2 fw-bold"><i class="far fa-check-circle text-primary me-3"></i>{{ __('dictt.middle_school_section_2_title') }}</p>
-                    <p class="mb-4">{{ __('dictt.middle_school_section_2_text') }}</p>
-                    <p class="mb-2 fw-bold"><i class="far fa-check-circle text-primary me-3"></i>{{ __('dictt.middle_school_section_3_title') }}</p>
-                    <p class="mb-4">{{ __('dictt.middle_school_section_3_text') }}</p>
-                    <p class="mb-2 fw-bold"><i class="far fa-check-circle text-primary me-3"></i>{{ __('dictt.middle_school_section_4_title') }}</p>
-                    <p class="mb-4">{{ __('dictt.middle_school_section_4_text') }}</p>
-                    <p class="mb-2 fw-bold"><i class="far fa-check-circle text-primary me-3"></i>{{ __('dictt.middle_school_section_5_title') }}</p>
-                    <p class="mb-4">{{ __('dictt.middle_school_section_5_text') }}</p>
+                    <h1 class="mb-4 d-flex align-items-center gap-2">
+                        <i class="fa fa-graduation-cap text-primary fs-3 flex-shrink-0" aria-hidden="true"></i>
+                        <span>{{ __('dictt.middle_school') }}</span>
+                    </h1>
+                    <p class="mb-0">{{ __('dictt.middle_school_intro') }}</p>
                 </div>
             </div>
         </div>

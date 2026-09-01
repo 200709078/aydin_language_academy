@@ -9,8 +9,12 @@ use App\Http\Controllers\cont_sub_levels;
 use App\Http\Controllers\cont_themes;
 use App\Http\Controllers\cont_user_main;
 use App\Http\Controllers\AdminContactMessageController;
+use App\Http\Controllers\AdminAchievementController;
+use App\Http\Controllers\AdminCampaignController;
 use App\Http\Controllers\AdminNewsController;
 use App\Http\Controllers\Frontend\ContactController;
+use App\Http\Controllers\Frontend\AchievementController;
+use App\Http\Controllers\Frontend\CampaignController;
 use App\Http\Controllers\Frontend\ExerciseAttemptController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\NewsController;
@@ -155,6 +159,77 @@ Route::group(['middleware' => ['auth', isAdmin_middle::class], 'prefix' => 'admi
             ->name('force-destroy');
     });
 
+    Route::prefix('campaigns')->name('admin.campaigns.')->group(function (): void {
+        Route::get('/', [AdminCampaignController::class, 'index'])->name('index');
+        Route::get('/create', [AdminCampaignController::class, 'create'])->name('create');
+        Route::post('/', [AdminCampaignController::class, 'store'])->name('store');
+        Route::get('/settings', [AdminCampaignController::class, 'settings'])->name('settings');
+        Route::put('/settings', [AdminCampaignController::class, 'updateSettings'])->name('settings.update');
+        Route::get('/media-assets/{mediaAsset}', [AdminCampaignController::class, 'media'])
+            ->whereNumber('mediaAsset')
+            ->name('media.show');
+        Route::post('/{campaign}/move', [AdminCampaignController::class, 'move'])
+            ->whereNumber('campaign')
+            ->name('move');
+        Route::get('/{campaign}/edit', [AdminCampaignController::class, 'edit'])
+            ->whereNumber('campaign')
+            ->name('edit');
+        Route::put('/{campaign}', [AdminCampaignController::class, 'update'])
+            ->whereNumber('campaign')
+            ->name('update');
+        Route::patch('/{campaign}/status', [AdminCampaignController::class, 'updateStatus'])
+            ->whereNumber('campaign')
+            ->name('status.update');
+    });
+
+    Route::prefix('achievements')->name('admin.achievements.')->group(function (): void {
+        Route::get('/', [AdminAchievementController::class, 'index'])->name('index');
+        Route::get('/settings', [AdminAchievementController::class, 'settings'])->name('settings');
+        Route::put('/settings', [AdminAchievementController::class, 'updateSettings'])->name('settings.update');
+        Route::get('/media-assets/{mediaAsset}', [AdminAchievementController::class, 'media'])
+            ->whereNumber('mediaAsset')
+            ->name('media.show');
+        Route::get('/create', [AdminAchievementController::class, 'create'])->name('create');
+        Route::post('/', [AdminAchievementController::class, 'store'])->name('store');
+        Route::post('/{achievementYear}/move', [AdminAchievementController::class, 'move'])
+            ->whereNumber('achievementYear')
+            ->name('move');
+        Route::get('/{achievementYear}/entries', [AdminAchievementController::class, 'entriesIndex'])
+            ->whereNumber('achievementYear')
+            ->name('entries.index');
+        Route::get('/{achievementYear}/entries/create', [AdminAchievementController::class, 'createEntry'])
+            ->whereNumber('achievementYear')
+            ->name('entries.create');
+        Route::post('/{achievementYear}/entries', [AdminAchievementController::class, 'storeEntry'])
+            ->whereNumber('achievementYear')
+            ->name('entries.store');
+        Route::post('/{achievementYear}/entries/{achievementEntry}/move', [AdminAchievementController::class, 'moveEntry'])
+            ->whereNumber('achievementYear')
+            ->whereNumber('achievementEntry')
+            ->name('entries.move');
+        Route::get('/{achievementYear}/entries/{achievementEntry}/edit', [AdminAchievementController::class, 'editEntry'])
+            ->whereNumber('achievementYear')
+            ->whereNumber('achievementEntry')
+            ->name('entries.edit');
+        Route::put('/{achievementYear}/entries/{achievementEntry}', [AdminAchievementController::class, 'updateEntry'])
+            ->whereNumber('achievementYear')
+            ->whereNumber('achievementEntry')
+            ->name('entries.update');
+        Route::patch('/{achievementYear}/entries/{achievementEntry}/status', [AdminAchievementController::class, 'updateEntryStatus'])
+            ->whereNumber('achievementYear')
+            ->whereNumber('achievementEntry')
+            ->name('entries.status.update');
+        Route::get('/{achievementYear}/edit', [AdminAchievementController::class, 'edit'])
+            ->whereNumber('achievementYear')
+            ->name('edit');
+        Route::put('/{achievementYear}', [AdminAchievementController::class, 'update'])
+            ->whereNumber('achievementYear')
+            ->name('update');
+        Route::patch('/{achievementYear}/status', [AdminAchievementController::class, 'updateStatus'])
+            ->whereNumber('achievementYear')
+            ->name('status.update');
+    });
+
     Route::get('themes/{theme_id}/declarations_list', [cont_user_main::class, 'declarations_list'])->name('declarations_list');
     Route::get('themes/{theme_id}/exercises_list', [cont_user_main::class, 'exercises_list'])->name('exercises_list');
     Route::get('exercise/{exercise_id}/questions_list', [cont_user_main::class, 'questions_list'])->name('questions_list');
@@ -188,8 +263,14 @@ Route::group(['middleware' => ['auth', isAdmin_middle::class], 'prefix' => 'admi
 });
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::view('/basarilarimiz', 'frontend.achievements')->name('frontend.achievements');
-Route::view('/kampanyalarimiz', 'frontend.campaigns')->name('frontend.campaigns');
+Route::get('/basarilarimiz', [AchievementController::class, 'index'])->name('frontend.achievements');
+Route::get('/basarilarimiz/medya/{mediaAsset}', [AchievementController::class, 'media'])
+    ->whereNumber('mediaAsset')
+    ->name('frontend.achievements.media');
+Route::get('/kampanyalarimiz/medya/{mediaAsset}', [CampaignController::class, 'media'])
+    ->whereNumber('mediaAsset')
+    ->name('frontend.campaigns.media');
+Route::get('/kampanyalarimiz', [CampaignController::class, 'index'])->name('frontend.campaigns');
 Route::get('/haberler', [NewsController::class, 'index'])->name('frontend.news.index');
 Route::get('/haberler/{news:slug}/medya/{mediaAsset}', [NewsController::class, 'media'])
     ->whereNumber('mediaAsset')

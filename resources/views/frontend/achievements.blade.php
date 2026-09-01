@@ -29,26 +29,130 @@
     <link href="{{ asset('frontend/css/bootstrap.min.css') }}" rel="stylesheet">
 
     <!-- Template Stylesheet -->
-    <link href="{{ asset('frontend/css/style.css') }}" rel="stylesheet">
+    <link href="{{ asset('frontend/css/style.css') }}?v=20260901-achievements-intro-icon-4" rel="stylesheet">
 </head>
 
 <body>
     @include('frontend.partials.header')
 
     <!-- Achievements Start -->
-    <div class="container-xxl py-5">
+    <main class="container-xxl py-5 ala-achievements">
         <div class="container">
-            <div class="row g-5">
-                <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
-                    <img class="img-fluid rounded w-100" src="{{ asset('frontend/images/whoweare.png') }}" alt="{{ __('dictt.achievements') }}">
+            @php
+                $pageTitle = $pageSettings?->localized_title ?: __('dictt.achievements');
+                $pageDescription = $pageSettings?->localized_description ?: __('dictt.achievement_public_intro');
+                $hasHeroImage = $pageSettings?->heroMediaAsset !== null;
+            @endphp
+
+            <header class="row g-5 align-items-center mb-5">
+                <div class="{{ $hasHeroImage ? 'col-lg-7' : 'col-12' }} wow fadeIn" data-wow-delay="0.1s">
+                    <div class="ala-achievements__intro {{ $hasHeroImage ? '' : 'text-center mx-auto' }}">
+                        <div class="d-flex align-items-center gap-3 {{ $hasHeroImage ? '' : 'justify-content-center' }} mb-3">
+                            <span class="ala-achievements__intro-icon flex-shrink-0" aria-hidden="true">
+                                <i class="fa fa-trophy"></i>
+                            </span>
+                            <h1 class="mb-0">{{ $pageTitle }}</h1>
+                        </div>
+                        <p class="mb-0">{{ $pageDescription }}</p>
+                    </div>
                 </div>
-                <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
-                    <h1 class="mb-4">{{ __('dictt.achievements') }}</h1>
-                    <p>{{ __('dictt.achievements_placeholder') }}</p>
-                </div>
-            </div>
+                @if ($hasHeroImage)
+                    <div class="col-lg-5 wow fadeIn" data-wow-delay="0.5s">
+                        <div class="text-center">
+                            <img class="img-fluid" src="{{ route('frontend.achievements.media', $pageSettings->heroMediaAsset) }}"
+                                alt="{{ $pageTitle }}" style="max-height: 360px;">
+                        </div>
+                    </div>
+                @endif
+            </header>
+
+            @forelse ($achievementYears as $achievementYear)
+                @if ($loop->first)
+                    <div class="accordion ala-achievements__accordion wow fadeInUp" id="achievementYearsAccordion"
+                        data-wow-delay="0.15s">
+                @endif
+
+                <section class="accordion-item">
+                    @php
+                        $isInitiallyOpen = (int) $achievementYear->id === (int) $initialOpenYearId;
+                    @endphp
+                    <h2 class="accordion-header" id="achievement-year-heading-{{ $achievementYear->id }}">
+                        <button class="accordion-button {{ $isInitiallyOpen ? '' : 'collapsed' }}" type="button"
+                            data-bs-toggle="collapse" data-bs-target="#achievement-year-{{ $achievementYear->id }}"
+                            aria-expanded="{{ $isInitiallyOpen ? 'true' : 'false' }}"
+                            aria-controls="achievement-year-{{ $achievementYear->id }}">
+                            <span class="ala-achievements__year-heading">
+                                <span class="ala-achievements__year">{{ $achievementYear->year }}</span>
+                                <span class="ala-achievements__year-title">{{ $achievementYear->title }}</span>
+                            </span>
+                        </button>
+                    </h2>
+                    <div id="achievement-year-{{ $achievementYear->id }}"
+                        class="accordion-collapse collapse {{ $isInitiallyOpen ? 'show' : '' }}"
+                        aria-labelledby="achievement-year-heading-{{ $achievementYear->id }}">
+                        <div class="accordion-body">
+                            @if (filled($achievementYear->description))
+                                <p class="ala-achievements__year-description">{{ $achievementYear->description }}</p>
+                            @endif
+
+                            <div class="row g-4">
+                                @foreach ($achievementYear->publicEntries as $entry)
+                                    @php
+                                        $publicName = $entry->publicDisplayName();
+                                        $placement = collect([$entry->university_name, $entry->department_name])
+                                            ->filter(fn (?string $value): bool => filled($value))
+                                            ->implode(' · ');
+                                    @endphp
+                                    <div class="col-lg-6 d-flex">
+                                        <article class="ala-achievement-entry h-100 w-100">
+                                            <div class="ala-achievement-entry__identity">
+                                                <span class="ala-achievement-entry__icon" aria-hidden="true">
+                                                    <i class="fa fa-graduation-cap"></i>
+                                                </span>
+                                                <h3 class="h5 mb-0">
+                                                    {{ $publicName ?? __('dictt.achievement_anonymous_student') }}
+                                                </h3>
+                                            </div>
+
+                                            @if ($placement !== '')
+                                                <p class="ala-achievement-entry__placement">
+                                                    <i class="fa fa-university" aria-hidden="true"></i>{{ $placement }}
+                                                </p>
+                                            @endif
+
+                                            @if (filled($entry->description))
+                                                <p class="ala-achievement-entry__description">{{ $entry->description }}</p>
+                                            @endif
+
+                                            @if (filled($entry->branch) || filled($entry->card_sub_title))
+                                                <div class="ala-achievement-entry__tags">
+                                                    @if (filled($entry->card_sub_title))
+                                                        <span>{{ $entry->card_sub_title }}</span>
+                                                    @endif
+                                                    @if (filled($entry->branch))
+                                                        <span>{{ __('dictt.branch_' . $entry->branch) }}</span>
+                                                    @endif
+                                                </div>
+                                            @endif
+                                        </article>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                @if ($loop->last)
+                    </div>
+                @endif
+            @empty
+                <section class="ala-achievements__empty text-center wow fadeInUp" data-wow-delay="0.15s">
+                    <i class="fa fa-trophy" aria-hidden="true"></i>
+                    <p class="mb-0">{{ __('dictt.achievement_public_empty') }}</p>
+                </section>
+            @endforelse
         </div>
-    </div>
+    </main>
     <!-- Achievements End -->
 
     @include('frontend.partials.footer')

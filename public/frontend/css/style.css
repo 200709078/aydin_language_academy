@@ -1504,3 +1504,209 @@ body.frontend-home * {
         height: 3.25rem;
     }
 }
+
+/*** Campaigns ***/
+.ala-campaigns__intro-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 4rem;
+    height: 4rem;
+    color: var(--primary);
+    background: rgba(var(--primary-rgb), .12);
+    border-radius: 50%;
+    font-size: 1.5rem;
+}
+
+.ala-campaigns__card-description {
+    white-space: pre-line;
+}
+
+/*** Achievements ***/
+.ala-achievements__intro {
+    max-width: 720px;
+}
+
+.ala-achievements__intro-icon,
+.ala-achievement-entry__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    background: rgba(var(--primary-rgb), .12);
+    border-radius: 50%;
+}
+
+.ala-achievements__intro-icon {
+    width: 4rem;
+    height: 4rem;
+    font-size: 1.5rem;
+}
+
+.ala-achievements__intro p {
+    color: #526075;
+    font-size: 1.05rem;
+    line-height: 1.7;
+}
+
+.ala-achievements__accordion .accordion-item {
+    margin-bottom: 1rem;
+    overflow: hidden;
+    border: 1px solid rgba(var(--primary-rgb), .2);
+    border-radius: .5rem;
+    box-shadow: 0 .125rem .75rem rgba(0, 0, 0, .05);
+}
+
+.ala-achievements__accordion .accordion-button {
+    padding: 1.2rem 1.35rem;
+    font-weight: 700;
+}
+
+.ala-achievements__accordion .accordion-button::after {
+    display: none;
+}
+
+.ala-achievements__year-heading {
+    display: flex;
+    align-items: center;
+    gap: .85rem;
+    min-width: 0;
+}
+
+.ala-achievements__year {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    min-width: 4.4rem;
+    padding: .35rem .7rem;
+    color: #FFFFFF;
+    background-color: var(--primary);
+    border-radius: 999px;
+    font-size: .86rem;
+    letter-spacing: .04em;
+}
+
+.ala-achievements__year-title {
+    min-width: 0;
+    overflow: hidden;
+    color: var(--dark);
+    font-size: 1.05rem;
+    line-height: 1.45;
+    text-overflow: ellipsis;
+    overflow-wrap: anywhere;
+}
+
+.ala-achievements__year-description {
+    margin: 0 0 1.5rem;
+    color: #526075;
+    line-height: 1.7;
+}
+
+.ala-achievement-entry {
+    padding: 1.35rem;
+    border: 1px solid rgba(var(--primary-rgb), .2);
+    border-radius: .5rem;
+    background: #FFFFFF;
+    box-shadow: 0 .125rem .75rem rgba(0, 0, 0, .04);
+    transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+}
+
+.ala-achievement-entry:hover {
+    border-color: rgba(var(--primary-rgb), .48);
+    box-shadow: 0 .4rem 1.1rem rgba(var(--primary-rgb), .12);
+    transform: translateY(-3px);
+}
+
+.ala-achievement-entry__identity {
+    display: flex;
+    align-items: center;
+    gap: .85rem;
+    color: var(--dark);
+}
+
+.ala-achievement-entry__icon {
+    width: 2.6rem;
+    height: 2.6rem;
+    flex: 0 0 auto;
+    font-size: 1rem;
+}
+
+.ala-achievement-entry__placement {
+    margin: 1rem 0 0;
+    color: #526075;
+    line-height: 1.65;
+}
+
+.ala-achievement-entry__placement i {
+    width: 1.4rem;
+    color: var(--primary);
+}
+
+.ala-achievement-entry__description {
+    margin: .85rem 0 0;
+    color: #526075;
+    line-height: 1.65;
+    white-space: pre-line;
+}
+
+.ala-achievement-entry__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .45rem;
+    margin-top: 1rem;
+}
+
+.ala-achievement-entry__tags span {
+    padding: .25rem .55rem;
+    color: #526075;
+    background: #f3f7f7;
+    border-radius: .25rem;
+    font-size: .8rem;
+}
+
+.ala-achievements__empty {
+    padding: 3rem 1.5rem;
+    color: #526075;
+    border: 1px dashed rgba(var(--primary-rgb), .45);
+    border-radius: .5rem;
+    background: rgba(var(--primary-rgb), .05);
+}
+
+.ala-achievements__empty i {
+    display: block;
+    margin-bottom: 1rem;
+    color: var(--primary);
+    font-size: 2.25rem;
+}
+
+.ala-branch-secondary-image {
+    width: 75%;
+}
+
+@media (max-width: 575.98px) {
+    .ala-branch-secondary-image {
+        width: 100%;
+    }
+
+    .ala-achievements__accordion .accordion-button {
+        padding: 1rem;
+    }
+
+    .ala-achievements__year-heading {
+        gap: .65rem;
+    }
+
+    .ala-achievements__year {
+        min-width: 3.8rem;
+        padding: .3rem .55rem;
+    }
+
+    .ala-achievements__year-title {
+        font-size: .95rem;
+    }
+
+    .ala-achievement-entry {
+        padding: 1.1rem;
+    }
+}

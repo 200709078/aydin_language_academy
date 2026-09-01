@@ -40,7 +40,7 @@
         <div class="container">
             <div class="row g-5">
                 <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
-                    <img class="img-fluid rounded w-100" src="{{ asset('frontend/images/branches/ala_ortaca.jpg') }}" alt="Ortaca">
+                    <img class="img-fluid rounded w-100" src="{{ asset('frontend/images/branches/ortaca-1.jpg') }}" alt="Ortaca">
                     <div class="mt-4">
                         <a class="text-decoration-none" href="https://maps.google.com/?cid=8402083866868113807&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAMYASAF&hl=tr&gl=TR&source=embed" target="_blank" rel="noopener noreferrer">
                             <div class="bg-light rounded d-flex align-items-center p-3 mb-4">
@@ -119,6 +119,7 @@
                     <p>{{ __('dictt.ortaca_section_4_title') }}<br>{{ __('dictt.ortaca_section_4_text') }}</p>
                     <p>{{ __('dictt.ortaca_section_5_title') }}<br>{{ __('dictt.ortaca_section_5_text') }}</p>
                     <p>{{ __('dictt.ortaca_outro') }}</p>
+                    <img class="img-fluid rounded d-block mx-auto mt-4 ala-branch-secondary-image" src="{{ asset('frontend/images/branches/ortaca-2.png') }}" alt="Ortaca">
                 </div>
             </div>
         </div>

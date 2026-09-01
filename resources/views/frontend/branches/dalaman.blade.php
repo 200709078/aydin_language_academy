@@ -40,7 +40,7 @@
         <div class="container">
             <div class="row g-5">
                 <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
-                    <img class="img-fluid rounded w-100" src="{{ asset('frontend/images/branches/ala_dalaman.jpg') }}" alt="Dalaman">
+                    <img class="img-fluid rounded w-100" src="{{ asset('frontend/images/branches/dalaman-1.jpg') }}" alt="Dalaman">
                     <div class="mt-4">
                         <a class="text-decoration-none" href="https://maps.google.com/?cid=13451178032151641036&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAMYASAF&hl=tr&gl=TR&source=embed" target="_blank" rel="noopener noreferrer">
                             <div class="bg-light rounded d-flex align-items-center p-3 mb-4">
@@ -119,6 +119,7 @@
                     <p>{{ __('dictt.dalaman_section_4_title') }}<br>{{ __('dictt.dalaman_section_4_text') }}</p>
                     <p>{{ __('dictt.dalaman_section_5_title') }}<br>{{ __('dictt.dalaman_section_5_text') }}</p>
                     <p>{{ __('dictt.dalaman_outro') }}</p>
+                    <img class="img-fluid rounded d-block mx-auto mt-4 ala-branch-secondary-image" src="{{ asset('frontend/images/branches/dalaman-2.jpg') }}" alt="Dalaman">
                 </div>
             </div>
         </div>

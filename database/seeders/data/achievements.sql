@@ -1,0 +1,5 @@
+-- Demo snapshot for the rebuilt achievements table.
+INSERT INTO `achievements` (`id`, `year`, `title`, `description`, `status`, `sort_order`, `created_at`, `updated_at`) VALUES
+(1, 2024, 'DEMO AYDIN DİL AKADEMİSİ - 2024 BAŞARI TABLOSU', 'DEMO 2024 Yerleştirme Sonuçlarımız  |  Öğrencilerimizin 2024 YKS-DİL yerleştirme başarısıyla gurur duyuyoruz. (8 öğrenci)\r\nDEMO Özet: 11 İngilizce Öğretmenliği  •  4 İngiliz Dili ve Edebiyatı  •  1 İngilizce Mütercim ve Tercümanlık', 'published', 2, '2026-08-31 15:50:28', '2026-08-31 20:15:59'),
+(2, 2025, 'DEMO AYDIN DİL AKADEMİSİ - 2025 BAŞARI TABLOSU', 'DEMO 2025 Yerleştirme Sonuçlarımız  |  Emeklerini başarıya dönüştüren öğrencilerimizle gurur duyuyoruz.  (26 öğrenci)', 'published', NULL, '2026-08-31 15:50:28', '2026-08-31 17:42:14'),
+(3, 2026, 'DEMO AYDIN DİL AKADEMİSİ - 2026 BAŞARI TABLOSU', 'DEMO 2026 Yerleştirme Sonuçlarımız  |  Emeklerini başarıya dönüştüren öğrencilerimizle gurur duyuyoruz.  (26 öğrenci)', 'published', 1, '2026-08-31 15:50:28', '2026-08-31 18:44:46');

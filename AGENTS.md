@@ -232,7 +232,7 @@ Kalan aşamalar — kolaydan zora, her biri ayrı onayla:
 
 5) Başarılarımız: veri, izin ve yıllık kayıt sözleşmesi — [TODO]
    - Mevcut `/basarilarimiz` URL'si korunur. Verinin asıl kaynağı tasarım görselleri değil veritabanıdır; `public/frontend/images/achievements/` altındaki 2024/2025/2026 JPEG'leri yalnız görsel referans/şablondur ve public sayfada kullanılmaz.
-   - Yıllık “Gurur Tabloları” ile seçilmiş editoryal başarı hikâyeleri ayrı tutulur. Kısa Reviews yorumları bunların yerine geçmez veya onlardan türetilmez.
+   - Yıllık “Başarı Tabloları” ile seçilmiş editoryal başarı hikâyeleri ayrı tutulur. Kısa Reviews yorumları bunların yerine geçmez veya onlardan türetilmez.
    - Her öğrencinin gerçek adı private tutulur. İsim yayın izni en az `unknown / granted / denied`, izin tarihi ve iç notu ile kaydedilir. İzin yoksa veya belirsizse public sayfa, SEO metası, sitemap ve paylaşılabilir dışa aktarımlarda anonim gösterim kullanılır.
    - İsim izni; başarı hikâyesi metni, fotoğraf, video veya ses için ayrıca izin alındığı anlamına gelmez. Bu izinler ayrı alan/kanıt olarak değerlendirilir.
    - 2024 de diğer yıllar gibi öğrenci bazlı, isimli kaynak kayıtlarla girilecektir. 2026 için daha sonra iletilecek kişi bilgileri şu an eklenmez.

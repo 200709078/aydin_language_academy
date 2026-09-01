@@ -44,12 +44,11 @@
                     <p class="mt-4 mb-0 clearfix"><i class="fa fa-book-open text-primary fs-4 float-start me-3" aria-hidden="true"></i>{{ __('dictt.shared_course_image_text') }}</p>
                 </div>
                 <div class="col-lg-6 order-1 wow fadeIn" data-wow-delay="0.1s">
-                    <h1 class="mb-4">{{ __('dictt.speaking_clubs') }}</h1>
-                    <p>{{ __('dictt.speaking_clubs_intro') }}</p>
-                    <p class="mb-2 fw-bold"><i class="far fa-check-circle text-primary me-3"></i>{{ __('dictt.course_demo_item_1') }}</p>
-                    <p class="mb-4">{{ __('dictt.course_demo_item_1_text') }}</p>
-                    <p class="mb-2 fw-bold"><i class="far fa-check-circle text-primary me-3"></i>{{ __('dictt.course_demo_item_2') }}</p>
-                    <p class="mb-4">{{ __('dictt.course_demo_item_2_text') }}</p>
+                    <h1 class="mb-4 d-flex align-items-center gap-2">
+                        <i class="fa fa-graduation-cap text-primary fs-3 flex-shrink-0" aria-hidden="true"></i>
+                        <span>{{ __('dictt.speaking_clubs') }}</span>
+                    </h1>
+                    <p class="mb-0">{{ __('dictt.speaking_clubs_intro') }}</p>
                 </div>
             </div>
         </div>

@@ -29,7 +29,7 @@
     <link href="{{ asset('frontend/css/bootstrap.min.css') }}" rel="stylesheet">
 
     <!-- Template Stylesheet -->
-    <link href="{{ asset('frontend/css/style.css') }}" rel="stylesheet">
+    <link href="{{ asset('frontend/css/style.css') }}?v=20260901-campaign-intro-icon-3" rel="stylesheet">
 </head>
 
 <body>
@@ -38,54 +38,71 @@
     <!-- Campaigns Start -->
     <div class="container-xxl py-5">
         <div class="container">
+            @php
+                $pageTitle = $pageSettings?->localized_title ?: __('dictt.campaigns');
+                $pageDescription = $pageSettings?->localized_description;
+                $hasHeroImage = $pageSettings?->heroMediaAsset !== null;
+            @endphp
+
             <div class="row g-5 align-items-center mb-5">
-                <div class="col-lg-7 wow fadeIn" data-wow-delay="0.1s">
-                    <h1 class="mb-0">{{ __('dictt.campaigns_page_heading') }}</h1>
-                </div>
-                <div class="col-lg-5 wow fadeIn" data-wow-delay="0.5s">
-                    <div class="text-center">
-                        <img class="img-fluid" src="{{ asset('frontend/images/campaigns/campaign-1.png') }}" alt="{{ __('dictt.campaigns_image_alt') }}" style="max-height: 360px;">
+                <div class="{{ $hasHeroImage ? 'col-lg-7' : 'col-12' }} wow fadeIn" data-wow-delay="0.1s">
+                    <div class="{{ $hasHeroImage ? '' : 'text-center' }}">
+                        <div class="d-flex align-items-center gap-3 {{ $hasHeroImage ? '' : 'justify-content-center' }} {{ $pageDescription ? 'mb-3' : '' }}">
+                            <span class="ala-campaigns__intro-icon flex-shrink-0" aria-hidden="true">
+                                <i class="fa fa-bullhorn"></i>
+                            </span>
+                            <h1 class="mb-0">{{ $pageTitle }}</h1>
+                        </div>
+                        @if ($pageDescription)
+                            <p class="lead mb-0">{{ $pageDescription }}</p>
+                        @endif
                     </div>
                 </div>
+                @if ($hasHeroImage)
+                    <div class="col-lg-5 wow fadeIn" data-wow-delay="0.5s">
+                        <div class="text-center">
+                            <img class="img-fluid" src="{{ route('frontend.campaigns.media', $pageSettings->heroMediaAsset) }}" alt="{{ $pageTitle }}" style="max-height: 360px;">
+                        </div>
+                    </div>
+                @endif
             </div>
 
             <div class="row g-4">
-                <div class="col-lg-6 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="service-item bg-light rounded h-100 p-5">
-                        <div class="d-inline-flex align-items-center justify-content-center bg-white rounded-circle mb-4" style="width: 65px; height: 65px;">
-                            <img src="{{ asset('frontend/images/campaigns/teachings.png') }}" alt="" style="width: 42px; height: 42px; object-fit: contain;">
-                        </div>
-                        <h4 class="mb-3">{{ __('dictt.campaigns_summer_winter_title') }}</h4>
-                        <p class="mb-0">{{ __('dictt.campaigns_summer_winter_text') }}</p>
+                @forelse ($campaigns as $campaign)
+                    @php
+                        $campaignUrl = $campaign->publicLinkUrl();
+                        $opensInNewWindow = $campaignUrl !== null && $campaign->opensInNewWindow();
+                        $delay = number_format(0.1 + (($loop->index % 4) * 0.2), 1);
+                    @endphp
+
+                    <div class="col-lg-6 col-md-6 d-flex wow fadeInUp" data-wow-delay="{{ $delay }}s">
+                        <article class="service-item bg-light rounded h-100 w-100 p-5 d-flex flex-column">
+                            <div class="d-flex align-items-center gap-3 mb-3">
+                                <div class="d-inline-flex flex-shrink-0 align-items-center justify-content-center bg-white rounded-circle"
+                                    style="width: 65px; height: 65px;">
+                                    <i class="fa fa-bullhorn fa-lg text-primary" aria-hidden="true"></i>
+                                </div>
+                                <h2 class="h4 mb-0">{{ $campaign->localized_title }}</h2>
+                            </div>
+                            <p class="ala-campaigns__card-description {{ $campaignUrl ? 'mb-4' : 'mb-0' }}">{{ $campaign->localized_description }}</p>
+
+                            @if ($campaignUrl)
+                                <a
+                                    class="btn btn-outline-primary align-self-start mt-auto"
+                                    href="{{ $campaignUrl }}"
+                                    @if ($opensInNewWindow) target="_blank" rel="noopener noreferrer" @endif
+                                >
+                                    {{ __('dictt.campaign_view') }}
+                                    <i class="fa {{ $opensInNewWindow ? 'fa-external-link-alt' : 'fa-arrow-right' }} ms-2" aria-hidden="true"></i>
+                                </a>
+                            @endif
+                        </article>
                     </div>
-                </div>
-                <div class="col-lg-6 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
-                    <div class="service-item bg-light rounded h-100 p-5">
-                        <div class="d-inline-flex align-items-center justify-content-center bg-white rounded-circle mb-4" style="width: 65px; height: 65px;">
-                            <img src="{{ asset('frontend/images/campaigns/exam.png') }}" alt="" style="width: 42px; height: 42px; object-fit: contain;">
-                        </div>
-                        <h4 class="mb-3">{{ __('dictt.campaigns_placement_discount_title') }}</h4>
-                        <p class="mb-0">{{ __('dictt.campaigns_placement_discount_text') }}</p>
+                @empty
+                    <div class="col-12">
+                        <p class="text-center text-muted mb-0">{{ __('dictt.campaign_public_empty') }}</p>
                     </div>
-                </div>
-                <div class="col-lg-6 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
-                    <div class="service-item bg-light rounded h-100 p-5">
-                        <div class="d-inline-flex align-items-center justify-content-center bg-white rounded-circle mb-4" style="width: 65px; height: 65px;">
-                            <img src="{{ asset('frontend/images/campaigns/linguistics.png') }}" alt="" style="width: 42px; height: 42px; object-fit: contain;">
-                        </div>
-                        <h4 class="mb-3">{{ __('dictt.campaigns_scholarship_title') }}</h4>
-                        <p class="mb-0">{{ __('dictt.campaigns_scholarship_text') }}</p>
-                    </div>
-                </div>
-                <div class="col-lg-6 col-md-6 wow fadeInUp" data-wow-delay="0.7s">
-                    <div class="service-item bg-light rounded h-100 p-5">
-                        <div class="d-inline-flex align-items-center justify-content-center bg-white rounded-circle mb-4" style="width: 65px; height: 65px;">
-                            <img src="{{ asset('frontend/images/campaigns/communicate.png') }}" alt="" style="width: 42px; height: 42px; object-fit: contain;">
-                        </div>
-                        <h4 class="mb-3">{{ __('dictt.campaigns_instagram_title') }}</h4>
-                        <p class="mb-0">{{ __('dictt.campaigns_instagram_text') }}</p>
-                    </div>
-                </div>
+                @endforelse
             </div>
         </div>
     </div>

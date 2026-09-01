@@ -134,13 +134,24 @@
                     <p class="mb-4">{{ __('dictt.why_us_text_4') }}</p>
                 </div>
                 <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
-                    <img class="img-fluid rounded w-100" src="{{ asset('frontend/images/whyus.jpg') }}" alt="{{ __('dictt.why_us_image_alt') }}">
+                    <img class="img-fluid rounded w-100" src="{{ asset('frontend/images/ana-2.png') }}" alt="{{ __('dictt.why_us_image_alt') }}">
                 </div>
             </div>
         </div>
     </div>
     <!-- Why Us End -->
 
+    <!-- Courses Visual Start -->
+    <div class="container-xxl pb-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 wow fadeIn" data-wow-delay="0.1s">
+                    <img class="img-fluid rounded w-100" src="{{ asset('frontend/images/ana-3.png') }}" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Courses Visual End -->
 
     <!-- Service Start -->
     <div class="container-xxl py-5 ala-courses">
