@@ -1,4 +1,4 @@
-<nav x-data="{
+<nav id="admin-navigation" x-data="{
         sidebarOpen: (function () { var v = localStorage.getItem('adminSidebarOpenV2'); return v === null ? true : v === 'true'; })(),
         themesOpen: {{ request()->routeIs('levels_list', 'sub_levels_list', 'themes_list', 'admin.exercise-attempts.*') ? 'true' : 'false' }},
         siteSettingsOpen: {{ request()->routeIs('admin.users.*', 'reviews_list', 'review_edit', 'admin.messages.*', 'admin.news.*', 'admin.campaigns.*', 'admin.achievements.*') ? 'true' : 'false' }},
@@ -17,10 +17,28 @@
                 return;
             }
             this[group] = !this[group];
+        },
+        closeSidebarOnMobile() {
+            if (window.matchMedia('(max-width: 1023.98px)').matches) {
+                this.sidebarOpen = false;
+                localStorage.setItem('adminSidebarOpenV2', 'false');
+            }
         }
     }"
+    x-init="$nextTick(() => { $el.style.transition = ''; })"
     :class="{ 'is-collapsed': ! sidebarOpen }"
-    class="admin-navigation border-b border-gray-200 bg-white shadow-sm">
+    class="admin-navigation border-b border-gray-200 bg-white shadow-sm"
+    style="transition: none;">
+    <script>
+        (function () {
+            try {
+                var v = localStorage.getItem('adminSidebarOpenV2');
+                var isOpen = v === null ? true : v === 'true';
+                var nav = document.getElementById('admin-navigation');
+                if (nav && !isOpen) nav.classList.add('is-collapsed');
+            } catch (e) {}
+        })();
+    </script>
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <a href="{{ route('admin') }}"
             class="admin-navigation-brand"
@@ -46,7 +64,7 @@
                         </svg>
                     </button>
                     <div x-show="userOpen" x-transition class="admin-navigation-collapse" style="display: none;">
-                        <a href="{{ route('admin.profile.show') }}" class="admin-navigation-collapse-link {{ request()->routeIs('admin.profile.show') ? 'is-active' : '' }}"><i class="fas fa-user-pen admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.profile') }}</a>
+                        <a @click="closeSidebarOnMobile()" href="{{ route('admin.profile.show') }}" class="admin-navigation-collapse-link {{ request()->routeIs('admin.profile.show') ? 'is-active' : '' }}"><i class="fas fa-user-pen admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.profile') }}</a>
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
                             <button type="submit" class="admin-navigation-collapse-link w-full text-left"><i class="fas fa-right-from-bracket admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.logout') }}</button>
@@ -67,12 +85,12 @@
                         </svg>
                     </button>
                     <div x-show="siteSettingsOpen" x-transition class="admin-navigation-collapse" style="display: none;">
-                        <a href="{{ route('admin.users.index') }}" class="admin-navigation-collapse-link {{ request()->routeIs('admin.users.*') ? 'is-active' : '' }}"><i class="fas fa-users admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.users') }}</a>
-                        <a href="{{ route('reviews_list') }}" class="admin-navigation-collapse-link {{ request()->routeIs('reviews_list', 'review_edit') ? 'is-active' : '' }}"><i class="fas fa-star admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.reviews') }}</a>
-                        <a href="{{ route('admin.messages.index') }}" class="admin-navigation-collapse-link {{ request()->routeIs('admin.messages.*') ? 'is-active' : '' }}"><i class="fas fa-envelope admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.contact_messages') }}</a>
-                        <a href="{{ route('admin.news.index') }}" class="admin-navigation-collapse-link {{ request()->routeIs('admin.news.*') ? 'is-active' : '' }}"><i class="fas fa-newspaper admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.news') }}</a>
-                        <a href="{{ route('admin.campaigns.index') }}" class="admin-navigation-collapse-link {{ request()->routeIs('admin.campaigns.*') ? 'is-active' : '' }}"><i class="fas fa-tags admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.campaigns') }}</a>
-                        <a href="{{ route('admin.achievements.index') }}" class="admin-navigation-collapse-link {{ request()->routeIs('admin.achievements.*') ? 'is-active' : '' }}"><i class="fas fa-trophy admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.achievements') }}</a>
+                        <a @click="closeSidebarOnMobile()" href="{{ route('admin.users.index') }}" class="admin-navigation-collapse-link {{ request()->routeIs('admin.users.*') ? 'is-active' : '' }}"><i class="fas fa-users admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.users') }}</a>
+                        <a @click="closeSidebarOnMobile()" href="{{ route('reviews_list') }}" class="admin-navigation-collapse-link {{ request()->routeIs('reviews_list', 'review_edit') ? 'is-active' : '' }}"><i class="fas fa-star admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.reviews') }}</a>
+                        <a @click="closeSidebarOnMobile()" href="{{ route('admin.messages.index') }}" class="admin-navigation-collapse-link {{ request()->routeIs('admin.messages.*') ? 'is-active' : '' }}"><i class="fas fa-envelope admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.contact_messages') }}</a>
+                        <a @click="closeSidebarOnMobile()" href="{{ route('admin.news.index') }}" class="admin-navigation-collapse-link {{ request()->routeIs('admin.news.*') ? 'is-active' : '' }}"><i class="fas fa-newspaper admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.news') }}</a>
+                        <a @click="closeSidebarOnMobile()" href="{{ route('admin.campaigns.index') }}" class="admin-navigation-collapse-link {{ request()->routeIs('admin.campaigns.*') ? 'is-active' : '' }}"><i class="fas fa-tags admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.campaigns') }}</a>
+                        <a @click="closeSidebarOnMobile()" href="{{ route('admin.achievements.index') }}" class="admin-navigation-collapse-link {{ request()->routeIs('admin.achievements.*') ? 'is-active' : '' }}"><i class="fas fa-trophy admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.achievements') }}</a>
                     </div>
                 </div>
 
@@ -89,10 +107,10 @@
                         </svg>
                     </button>
                     <div x-show="themesOpen" x-transition class="admin-navigation-collapse" style="display: none;">
-                        <a href="{{ route('levels_list') }}" class="admin-navigation-collapse-link {{ request()->routeIs('levels_list') ? 'is-active' : '' }}"><i class="fas fa-list-ol admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.levels') }}</a>
-                        <a href="{{ route('sub_levels_list') }}" class="admin-navigation-collapse-link {{ request()->routeIs('sub_levels_list') ? 'is-active' : '' }}"><i class="fas fa-sitemap admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.sublevels') }}</a>
-                        <a href="{{ route('themes_list') }}" class="admin-navigation-collapse-link {{ request()->routeIs('themes_list') ? 'is-active' : '' }}"><i class="fas fa-palette admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.themes') }}</a>
-                        <a href="{{ route('admin.exercise-attempts.index') }}" class="admin-navigation-collapse-link {{ request()->routeIs('admin.exercise-attempts.*') ? 'is-active' : '' }}"><i class="fas fa-clipboard-list admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.exercise_attempt_results') }}</a>
+                        <a @click="closeSidebarOnMobile()" href="{{ route('levels_list') }}" class="admin-navigation-collapse-link {{ request()->routeIs('levels_list') ? 'is-active' : '' }}"><i class="fas fa-list-ol admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.levels') }}</a>
+                        <a @click="closeSidebarOnMobile()" href="{{ route('sub_levels_list') }}" class="admin-navigation-collapse-link {{ request()->routeIs('sub_levels_list') ? 'is-active' : '' }}"><i class="fas fa-sitemap admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.sublevels') }}</a>
+                        <a @click="closeSidebarOnMobile()" href="{{ route('themes_list') }}" class="admin-navigation-collapse-link {{ request()->routeIs('themes_list') ? 'is-active' : '' }}"><i class="fas fa-palette admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.themes') }}</a>
+                        <a @click="closeSidebarOnMobile()" href="{{ route('admin.exercise-attempts.index') }}" class="admin-navigation-collapse-link {{ request()->routeIs('admin.exercise-attempts.*') ? 'is-active' : '' }}"><i class="fas fa-clipboard-list admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.exercise_attempt_results') }}</a>
                     </div>
                 </div>
 
@@ -109,10 +127,10 @@
                         </svg>
                     </button>
                     <div x-show="placementOpen" x-transition class="admin-navigation-collapse" style="display: none;">
-                        <a href="{{ route('placement_test_levels_list') }}" class="admin-navigation-collapse-link {{ request()->routeIs('placement_test_levels_list') ? 'is-active' : '' }}"><i class="fas fa-list-ol admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.levels') }}</a>
-                        <a href="{{ route('placement_test_question_contents_list') }}" class="admin-navigation-collapse-link {{ request()->routeIs('placement_test_question_contents_list') ? 'is-active' : '' }}"><i class="fas fa-photo-film admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.question_contents') }}</a>
-                        <a href="{{ route('placement_test_questions_list') }}" class="admin-navigation-collapse-link {{ request()->routeIs('placement_test_questions_list') ? 'is-active' : '' }}"><i class="fas fa-circle-question admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.questions') }}</a>
-                        <a href="{{ route('placement_test_attempts_list') }}" class="admin-navigation-collapse-link {{ request()->routeIs('placement_test_attempts_*') ? 'is-active' : '' }}"><i class="fas fa-clipboard-list admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.placement_test_results') }}</a>
+                        <a @click="closeSidebarOnMobile()" href="{{ route('placement_test_levels_list') }}" class="admin-navigation-collapse-link {{ request()->routeIs('placement_test_levels_list') ? 'is-active' : '' }}"><i class="fas fa-list-ol admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.levels') }}</a>
+                        <a @click="closeSidebarOnMobile()" href="{{ route('placement_test_question_contents_list') }}" class="admin-navigation-collapse-link {{ request()->routeIs('placement_test_question_contents_list') ? 'is-active' : '' }}"><i class="fas fa-photo-film admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.question_contents') }}</a>
+                        <a @click="closeSidebarOnMobile()" href="{{ route('placement_test_questions_list') }}" class="admin-navigation-collapse-link {{ request()->routeIs('placement_test_questions_list') ? 'is-active' : '' }}"><i class="fas fa-circle-question admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.questions') }}</a>
+                        <a @click="closeSidebarOnMobile()" href="{{ route('placement_test_attempts_list') }}" class="admin-navigation-collapse-link {{ request()->routeIs('placement_test_attempts_*') ? 'is-active' : '' }}"><i class="fas fa-clipboard-list admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.placement_test_results') }}</a>
                     </div>
                 </div>
 
@@ -129,8 +147,8 @@
                         </svg>
                     </button>
                     <div x-show="languageOpen" x-transition class="admin-navigation-collapse" style="display: none;">
-                        <a href="{{ route('changeLanguage', 'tr') }}" class="admin-navigation-collapse-link {{ session('locale', config('app.locale')) === 'tr' ? 'is-active' : '' }}"><span class="admin-nav-lang-badge">TR</span>{{ __('dictt.lang_tr') }}</a>
-                        <a href="{{ route('changeLanguage', 'en') }}" class="admin-navigation-collapse-link {{ session('locale', config('app.locale')) === 'en' ? 'is-active' : '' }}"><span class="admin-nav-lang-badge">EN</span>{{ __('dictt.lang_en') }}</a>
+                        <a @click="closeSidebarOnMobile()" href="{{ route('changeLanguage', 'tr') }}" class="admin-navigation-collapse-link {{ session('locale', config('app.locale')) === 'tr' ? 'is-active' : '' }}"><span class="admin-nav-lang-badge">TR</span>{{ __('dictt.lang_tr') }}</a>
+                        <a @click="closeSidebarOnMobile()" href="{{ route('changeLanguage', 'en') }}" class="admin-navigation-collapse-link {{ session('locale', config('app.locale')) === 'en' ? 'is-active' : '' }}"><span class="admin-nav-lang-badge">EN</span>{{ __('dictt.lang_en') }}</a>
                     </div>
                 </div>
 

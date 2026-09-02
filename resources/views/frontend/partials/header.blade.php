@@ -1,8 +1,9 @@
     <!-- Spinner Start -->
-    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex flex-column align-items-center justify-content-center gap-3">
         <div class="spinner-grow text-primary" style="width: 3rem; height: 3rem;" role="status">
             <span class="sr-only">{{ __('dictt.loading') }}</span>
         </div>
+        <img src="{{ asset('frontend/images/logo/logo-3.png') }}" alt="Aydın Language Academy" style="max-width: 160px; height: auto;">
     </div>
     <!-- Spinner End -->
 

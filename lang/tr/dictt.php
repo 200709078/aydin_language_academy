@@ -538,7 +538,7 @@ return [
     'pt_no_questions' => 'Henüz soru bulunmuyor.',
     'pt_question_delete_confirm_with_snapshots' => 'Bu soru silinsin mi? Geçmiş sınav snapshot kayıtları korunacak, ancak kaynak soru bağlantısı kaldırılacaktır.',
     'pt_question_delete_confirm' => 'Bu soru silinsin mi?',
-    'pt_question_used_alert' => 'Bu soru daha önce sınavda kullanılmış. Buradaki değişiklikler yalnızca yeni sınavları etkiler; geçmiş snapshot kayıtları korunur.',
+    'pt_question_used_alert' => 'Bu soru daha önce sınavda kullanılmış. Buradaki değişiklikler yalnızca yeni sınavları etkiler. Geçmiş sınav kayıtları aynen korunur.',
     'pt_options_hint' => 'En az iki şık ekleyin ve tam olarak bir doğru şık seçin.',
     'pt_option_correct_suffix' => 'şık doğru cevap',
     'pt_option_placeholder_suffix' => 'şık',
