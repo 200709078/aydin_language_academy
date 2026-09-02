@@ -153,6 +153,9 @@ Route::group(['middleware' => ['auth', isAdmin_middle::class], 'prefix' => 'admi
         Route::put('/{news}', [AdminNewsController::class, 'update'])
             ->whereNumber('news')
             ->name('update');
+        Route::post('/{news}/move', [AdminNewsController::class, 'move'])
+            ->whereNumber('news')
+            ->name('move');
         Route::patch('/{news}/archive', [AdminNewsController::class, 'archive'])
             ->whereNumber('news')
             ->name('archive');

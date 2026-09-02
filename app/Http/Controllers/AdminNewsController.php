@@ -6,6 +6,7 @@ use App\Models\MediaAsset;
 use App\Models\News;
 use App\Models\NewsContentBlock;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
@@ -26,7 +27,6 @@ class AdminNewsController extends Controller
     private const SOURCE_UPLOAD = 'upload';
 
     private const SOURCE_EXTERNAL = 'external';
-
     /**
      * List all non-deleted news records for administrators.
      */
@@ -46,6 +46,7 @@ class AdminNewsController extends Controller
         }
 
         $search = trim((string) $request->query('q', ''));
+
 
         $news = News::query()
             ->with('coverMediaAsset')
@@ -68,13 +69,26 @@ class AdminNewsController extends Controller
             });
         }
 
+        if ($filter === 'all' && $search === '') {
+            $news = $news
+                ->orderByRaw('sort_order IS NULL')
+                ->orderBy('sort_order')
+                ->orderBy('id');
+        } else {
+            $news = $news
+                ->orderByRaw("CASE status WHEN 'draft' THEN 0 WHEN 'published' THEN 1 WHEN 'archived' THEN 2 ELSE 3 END")
+                ->orderByDesc('updated_at');
+        }
+
         $news = $news
-            ->orderByRaw("CASE status WHEN 'draft' THEN 0 WHEN 'published' THEN 1 WHEN 'archived' THEN 2 ELSE 3 END")
-            ->orderByDesc('updated_at')
             ->paginate(20)
             ->withQueryString();
 
-        return view('admin.news.index', compact('filter', 'news', 'search'));
+        $moveAvailability = $filter === 'all' && $search === ''
+            ? $this->newsMoveAvailability()
+            : [];
+
+        return view('admin.news.index', compact('filter', 'moveAvailability', 'news', 'search'));
     }
 
     /**
@@ -105,6 +119,8 @@ class AdminNewsController extends Controller
         if ($attributes['status'] === News::STATUS_PUBLISHED) {
             $attributes['published_by'] = $request->user()->id;
         }
+
+        $attributes['sort_order'] = ((int) News::query()->max('sort_order')) + 1;
 
         $news = News::create($attributes);
 
@@ -155,6 +171,51 @@ class AdminNewsController extends Controller
         return redirect()
             ->route('admin.news.edit', $news)
             ->with('success', __('dictt.news_updated'));
+    }
+
+    /**
+     * Swap a news record with its immediately adjacent global neighbour (only for "Tümü" ordering).
+     */
+    public function move(Request $request, News $news): RedirectResponse
+    {
+        $direction = $request->validate([
+            'direction' => ['required', Rule::in(['up', 'down'])],
+        ])['direction'];
+
+        DB::transaction(function () use ($direction, $news): void {
+            $newsItems = $this->orderedNews()
+                ->lockForUpdate()
+                ->get();
+            $this->ensureNewsSortOrdersCanBeSwapped($newsItems);
+
+            $currentIndex = $newsItems->search(
+                fn (News $orderedNews): bool => (int) $orderedNews->id === (int) $news->id,
+            );
+
+            if ($currentIndex === false) {
+                return;
+            }
+
+            $neighbor = $newsItems->get(
+                $direction === 'up' ? $currentIndex - 1 : $currentIndex + 1,
+            );
+
+            if ($neighbor === null) {
+                return;
+            }
+
+            /** @var News $current */
+            $current = $newsItems->get($currentIndex);
+            $currentSortOrder = (int) $current->sort_order;
+            $neighborSortOrder = (int) $neighbor->sort_order;
+            $temporarySortOrder = ((int) $newsItems->max('sort_order')) + 1;
+
+            $current->update(['sort_order' => $temporarySortOrder]);
+            $neighbor->update(['sort_order' => $currentSortOrder]);
+            $current->update(['sort_order' => $neighborSortOrder]);
+        });
+
+        return redirect()->back();
     }
 
     /**
@@ -616,6 +677,78 @@ class AdminNewsController extends Controller
     private function nextBlockPosition(News $news): int
     {
         return ((int) $news->contentBlocks()->max('position')) + 1;
+    }
+
+    /**
+     * @return Builder<News>
+     */
+    private function orderedNews(): Builder
+    {
+        return News::query()
+            ->orderByRaw('sort_order IS NULL')
+            ->orderBy('sort_order')
+            ->orderBy('id');
+    }
+
+    /**
+     * @return array<int, array{up: bool, down: bool}>
+     */
+    private function newsMoveAvailability(): array
+    {
+        $newsIds = $this->orderedNews()
+            ->pluck('id')
+            ->all();
+        $lastIndex = count($newsIds) - 1;
+        $availability = [];
+
+        foreach ($newsIds as $index => $newsId) {
+            $availability[(int) $newsId] = [
+                'up' => $index > 0,
+                'down' => $index < $lastIndex,
+            ];
+        }
+
+        return $availability;
+    }
+
+    /**
+     * @param  EloquentCollection<int, News>  $newsItems
+     */
+    private function ensureNewsSortOrdersCanBeSwapped(EloquentCollection $newsItems): void
+    {
+        $seenSortOrders = [];
+        $needsNormalization = false;
+
+        foreach ($newsItems as $news) {
+            $sortOrder = $news->sort_order;
+
+            if (
+                $sortOrder === null
+                || ! is_numeric($sortOrder)
+                || (int) $sortOrder < 1
+                || isset($seenSortOrders[(int) $sortOrder])
+            ) {
+                $needsNormalization = true;
+
+                break;
+            }
+
+            $seenSortOrders[(int) $sortOrder] = true;
+        }
+
+        if (! $needsNormalization) {
+            return;
+        }
+
+        $temporaryStart = max(1, (int) $newsItems->max('sort_order')) + $newsItems->count() + 1;
+
+        foreach ($newsItems->values() as $index => $news) {
+            $news->update(['sort_order' => $temporaryStart + $index]);
+        }
+
+        foreach ($newsItems->values() as $index => $news) {
+            $news->update(['sort_order' => $index + 1]);
+        }
     }
 
     private function nullableTrimmedValue(?string $value): ?string

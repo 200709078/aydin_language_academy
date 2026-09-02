@@ -84,7 +84,7 @@
                                 <td class="text-nowrap">{{ $item->published_at?->format('d.m.Y H:i') ?? '—' }}</td>
                                 <td class="text-nowrap">{{ $item->updated_at?->format('d.m.Y H:i') ?? '—' }}</td>
                                 <td>
-                                    <div class="d-flex gap-1">
+                                    <div class="d-flex flex-wrap align-items-center gap-1">
                                         <a href="{{ route('admin.news.edit', $item) }}" class="btn btn-sm btn-outline-primary"
                                             title="{{ __('dictt.edit') }}">
                                             <i class="fa fa-pen" aria-hidden="true"></i>
@@ -131,6 +131,25 @@
                                                     <i class="fa fa-archive" aria-hidden="true"></i>
                                                     <span class="visually-hidden">{{ __('dictt.news_archive_action') }}</span>
                                                 </button>
+                                            </form>
+                                        @endif
+                                        @if ($filter === 'all' && $search === '')
+                                            @php
+                                                $canMoveUp = $moveAvailability[$item->id]['up'] ?? false;
+                                                $canMoveDown = $moveAvailability[$item->id]['down'] ?? false;
+                                            @endphp
+                                            <form method="POST" action="{{ route('admin.news.move', $item) }}" class="d-inline-block">
+                                                @csrf
+                                                <div class="btn-group-vertical btn-group-sm" role="group" aria-label="{{ __('dictt.move_up') }} / {{ __('dictt.move_down') }}">
+                                                    <button type="submit" name="direction" value="up" class="btn btn-outline-secondary px-2 py-0" @disabled(! $canMoveUp) title="{{ __('dictt.move_up') }}">
+                                                        <i class="fa-solid fa-chevron-up fa-xs" aria-hidden="true"></i>
+                                                        <span class="visually-hidden">{{ __('dictt.move_up') }}</span>
+                                                    </button>
+                                                    <button type="submit" name="direction" value="down" class="btn btn-outline-secondary px-2 py-0" @disabled(! $canMoveDown) title="{{ __('dictt.move_down') }}">
+                                                        <i class="fa-solid fa-chevron-down fa-xs" aria-hidden="true"></i>
+                                                        <span class="visually-hidden">{{ __('dictt.move_down') }}</span>
+                                                    </button>
+                                                </div>
                                             </form>
                                         @endif
                                     </div>
