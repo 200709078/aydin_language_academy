@@ -30,6 +30,7 @@
             ->whereIn('id', $headerDocumentSubLevelsByLevel->keys()->all())
             ->orderBy('id')
             ->get(['id', 'name', 'slug']);
+        $headerHasDocumentThemes = $headerDocumentLevels->isNotEmpty();
         $headerActiveDocumentLevelId = null;
         $headerActiveDocumentSubLevelId = null;
 
@@ -140,6 +141,7 @@
                 'headerActiveDocumentLevelId' => $headerActiveDocumentLevelId,
                 'headerActiveDocumentSubLevelId' => $headerActiveDocumentSubLevelId,
                 'headerHasActiveDocument' => $headerHasActiveDocument,
+                'headerHasDocumentThemes' => $headerHasDocumentThemes,
             ])
         </div>
     </header>
@@ -150,6 +152,7 @@
         'fsmActiveLevelId' => $headerActiveDocumentLevelId,
         'fsmActiveSubLevelId' => $headerActiveDocumentSubLevelId,
         'fsmHasActiveDocument' => $headerHasActiveDocument,
+        'fsmHasDocumentThemes' => $headerHasDocumentThemes,
     ])
 
     <script src="{{ asset('frontend/js/whatsapp-link.js') }}?v=1" defer></script>

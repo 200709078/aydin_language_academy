@@ -63,27 +63,33 @@
                         <span>{{ __('dictt.documents') }}</span>
                     </a>
                     <div id="frontendMobileDocumentGroups" class="dropdown-menu bg-light rounded-0 rounded-bottom m-0">
-                        @foreach ($headerDocumentLevels as $headerDocumentLevel)
-                            @php
-                                $mobileDocumentLevelCollapseId = 'frontendMobileDocumentLevel' . $headerDocumentLevel->id;
-                                $mobileDocumentSubLevels = $headerDocumentSubLevelsByLevel->get($headerDocumentLevel->id, collect());
-                                $mobileDocumentLevelIsActive = $headerActiveDocumentLevelId == $headerDocumentLevel->id;
-                            @endphp
-                            <button type="button" class="nav-item nav-link mobile-document-level-toggle border-0 bg-transparent w-100 text-start {{ $mobileDocumentLevelIsActive ? 'active' : '' }}" data-bs-toggle="collapse" data-bs-target="#{{ $mobileDocumentLevelCollapseId }}" aria-controls="{{ $mobileDocumentLevelCollapseId }}" aria-expanded="false"><i class="fa fa-book-open fa-sm fa-fw me-2" aria-hidden="true"></i>{{ mb_strtoupper($headerDocumentLevel->name, 'UTF-8') }}</button>
-                            <div id="{{ $mobileDocumentLevelCollapseId }}" class="collapse mobile-document-level-content" data-bs-parent="#frontendMobileDocumentGroups">
-                                @foreach ($mobileDocumentSubLevels as $headerDocumentSubLevel)
-                                    @php
-                                        $mobileDocumentSubLevelIsActive = $mobileDocumentLevelIsActive
-                                            && $headerActiveDocumentSubLevelId == $headerDocumentSubLevel->id;
-                                    @endphp
-                                    @auth
-                                        <a href="{{ route('frontend.themes.list', [$headerDocumentLevel->slug, $headerDocumentSubLevel->slug]) }}" class="nav-item nav-link mobile-document-subitem {{ $mobileDocumentSubLevelIsActive ? 'active' : '' }}"><i class="fa fa-circle fa-xs fa-fw me-2" aria-hidden="true"></i>{{ mb_convert_case($headerDocumentSubLevel->name, MB_CASE_TITLE, 'UTF-8') }}</a>
-                                    @else
-                                        <a href="{{ route('frontend.documents') }}" class="nav-item nav-link mobile-document-subitem {{ $mobileDocumentSubLevelIsActive ? 'active' : '' }}"><i class="fa fa-circle fa-xs fa-fw me-2" aria-hidden="true"></i>{{ mb_convert_case($headerDocumentSubLevel->name, MB_CASE_TITLE, 'UTF-8') }}</a>
-                                    @endauth
-                                @endforeach
-                            </div>
-                        @endforeach
+                        @if ($headerHasDocumentThemes)
+                            @foreach ($headerDocumentLevels as $headerDocumentLevel)
+                                @php
+                                    $mobileDocumentLevelCollapseId = 'frontendMobileDocumentLevel' . $headerDocumentLevel->id;
+                                    $mobileDocumentSubLevels = $headerDocumentSubLevelsByLevel->get($headerDocumentLevel->id, collect());
+                                    $mobileDocumentLevelIsActive = $headerActiveDocumentLevelId == $headerDocumentLevel->id;
+                                @endphp
+                                <button type="button" class="nav-item nav-link mobile-document-level-toggle border-0 bg-transparent w-100 text-start {{ $mobileDocumentLevelIsActive ? 'active' : '' }}" data-bs-toggle="collapse" data-bs-target="#{{ $mobileDocumentLevelCollapseId }}" aria-controls="{{ $mobileDocumentLevelCollapseId }}" aria-expanded="false"><i class="fa fa-book-open fa-sm fa-fw me-2" aria-hidden="true"></i>{{ mb_strtoupper($headerDocumentLevel->name, 'UTF-8') }}</button>
+                                <div id="{{ $mobileDocumentLevelCollapseId }}" class="collapse mobile-document-level-content" data-bs-parent="#frontendMobileDocumentGroups">
+                                    @foreach ($mobileDocumentSubLevels as $headerDocumentSubLevel)
+                                        @php
+                                            $mobileDocumentSubLevelIsActive = $mobileDocumentLevelIsActive
+                                                && $headerActiveDocumentSubLevelId == $headerDocumentSubLevel->id;
+                                        @endphp
+                                        @auth
+                                            <a href="{{ route('frontend.themes.list', [$headerDocumentLevel->slug, $headerDocumentSubLevel->slug]) }}" class="nav-item nav-link mobile-document-subitem {{ $mobileDocumentSubLevelIsActive ? 'active' : '' }}"><i class="fa fa-circle fa-xs fa-fw me-2" aria-hidden="true"></i>{{ mb_convert_case($headerDocumentSubLevel->name, MB_CASE_TITLE, 'UTF-8') }}</a>
+                                        @else
+                                            <a href="{{ route('frontend.documents') }}" class="nav-item nav-link mobile-document-subitem {{ $mobileDocumentSubLevelIsActive ? 'active' : '' }}"><i class="fa fa-circle fa-xs fa-fw me-2" aria-hidden="true"></i>{{ mb_convert_case($headerDocumentSubLevel->name, MB_CASE_TITLE, 'UTF-8') }}</a>
+                                        @endauth
+                                    @endforeach
+                                </div>
+                            @endforeach
+                        @else
+                            <span class="nav-item nav-link mobile-document-subitem text-muted" aria-disabled="true">
+                                <i class="fa fa-clock fa-sm fa-fw me-2" aria-hidden="true"></i>{{ __('dictt.documents_menu_coming_soon') }}
+                            </span>
+                        @endif
                     </div>
                 </div>
                 <hr class="mobile-documents-divider">
