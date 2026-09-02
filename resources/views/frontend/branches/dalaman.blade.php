@@ -111,7 +111,7 @@
                     </div>
                 </div>
                 <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
-                    <h1 class="mb-4">Dalaman</h1>
+                    <h1 class="mb-4">Muğla Dalaman Dil Kursu</h1>
                     <p>{{ __('dictt.dalaman_intro') }}</p>
                     <p>{{ __('dictt.dalaman_section_1_title') }}<br>{{ __('dictt.dalaman_section_1_text') }}</p>
                     <p>{{ __('dictt.dalaman_section_2_title') }}<br>{{ __('dictt.dalaman_section_2_text') }}</p>

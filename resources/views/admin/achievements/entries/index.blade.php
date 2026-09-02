@@ -31,19 +31,19 @@
 
     <div class="card">
         <div class="card-body">
-            <div class="d-flex flex-nowrap align-items-center justify-content-between gap-2 mb-4">
-                <div class="flex-shrink-0">
+            <div class="row g-2 align-items-center mb-4">
+                <div class="col-auto order-2 order-md-1">
                     <a href="{{ route('admin.achievements.index') }}" class="btn btn-sm btn-secondary">
                         <i class="fa fa-arrow-left" aria-hidden="true"></i> {{ __('dictt.achievement_back') }}
                     </a>
                 </div>
-                <div class="flex-grow-1 text-center px-2" style="min-width: 0;">
-                    <h5 class="card-title mb-1">{{ __('dictt.achievement_entries') }}</h5>
+                <div class="col-12 col-md order-1 order-md-2 text-center px-md-2" style="min-width: 0;">
+                    <h5 class="card-title mb-1 text-break">{{ __('dictt.achievement_entries') }}</h5>
                     <p class="text-muted small mb-0 text-break">
                         {{ $achievementYear->year }} — {{ $achievementYear->title }}
                     </p>
                 </div>
-                <div class="flex-shrink-0">
+                <div class="col-auto order-3 order-md-3 ms-auto ms-md-0">
                     <a href="{{ route('admin.achievements.entries.create', $achievementYear) }}" class="btn btn-sm btn-outline-primary">
                         <i class="fa fa-plus" aria-hidden="true"></i> {{ __('dictt.achievement_entry_add_short') }}
                     </a>

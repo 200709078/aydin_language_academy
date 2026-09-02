@@ -111,7 +111,7 @@
                     </div>
                 </div>
                 <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
-                    <h1 class="mb-4">Köyceğiz</h1>
+                    <h1 class="mb-4">Muğla Köyceğiz Dil Kursu</h1>
                     <p>{{ __('dictt.koycegiz_intro') }}</p>
                     <p>{{ __('dictt.koycegiz_section_1_title') }}<br>{{ __('dictt.koycegiz_section_1_text') }}</p>
                     <p>{{ __('dictt.koycegiz_section_2_title') }}<br>{{ __('dictt.koycegiz_section_2_text') }}</p>
