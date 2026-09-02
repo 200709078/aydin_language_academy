@@ -8,6 +8,6 @@
         'action' => route('admin.news.blocks.update', [$news, $newsContentBlock]),
         'method' => 'PUT',
         'pageTitle' => __('dictt.news_block_edit'),
-        'submitLabel' => __('dictt.update'),
+        'submitLabel' => __('dictt.save'),
     ])
 </x-app-layout>

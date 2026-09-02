@@ -7,6 +7,6 @@
         'action' => route('admin.news.blocks.store', $news),
         'method' => 'POST',
         'pageTitle' => __('dictt.news_block_add'),
-        'submitLabel' => __('dictt.add'),
+        'submitLabel' => __('dictt.save'),
     ])
 </x-app-layout>

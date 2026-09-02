@@ -4,6 +4,6 @@
         'action' => route('question_update', $question->id),
         'method' => 'PUT',
         'pageTitle' => __('dictt.edit_question'),
-        'submitLabel' => __('dictt.update'),
+        'submitLabel' => __('dictt.save'),
     ])
 </x-app-layout>

@@ -10,19 +10,17 @@
 
     <div class="card mb-4">
         <div class="card-body">
-            <div class="d-flex flex-column flex-md-row justify-content-between gap-3 mb-3">
-                <div>
-                    <a href="{{ route('placement_test_attempts_list') }}" class="btn btn-sm btn-secondary">
-                        <i class="fa fa-arrow-left" aria-hidden="true"></i> {{ __('dictt.back') }}
-                    </a>
-                </div>
+            <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+                <a href="{{ route('placement_test_attempts_list') }}" class="btn btn-sm btn-secondary">
+                    <i class="fa fa-arrow-left" aria-hidden="true"></i> {{ __('dictt.back_short') }}
+                </a>
 
                 @if ($placementTest->status === 'pending_approval')
                     <form id="placement-test-approve" method="POST"
                         action="{{ route('placement_test_attempts_approve', $placementTest) }}">
                         @csrf
                         @method('PUT')
-                        <button type="button" class="btn btn-success"
+                        <button type="button" class="btn btn-sm btn-success"
                             data-action-confirmation
                             data-confirm-form="placement-test-approve"
                             data-confirm-title="{{ __('dictt.approve') }}"

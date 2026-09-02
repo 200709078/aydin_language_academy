@@ -15,9 +15,9 @@
                 <div class="col-sm-4 mb-2 mb-sm-0">
                     <div class="d-flex align-items-center gap-2">
                         <a href="{{ route('admin.campaigns.index') }}" class="btn btn-sm btn-secondary">
-                            <i class="fa fa-arrow-left" aria-hidden="true"></i> {{ __('dictt.back') }}
+                            <i class="fa fa-arrow-left" aria-hidden="true"></i> {{ __('dictt.back_short') }}
                         </a>
-                        <button type="submit" form="campaign-settings-form" class="btn btn-success btn-sm">{{ __('dictt.update') }}</button>
+                        <button type="submit" form="campaign-settings-form" class="btn btn-success btn-sm">{{ __('dictt.save') }}</button>
                     </div>
                 </div>
                 <h5 class="col-sm-4 card-title text-center mb-0">{{ __('dictt.campaign_page_settings_edit') }}</h5>

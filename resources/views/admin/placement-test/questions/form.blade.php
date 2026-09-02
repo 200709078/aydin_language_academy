@@ -70,18 +70,24 @@
         @isset($pageTitle)
             <div class="row align-items-center mb-3">
                 <div class="col-sm-4 mb-2 mb-sm-0">
-                    <a href="{{ route('placement_test_questions_list') }}" class="btn btn-sm btn-secondary">
-                        <i class="fa fa-arrow-left"></i> {{ __('dictt.back') }}
-                    </a>
+                    <div class="d-flex align-items-center gap-2">
+                        <a href="{{ route('placement_test_questions_list') }}" class="btn btn-sm btn-secondary">
+                            <i class="fa fa-arrow-left"></i> {{ __('dictt.back_short') }}
+                        </a>
+                        <button type="submit" form="placement-question-form" class="btn btn-success btn-sm">{{ $submitLabel }}</button>
+                    </div>
                 </div>
                 <h5 class="col-sm-4 card-title text-center mb-0">{{ $pageTitle }}</h5>
                 <div class="d-none d-sm-block col-sm-4"></div>
             </div>
         @else
             <h5 class="card-title">
-                <a href="{{ route('placement_test_questions_list') }}" class="btn btn-sm btn-secondary">
-                    <i class="fa fa-arrow-left"></i> {{ __('dictt.back') }}
-                </a>
+                <div class="d-flex align-items-center gap-2">
+                    <a href="{{ route('placement_test_questions_list') }}" class="btn btn-sm btn-secondary">
+                        <i class="fa fa-arrow-left"></i> {{ __('dictt.back_short') }}
+                    </a>
+                    <button type="submit" form="placement-question-form" class="btn btn-success btn-sm">{{ $submitLabel }}</button>
+                </div>
             </h5>
         @endisset
 
@@ -91,7 +97,7 @@
             </div>
         @endif
 
-        <form method="POST" action="{{ $action }}">
+        <form id="placement-question-form" method="POST" action="{{ $action }}">
             @csrf
             @if ($method !== 'POST')
                 @method($method)
@@ -201,9 +207,6 @@
                 @endif
             </div>
 
-            <div class="form-group mt-2">
-                <button type="submit" class="btn btn-success btn-sm">{{ $submitLabel }}</button>
-            </div>
         </form>
     </div>
 </div>

@@ -13,7 +13,7 @@
         'action' => route('admin.news.update', $news),
         'method' => 'PUT',
         'pageTitle' => __('dictt.news_edit'),
-        'submitLabel' => __('dictt.update'),
+        'submitLabel' => __('dictt.save'),
     ])
 
     @php

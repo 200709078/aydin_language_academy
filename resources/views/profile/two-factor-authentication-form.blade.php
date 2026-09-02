@@ -107,7 +107,7 @@
                 @if ($showingConfirmation)
                     <x-confirms-password wire:then="disableTwoFactorAuthentication">
                         <x-secondary-button wire:loading.attr="disabled">
-                            {{ __('dictt.cancel') }}
+                            {{ __('dictt.back_short') }}
                         </x-secondary-button>
                     </x-confirms-password>
                 @else

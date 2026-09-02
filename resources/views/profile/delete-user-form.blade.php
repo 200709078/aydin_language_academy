@@ -43,7 +43,7 @@
             <x-slot name="footer">
                 <button type="button" wire:click="$toggle('confirmingUserDeletion')" wire:loading.attr="disabled"
                     class="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition">
-                    <i class="fa fa-ban mr-1"></i> {{ __('dictt.cancel') }}
+                    <i class="fa fa-ban mr-1"></i> {{ __('dictt.back_short') }}
                 </button>
 
                 <button type="button" wire:click="deleteUser" wire:loading.attr="disabled"

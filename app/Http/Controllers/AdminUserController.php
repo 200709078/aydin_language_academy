@@ -16,7 +16,7 @@ class AdminUserController extends Controller
         $sort = in_array($request->query('sort'), ['name', 'created_at'], true)
             ? $request->query('sort')
             : 'created_at';
-        $direction = $request->query('direction') === 'asc' ? 'asc' : 'desc';
+        $direction = $request->query('direction') === 'desc' ? 'desc' : 'asc';
 
         $usersQuery = User::query()
             ->select([

@@ -16,15 +16,18 @@
         }">
             <div class="row align-items-center mb-3">
                 <div class="col-sm-4 mb-2 mb-sm-0">
-                    <a href="{{ route('placement_test_question_contents_list') }}" class="btn btn-sm btn-secondary">
-                        <i class="fa fa-arrow-left"></i> {{ __('dictt.back_short') }}
-                    </a>
+                    <div class="d-flex align-items-center gap-2">
+                        <a href="{{ route('placement_test_question_contents_list') }}" class="btn btn-sm btn-secondary">
+                            <i class="fa fa-arrow-left"></i> {{ __('dictt.back_short') }}
+                        </a>
+                        <button type="submit" form="pt-question-content-create-form" class="btn btn-success btn-sm">{{ __('dictt.save') }}</button>
+                    </div>
                 </div>
                 <h5 class="col-sm-4 card-title text-center mb-0">{{ __('dictt.add_shared_content') }}</h5>
                 <div class="d-none d-sm-block col-sm-4"></div>
             </div>
 
-            <form method="POST" action="{{ route('placement_test_question_contents_store') }}" enctype="multipart/form-data">
+            <form id="pt-question-content-create-form" method="POST" action="{{ route('placement_test_question_contents_store') }}" enctype="multipart/form-data">
                 @csrf
 
                 <div class="row">
@@ -87,9 +90,6 @@
 
                 <input type="hidden" name="is_active" value="1">
 
-                <div class="form-group mt-2">
-                    <button type="submit" class="btn btn-success btn-sm">{{ __('dictt.add') }}</button>
-                </div>
             </form>
         </div>
     </div>

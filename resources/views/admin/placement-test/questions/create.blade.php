@@ -5,7 +5,7 @@
         'placementTestQuestion' => null,
         'action' => route('placement_test_questions_store'),
         'method' => 'POST',
-        'submitLabel' => __('dictt.add_question'),
+        'submitLabel' => __('dictt.save'),
         'pageTitle' => __('dictt.placement_test') . ' — ' . __('dictt.addnewquestion'),
     ])
 </x-app-layout>

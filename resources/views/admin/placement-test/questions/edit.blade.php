@@ -4,7 +4,7 @@
     @include('admin.placement-test.questions.form', [
         'action' => route('placement_test_questions_update', $placementTestQuestion),
         'method' => 'PUT',
-        'submitLabel' => __('dictt.save_changes'),
+        'submitLabel' => __('dictt.save'),
         'pageTitle' => __('dictt.placement_test') . ' — ' . __('dictt.edit_question'),
     ])
 </x-app-layout>

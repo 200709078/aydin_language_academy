@@ -19,7 +19,7 @@
                 <div class="mt-6 flex justify-end space-x-3">
                     <button wire:click="$set('confirmingDelete', false)"
                         class="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition">
-                        <i class="fas fa-ban mr-1"></i> {{ __('dictt.cancel') }}
+                        <i class="fas fa-ban mr-1"></i> {{ __('dictt.back_short') }}
                     </button>
                     <button wire:click="deleteItem"
                         class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition">

@@ -14,6 +14,6 @@
         'action' => route('admin.achievements.update', $achievementYear),
         'method' => 'PUT',
         'pageTitle' => __('dictt.achievement_year_edit'),
-        'submitLabel' => __('dictt.update'),
+        'submitLabel' => __('dictt.save'),
     ])
 </x-app-layout>

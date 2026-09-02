@@ -704,7 +704,7 @@ return [
     'news_published_at_required' => 'Yayımlanmış haber için yayın tarihi zorunludur.',
     'news_unpublished_at' => 'Yayından Kaldırma Tarihi',
     'news_unpublished_after' => 'Yayından kaldırma tarihi yayın tarihinden sonra olmalıdır.',
-    'news_display_location' => 'Öne Çıkarma Konumu',
+    'news_display_location' => 'Yayınlama Yeri',
     'news_display_none' => 'Yalnız Haberler Sayfası',
     'news_display_homepage' => 'Ana Sayfa',
     'news_display_hero' => 'Hero Slider',

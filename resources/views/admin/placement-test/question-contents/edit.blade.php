@@ -5,15 +5,18 @@
         <div class="card-body">
             <div class="row align-items-center mb-3">
                 <div class="col-sm-4 mb-2 mb-sm-0">
-                    <a href="{{ route('placement_test_question_contents_list') }}" class="btn btn-sm btn-secondary">
-                        <i class="fa fa-arrow-left"></i> {{ __('dictt.back_short') }}
-                    </a>
+                    <div class="d-flex align-items-center gap-2">
+                        <a href="{{ route('placement_test_question_contents_list') }}" class="btn btn-sm btn-secondary">
+                            <i class="fa fa-arrow-left"></i> {{ __('dictt.back_short') }}
+                        </a>
+                        <button type="submit" form="pt-question-content-form" class="btn btn-success btn-sm">{{ __('dictt.save') }}</button>
+                    </div>
                 </div>
                 <h5 class="col-sm-4 card-title text-center mb-0">{{ __('dictt.edit_shared_content') }}</h5>
                 <div class="d-none d-sm-block col-sm-4"></div>
             </div>
 
-            <form method="POST" action="{{ route('placement_test_question_contents_update', $placementTestQuestionContent) }}"
+            <form id="pt-question-content-form" method="POST" action="{{ route('placement_test_question_contents_update', $placementTestQuestionContent) }}"
                 enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
@@ -57,9 +60,6 @@
                 <input type="hidden" name="is_active"
                     value="{{ old('is_active', $placementTestQuestionContent->is_active) ? '1' : '0' }}">
 
-                <div class="form-group mt-2">
-                    <button type="submit" class="btn btn-success btn-sm">{{ __('dictt.save_settings') }}</button>
-                </div>
             </form>
         </div>
     </div>

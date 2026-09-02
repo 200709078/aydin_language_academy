@@ -55,7 +55,7 @@
                         </div>
                         <a href="{{ route('frontend.exercise-attempts.index', ['exercise' => $exercise]) }}"
                             class="btn btn-outline-primary align-self-sm-start">
-                            <i class="fa fa-arrow-left me-2" aria-hidden="true"></i>{{ __('dictt.back') }}
+                            <i class="fa fa-arrow-left me-2" aria-hidden="true"></i>{{ __('dictt.back_short') }}
                         </a>
                     </div>
 

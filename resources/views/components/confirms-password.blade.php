@@ -35,7 +35,7 @@
 
     <x-slot name="footer">
         <x-secondary-button wire:click="stopConfirmingPassword" wire:loading.attr="disabled">
-            {{ __('dictt.cancel') }}
+            {{ __('dictt.back_short') }}
         </x-secondary-button>
 
         <x-button class="ms-3" dusk="confirm-password-button" wire:click="confirmPassword" wire:loading.attr="disabled">

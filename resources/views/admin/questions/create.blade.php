@@ -4,6 +4,6 @@
         'action' => route('question_store', $exercise->id),
         'method' => 'POST',
         'pageTitle' => __('dictt.addnewquestion'),
-        'submitLabel' => __('dictt.add'),
+        'submitLabel' => __('dictt.save'),
     ])
 </x-app-layout>

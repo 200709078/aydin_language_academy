@@ -10,7 +10,7 @@
             <x-slot name="footer">
                 <button type="button" wire:click="cancelArchive"
                     class="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition">
-                    <i class="fa fa-ban mr-1"></i> {{ __('dictt.cancel') }}
+                    <i class="fa fa-ban mr-1"></i> {{ __('dictt.back_short') }}
                 </button>
                 <button type="button" wire:click="archive"
                     class="px-4 py-2 bg-secondary text-white rounded-md hover:bg-gray-700 transition">
@@ -66,7 +66,7 @@
 
                 <div class="d-flex gap-2 mt-4">
                     @if ($editingId)
-                        <button type="button" wire:click="cancelEdit" class="btn btn-secondary">{{ __('dictt.cancel') }}</button>
+                        <button type="button" wire:click="cancelEdit" class="btn btn-secondary">{{ __('dictt.back_short') }}</button>
                     @endif
                     <button type="submit" class="btn btn-primary px-5">
                         {{ $editingId ? __('dictt.update') : __('dictt.send') }}

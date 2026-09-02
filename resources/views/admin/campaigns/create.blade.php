@@ -5,6 +5,6 @@
         'action' => route('admin.campaigns.store'),
         'method' => 'POST',
         'pageTitle' => __('dictt.campaign_add'),
-        'submitLabel' => __('dictt.add'),
+        'submitLabel' => __('dictt.save'),
     ])
 </x-app-layout>

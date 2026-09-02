@@ -7,7 +7,7 @@
                     <a href="{{ route('reviews_list') }}" class="btn btn-sm btn-secondary">
                         <i class="fa fa-arrow-left"></i> {{ __('dictt.back_short') }}</a>
                     <button type="submit" form="review-form" class="btn btn-success btn-sm">
-                        {{ __('dictt.update') }}</button>
+                        {{ __('dictt.save') }}</button>
                 </div>
                 <h5 class="col-sm-4 card-title text-center mb-0">{{ __('dictt.review') }} {{ __('dictt.edit') }}</h5>
                 <div class="d-none d-sm-block col-sm-4"></div>

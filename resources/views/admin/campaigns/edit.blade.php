@@ -14,6 +14,6 @@
         'action' => route('admin.campaigns.update', $campaign),
         'method' => 'PUT',
         'pageTitle' => __('dictt.campaign_edit'),
-        'submitLabel' => __('dictt.update'),
+        'submitLabel' => __('dictt.save'),
     ])
 </x-app-layout>

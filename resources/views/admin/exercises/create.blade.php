@@ -4,13 +4,16 @@
         <div class="card-body">
             <div class="row align-items-center mb-3">
                 <div class="col-sm-4 mb-2 mb-sm-0">
-                    <a href="{{ route('exercises_list', $theme->id) }}" class="btn btn-sm btn-secondary">
-                        <i class="fa fa-arrow-left"></i> {{ __('dictt.cancel') }}</a>
+                    <div class="d-flex align-items-center gap-2">
+                        <a href="{{ route('exercises_list', $theme->id) }}" class="btn btn-sm btn-secondary">
+                            <i class="fa fa-arrow-left"></i> {{ __('dictt.back_short') }}</a>
+                        <button type="submit" form="exercise-create-form" class="btn btn-success btn-sm">{{ __('dictt.save') }}</button>
+                    </div>
                 </div>
                 <h5 class="col-sm-4 card-title text-center mb-0">{{ __('dictt.addnewexercises') }}</h5>
                 <div class="d-none d-sm-block col-sm-4"></div>
             </div>
-            <form method="POST" action="{{ route('exercise_store', $theme->id)}}" enctype="multipart/form-data">
+            <form id="exercise-create-form" method="POST" action="{{ route('exercise_store', $theme->id)}}" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group">
                     <label>{{ __('dictt.title') }}</label>
@@ -34,9 +37,7 @@
                     <label>{{ __('dictt.voicelink') }}</label>
                     <input type="text" name="voice" class="form-control" value="{{ old('voice') }}">
                 </div>
-                <div class="form-group mt-2">
-                    <button type="submit" class="btn btn-success btn-sm btn-block">{{ __('dictt.add') }}</button>
-                </div>
+                
             </form>
         </div>
     </div>

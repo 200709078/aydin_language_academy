@@ -6,6 +6,6 @@
         'action' => route('admin.achievements.entries.store', $achievementYear),
         'method' => 'POST',
         'pageTitle' => __('dictt.achievement_entry_add'),
-        'submitLabel' => __('dictt.add'),
+        'submitLabel' => __('dictt.save'),
     ])
 </x-app-layout>

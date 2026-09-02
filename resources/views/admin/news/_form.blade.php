@@ -21,18 +21,12 @@
     <div class="card-body">
         <div class="row align-items-center mb-3">
             <div class="col-sm-4 mb-2 mb-sm-0">
-                @if ($isEditing)
-                    <div class="d-flex align-items-center gap-2">
-                        <a href="{{ route('admin.news.index') }}" class="btn btn-sm btn-secondary">
-                            <i class="fa fa-arrow-left" aria-hidden="true"></i> {{ __('dictt.back_short') }}
-                        </a>
-                        <button type="submit" form="news-form" class="btn btn-success btn-sm">{{ $submitLabel }}</button>
-                    </div>
-                @else
+                <div class="d-flex align-items-center gap-2">
                     <a href="{{ route('admin.news.index') }}" class="btn btn-sm btn-secondary">
                         <i class="fa fa-arrow-left" aria-hidden="true"></i> {{ __('dictt.back_short') }}
                     </a>
-                @endif
+                    <button type="submit" form="news-form" class="btn btn-success btn-sm">{{ $submitLabel }}</button>
+                </div>
             </div>
             <h5 class="col-sm-4 card-title text-center mb-0">{{ $pageTitle }}</h5>
             <div class="d-none d-sm-block col-sm-4"></div>
@@ -200,11 +194,6 @@
                 </div>
             </details>
 
-            @unless ($isEditing)
-                <div class="d-flex justify-content-end">
-                    <button type="submit" class="btn btn-success btn-sm">{{ $submitLabel }}</button>
-                </div>
-            @endunless
         </form>
     </div>
 </div>

@@ -5,7 +5,7 @@
         <div class="card-body">
             <div class="d-flex flex-column flex-md-row justify-content-between gap-3 mb-4">
                 <a href="{{ route('admin.exercise-attempts.index') }}" class="btn btn-sm btn-secondary align-self-md-start">
-                    <i class="fa fa-arrow-left" aria-hidden="true"></i> {{ __('dictt.back') }}
+                    <i class="fa fa-arrow-left" aria-hidden="true"></i> {{ __('dictt.back_short') }}
                 </a>
                 <div>
                     @if ($exerciseAttempt->status === 'in_progress')

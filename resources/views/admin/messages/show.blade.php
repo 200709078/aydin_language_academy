@@ -10,7 +10,7 @@
 
     <div class="d-flex flex-column flex-lg-row align-items-lg-center justify-content-between gap-3 mb-4">
         <a href="{{ route('admin.messages.index') }}" class="btn btn-sm btn-secondary align-self-start">
-            <i class="fa fa-arrow-left" aria-hidden="true"></i> {{ __('dictt.back') }}
+            <i class="fa fa-arrow-left" aria-hidden="true"></i> {{ __('dictt.back_short') }}
         </a>
 
         <form method="POST" action="{{ route('admin.messages.status.update', $message) }}" class="d-flex flex-wrap align-items-center gap-2">

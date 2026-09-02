@@ -48,7 +48,7 @@
                         <p class="mb-4">{{ __('dictt.exercise_attempt_history_note') }}</p>
                         <a href="{{ route('frontend.themes.detail', ['theme_id' => $theme]) }}#exercise-{{ $exercise->id }}"
                             class="btn btn-outline-primary">
-                            <i class="fa fa-arrow-left me-2" aria-hidden="true"></i>{{ __('dictt.back') }}
+                            <i class="fa fa-arrow-left me-2" aria-hidden="true"></i>{{ __('dictt.back_short') }}
                         </a>
                     </div>
 

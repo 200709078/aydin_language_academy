@@ -44,15 +44,18 @@
     <div class="card-body">
         <div class="row align-items-center mb-3">
             <div class="col-sm-4 mb-2 mb-sm-0">
-                <a href="{{ route('admin.news.edit', $news) }}" class="btn btn-sm btn-secondary">
-                    <i class="fa fa-arrow-left" aria-hidden="true"></i> {{ __('dictt.back') }}
-                </a>
+                <div class="d-flex align-items-center gap-2">
+                    <a href="{{ route('admin.news.edit', $news) }}" class="btn btn-sm btn-secondary">
+                        <i class="fa fa-arrow-left" aria-hidden="true"></i> {{ __('dictt.back_short') }}
+                    </a>
+                    <button type="submit" form="news-block-form" class="btn btn-success btn-sm">{{ $submitLabel }}</button>
+                </div>
             </div>
             <h5 class="col-sm-4 card-title text-center mb-0">{{ $pageTitle }}</h5>
             <div class="d-none d-sm-block col-sm-4"></div>
         </div>
 
-        <form method="POST" action="{{ $action }}" enctype="multipart/form-data">
+        <form id="news-block-form" method="POST" action="{{ $action }}" enctype="multipart/form-data">
             @csrf
             @if ($method !== 'POST')
                 @method($method)
@@ -181,9 +184,6 @@
                 <label for="is_active" class="form-check-label">{{ __('dictt.news_block_active') }}</label>
             </div>
 
-            <div class="d-flex justify-content-end">
-                <button type="submit" class="btn btn-success btn-sm">{{ $submitLabel }}</button>
-            </div>
         </form>
     </div>
 </div>

@@ -5,6 +5,6 @@
         'action' => route('admin.news.store'),
         'method' => 'POST',
         'pageTitle' => __('dictt.news_add'),
-        'submitLabel' => __('dictt.add'),
+        'submitLabel' => __('dictt.save'),
     ])
 </x-app-layout>

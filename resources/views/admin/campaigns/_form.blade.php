@@ -14,7 +14,7 @@
             <div class="col-sm-4 mb-2 mb-sm-0">
                 <div class="d-flex align-items-center gap-2">
                     <a href="{{ route('admin.campaigns.index') }}" class="btn btn-sm btn-secondary">
-                        <i class="fa fa-arrow-left" aria-hidden="true"></i> {{ __('dictt.back') }}
+                        <i class="fa fa-arrow-left" aria-hidden="true"></i> {{ __('dictt.back_short') }}
                     </a>
                     <button type="submit" form="campaign-form" class="btn btn-success btn-sm">{{ $submitLabel }}</button>
                 </div>

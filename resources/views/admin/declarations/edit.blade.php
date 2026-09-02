@@ -4,13 +4,16 @@
         <div class="card-body">
             <div class="row align-items-center mb-3">
                 <div class="col-sm-4 mb-2 mb-sm-0">
-                    <a href="{{ url()->previous() }}" class="btn btn-sm btn-secondary">
-                        <i class="fa fa-arrow-left"></i> {{ __('dictt.cancel') }}</a>
+                    <div class="d-flex align-items-center gap-2">
+                        <a href="{{ url()->previous() }}" class="btn btn-sm btn-secondary">
+                            <i class="fa fa-arrow-left"></i> {{ __('dictt.back_short') }}</a>
+                        <button type="submit" form="declaration-form" class="btn btn-success btn-sm">{{ __('dictt.save') }}</button>
+                    </div>
                 </div>
                 <h5 class="col-sm-4 card-title text-center mb-0">{{ __('dictt.declaration') }} {{ __('dictt.edit') }}</h5>
                 <div class="d-none d-sm-block col-sm-4"></div>
             </div>
-            <form method="POST" action="{{ route('declaration_update', $declaration->id)}}" enctype="multipart/form-data">
+            <form id="declaration-form" method="POST" action="{{ route('declaration_update', $declaration->id)}}" enctype="multipart/form-data">
                 @method('PUT')
                 @csrf
                 <div class="form-group">
@@ -49,9 +52,6 @@
                 <div class="form-group">
                     <label>{{ __('dictt.voicelink') }}</label>
                     <input type="text" name="voice" class="form-control" value="{{ $declaration->voice }}">
-                </div>
-                <div class="form-group mt-2">
-                    <button type="submit" class="btn btn-success btn-sm btn-block">{{ __('dictt.update') }}</button>
                 </div>
             </form>
         </div>
