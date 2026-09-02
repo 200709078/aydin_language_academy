@@ -895,7 +895,7 @@ return [
     'campaign_external_url' => 'Harici HTTPS Bağlantısı',
     'campaign_external_url_https' => 'Geçerli bir HTTPS URL girin.',
     'campaign_link_help' => 'Bağlantı yoksa public kartta buton gösterilmez.',
-    'campaign_view' => 'Kampanyayı İncele',
+    'campaign_view' => 'İncele',
     'campaign_status_draft' => 'Taslak',
     'campaign_status_published' => 'Yayımlanmış',
     'campaign_publication_status' => 'Yayın Durumu',

@@ -88,12 +88,11 @@
 
                             @if ($campaignUrl)
                                 <a
-                                    class="btn btn-outline-primary align-self-start mt-auto"
+                                    class="news-card__link mt-auto align-self-start"
                                     href="{{ $campaignUrl }}"
                                     @if ($opensInNewWindow) target="_blank" rel="noopener noreferrer" @endif
                                 >
-                                    {{ __('dictt.campaign_view') }}
-                                    <i class="fa {{ $opensInNewWindow ? 'fa-external-link-alt' : 'fa-arrow-right' }} ms-2" aria-hidden="true"></i>
+                                    {{ __('dictt.campaign_view') }}<i class="fa {{ $opensInNewWindow ? 'fa-external-link-alt' : 'fa-arrow-right' }} ms-2" aria-hidden="true"></i>
                                 </a>
                             @endif
                         </article>

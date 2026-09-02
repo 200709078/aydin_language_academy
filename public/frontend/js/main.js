@@ -94,16 +94,18 @@
     if ($newsCarousels.length > 0 && $.fn.owlCarousel) {
         $newsCarousels.each(function () {
             var $carousel = $(this);
-            var hasMultipleNewsItems = $carousel.children().length > 1;
+            var count = $carousel.children().length;
+            var hasMultipleNewsItems = count > 1;
+            var shouldLoop = count > 3;
             var $dotsContainer = $carousel.closest(".ala-news-section").find(".news-carousel-dots").first();
 
             $carousel.owlCarousel({
-                autoplay: true,
+                autoplay: hasMultipleNewsItems,
                 autoplayTimeout: 5000,
                 autoplayHoverPause: true,
                 smartSpeed: 700,
-                loop: hasMultipleNewsItems,
-                rewind: false,
+                loop: shouldLoop,
+                rewind: !shouldLoop,
                 margin: 24,
                 dots: hasMultipleNewsItems,
                 dotsContainer: hasMultipleNewsItems ? $dotsContainer : false,
