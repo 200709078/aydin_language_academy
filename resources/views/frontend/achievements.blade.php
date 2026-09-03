@@ -29,7 +29,7 @@
     <link href="{{ asset('frontend/css/bootstrap.min.css') }}" rel="stylesheet">
 
     <!-- Template Stylesheet -->
-    <link href="{{ asset('frontend/css/style.css') }}?v=20260904-achievements-preline-1" rel="stylesheet">
+    <link href="{{ asset('frontend/css/style.css') }}?v=20260904-news-nocrop-1" rel="stylesheet">
 </head>
 
 <body>

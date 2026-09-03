@@ -29,7 +29,7 @@
     <link href="{{ asset('frontend/vendor/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
     <link href="{{ asset('frontend/vendor/tempusdominus/css/tempusdominus-bootstrap-4.min.css') }}" rel="stylesheet">
     <link href="{{ asset('frontend/css/bootstrap.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('frontend/css/style.css') }}?v=20260830-news-6" rel="stylesheet">
+    <link href="{{ asset('frontend/css/style.css') }}?v=20260904-news-nocrop-1" rel="stylesheet">
 </head>
 
 <body>
