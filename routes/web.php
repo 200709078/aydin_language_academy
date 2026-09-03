@@ -143,6 +143,10 @@ Route::group(['middleware' => ['auth', isAdmin_middle::class], 'prefix' => 'admi
             ->whereNumber('news')
             ->whereNumber('newsContentBlock')
             ->name('blocks.destroy');
+        Route::patch('/{news}/blocks/{newsContentBlock}/status', [AdminNewsController::class, 'updateBlockStatus'])
+            ->whereNumber('news')
+            ->whereNumber('newsContentBlock')
+            ->name('blocks.status.update');
         Route::post('/{news}/blocks/{newsContentBlock}/move', [AdminNewsController::class, 'moveBlock'])
             ->whereNumber('news')
             ->whereNumber('newsContentBlock')

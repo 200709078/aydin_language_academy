@@ -13,7 +13,10 @@ class HomeController extends Controller
     {
         $homepageNews = News::query()
             ->publiclyAvailable()
-            ->where('display_location', News::DISPLAY_HOMEPAGE)
+            ->whereIn('display_location', [
+                News::DISPLAY_HOMEPAGE,
+                News::DISPLAY_HERO,
+            ])
             ->with('coverMediaAsset')
             ->orderByRaw('sort_order IS NULL')
             ->orderBy('sort_order')
@@ -28,7 +31,6 @@ class HomeController extends Controller
             ->orderBy('sort_order')
             ->orderByDesc('published_at')
             ->orderByDesc('id')
-            ->limit(2)
             ->get();
 
         $approved = Review::query()

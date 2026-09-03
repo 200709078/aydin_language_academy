@@ -259,18 +259,18 @@ body.frontend-home * {
     position: absolute;
     width: 100%;
     height: 100%;
-    padding: 3rem;
+    padding: 2rem 3rem 3rem;
     top: 0;
     left: 0;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     text-shadow: 0 0 30px rgba(0, 0, 0, .1);
 }
 
 .header-carousel .owl-carousel-text h1 {
     max-width: 100%;
-    font-size: clamp(1.25rem, 6vw, 4rem);
+    font-size: clamp(1.1rem, 2.75vw, 2.25rem);
     line-height: 1.1;
     text-align: center;
 }
@@ -335,7 +335,7 @@ body.frontend-home * {
     position: absolute;
     width: 214px;
     height: 54px;
-    bottom: 25px;
+    bottom: 12px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
@@ -461,11 +461,7 @@ body.frontend-home * {
     }
 
     .header-carousel .owl-carousel-text {
-        padding: 1.25rem;
-    }
-
-    .header-carousel .owl-carousel-text .header-carousel-news-title {
-        font-size: clamp(1.15rem, 6vw, 1.5rem);
+        padding: .9rem 1.25rem 1.25rem;
     }
 
     .header .display-4 {

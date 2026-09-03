@@ -85,26 +85,26 @@
                         @endforeach
                     @endif
                     <div class="owl-carousel-item position-relative">
-                        <img class="img-fluid" src="{{ asset('frontend/images/slider-1.jpg') }}" alt="">
+                        <img class="img-fluid" src="{{ asset('frontend/images/branches/ortaca-1.jpg') }}" alt="Ortaca">
                         <div class="owl-carousel-text">
                             <h1 class="display-1 text-white mb-0">
-                                <a class="header-carousel-branch-link" href="{{ route('frontend.branches.ortaca') }}">Ortaca</a>
+                                <a class="header-carousel-branch-link" href="{{ route('frontend.branches.ortaca') }}">Ortaca Şubemiz</a>
                             </h1>
                         </div>
                     </div>
                     <div class="owl-carousel-item position-relative">
-                        <img class="img-fluid" src="{{ asset('frontend/images/slider-2.jpg') }}" alt="">
+                        <img class="img-fluid" src="{{ asset('frontend/images/branches/dalaman-1.jpg') }}" alt="Dalaman">
                         <div class="owl-carousel-text">
                             <h1 class="display-1 text-white mb-0">
-                                <a class="header-carousel-branch-link" href="{{ route('frontend.branches.dalaman') }}">Dalaman</a>
+                                <a class="header-carousel-branch-link" href="{{ route('frontend.branches.dalaman') }}">Dalaman Şubemiz</a>
                             </h1>
                         </div>
                     </div>
                     <div class="owl-carousel-item position-relative">
-                        <img class="img-fluid" src="{{ asset('frontend/images/slider-3.jpg') }}" alt="">
+                        <img class="img-fluid" src="{{ asset('frontend/images/branches/koycegiz-1.jpg') }}" alt="Köyceğiz">
                         <div class="owl-carousel-text">
                             <h1 class="display-1 text-white mb-0">
-                                <a class="header-carousel-branch-link" href="{{ route('frontend.branches.koycegiz') }}">Köyceğiz</a>
+                                <a class="header-carousel-branch-link" href="{{ route('frontend.branches.koycegiz') }}">Köyceğiz Şubemiz</a>
                             </h1>
                         </div>
                     </div>
@@ -294,26 +294,36 @@
             <div class="container">
                 <div class="text-center mx-auto mb-3 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 720px;">
                     <div class="ala-news-heading">
-                        @if ($homepageNews->count() > 1)
+                        @if ($homepageNews->count() > 3)
                             <button type="button" class="btn btn-outline-primary btn-lg-square rounded-circle d-inline-flex align-items-center justify-content-center news-prev" aria-label="{{ __('dictt.previous') }}"><i class="fa fa-angle-left" aria-hidden="true"></i></button>
                         @endif
                         <h1 class="mb-0">{{ __('dictt.news') }}</h1>
-                        @if ($homepageNews->count() > 1)
+                        @if ($homepageNews->count() > 3)
                             <button type="button" class="btn btn-outline-primary btn-lg-square rounded-circle d-inline-flex align-items-center justify-content-center news-next" aria-label="{{ __('dictt.next') }}"><i class="fa fa-angle-right" aria-hidden="true"></i></button>
                         @endif
                     </div>
-                    @if ($homepageNews->count() > 1)
+                    @if ($homepageNews->count() > 3)
                         <div class="news-carousel-dots" aria-label="{{ __('dictt.news') }}"></div>
                     @endif
                 </div>
 
-                <div class="owl-carousel news-carousel wow fadeInUp" data-wow-delay="0.1s">
-                    @foreach ($homepageNews as $news)
-                        <div class="h-100 d-flex">
-                            @include('frontend.partials.news-card', ['news' => $news])
-                        </div>
-                    @endforeach
-                </div>
+                @if ($homepageNews->count() > 3)
+                    <div class="owl-carousel news-carousel wow fadeInUp" data-wow-delay="0.1s">
+                        @foreach ($homepageNews as $news)
+                            <div class="h-100 d-flex">
+                                @include('frontend.partials.news-card', ['news' => $news])
+                            </div>
+                        @endforeach
+                    </div>
+                @else
+                    <div class="row g-4 justify-content-center wow fadeInUp" data-wow-delay="0.1s">
+                        @foreach ($homepageNews as $news)
+                            <div class="col-lg-4 col-md-6 d-flex">
+                                @include('frontend.partials.news-card', ['news' => $news])
+                            </div>
+                        @endforeach
+                    </div>
+                @endif
 
                 <div class="text-center mt-4 wow fadeInUp" data-wow-delay="0.15s">
                     <a class="btn btn-outline-primary py-3 px-5" href="{{ route('frontend.news.index') }}">{{ __('dictt.view_all') }}</a>

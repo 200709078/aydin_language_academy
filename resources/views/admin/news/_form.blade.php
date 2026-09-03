@@ -2,7 +2,7 @@
     $currentNews = $news ?? null;
     $isEditing = $currentNews !== null;
     $initialStatus = old('status', $currentNews?->status ?? \App\Models\News::STATUS_DRAFT);
-    $initialDisplayLocation = old('display_location', $currentNews?->display_location ?? \App\Models\News::DISPLAY_NONE);
+    $initialDisplayLocation = old('display_location', $currentNews?->display_location ?? \App\Models\News::DISPLAY_HOMEPAGE);
     $publishedAt = old('published_at', $currentNews?->published_at?->format('Y-m-d\TH:i'));
     $unpublishedAt = old('unpublished_at', $currentNews?->unpublished_at?->format('Y-m-d\TH:i'));
     $statusOptions = [
@@ -11,7 +11,6 @@
         \App\Models\News::STATUS_ARCHIVED => __('dictt.news_status_archived'),
     ];
     $displayOptions = [
-        \App\Models\News::DISPLAY_NONE => __('dictt.news_display_none'),
         \App\Models\News::DISPLAY_HOMEPAGE => __('dictt.news_display_homepage'),
         \App\Models\News::DISPLAY_HERO => __('dictt.news_display_hero'),
     ];
@@ -29,6 +28,13 @@
         const pad = (value) => String(value).padStart(2, '0');
 
         this.publishedAt = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}T${pad(now.getHours())}:${pad(now.getMinutes())}`;
+    },
+    openDatePicker(event) {
+        const input = event.currentTarget;
+
+        if (typeof input.showPicker === 'function') {
+            input.showPicker();
+        }
     },
 }">
     <div class="card-body">
@@ -93,16 +99,15 @@
                         <label for="display_location" class="form-label">{{ __('dictt.news_display_location') }}</label>
                         <select id="display_location" name="display_location"
                             class="form-select @error('display_location') is-invalid @enderror" required>
-                            @foreach ($displayOptions as $locationValue => $locationLabel)
-                                <option value="{{ $locationValue }}" @selected((string) $initialDisplayLocation === (string) $locationValue)>
-                                    {{ $locationLabel }}
-                                </option>
-                            @endforeach
-                        </select>
-                        <div class="form-text">{{ __('dictt.news_display_help') }}</div>
-                        @error('display_location')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
+                        @foreach ($displayOptions as $locationValue => $locationLabel)
+                            <option value="{{ $locationValue }}" @selected((string) $initialDisplayLocation === (string) $locationValue)>
+                                {{ $locationLabel }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('display_location')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                     </div>
                 </div>
 
@@ -111,6 +116,8 @@
                         <label for="published_at" class="form-label">{{ __('dictt.news_published_at') }}</label>
                         <input id="published_at" type="datetime-local" name="published_at" value="{{ $publishedAt }}" x-model="publishedAt"
                             x-bind:required="status === @js(\App\Models\News::STATUS_PUBLISHED)"
+                            x-on:click="openDatePicker($event)" x-on:keydown.prevent x-on:paste.prevent x-on:drop.prevent
+                            inputmode="none"
                             class="form-control @error('published_at') is-invalid @enderror">
                         @error('published_at')
                             <div class="invalid-feedback">{{ $message }}</div>
@@ -119,6 +126,8 @@
                     <div class="col-md-6">
                         <label for="unpublished_at" class="form-label">{{ __('dictt.news_unpublished_at') }}</label>
                         <input id="unpublished_at" type="datetime-local" name="unpublished_at" value="{{ $unpublishedAt }}"
+                            x-on:click="openDatePicker($event)" x-on:keydown.prevent x-on:paste.prevent x-on:drop.prevent
+                            inputmode="none"
                             class="form-control @error('unpublished_at') is-invalid @enderror">
                         @error('unpublished_at')
                             <div class="invalid-feedback">{{ $message }}</div>

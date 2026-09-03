@@ -311,6 +311,27 @@ class AdminNewsController extends Controller
     }
 
     /**
+     * Toggle one content block's public visibility from the news edit list.
+     */
+    public function updateBlockStatus(
+        Request $request,
+        News $news,
+        NewsContentBlock $newsContentBlock,
+    ): RedirectResponse {
+        $this->ensureBlockBelongsToNews($news, $newsContentBlock);
+
+        $request->validate([
+            'is_active' => ['required', 'boolean'],
+        ]);
+
+        $newsContentBlock->update([
+            'is_active' => $request->boolean('is_active'),
+        ]);
+
+        return redirect()->back();
+    }
+
+    /**
      * Delete one block but retain any uploaded source file for deliberate cleanup later.
      */
     public function destroyBlock(News $news, NewsContentBlock $newsContentBlock): RedirectResponse
@@ -488,7 +509,6 @@ class AdminNewsController extends Controller
             'heading' => ['nullable', 'string', 'max:255'],
             'body' => ['nullable', 'string'],
             'link_label' => ['nullable', 'string', 'max:255'],
-            'is_active' => ['required', 'boolean'],
         ]);
 
         $type = $validated['type'];
@@ -505,7 +525,7 @@ class AdminNewsController extends Controller
             'heading' => $this->nullableTrimmedValue($validated['heading'] ?? null),
             'body' => $validated['body'] ?? null,
             'link_label' => $this->nullableTrimmedValue($validated['link_label'] ?? null),
-            'is_active' => $request->boolean('is_active'),
+            'is_active' => $currentBlock?->is_active ?? true,
             'metadata' => null,
         ];
 

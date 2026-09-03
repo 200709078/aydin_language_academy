@@ -7,7 +7,6 @@
             ? 'upload'
             : ($currentBlock?->external_url ? 'external' : 'upload'),
     );
-    $initialIsActive = old('is_active', $currentBlock?->is_active ?? true);
     $typeOptions = [
         \App\Models\NewsContentBlock::TYPE_RICH_TEXT => __('dictt.news_block_type_rich_text'),
         \App\Models\NewsContentBlock::TYPE_IMAGE => __('dictt.news_block_type_image'),
@@ -62,7 +61,7 @@
             @endif
 
             <div class="row">
-                <div class="col-md-6 mb-3">
+                <div class="col-12 mb-3">
                     <label for="{{ $currentBlock ? 'type-label' : 'type' }}" class="form-label">{{ __('dictt.news_block_type') }}</label>
                     @if ($currentBlock)
                         <input id="type-label" type="text" class="form-control" value="{{ $typeOptions[$currentBlock->type] }}" readonly>
@@ -80,11 +79,6 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     @endif
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label for="block-position" class="form-label">{{ __('dictt.news_block_position') }}</label>
-                    <input id="block-position" type="text" class="form-control"
-                        value="{{ $currentBlock?->position ?? $nextPosition }}" readonly>
                 </div>
             </div>
 
@@ -176,12 +170,6 @@
                 @error('link_label')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
-            </div>
-
-            <input type="hidden" name="is_active" value="0">
-            <div class="form-check mb-4">
-                <input id="is_active" type="checkbox" name="is_active" value="1" class="form-check-input" @checked($initialIsActive)>
-                <label for="is_active" class="form-check-label">{{ __('dictt.news_block_active') }}</label>
             </div>
 
         </form>

@@ -46,7 +46,7 @@
                             <th scope="col">{{ __('dictt.news_block_position') }}</th>
                             <th scope="col">{{ __('dictt.news_block_type') }}</th>
                             <th scope="col">{{ __('dictt.content') }}</th>
-                            <th scope="col">{{ __('dictt.status') }}</th>
+                            <th scope="col">{{ __('dictt.news_block_publication_status') }}</th>
                             <th scope="col">{{ __('dictt.operations') }}</th>
                         </tr>
                     </thead>
@@ -73,9 +73,27 @@
                                     @endif
                                 </td>
                                 <td>
-                                    <span class="badge {{ $block->is_active ? 'text-bg-success' : 'text-bg-secondary' }}">
-                                        {{ $block->is_active ? __('dictt.active') : __('dictt.passive') }}
-                                    </span>
+                                    <div class="d-flex flex-wrap align-items-center gap-2">
+                                        <form method="POST" action="{{ route('admin.news.blocks.status.update', [$news, $block]) }}" class="d-inline-block">
+                                            @csrf
+                                            @method('PATCH')
+                                            <input type="hidden" name="is_active" value="0">
+                                            <div class="form-check form-switch admin-list-switch mb-0">
+                                                <input id="news-block-status-{{ $block->id }}" type="checkbox"
+                                                    class="form-check-input" name="is_active" value="1" role="switch"
+                                                    @checked($block->is_active)
+                                                    onchange="this.form.submit()"
+                                                    aria-label="{{ __('dictt.news_block_publication_status') }}"
+                                                    title="{{ __('dictt.news_block_publication_status') }}">
+                                            </div>
+                                            <noscript>
+                                                <button type="submit" class="btn btn-sm btn-outline-secondary mt-1" title="{{ __('dictt.update') }}">{{ __('dictt.update') }}</button>
+                                            </noscript>
+                                        </form>
+                                        <span class="badge {{ $block->is_active ? 'text-bg-success' : 'text-bg-secondary' }}">
+                                            {{ $block->is_active ? __('dictt.active') : __('dictt.passive') }}
+                                        </span>
+                                    </div>
                                 </td>
                                 <td>
                                     <div class="d-flex flex-wrap align-items-center gap-2">
@@ -101,7 +119,7 @@
                                             </button>
                                         </form>
                                         <form method="POST" action="{{ route('admin.news.blocks.move', [$news, $block]) }}"
-                                            class="d-inline-block ms-auto">
+                                            class="d-inline-block">
                                             @csrf
                                             <div class="btn-group-vertical btn-group-sm" role="group"
                                                 aria-label="{{ __('dictt.move_up') }} / {{ __('dictt.move_down') }}">
