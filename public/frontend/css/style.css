@@ -1645,6 +1645,7 @@ body.frontend-home * {
     color: #526075;
     font-size: 1.05rem;
     line-height: 1.7;
+    white-space: pre-line;
 }
 
 .ala-achievements__accordion .accordion-item {
@@ -1699,6 +1700,7 @@ body.frontend-home * {
     margin: 0 0 1.5rem;
     color: #526075;
     line-height: 1.7;
+    white-space: pre-line;
 }
 
 .ala-achievement-entry {
