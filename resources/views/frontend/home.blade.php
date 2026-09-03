@@ -29,7 +29,7 @@
     <link href="{{ asset('frontend/css/bootstrap.min.css') }}" rel="stylesheet">
 
     <!-- Template Stylesheet -->
-    <link href="{{ asset('frontend/css/style.css') }}?v=20260904-header-dots-nav-width-1" rel="stylesheet">
+    <link href="{{ asset('frontend/css/style.css') }}?v=20260904-header-dots-nowrap-2" rel="stylesheet">
 </head>
 
 <body class="frontend-home">

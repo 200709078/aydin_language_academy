@@ -402,15 +402,15 @@ body.frontend-home * {
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     gap: 0;
-    row-gap: 4px;
     flex: 0 1 auto;
     min-width: 0;
     max-width: 100%;
     padding: 0 4px;
     z-index: auto;
     overflow: hidden;
+    white-space: nowrap;
 }
 
 .header-carousel .owl-dot {
