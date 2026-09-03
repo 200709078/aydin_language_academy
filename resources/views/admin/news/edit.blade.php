@@ -78,25 +78,7 @@
                                     </span>
                                 </td>
                                 <td>
-                                    <div class="d-flex gap-1">
-                                        <form method="POST" action="{{ route('admin.news.blocks.move', [$news, $block]) }}">
-                                            @csrf
-                                            <input type="hidden" name="direction" value="up">
-                                            <button type="submit" class="btn btn-sm btn-outline-secondary" @disabled($loop->first)
-                                                title="{{ __('dictt.move_up') }}">
-                                                <i class="fa fa-arrow-up" aria-hidden="true"></i>
-                                                <span class="visually-hidden">{{ __('dictt.move_up') }}</span>
-                                            </button>
-                                        </form>
-                                        <form method="POST" action="{{ route('admin.news.blocks.move', [$news, $block]) }}">
-                                            @csrf
-                                            <input type="hidden" name="direction" value="down">
-                                            <button type="submit" class="btn btn-sm btn-outline-secondary" @disabled($loop->last)
-                                                title="{{ __('dictt.move_down') }}">
-                                                <i class="fa fa-arrow-down" aria-hidden="true"></i>
-                                                <span class="visually-hidden">{{ __('dictt.move_down') }}</span>
-                                            </button>
-                                        </form>
+                                    <div class="d-flex flex-wrap align-items-center gap-2">
                                         <a href="{{ route('admin.news.blocks.edit', [$news, $block]) }}" class="btn btn-sm btn-outline-primary"
                                             title="{{ __('dictt.edit') }}">
                                             <i class="fa fa-pen" aria-hidden="true"></i>
@@ -117,6 +99,25 @@
                                                 <i class="fa fa-trash" aria-hidden="true"></i>
                                                 <span class="visually-hidden">{{ __('dictt.delete') }}</span>
                                             </button>
+                                        </form>
+                                        <form method="POST" action="{{ route('admin.news.blocks.move', [$news, $block]) }}"
+                                            class="d-inline-block ms-auto">
+                                            @csrf
+                                            <div class="btn-group-vertical btn-group-sm" role="group"
+                                                aria-label="{{ __('dictt.move_up') }} / {{ __('dictt.move_down') }}">
+                                                <button type="submit" name="direction" value="up"
+                                                    class="btn btn-outline-secondary px-2 py-0"
+                                                    @disabled($loop->first) title="{{ __('dictt.move_up') }}">
+                                                    <i class="fa-solid fa-chevron-up fa-xs" aria-hidden="true"></i>
+                                                    <span class="visually-hidden">{{ __('dictt.move_up') }}</span>
+                                                </button>
+                                                <button type="submit" name="direction" value="down"
+                                                    class="btn btn-outline-secondary px-2 py-0"
+                                                    @disabled($loop->last) title="{{ __('dictt.move_down') }}">
+                                                    <i class="fa-solid fa-chevron-down fa-xs" aria-hidden="true"></i>
+                                                    <span class="visually-hidden">{{ __('dictt.move_down') }}</span>
+                                                </button>
+                                            </div>
                                         </form>
                                     </div>
                                 </td>

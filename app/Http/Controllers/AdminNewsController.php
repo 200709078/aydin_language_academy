@@ -411,7 +411,6 @@ class AdminNewsController extends Controller
     {
         $validated = $request->validate([
             'title' => ['required', 'string', 'max:255'],
-            'slug' => ['nullable', 'string', 'max:191'],
             'excerpt' => ['nullable', 'string', 'max:2000'],
             'status' => ['required', Rule::in(News::statuses())],
             'published_at' => [
@@ -422,9 +421,6 @@ class AdminNewsController extends Controller
             'unpublished_at' => ['nullable', 'date', 'after:published_at'],
             'display_location' => ['required', Rule::in(News::displayLocations())],
             'sort_order' => ['nullable', 'integer', 'min:0'],
-            'seo_title' => ['nullable', 'string', 'max:255'],
-            'seo_description' => ['nullable', 'string', 'max:320'],
-            'canonical_url' => ['nullable', 'url', 'max:2048'],
             'cover_image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:10240'],
             'remove_cover_image' => ['nullable', 'boolean'],
         ], [
@@ -436,40 +432,50 @@ class AdminNewsController extends Controller
         ]);
 
         $title = trim((string) $validated['title']);
-        $slugSource = trim((string) ($validated['slug'] ?? ''));
-        $slug = Str::slug($slugSource !== '' ? $slugSource : $title);
-
         if ($title === '') {
             throw ValidationException::withMessages([
                 'title' => __('dictt.required_item', ['name' => __('dictt.news_title')]),
             ]);
         }
 
-        if ($slug === '') {
-            throw ValidationException::withMessages([
-                'slug' => __('dictt.news_slug_invalid'),
-            ]);
-        }
-
-        $slugQuery = News::withTrashed()->where('slug', $slug);
-
-        if ($currentNews !== null) {
-            $slugQuery->whereKeyNot($currentNews->id);
-        }
-
-        if ($slugQuery->exists()) {
-            throw ValidationException::withMessages([
-                'slug' => __('dictt.news_slug_taken'),
-            ]);
-        }
+        $slug = $currentNews?->slug ?: $this->uniqueNewsSlug($title);
 
         unset($validated['cover_image'], $validated['remove_cover_image']);
+
+        if ($currentNews === null) {
+            $validated['seo_title'] = null;
+            $validated['seo_description'] = null;
+            $validated['canonical_url'] = null;
+        }
 
         return [
             ...$validated,
             'title' => $title,
             'slug' => $slug,
         ];
+    }
+
+    private function uniqueNewsSlug(string $title): string
+    {
+        $maxLength = 191;
+        $baseSlug = Str::substr(Str::slug($title), 0, $maxLength);
+
+        if ($baseSlug === '') {
+            throw ValidationException::withMessages([
+                'slug' => __('dictt.news_slug_invalid'),
+            ]);
+        }
+
+        $slug = $baseSlug;
+        $suffix = 2;
+
+        while (News::withTrashed()->where('slug', $slug)->exists()) {
+            $suffixText = '-'.$suffix;
+            $slug = Str::substr($baseSlug, 0, $maxLength - strlen($suffixText)).$suffixText;
+            $suffix++;
+        }
+
+        return $slug;
     }
 
     /**

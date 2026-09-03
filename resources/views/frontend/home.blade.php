@@ -3,10 +3,10 @@
 
 <head>
     <meta charset="utf-8">
-    <title>{{ __('dictt.home') }} | {{ __('dictt.ala') }}</title>
+    <title>{{ __('dictt.seo_home_title') }}</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="" name="keywords">
-    <meta content="" name="description">
+    <meta content="{{ __('dictt.seo_home_keywords') }}" name="keywords">
+    <meta content="{{ __('dictt.seo_home_description') }}" name="description">
 
     <!-- Favicon -->
     <link href="{{ asset('frontend/images/logo/favicon.png') }}" rel="icon">
@@ -116,11 +116,17 @@
 
     @include('frontend.partials.about')
 
-    <section class="ala-brand-band" aria-label="Aydın Language Academy">
+    <!-- Campaign Visual Start -->
+    <div class="container-xxl pb-0">
         <div class="container">
-            <img src="{{ asset(__('dictt.primary_logo_asset')) }}" alt="Aydın Language Academy">
+            <div class="row">
+                <div class="col-12 wow fadeIn" data-wow-delay="0.1s">
+                    <img class="img-fluid rounded w-100" src="{{ asset('frontend/images/campaigns/campaign-04.png') }}" alt="Aydın Dil Akademisi 2026–2027 yeni dönem kampanyası ve başarıları">
+                </div>
+            </div>
         </div>
-    </section>
+    </div>
+    <!-- Campaign Visual End -->
 
     <!-- Why Us Start -->
     <div class="container-xxl py-5">

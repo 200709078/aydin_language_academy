@@ -3,10 +3,10 @@
 
 <head>
     <meta charset="utf-8">
-    <title>{{ __('dictt.ielts_prep') }} | {{ __('dictt.ala') }}</title>
+    <title>{{ __('dictt.seo_ielts_title') }}</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="" name="keywords">
-    <meta content="" name="description">
+    <meta content="{{ __('dictt.seo_ielts_keywords') }}" name="keywords">
+    <meta content="{{ __('dictt.seo_ielts_description') }}" name="description">
 
     <!-- Favicon -->
     <link href="{{ asset('frontend/images/logo/favicon.png') }}" rel="icon">

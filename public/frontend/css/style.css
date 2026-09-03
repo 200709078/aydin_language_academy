@@ -748,6 +748,13 @@ body.frontend-home * {
     gap: 0.5rem;
 }
 
+.frontend-header-brand-logo {
+    display: block;
+    width: auto;
+    height: 60px;
+    max-width: 312px;
+}
+
 .frontend-header__mobile .navbar button.navbar-brand {
     border: 0;
     background: transparent;
@@ -782,6 +789,11 @@ body.frontend-home * {
 }
 
 @media (max-width: 575.98px) {
+    .frontend-header-brand-logo {
+        height: 48px;
+        max-width: calc(100vw - 9rem);
+    }
+
     .frontend-brand-wordmark__main {
         font-size: 30px;
     }
@@ -814,7 +826,12 @@ body.frontend-home * {
     }
 }
 
-@media (min-width: 1200px) and (max-width: 1279.98px) {
+@media (min-width: 1200px) and (max-width: 1399.98px) {
+    .frontend-header-brand-logo {
+        height: 50px;
+        max-width: 260px;
+    }
+
     .frontend-header__desktop .navbar .navbar-brand {
         padding-right: 1.5rem !important;
         padding-left: 1.5rem !important;
@@ -828,6 +845,35 @@ body.frontend-home * {
     .frontend-header__desktop .navbar .btn {
         padding-right: 1.25rem !important;
         padding-left: 1.25rem !important;
+    }
+}
+
+@media (min-width: 1400px) and (max-width: 1599.98px) {
+    .frontend-header__desktop .frontend-header-brand-logo {
+        height: 68px;
+        max-width: 354px;
+    }
+
+    .frontend-header__desktop .navbar .navbar-brand {
+        padding-right: 1.5rem !important;
+        padding-left: 1.5rem !important;
+    }
+
+    .frontend-header__desktop .navbar .navbar-nav .nav-link {
+        margin-right: 8px;
+        font-size: 14px;
+    }
+
+    .frontend-header__desktop .navbar .btn {
+        padding-right: 1.25rem !important;
+        padding-left: 1.25rem !important;
+    }
+}
+
+@media (min-width: 1600px) {
+    .frontend-header__desktop .frontend-header-brand-logo {
+        height: 68px;
+        max-width: 354px;
     }
 }
 

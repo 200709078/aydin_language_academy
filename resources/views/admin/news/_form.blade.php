@@ -17,7 +17,20 @@
     ];
 @endphp
 
-<div class="card" x-data="{ status: @js($initialStatus) }">
+<div class="card" x-data="{
+    status: @js($initialStatus),
+    publishedAt: @js($publishedAt),
+    setPublishedAtToNow() {
+        if (this.publishedAt) {
+            return;
+        }
+
+        const now = new Date();
+        const pad = (value) => String(value).padStart(2, '0');
+
+        this.publishedAt = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}T${pad(now.getHours())}:${pad(now.getMinutes())}`;
+    },
+}">
     <div class="card-body">
         <div class="row align-items-center mb-3">
             <div class="col-sm-4 mb-2 mb-sm-0">
@@ -39,20 +52,11 @@
             @endif
 
             <div class="row">
-                <div class="col-md-8 mb-3">
+                <div class="col-12 mb-3">
                     <label for="title" class="form-label">{{ __('dictt.news_title') }}</label>
                     <input id="title" type="text" name="title" value="{{ old('title', $currentNews?->title) }}"
                         class="form-control @error('title') is-invalid @enderror" maxlength="255" required>
                     @error('title')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
-                <div class="col-md-4 mb-3">
-                    <label for="slug" class="form-label">{{ __('dictt.news_slug') }}</label>
-                    <input id="slug" type="text" name="slug" value="{{ old('slug', $currentNews?->slug) }}"
-                        class="form-control @error('slug') is-invalid @enderror" maxlength="191">
-                    <div class="form-text">{{ __('dictt.news_slug_help') }}</div>
-                    @error('slug')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
@@ -70,9 +74,10 @@
             <div class="border rounded p-3 mb-4">
                 <h6 class="mb-3">{{ __('dictt.news_publication_settings') }}</h6>
                 <div class="row">
-                    <div class="col-md-4 mb-3">
+                    <div class="col-md-6 mb-3">
                         <label for="status" class="form-label">{{ __('dictt.news_status') }}</label>
                         <select id="status" name="status" x-model="status"
+                            x-on:change="if ($event.target.value === @js(\App\Models\News::STATUS_PUBLISHED)) setPublishedAtToNow()"
                             class="form-select @error('status') is-invalid @enderror" required>
                             @foreach ($statusOptions as $statusValue => $statusLabel)
                                 <option value="{{ $statusValue }}" @selected((string) $initialStatus === (string) $statusValue)>
@@ -84,7 +89,7 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-                    <div class="col-md-4 mb-3">
+                    <div class="col-md-6 mb-3">
                         <label for="display_location" class="form-label">{{ __('dictt.news_display_location') }}</label>
                         <select id="display_location" name="display_location"
                             class="form-select @error('display_location') is-invalid @enderror" required>
@@ -99,22 +104,12 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-                    <div class="col-md-4 mb-3">
-                        <label for="sort_order" class="form-label">{{ __('dictt.news_sort_order') }}</label>
-                        <input id="sort_order" type="number" min="0" name="sort_order"
-                            value="{{ old('sort_order', $currentNews?->sort_order) }}"
-                            class="form-control @error('sort_order') is-invalid @enderror">
-                        <div class="form-text">{{ __('dictt.news_sort_order_help') }}</div>
-                        @error('sort_order')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
                 </div>
 
                 <div class="row" x-show="status === @js(\App\Models\News::STATUS_PUBLISHED)" style="display: none;">
                     <div class="col-md-6 mb-3 mb-md-0">
                         <label for="published_at" class="form-label">{{ __('dictt.news_published_at') }}</label>
-                        <input id="published_at" type="datetime-local" name="published_at" value="{{ $publishedAt }}"
+                        <input id="published_at" type="datetime-local" name="published_at" value="{{ $publishedAt }}" x-model="publishedAt"
                             x-bind:required="status === @js(\App\Models\News::STATUS_PUBLISHED)"
                             class="form-control @error('published_at') is-invalid @enderror">
                         @error('published_at')
@@ -162,37 +157,6 @@
                     </div>
                 @endif
             </div>
-
-            <details class="border rounded p-3 mb-4">
-                <summary class="fw-semibold">{{ __('dictt.news_seo') }}</summary>
-                <div class="row mt-3">
-                    <div class="col-md-6 mb-3">
-                        <label for="seo_title" class="form-label">{{ __('dictt.news_seo_title') }}</label>
-                        <input id="seo_title" type="text" name="seo_title" value="{{ old('seo_title', $currentNews?->seo_title) }}"
-                            class="form-control @error('seo_title') is-invalid @enderror" maxlength="255">
-                        @error('seo_title')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label for="canonical_url" class="form-label">{{ __('dictt.news_canonical_url') }}</label>
-                        <input id="canonical_url" type="url" name="canonical_url"
-                            value="{{ old('canonical_url', $currentNews?->canonical_url) }}"
-                            class="form-control @error('canonical_url') is-invalid @enderror" maxlength="2048">
-                        @error('canonical_url')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <div class="col-12">
-                        <label for="seo_description" class="form-label">{{ __('dictt.news_seo_description') }}</label>
-                        <textarea id="seo_description" name="seo_description" rows="3" maxlength="320"
-                            class="form-control @error('seo_description') is-invalid @enderror">{{ old('seo_description', $currentNews?->seo_description) }}</textarea>
-                        @error('seo_description')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                </div>
-            </details>
 
         </form>
     </div>

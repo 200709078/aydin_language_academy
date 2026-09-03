@@ -14,11 +14,7 @@
             aria-controls="frontendMobileNavbarCollapse"
             aria-expanded="false"
             aria-label="{{ $headerLocale === 'tr' ? 'Menüyü aç/kapat' : 'Toggle menu' }}">
-            <img src="{{ asset('frontend/images/logo/logo-2.png') }}" alt="Aydın Language Academy" style="height: 56px; width: auto;">
-            <span class="frontend-brand-wordmark">
-                <span class="frontend-brand-wordmark__main">{{ __('dictt.brand_title') }}</span>
-                <span class="frontend-brand-wordmark__sub">{{ __('dictt.brand_subtitle') }}</span>
-            </span>
+            <img class="frontend-header-brand-logo" src="{{ asset('frontend/images/logo/logo-04.png') }}" alt="Aydın Dil Akademisi">
         </button>
         <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#frontendMobileNavbarCollapse" aria-controls="frontendMobileNavbarCollapse" aria-expanded="false" aria-label="{{ $headerLocale === 'tr' ? 'Menüyü aç/kapat' : 'Toggle menu' }}" title="{{ $headerLocale === 'tr' ? 'Menüyü aç/kapat' : 'Toggle menu' }}">
             <span class="navbar-toggler-icon"></span>
