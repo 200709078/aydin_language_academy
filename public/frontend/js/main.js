@@ -33,21 +33,60 @@
     }
 
 
-    // Header carousel
-    $(".header-carousel").owlCarousel({
-        autoplay: true,
-        autoplayTimeout: 5000,
-        autoplayHoverPause: true,
-        animateOut: 'fadeOutLeft',
-        items: 1,
-        dots: true,
-        loop: true,
-        nav : true,
-        navText : [
-            '<i class="bi bi-chevron-left"></i>',
-            '<i class="bi bi-chevron-right"></i>'
-        ]
-    });
+    // Header carousel - dots dynamically scale nav width (dots moved between arrows).
+    (function initHeaderCarousel() {
+        var $headerCarousel = $(".header-carousel");
+
+        if (!$headerCarousel.length || !$.fn.owlCarousel) {
+            return;
+        }
+
+        function placeHeaderDotsInsideNav() {
+            $headerCarousel.each(function () {
+                var $carousel = $(this);
+                var $nav = $carousel.find(".owl-nav");
+                var $dots = $carousel.find(".owl-dots");
+
+                if (!$nav.length || !$dots.length) {
+                    return;
+                }
+
+                if ($dots.parent().is($nav)) {
+                    return;
+                }
+
+                var $prev = $nav.find(".owl-prev").first();
+                if ($prev.length) {
+                    $dots.insertAfter($prev);
+                } else {
+                    $nav.prepend($dots);
+                }
+            });
+        }
+
+        $headerCarousel.on("initialized.owl.carousel refreshed.owl.carousel resized.owl.carousel", placeHeaderDotsInsideNav);
+
+        $headerCarousel.owlCarousel({
+            autoplay: true,
+            autoplayTimeout: 5000,
+            autoplayHoverPause: true,
+            animateOut: 'fadeOutLeft',
+            items: 1,
+            dots: true,
+            loop: true,
+            nav : true,
+            navText : [
+                '<i class="bi bi-chevron-left"></i>',
+                '<i class="bi bi-chevron-right"></i>'
+            ],
+            onInitialized: placeHeaderDotsInsideNav,
+            onRefreshed: placeHeaderDotsInsideNav,
+            onResized: placeHeaderDotsInsideNav
+        });
+
+        // Fallback for cached Owl markup where events fire synchronously.
+        setTimeout(placeHeaderDotsInsideNav, 0);
+    })();
 
 
     // Sticky desktop navbar

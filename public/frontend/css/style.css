@@ -333,15 +333,19 @@ body.frontend-home * {
 
 .header-carousel .owl-nav {
     position: absolute;
-    width: 214px;
-    height: 54px;
+    width: auto;
+    height: auto;
+    min-height: 54px;
     bottom: 12px;
     left: 50%;
     transform: translateX(-50%);
-    display: flex;
-    justify-content: space-between;
+    display: inline-flex;
+    justify-content: center;
     align-items: center;
+    gap: 6px;
     padding: 4px;
+    max-width: calc(100% - 24px);
+    overflow: hidden;
     background: rgba(9, 32, 63, .20);
     border: 1px solid rgba(255, 255, 255, .42);
     border-radius: 999px;
@@ -355,6 +359,7 @@ body.frontend-home * {
 .header-carousel .owl-nav .owl-next {
     width: 45px;
     height: 45px;
+    flex: 0 0 45px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -388,17 +393,42 @@ body.frontend-home * {
     z-index: 3;
 }
 
+.header-carousel .owl-nav .owl-dots {
+    position: static;
+    height: auto;
+    bottom: auto;
+    left: auto;
+    transform: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0;
+    row-gap: 4px;
+    flex: 0 1 auto;
+    min-width: 0;
+    max-width: 100%;
+    padding: 0 4px;
+    z-index: auto;
+    overflow: hidden;
+}
+
 .header-carousel .owl-dot {
     position: relative;
     display: inline-block;
     margin: 0 5px;
     width: 15px;
     height: 15px;
+    flex: 0 0 15px;
     background: rgba(9, 32, 63, .76);
     border: 1px solid rgba(255, 255, 255, .88);
     border-radius: 15px;
     transition: .5s;
     box-shadow: 0 2px 6px rgba(0, 0, 0, .22);
+}
+
+.header-carousel .owl-nav .owl-dot {
+    margin: 0 4px;
 }
 
 .header-carousel .owl-dot::after {
@@ -422,6 +452,32 @@ body.frontend-home * {
     background: #2bb8ba;
     border-color: #FFFFFF;
     transform: translateY(-1px);
+}
+
+@media (max-width: 575.98px) {
+    .header-carousel .owl-nav {
+        max-width: calc(100% - 16px);
+        gap: 4px;
+        padding: 3px;
+    }
+
+    .header-carousel .owl-nav .owl-dots {
+        padding: 0 2px;
+    }
+
+    .header-carousel .owl-nav .owl-dot {
+        margin: 0 3px;
+        width: 13px;
+        height: 13px;
+        flex-basis: 13px;
+    }
+
+    .header-carousel .owl-nav .owl-dot::after {
+        width: 4px;
+        height: 4px;
+        top: 3.5px;
+        left: 3.5px;
+    }
 }
 
 /* Owl Carousel'ın mobil sürüklemesinde Chrome'un pasif touchmove uyarısını önler. */
