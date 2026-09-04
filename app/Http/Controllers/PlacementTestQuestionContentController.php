@@ -72,7 +72,8 @@ class PlacementTestQuestionContentController extends Controller
 
         return redirect()
             ->route('placement_test_question_contents_list')
-            ->with('success', 'Ortak içerik eklendi.');
+            ->with('modalSuccessTitle', __('dictt.savesuccesstitle', ['type' => 'Ortak İçerik']))
+            ->with('modalSuccessContent', 'Ortak içerik eklendi.');
     }
 
     /**
@@ -96,7 +97,8 @@ class PlacementTestQuestionContentController extends Controller
 
         return redirect()
             ->route('placement_test_question_contents_list')
-            ->with('success', 'Ortak içerik güncellendi.');
+            ->with('modalSuccessTitle', __('dictt.updatesuccesstitle', ['type' => 'Ortak İçerik']))
+            ->with('modalSuccessContent', 'Ortak içerik güncellendi.');
     }
 
     /**
@@ -120,7 +122,8 @@ class PlacementTestQuestionContentController extends Controller
 
         return redirect()
             ->route('placement_test_question_contents_list')
-            ->with('success', 'Ortak içerik silindi. Geçmiş kayıtları korumak için varsa medya dosyası sunucuda bırakıldı.');
+            ->with('modalSuccessTitle', __('dictt.savesuccesstitle', ['type' => 'Ortak İçerik']))
+            ->with('modalSuccessContent', 'Ortak içerik silindi. Geçmiş kayıtları korumak için varsa medya dosyası sunucuda bırakıldı.');
     }
 
     /**

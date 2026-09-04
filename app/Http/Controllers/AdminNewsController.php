@@ -121,11 +121,12 @@ class AdminNewsController extends Controller
 
         $attributes['sort_order'] = ((int) News::query()->max('sort_order')) + 1;
 
-        $news = News::create($attributes);
+        News::create($attributes);
 
         return redirect()
-            ->route('admin.news.edit', $news)
-            ->with('success', __('dictt.news_created'));
+            ->route('admin.news.index')
+            ->with('modalSuccessTitle', __('dictt.savesuccesstitle', ['type' => __('dictt.news')]))
+            ->with('modalSuccessContent', __('dictt.news_created'));
     }
 
     /**
@@ -168,8 +169,9 @@ class AdminNewsController extends Controller
         $news->update($attributes);
 
         return redirect()
-            ->route('admin.news.edit', $news)
-            ->with('success', __('dictt.news_updated'));
+            ->route('admin.news.index')
+            ->with('modalSuccessTitle', __('dictt.updatesuccesstitle', ['type' => __('dictt.news')]))
+            ->with('modalSuccessContent', __('dictt.news_updated'));
     }
 
     /**
@@ -228,7 +230,8 @@ class AdminNewsController extends Controller
 
         return redirect()
             ->route('admin.news.index', ['filter' => News::STATUS_ARCHIVED])
-            ->with('success', __('dictt.news_archived'));
+            ->with('modalSuccessTitle', __('dictt.updatesuccesstitle', ['type' => __('dictt.news')]))
+            ->with('modalSuccessContent', __('dictt.news_archived'));
     }
 
     /**
@@ -251,7 +254,8 @@ class AdminNewsController extends Controller
 
         return redirect()
             ->route('admin.news.index', ['filter' => News::STATUS_ARCHIVED])
-            ->with('success', __('dictt.news_permanently_deleted'));
+            ->with('modalSuccessTitle', __('dictt.savesuccesstitle', ['type' => __('dictt.news')]))
+            ->with('modalSuccessContent', __('dictt.news_permanently_deleted'));
     }
 
     /**
@@ -277,7 +281,8 @@ class AdminNewsController extends Controller
 
         return redirect()
             ->route('admin.news.edit', $news)
-            ->with('success', __('dictt.news_block_created'));
+            ->with('modalSuccessTitle', __('dictt.savesuccesstitle', ['type' => 'Blok']))
+            ->with('modalSuccessContent', __('dictt.news_block_created'));
     }
 
     /**
@@ -306,7 +311,8 @@ class AdminNewsController extends Controller
 
         return redirect()
             ->route('admin.news.edit', $news)
-            ->with('success', __('dictt.news_block_updated'));
+            ->with('modalSuccessTitle', __('dictt.updatesuccesstitle', ['type' => 'Blok']))
+            ->with('modalSuccessContent', __('dictt.news_block_updated'));
     }
 
     /**
@@ -340,7 +346,8 @@ class AdminNewsController extends Controller
 
         return redirect()
             ->route('admin.news.edit', $news)
-            ->with('success', __('dictt.news_block_deleted'));
+            ->with('modalSuccessTitle', __('dictt.savesuccesstitle', ['type' => 'Blok']))
+            ->with('modalSuccessContent', __('dictt.news_block_deleted'));
     }
 
     /**
@@ -394,9 +401,16 @@ class AdminNewsController extends Controller
             return true;
         });
 
+        if ($moved) {
+            return redirect()
+                ->route('admin.news.edit', $news)
+                ->with('modalSuccessTitle', __('dictt.savesuccesstitle', ['type' => 'Blok']))
+                ->with('modalSuccessContent', __('dictt.news_block_moved'));
+        }
+
         return redirect()
             ->route('admin.news.edit', $news)
-            ->with($moved ? 'success' : 'error', $moved ? __('dictt.news_block_moved') : __('dictt.news_block_move_unavailable'));
+            ->with('error', __('dictt.news_block_move_unavailable'));
     }
 
     /**

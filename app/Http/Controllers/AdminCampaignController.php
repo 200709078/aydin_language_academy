@@ -63,7 +63,8 @@ class AdminCampaignController extends Controller
 
         return redirect()
             ->route('admin.campaigns.index')
-            ->with('success', __('dictt.campaign_created'));
+            ->with('modalSuccessTitle', __('dictt.savesuccesstitle', ['type' => __('dictt.campaigns')]))
+            ->with('modalSuccessContent', __('dictt.campaign_created'));
     }
 
     /**
@@ -83,7 +84,8 @@ class AdminCampaignController extends Controller
 
         return redirect()
             ->route('admin.campaigns.index')
-            ->with('success', __('dictt.campaign_updated'));
+            ->with('modalSuccessTitle', __('dictt.updatesuccesstitle', ['type' => __('dictt.campaigns')]))
+            ->with('modalSuccessContent', __('dictt.campaign_updated'));
     }
 
     /**
@@ -113,7 +115,8 @@ class AdminCampaignController extends Controller
 
         return redirect()
             ->route('admin.campaigns.index')
-            ->with('success', __('dictt.campaign_deleted'));
+            ->with('modalSuccessTitle', __('dictt.savesuccesstitle', ['type' => __('dictt.campaigns')]))
+            ->with('modalSuccessContent', __('dictt.campaign_deleted'));
     }
 
     /**
@@ -206,7 +209,8 @@ class AdminCampaignController extends Controller
 
         return redirect()
             ->route('admin.campaigns.settings')
-            ->with('success', __('dictt.campaign_page_settings_updated'));
+            ->with('modalSuccessTitle', __('dictt.updatesuccesstitle', ['type' => __('dictt.campaign_page_settings')]))
+            ->with('modalSuccessContent', __('dictt.campaign_page_settings_updated'));
     }
 
     /**

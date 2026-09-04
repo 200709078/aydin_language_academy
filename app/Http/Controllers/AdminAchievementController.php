@@ -79,7 +79,8 @@ class AdminAchievementController extends Controller
 
         return redirect()
             ->route('admin.achievements.settings')
-            ->with('success', __('dictt.achievement_page_settings_updated'));
+            ->with('modalSuccessTitle', __('dictt.updatesuccesstitle', ['type' => __('dictt.achievement_page_settings')]))
+            ->with('modalSuccessContent', __('dictt.achievement_page_settings_updated'));
     }
 
     /**
@@ -102,7 +103,8 @@ class AdminAchievementController extends Controller
 
         return redirect()
             ->route('admin.achievements.index')
-            ->with('success', __('dictt.achievement_year_created'));
+            ->with('modalSuccessTitle', __('dictt.savesuccesstitle', ['type' => __('dictt.achievement_year')]))
+            ->with('modalSuccessContent', __('dictt.achievement_year_created'));
     }
 
     /**
@@ -147,7 +149,8 @@ class AdminAchievementController extends Controller
 
         return redirect()
             ->route('admin.achievements.index')
-            ->with('success', __('dictt.achievement_year_updated'));
+            ->with('modalSuccessTitle', __('dictt.updatesuccesstitle', ['type' => __('dictt.achievement_year')]))
+            ->with('modalSuccessContent', __('dictt.achievement_year_updated'));
     }
 
     /**
@@ -186,7 +189,8 @@ class AdminAchievementController extends Controller
 
         return redirect()
             ->route('admin.achievements.index')
-            ->with('success', __('dictt.achievement_year_permanently_deleted'));
+            ->with('modalSuccessTitle', __('dictt.savesuccesstitle', ['type' => __('dictt.achievement_year')]))
+            ->with('modalSuccessContent', __('dictt.achievement_year_permanently_deleted'));
     }
 
     /**
@@ -255,7 +259,8 @@ class AdminAchievementController extends Controller
 
         return redirect()
             ->route('admin.achievements.entries.index', $achievementYear)
-            ->with('success', __('dictt.achievement_entry_created'));
+            ->with('modalSuccessTitle', __('dictt.savesuccesstitle', ['type' => __('dictt.achievement_entry')]))
+            ->with('modalSuccessContent', __('dictt.achievement_entry_created'));
     }
 
     /**
@@ -283,7 +288,8 @@ class AdminAchievementController extends Controller
 
         return redirect()
             ->route('admin.achievements.entries.index', $achievementYear)
-            ->with('success', __('dictt.achievement_entry_updated'));
+            ->with('modalSuccessTitle', __('dictt.updatesuccesstitle', ['type' => __('dictt.achievement_entry')]))
+            ->with('modalSuccessContent', __('dictt.achievement_entry_updated'));
     }
 
     /**
@@ -351,7 +357,8 @@ class AdminAchievementController extends Controller
 
         return redirect()
             ->route('admin.achievements.entries.index', [$achievementYear, 'entry_filter' => AchievementEntry::STATUS_DRAFT])
-            ->with('success', __('dictt.achievement_entry_permanently_deleted'));
+            ->with('modalSuccessTitle', __('dictt.savesuccesstitle', ['type' => __('dictt.achievement_entry')]))
+            ->with('modalSuccessContent', __('dictt.achievement_entry_permanently_deleted'));
     }
 
     /**

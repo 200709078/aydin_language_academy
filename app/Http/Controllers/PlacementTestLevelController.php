@@ -46,7 +46,8 @@ class PlacementTestLevelController extends Controller
 
         return redirect()
             ->route('placement_test_levels_list')
-            ->with('success', "{$placementTestLevel->code} seviye ayarları güncellendi.");
+            ->with('modalSuccessTitle', __('dictt.updatesuccesstitle', ['type' => $placementTestLevel->code]))
+            ->with('modalSuccessContent', "{$placementTestLevel->code} seviye ayarları güncellendi.");
     }
 
     /**

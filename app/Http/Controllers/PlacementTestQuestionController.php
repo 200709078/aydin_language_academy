@@ -90,7 +90,8 @@ class PlacementTestQuestionController extends Controller
 
         return redirect()
             ->route('placement_test_questions_list')
-            ->with('success', 'Soru eklendi.');
+            ->with('modalSuccessTitle', __('dictt.savesuccesstitle', ['type' => 'Soru']))
+            ->with('modalSuccessContent', 'Soru eklendi.');
     }
 
     /**
@@ -134,7 +135,8 @@ class PlacementTestQuestionController extends Controller
 
         return redirect()
             ->route('placement_test_questions_list')
-            ->with('success', 'Soru güncellendi. Geçmiş sınav snapshot kayıtları değiştirilmedi.');
+            ->with('modalSuccessTitle', __('dictt.updatesuccesstitle', ['type' => 'Soru']))
+            ->with('modalSuccessContent', 'Soru güncellendi. Geçmiş sınav snapshot kayıtları değiştirilmedi.');
     }
 
     /**
@@ -161,7 +163,8 @@ class PlacementTestQuestionController extends Controller
 
         return redirect()
             ->route('placement_test_questions_list')
-            ->with('success', $message);
+            ->with('modalSuccessTitle', __('dictt.savesuccesstitle', ['type' => 'Soru']))
+            ->with('modalSuccessContent', $message);
     }
 
     /**

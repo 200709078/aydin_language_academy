@@ -103,12 +103,14 @@ class AdminContactMessageController extends Controller
         if ($validated['status'] === model_messages::STATUS_UNREAD) {
             return redirect()
                 ->route('admin.messages.index', ['filter' => model_messages::STATUS_UNREAD])
-                ->with('success', __('dictt.contact_message_status_updated'));
+                ->with('modalSuccessTitle', __('dictt.updatesuccesstitle', ['type' => __('dictt.status')]))
+                ->with('modalSuccessContent', __('dictt.contact_message_status_updated'));
         }
 
         return redirect()
             ->route('admin.messages.show', $message)
-            ->with('success', __('dictt.contact_message_status_updated'));
+            ->with('modalSuccessTitle', __('dictt.updatesuccesstitle', ['type' => __('dictt.status')]))
+                ->with('modalSuccessContent', __('dictt.contact_message_status_updated'));
     }
 
     public function reply(Request $request, model_messages $message): RedirectResponse
@@ -166,6 +168,7 @@ class AdminContactMessageController extends Controller
 
         return redirect()
             ->route('admin.messages.show', $message)
-            ->with('success', __('dictt.contact_message_reply_queued'));
+            ->with('modalSuccessTitle', __('dictt.savesuccesstitle', ['type' => __('dictt.message')]))
+            ->with('modalSuccessContent', __('dictt.contact_message_reply_queued'));
     }
 }

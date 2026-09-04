@@ -1,10 +1,30 @@
 <x-app-layout>
     <x-slot name="header">{{ __('dictt.contact_message_details') }} #{{ $message->id }}</x-slot>
 
-    @if (session('success') || session('error'))
-        <div class="alert {{ session('success') ? 'alert-success' : 'alert-danger' }} alert-dismissible fade show" role="alert">
-            {{ session('success') ?? session('error') }}
-            <button type="button" class="btn-close" onclick="this.closest('.alert').remove()" aria-label="{{ __('dictt.placement_test_close') }}"></button>
+    @if (session('modalSuccessTitle') && session('modalSuccessContent'))
+        <div class="relative bg-green-100 text-green-800 px-6 py-4 rounded-lg shadow mb-6 w-full">
+            <div
+                class="absolute bottom-[-10px] left-10 w-0 h-0 border-l-[10px] border-l-transparent border-r-[10px] border-r-transparent border-t-[10px] border-t-green-100">
+            </div>
+            <div class="flex justify-between items-center">
+                <h2 class="text-lg font-semibold flex items-center">
+                    <i class="fas fa-check-circle mr-2"></i>
+                    {!! session('modalSuccessTitle') !!}
+                </h2>
+                <button onclick="this.parentElement.parentElement.remove()" class="text-gray-500 hover:text-red-600 ml-4" title="{{ __('dictt.close') }}">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="mt-2 text-sm">
+                {!! session('modalSuccessContent') !!}
+            </div>
+        </div>
+    @endif
+    @if (session('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ session('error') }}
+            <button type="button" class="btn-close" onclick="this.closest('.alert').remove()"
+                aria-label="{{ __('dictt.close') }}"></button>
         </div>
     @endif
 

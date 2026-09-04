@@ -72,7 +72,8 @@ class PlacementTestReviewController extends Controller
 
         return redirect()
             ->route('placement_test_attempts_show', $placementTest)
-            ->with('success', __('dictt.placement_test_attempt_approved_success'));
+            ->with('modalSuccessTitle', __('dictt.savesuccesstitle', ['type' => 'Sınav']))
+            ->with('modalSuccessContent', __('dictt.placement_test_attempt_approved_success'));
     }
 
     /**
