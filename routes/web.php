@@ -219,6 +219,10 @@ Route::group(['middleware' => ['auth', isAdmin_middle::class], 'prefix' => 'admi
             ->whereNumber('achievementYear')
             ->whereNumber('achievementEntry')
             ->name('entries.update');
+        Route::delete('/{achievementYear}/entries/{achievementEntry}', [AdminAchievementController::class, 'destroyEntry'])
+            ->whereNumber('achievementYear')
+            ->whereNumber('achievementEntry')
+            ->name('entries.destroy');
         Route::patch('/{achievementYear}/entries/{achievementEntry}/status', [AdminAchievementController::class, 'updateEntryStatus'])
             ->whereNumber('achievementYear')
             ->whereNumber('achievementEntry')
@@ -236,6 +240,9 @@ Route::group(['middleware' => ['auth', isAdmin_middle::class], 'prefix' => 'admi
         Route::patch('/{achievementYear}/status', [AdminAchievementController::class, 'updateStatus'])
             ->whereNumber('achievementYear')
             ->name('status.update');
+        Route::delete('/{achievementYear}', [AdminAchievementController::class, 'destroy'])
+            ->whereNumber('achievementYear')
+            ->name('destroy');
     });
 
     Route::get('themes/{theme_id}/declarations_list', [cont_user_main::class, 'declarations_list'])->name('declarations_list');

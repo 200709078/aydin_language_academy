@@ -73,6 +73,33 @@ class ReviewList extends Component
         $this->loadReviews();
     }
 
+    public function toggleStatus($id): void
+    {
+        $review = Review::findOrFail($id);
+
+        $this->ensureReviewIsActive($review);
+
+        if ($review->status === Review::STATUS_APPROVED) {
+            $review->status = Review::STATUS_PENDING;
+            $review->approved_by = null;
+            $review->approved_at = null;
+            $review->save();
+
+            $this->modalSuccessTitle = __('dictt.updatesuccesstitle', ['type' => __('dictt.review')]);
+            $this->modalSuccessContent = __('dictt.admin_review_update_success', ['name' => $this->displayName($review)]);
+        } else {
+            $review->status = Review::STATUS_APPROVED;
+            $review->approved_by = auth()->id();
+            $review->approved_at = now();
+            $review->save();
+
+            $this->modalSuccessTitle = __('dictt.updatesuccesstitle', ['type' => __('dictt.review')]);
+            $this->modalSuccessContent = __('dictt.admin_review_approve_success', ['name' => $this->displayName($review)]);
+        }
+
+        $this->loadReviews();
+    }
+
     public function confirmArchive($id): void
     {
         $review = Review::findOrFail($id);

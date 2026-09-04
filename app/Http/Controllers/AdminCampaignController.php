@@ -49,12 +49,12 @@ class AdminCampaignController extends Controller
     {
         $attributes = $this->validatedCampaign($request);
 
-        $campaign = DB::transaction(function () use ($attributes): Campaign {
+        DB::transaction(function () use ($attributes): void {
             $campaigns = Campaign::query()
                 ->lockForUpdate()
                 ->get(['id', 'sort_order']);
 
-            return Campaign::create([
+            Campaign::create([
                 ...$attributes,
                 'status' => Campaign::STATUS_DRAFT,
                 'sort_order' => ((int) $campaigns->max('sort_order')) + 1,
@@ -62,7 +62,7 @@ class AdminCampaignController extends Controller
         });
 
         return redirect()
-            ->route('admin.campaigns.edit', $campaign)
+            ->route('admin.campaigns.index')
             ->with('success', __('dictt.campaign_created'));
     }
 
@@ -82,7 +82,7 @@ class AdminCampaignController extends Controller
         $campaign->update($this->validatedCampaign($request));
 
         return redirect()
-            ->route('admin.campaigns.edit', $campaign)
+            ->route('admin.campaigns.index')
             ->with('success', __('dictt.campaign_updated'));
     }
 

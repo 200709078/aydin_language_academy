@@ -61,7 +61,7 @@
                 </div>
             </div>
 
-            <div class="btn-group btn-group-sm mb-3" role="group" aria-label="{{ __('dictt.status') }}">
+            <div class="btn-group btn-group-sm mb-3" role="group" aria-label="{{ __('dictt.publish_status') }}">
                 <button type="button" wire:click="$set('statusFilter', 'default')"
                     class="btn {{ $statusFilter === 'default' ? 'btn-primary' : 'btn-outline-primary' }}">
                     {{ __('dictt.filter_all') }}</button>
@@ -87,7 +87,7 @@
                             <th scope="col">{{ __('dictt.branch') }}</th>
                             <th scope="col">{{ __('dictt.rating') }}</th>
                             <th scope="col">{{ __('dictt.content') }}</th>
-                            <th scope="col">{{ __('dictt.status') }}</th>
+                            <th scope="col">{{ __('dictt.publish_status') }}</th>
                             <th scope="col">{{ __('dictt.date') }}</th>
                             <th scope="col" class="text-end">{{ __('dictt.operations') }}</th>
                         </tr>
@@ -106,15 +106,27 @@
                                     <span class="admin-table-cell-ellipsis">{{ \Illuminate\Support\Str::limit($review->content, 120) }}</span>
                                 </td>
                                 <td>
-                                    @if ($review->status === \App\Models\Review::STATUS_ARCHIVED || $review->trashed())
-                                        <span class="badge text-bg-secondary">{{ __('dictt.status_archived') }}</span>
-                                    @elseif ($review->status === \App\Models\Review::STATUS_APPROVED)
-                                        <span class="badge text-bg-success">{{ __('dictt.status_approved') }}</span>
-                                    @elseif ($review->status === \App\Models\Review::STATUS_REJECTED)
-                                        <span class="badge text-bg-danger">{{ __('dictt.status_rejected') }}</span>
-                                    @else
-                                        <span class="badge text-bg-warning">{{ __('dictt.status_pending') }}</span>
-                                    @endif
+                                    <div class="d-flex flex-wrap align-items-center gap-2">
+                                        @if ($review->status !== \App\Models\Review::STATUS_ARCHIVED && ! $review->trashed())
+                                            <div class="form-check form-switch admin-list-switch mb-0">
+                                                <input id="review-status-{{ $review->id }}" type="checkbox"
+                                                    class="form-check-input" role="switch"
+                                                    @checked($review->status === \App\Models\Review::STATUS_APPROVED)
+                                                    wire:change="toggleStatus({{ $review->id }})"
+                                                    aria-label="{{ __('dictt.publish_status') }}"
+                                                    title="{{ __('dictt.publish_status') }}">
+                                            </div>
+                                        @endif
+                                        @if ($review->status === \App\Models\Review::STATUS_ARCHIVED || $review->trashed())
+                                            <span class="badge text-bg-secondary">{{ __('dictt.status_archived') }}</span>
+                                        @elseif ($review->status === \App\Models\Review::STATUS_APPROVED)
+                                            <span class="badge text-bg-success">{{ __('dictt.status_approved') }}</span>
+                                        @elseif ($review->status === \App\Models\Review::STATUS_REJECTED)
+                                            <span class="badge text-bg-danger">{{ __('dictt.status_rejected') }}</span>
+                                        @else
+                                            <span class="badge text-bg-warning">{{ __('dictt.status_pending') }}</span>
+                                        @endif
+                                    </div>
                                 </td>
                                 <td class="text-nowrap">{{ $review->created_at?->format('d.m.Y H:i') }}</td>
                                 <td class="text-end">
@@ -126,12 +138,6 @@
                                                 <span class="visually-hidden">{{ __('dictt.review_permanently_delete') }}</span>
                                             </button>
                                         @else
-                                            @if ($review->status !== \App\Models\Review::STATUS_APPROVED)
-                                            <button type="button" wire:click="approve({{ $review->id }})"
-                                                class="btn btn-sm btn-success" title="{{ __('dictt.approve') }}">
-                                                <i class="fa fa-check w-4"></i>
-                                            </button>
-                                            @endif
                                             @if ($review->status !== \App\Models\Review::STATUS_REJECTED)
                                             <button type="button" wire:click="reject({{ $review->id }})"
                                                 class="btn btn-sm btn-warning" title="{{ __('dictt.reject') }}">

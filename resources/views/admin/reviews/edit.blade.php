@@ -28,7 +28,7 @@
                 @method('PUT')
                 @csrf
                 <div class="row">
-                    <div class="col-md-8 mb-2">
+                    <div class="col-12 mb-3">
                         <div class="form-group">
                             <label>{{ __('dictt.content') }}</label>
                             <textarea name="content" class="form-control" rows="4"
@@ -36,6 +36,8 @@
                             @error('content')<span class="text-danger small">{{ $message }}</span>@enderror
                         </div>
                     </div>
+                </div>
+                <div class="row">
                     <div class="col-md-4 mb-2">
                         <div class="form-group">
                             <label>{{ __('dictt.rating') }}</label>
@@ -46,29 +48,28 @@
                             </select>
                             @error('rating')<span class="text-danger small">{{ $message }}</span>@enderror
                         </div>
+                    </div>
+                    <div class="col-md-4 mb-2">
                         <div class="form-group">
                             <label>{{ __('dictt.branch') }}</label>
                             <select name="branch" class="form-select">
-                                <option value="" @selected(old('branch', $review->branch) === null)>{{ __('dictt.none') }}</option>
+                                <option value="" @selected(old('branch', $review->branch) === null)>{{ __('dictt.branch_general') }}</option>
                                 @foreach (\App\Models\Review::BRANCHES as $branch)
                                     <option value="{{ $branch }}" @selected(old('branch', $review->branch) === $branch)>{{ __('dictt.branch_' . $branch) }}</option>
                                 @endforeach
                             </select>
                             @error('branch')<span class="text-danger small">{{ $message }}</span>@enderror
                         </div>
+                    </div>
+                    <div class="col-md-4 mb-2">
                         <div class="form-group">
-                            <label>{{ __('dictt.status') }}</label>
+                            <label>{{ __('dictt.publish_status') }}</label>
                             <select name="status" class="form-select" required>
                                 @foreach ([\App\Models\Review::STATUS_PENDING, \App\Models\Review::STATUS_APPROVED, \App\Models\Review::STATUS_REJECTED] as $statusOption)
                                     <option value="{{ $statusOption }}" @selected(old('status', $review->status) === $statusOption)>{{ __('dictt.status_' . $statusOption) }}</option>
                                 @endforeach
                             </select>
                             @error('status')<span class="text-danger small">{{ $message }}</span>@enderror
-                        </div>
-                        <div class="form-group">
-                            <label>{{ __('dictt.display_order') }}</label>
-                            <input type="number" name="display_order" min="0" class="form-control" value="{{ old('display_order', $review->display_order) }}">
-                            @error('display_order')<span class="text-danger small">{{ $message }}</span>@enderror
                         </div>
                     </div>
                 </div>

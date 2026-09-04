@@ -31,6 +31,15 @@ class Review extends Model
         'display_order',
     ];
 
+    protected static function booted(): void
+    {
+        static::creating(function (Review $review) {
+            if ($review->display_order === null) {
+                $review->display_order = static::withTrashed()->count() + 1;
+            }
+        });
+    }
+
     protected function casts(): array
     {
         return [
@@ -54,7 +63,7 @@ class Review extends Model
             'ortaca' => __('dictt.branch_ortaca'),
             'dalaman' => __('dictt.branch_dalaman'),
             'koycegiz' => __('dictt.branch_koycegiz'),
-            default => __('dictt.none'),
+            default => __('dictt.branch_general'),
         };
     }
 

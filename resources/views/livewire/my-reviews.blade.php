@@ -55,7 +55,7 @@
                     <div class="col-md-2">
                         <label class="form-label">{{ __('dictt.branch') }}</label>
                         <select wire:model="branch" class="form-select">
-                            <option value="">{{ __('dictt.none') }}</option>
+                            <option value="">{{ __('dictt.branch_general') }}</option>
                             @foreach (\App\Models\Review::BRANCHES as $branchOption)
                                 <option value="{{ $branchOption }}">{{ __("dictt.branch_{$branchOption}") }}</option>
                             @endforeach

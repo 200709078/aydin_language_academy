@@ -56,6 +56,7 @@
                                     : 'text-bg-success';
                                 $canMoveUp = $moveAvailability[$item->id]['up'] ?? false;
                                 $canMoveDown = $moveAvailability[$item->id]['down'] ?? false;
+                                $isDeletable = $item->status === \App\Models\Achievement::STATUS_DRAFT;
                             @endphp
                             <tr>
                                 <td class="fw-semibold">{{ $item->year }}</td>
@@ -102,6 +103,24 @@
                                             <i class="fa fa-pen" aria-hidden="true"></i>
                                             <span class="visually-hidden">{{ __('dictt.edit') }}</span>
                                         </a>
+                                        <form id="achievement-delete-{{ $item->id }}" method="POST"
+                                            action="{{ route('admin.achievements.destroy', $item) }}" class="d-inline-block">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="button" class="btn btn-sm {{ $isDeletable ? 'btn-outline-danger admin-danger-action' : 'btn-outline-secondary' }}"
+                                                @disabled(! $isDeletable)
+                                                title="{{ __('dictt.achievement_year_permanently_delete') }}"
+                                                data-action-confirmation
+                                                data-confirm-form="achievement-delete-{{ $item->id }}"
+                                                data-confirm-title="{{ __('dictt.achievement_year_permanently_delete') }}"
+                                                data-confirm-content="{{ __('dictt.achievement_year_force_delete_confirm', ['year' => $item->year]) }}"
+                                                data-confirm-action="{{ __('dictt.achievement_year_permanently_delete') }}"
+                                                data-confirm-icon="fa-trash-alt"
+                                                data-confirm-tone="danger">
+                                                <i class="fa fa-trash" aria-hidden="true"></i>
+                                                <span class="visually-hidden">{{ __('dictt.achievement_year_permanently_delete') }}</span>
+                                            </button>
+                                        </form>
                                         <form method="POST" action="{{ route('admin.achievements.move', $item) }}"
                                             class="d-inline-block">
                                             @csrf
@@ -138,4 +157,6 @@
             @endif
         </div>
     </div>
+
+    <x-action-confirmation-modal />
 </x-app-layout>

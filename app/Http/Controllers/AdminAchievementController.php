@@ -98,10 +98,10 @@ class AdminAchievementController extends Controller
         $attributes = $this->validatedAchievement($request);
         $attributes['status'] = Achievement::STATUS_DRAFT;
         $attributes['sort_order'] = ((int) Achievement::query()->max('sort_order')) + 1;
-        $achievement = Achievement::create($attributes);
+        Achievement::create($attributes);
 
         return redirect()
-            ->route('admin.achievements.edit', $achievement)
+            ->route('admin.achievements.index')
             ->with('success', __('dictt.achievement_year_created'));
     }
 
@@ -146,7 +146,7 @@ class AdminAchievementController extends Controller
         $achievementYear->update($this->validatedAchievement($request, $achievementYear));
 
         return redirect()
-            ->route('admin.achievements.edit', $achievementYear)
+            ->route('admin.achievements.index')
             ->with('success', __('dictt.achievement_year_updated'));
     }
 
@@ -166,6 +166,27 @@ class AdminAchievementController extends Controller
         ]);
 
         return redirect()->back();
+    }
+
+    /**
+     * Permanently delete a draft achievement and its entries.
+     */
+    public function destroy(Achievement $achievementYear): RedirectResponse
+    {
+        if ($achievementYear->status !== Achievement::STATUS_DRAFT) {
+            return redirect()
+                ->route('admin.achievements.index')
+                ->with('error', __('dictt.invalidvalue_item', ['name' => __('dictt.achievement_year')]));
+        }
+
+        DB::transaction(function () use ($achievementYear): void {
+            $achievementYear->entries()->delete();
+            $achievementYear->delete();
+        });
+
+        return redirect()
+            ->route('admin.achievements.index')
+            ->with('success', __('dictt.achievement_year_permanently_deleted'));
     }
 
     /**
@@ -230,10 +251,10 @@ class AdminAchievementController extends Controller
         $attributes['achievements_id'] = $achievementYear->id;
         $attributes['status'] = AchievementEntry::STATUS_DRAFT;
         $attributes['sort_order'] = ((int) $achievementYear->entries()->max('sort_order')) + 1;
-        $achievementEntry = AchievementEntry::create($attributes);
+        AchievementEntry::create($attributes);
 
         return redirect()
-            ->route('admin.achievements.entries.edit', [$achievementYear, $achievementEntry])
+            ->route('admin.achievements.entries.index', $achievementYear)
             ->with('success', __('dictt.achievement_entry_created'));
     }
 
@@ -261,7 +282,7 @@ class AdminAchievementController extends Controller
         $achievementEntry->update($this->validatedEntry($request));
 
         return redirect()
-            ->route('admin.achievements.entries.edit', [$achievementYear, $achievementEntry])
+            ->route('admin.achievements.entries.index', $achievementYear)
             ->with('success', __('dictt.achievement_entry_updated'));
     }
 
@@ -309,6 +330,28 @@ class AdminAchievementController extends Controller
         ]);
 
         return redirect()->back();
+    }
+
+    /**
+     * Permanently delete a draft student record.
+     */
+    public function destroyEntry(
+        Achievement $achievementYear,
+        AchievementEntry $achievementEntry,
+    ): RedirectResponse {
+        $this->ensureEntryBelongsToAchievement($achievementYear, $achievementEntry);
+
+        if ($achievementEntry->status !== AchievementEntry::STATUS_DRAFT) {
+            return redirect()
+                ->route('admin.achievements.entries.index', [$achievementYear, 'entry_filter' => AchievementEntry::STATUS_DRAFT])
+                ->with('error', __('dictt.invalidvalue_item', ['name' => __('dictt.achievement_entry')]));
+        }
+
+        $achievementEntry->delete();
+
+        return redirect()
+            ->route('admin.achievements.entries.index', [$achievementYear, 'entry_filter' => AchievementEntry::STATUS_DRAFT])
+            ->with('success', __('dictt.achievement_entry_permanently_deleted'));
     }
 
     /**

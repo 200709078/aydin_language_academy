@@ -34,7 +34,6 @@ class cont_reviews extends Controller
             'rating' => ['required', 'integer', 'min:1', 'max:5'],
             'branch' => ['nullable', 'string', 'in:' . implode(',', Review::BRANCHES)],
             'status' => ['required', 'string', 'in:' . implode(',', [Review::STATUS_PENDING, Review::STATUS_APPROVED, Review::STATUS_REJECTED])],
-            'display_order' => ['nullable', 'integer', 'min:0'],
         ], [
             'content.required' => __('dictt.required_item', ['name' => __('dictt.content')]),
             'content.min' => __('dictt.mincharacter_item', ['name' => __('dictt.content'), 'number' => 3]),
@@ -46,7 +45,6 @@ class cont_reviews extends Controller
             'branch.in' => __('dictt.invalidvalue_item', ['name' => __('dictt.branch')]),
             'status.required' => __('dictt.required_item', ['name' => __('dictt.status')]),
             'status.in' => __('dictt.invalidvalue_item', ['name' => __('dictt.status')]),
-            'display_order.integer' => __('dictt.invalidvalue_item', ['name' => __('dictt.display_order')]),
         ]);
 
         $wasApproved = $review->status === Review::STATUS_APPROVED;
@@ -57,7 +55,6 @@ class cont_reviews extends Controller
             'rating' => $validated['rating'],
             'branch' => $validated['branch'] ?? null,
             'status' => $validated['status'],
-            'display_order' => $validated['display_order'] ?? null,
         ]);
 
         if ($review->status === Review::STATUS_APPROVED) {
