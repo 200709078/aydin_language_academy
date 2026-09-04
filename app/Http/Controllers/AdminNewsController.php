@@ -452,12 +452,6 @@ class AdminNewsController extends Controller
 
         unset($validated['cover_image'], $validated['remove_cover_image']);
 
-        if ($currentNews === null) {
-            $validated['seo_title'] = null;
-            $validated['seo_description'] = null;
-            $validated['canonical_url'] = null;
-        }
-
         return [
             ...$validated,
             'title' => $title,
@@ -511,12 +505,10 @@ class AdminNewsController extends Controller
 
         $attributes = [
             'type' => $type,
-            'content_format' => NewsContentBlock::CONTENT_FORMAT_PLAIN,
             'heading' => $this->nullableTrimmedValue($validated['heading'] ?? null),
             'body' => $validated['body'] ?? null,
             'link_label' => $this->nullableTrimmedValue($validated['link_label'] ?? null),
             'is_active' => $currentBlock?->is_active ?? true,
-            'metadata' => null,
         ];
 
         if ($type === NewsContentBlock::TYPE_RICH_TEXT) {
@@ -699,9 +691,7 @@ class AdminNewsController extends Controller
             'size_bytes' => $file->getSize() ?: 0,
             'width' => is_array($dimensions) ? $dimensions[0] : null,
             'height' => is_array($dimensions) ? $dimensions[1] : null,
-            'duration_seconds' => null,
             'checksum' => is_string($checksum) ? $checksum : null,
-            'metadata' => null,
             'uploaded_by' => $uploadedBy,
         ]);
     }

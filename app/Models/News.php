@@ -81,9 +81,6 @@ class News extends Model
         'sort_order',
         'author_id',
         'published_by',
-        'seo_title',
-        'seo_description',
-        'canonical_url',
     ];
 
     /**

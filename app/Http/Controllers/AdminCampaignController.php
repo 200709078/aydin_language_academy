@@ -330,9 +330,7 @@ class AdminCampaignController extends Controller
             'size_bytes' => $file->getSize() ?: 0,
             'width' => is_array($dimensions) ? $dimensions[0] : null,
             'height' => is_array($dimensions) ? $dimensions[1] : null,
-            'duration_seconds' => null,
             'checksum' => is_string($checksum) ? $checksum : null,
-            'metadata' => null,
             'uploaded_by' => $uploadedBy,
         ]);
     }

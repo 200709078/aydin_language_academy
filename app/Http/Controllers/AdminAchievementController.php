@@ -421,12 +421,6 @@ class AdminAchievementController extends Controller
     private function validatedAchievement(Request $request, ?Achievement $achievement = null): array
     {
         return $request->validate([
-            'year' => [
-                'required',
-                'integer',
-                'between:1900,9999',
-                Rule::unique('achievements', 'year')->ignore($achievement?->id),
-            ],
             'title' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
         ]);
@@ -507,7 +501,6 @@ class AdminAchievementController extends Controller
         return Achievement::query()
             ->orderByRaw('sort_order IS NULL')
             ->orderBy('sort_order')
-            ->orderByDesc('year')
             ->orderByDesc('id');
     }
 
@@ -646,9 +639,7 @@ class AdminAchievementController extends Controller
             'size_bytes' => $file->getSize() ?: 0,
             'width' => is_array($dimensions) ? $dimensions[0] : null,
             'height' => is_array($dimensions) ? $dimensions[1] : null,
-            'duration_seconds' => null,
             'checksum' => is_string($checksum) ? $checksum : null,
-            'metadata' => null,
             'uploaded_by' => $uploadedBy,
         ]);
     }

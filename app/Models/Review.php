@@ -28,17 +28,7 @@ class Review extends Model
         'status',
         'approved_by',
         'approved_at',
-        'display_order',
     ];
-
-    protected static function booted(): void
-    {
-        static::creating(function (Review $review) {
-            if ($review->display_order === null) {
-                $review->display_order = static::withTrashed()->count() + 1;
-            }
-        });
-    }
 
     protected function casts(): array
     {

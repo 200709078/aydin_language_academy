@@ -104,9 +104,7 @@ class CampaignLegacyDataSeeder extends Seeder
                 'size_bytes' => strlen($contents),
                 'width' => $dimensions[0],
                 'height' => $dimensions[1],
-                'duration_seconds' => null,
                 'checksum' => hash('sha256', $contents),
-                'metadata' => null,
                 'uploaded_by' => null,
             ],
         );

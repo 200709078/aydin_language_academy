@@ -29,10 +29,6 @@ class Achievement extends Model
                 throw new LogicException('Geçersiz başarı yayın durumu.');
             }
 
-            if (! is_numeric($achievement->year) || (int) $achievement->year < 1900 || (int) $achievement->year > 9999) {
-                throw new LogicException('Geçerli dört haneli bir başarı yılı gerekir.');
-            }
-
             $title = trim((string) $achievement->title);
 
             if ($title === '') {
@@ -46,7 +42,6 @@ class Achievement extends Model
                 throw new LogicException('Başarı sıralaması en az 1 olmalıdır.');
             }
 
-            $achievement->year = (int) $achievement->year;
             $achievement->title = $title;
         });
     }
@@ -57,7 +52,6 @@ class Achievement extends Model
      * @var list<string>
      */
     protected $fillable = [
-        'year',
         'title',
         'description',
         'status',
@@ -72,7 +66,6 @@ class Achievement extends Model
     protected function casts(): array
     {
         return [
-            'year' => 'integer',
             'sort_order' => 'integer',
         ];
     }

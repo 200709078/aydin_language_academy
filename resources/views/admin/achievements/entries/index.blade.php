@@ -59,7 +59,7 @@
                 <div class="col-12 col-md order-1 order-md-2 text-center px-md-2" style="min-width: 0;">
                     <h5 class="card-title mb-1 text-break">{{ __('dictt.achievement_entries') }}</h5>
                     <p class="text-muted small mb-0 text-break">
-                        {{ $achievementYear->year }} — {{ $achievementYear->title }}
+                        {{ $achievementYear->title }}
                     </p>
                 </div>
                 <div class="col-auto order-3 order-md-3 ms-auto ms-md-0">

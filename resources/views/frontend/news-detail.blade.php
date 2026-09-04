@@ -1,7 +1,7 @@
 @php
-    $newsPageTitle = trim((string) ($news->seo_title ?: $news->title));
-    $newsPageDescription = trim((string) ($news->seo_description ?: $news->excerpt ?: $news->title));
-    $newsCanonicalUrl = $news->canonical_url ?: route('frontend.news.show', ['news' => $news->slug]);
+    $newsPageTitle = trim((string) $news->title);
+    $newsPageDescription = trim((string) ($news->excerpt ?: $news->title));
+    $newsCanonicalUrl = route('frontend.news.show', ['news' => $news->slug]);
 @endphp
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}">

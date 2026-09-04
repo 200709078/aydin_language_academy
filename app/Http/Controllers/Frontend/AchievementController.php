@@ -41,7 +41,6 @@ class AchievementController extends Controller
             ])
             ->orderByRaw('sort_order IS NULL')
             ->orderBy('sort_order')
-            ->orderByDesc('year')
             ->orderByDesc('id')
             ->get();
 

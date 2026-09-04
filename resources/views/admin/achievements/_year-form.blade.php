@@ -26,16 +26,7 @@
             @endif
 
             <div class="row">
-                <div class="col-md-3 mb-3">
-                    <label for="year" class="form-label">{{ __('dictt.achievement_year') }}</label>
-                    <input id="year" type="number" name="year" min="1900" max="9999"
-                        value="{{ old('year', $currentYear?->year ?? now()->year) }}"
-                        class="form-control @error('year') is-invalid @enderror" required>
-                    @error('year')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
-                <div class="col-md-9 mb-3">
+                <div class="col-12 mb-3">
                     <label for="title" class="form-label">{{ __('dictt.achievement_year_title') }}</label>
                     <input id="title" type="text" name="title" value="{{ old('title', $currentYear?->title) }}"
                         class="form-control @error('title') is-invalid @enderror" maxlength="255" required>

@@ -59,7 +59,6 @@
                 <table class="table table-striped table-sm align-middle mb-0">
                     <thead>
                         <tr>
-                            <th scope="col">{{ __('dictt.achievement_year') }}</th>
                             <th scope="col">{{ __('dictt.achievement_year_title') }}</th>
                             <th scope="col">{{ __('dictt.achievement_publication_status') }}</th>
                             <th scope="col">{{ __('dictt.achievement_entries_count') }}</th>
@@ -78,7 +77,6 @@
                                 $isDeletable = $item->status === \App\Models\Achievement::STATUS_DRAFT;
                             @endphp
                             <tr>
-                                <td class="fw-semibold">{{ $item->year }}</td>
                                 <td class="text-break">
                                     <div class="fw-semibold">{{ $item->title }}</div>
                                     @if ($item->description)
@@ -132,7 +130,7 @@
                                                 data-action-confirmation
                                                 data-confirm-form="achievement-delete-{{ $item->id }}"
                                                 data-confirm-title="{{ __('dictt.achievement_year_permanently_delete') }}"
-                                                data-confirm-content="{{ __('dictt.achievement_year_force_delete_confirm', ['year' => $item->year]) }}"
+                                                data-confirm-content="{{ __('dictt.achievement_year_force_delete_confirm', ['year' => $item->title]) }}"
                                                 data-confirm-action="{{ __('dictt.achievement_year_permanently_delete') }}"
                                                 data-confirm-icon="fa-trash-alt"
                                                 data-confirm-tone="danger">
@@ -164,7 +162,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" class="text-center text-muted py-4">{{ __('dictt.achievement_year_empty') }}</td>
+                                <td colspan="4" class="text-center text-muted py-4">{{ __('dictt.achievement_year_empty') }}</td>
                             </tr>
                         @endforelse
                     </tbody>

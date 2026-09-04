@@ -82,7 +82,6 @@
                             aria-expanded="{{ $isInitiallyOpen ? 'true' : 'false' }}"
                             aria-controls="achievement-year-{{ $achievementYear->id }}">
                             <span class="ala-achievements__year-heading">
-                                <span class="ala-achievements__year">{{ $achievementYear->year }}</span>
                                 <span class="ala-achievements__year-title">{{ $achievementYear->title }}</span>
                             </span>
                         </button>

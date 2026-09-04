@@ -22,19 +22,12 @@ class NewsContentBlock extends Model
 
     public const TYPE_INTERNAL_LINK = 'internal_link';
 
-    public const CONTENT_FORMAT_PLAIN = 'plain';
-
-    public const CONTENT_FORMAT_MARKDOWN = 'markdown';
-
-    public const CONTENT_FORMAT_SANITIZED_HTML = 'sanitized_html';
-
     /**
      * The model's default values for attributes.
      *
      * @var array<string, string|bool>
      */
     protected $attributes = [
-        'content_format' => self::CONTENT_FORMAT_PLAIN,
         'is_active' => true,
     ];
 
@@ -43,10 +36,6 @@ class NewsContentBlock extends Model
         static::saving(function (self $block): void {
             if (! in_array($block->type, self::types(), true)) {
                 throw new LogicException('Geçersiz haber içerik türü.');
-            }
-
-            if (! in_array($block->content_format, self::contentFormats(), true)) {
-                throw new LogicException('Geçersiz haber içerik biçimi.');
             }
 
             if (! is_numeric($block->position) || (int) $block->position < 1) {
@@ -121,14 +110,12 @@ class NewsContentBlock extends Model
         'news_id',
         'position',
         'type',
-        'content_format',
         'heading',
         'body',
         'media_asset_id',
         'external_url',
         'internal_destination',
         'link_label',
-        'metadata',
         'is_active',
     ];
 
@@ -140,7 +127,6 @@ class NewsContentBlock extends Model
     protected function casts(): array
     {
         return [
-            'metadata' => 'array',
             'is_active' => 'boolean',
         ];
     }
@@ -192,18 +178,6 @@ class NewsContentBlock extends Model
             self::TYPE_FILE,
             self::TYPE_EXTERNAL_LINK,
             self::TYPE_INTERNAL_LINK,
-        ];
-    }
-
-    /**
-     * @return list<string>
-     */
-    public static function contentFormats(): array
-    {
-        return [
-            self::CONTENT_FORMAT_PLAIN,
-            self::CONTENT_FORMAT_MARKDOWN,
-            self::CONTENT_FORMAT_SANITIZED_HTML,
         ];
     }
 

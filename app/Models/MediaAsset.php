@@ -57,9 +57,9 @@ class MediaAsset extends Model
                 throw new LogicException('Medya dosya boyutu negatif olamaz.');
             }
 
-            foreach (['width', 'height', 'duration_seconds'] as $attribute) {
+            foreach (['width', 'height'] as $attribute) {
                 if ($mediaAsset->{$attribute} !== null && (int) $mediaAsset->{$attribute} < 0) {
-                    throw new LogicException('Medya ölçü ve süre değerleri negatif olamaz.');
+                    throw new LogicException('Medya ölçü değerleri negatif olamaz.');
                 }
             }
 
@@ -84,9 +84,7 @@ class MediaAsset extends Model
         'size_bytes',
         'width',
         'height',
-        'duration_seconds',
         'checksum',
-        'metadata',
         'uploaded_by',
     ];
 
@@ -101,8 +99,6 @@ class MediaAsset extends Model
             'size_bytes' => 'integer',
             'width' => 'integer',
             'height' => 'integer',
-            'duration_seconds' => 'integer',
-            'metadata' => 'array',
         ];
     }
 

@@ -74,7 +74,6 @@ class MyReviews extends Component
             'content' => $this->content,
             'rating' => $this->rating,
             'status' => Review::STATUS_PENDING,
-            'display_order' => Review::withTrashed()->count() + 1,
         ]);
 
         app(AdminApprovalNotificationService::class)->reviewCreated($review);
