@@ -44,6 +44,7 @@
             \App\Models\NewsContentBlock::TYPE_VIDEO => __('dictt.news_block_type_video'),
             \App\Models\NewsContentBlock::TYPE_FILE => __('dictt.news_block_type_file'),
             \App\Models\NewsContentBlock::TYPE_EXTERNAL_LINK => __('dictt.news_block_type_external_link'),
+            \App\Models\NewsContentBlock::TYPE_INTERNAL_LINK => __('dictt.news_block_type_internal_link'),
         ];
     @endphp
 
@@ -81,6 +82,8 @@
                                     @endif
                                     @if ($block->type === \App\Models\NewsContentBlock::TYPE_RICH_TEXT)
                                         <div class="small text-muted">{{ \Illuminate\Support\Str::limit($block->body, 180) }}</div>
+                                    @elseif ($block->type === \App\Models\NewsContentBlock::TYPE_INTERNAL_LINK && $block->internalDestinationLabel())
+                                        <div class="small text-muted">{{ $block->internalDestinationLabel() }}</div>
                                     @elseif ($block->mediaAsset)
                                         <a href="{{ $block->mediaAsset->publicUrl() }}" target="_blank" rel="noopener"
                                             class="btn btn-sm btn-outline-secondary mt-1">

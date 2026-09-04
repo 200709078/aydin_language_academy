@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\model_themes;
 use App\Models\model_levels;
 use App\Models\model_sub_levels;
+use App\Support\LegacyExerciseMedia;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Lang;
 
@@ -39,9 +40,10 @@ class cont_themes extends Controller
 
         $fileName = null;
         if ($request->hasFile('image')) {
-            $fileName = Str::slug($request->name) . '.' . $request->image->extension();
-            $fileNamePath = 'photos/' . $fileName;
-            $request->image->move(public_path('photos'), $fileNamePath);
+            $fileName = LegacyExerciseMedia::store(
+                $request->file('image'),
+                LegacyExerciseMedia::THEME_IMAGES,
+            );
         }
         $theme = model_themes::create([
             'level_id' => $request->level_id,
@@ -79,9 +81,10 @@ class cont_themes extends Controller
 
         $imageFileName = null;
         if ($request->hasFile('image')) {
-            $imageFileName = Str::slug($request->name) . '.' . $request->image->extension();
-            $fileNamePath = 'photos/' . $imageFileName;
-            $request->image->move(public_path('photos'), $fileNamePath);
+            $imageFileName = LegacyExerciseMedia::store(
+                $request->file('image'),
+                LegacyExerciseMedia::THEME_IMAGES,
+            );
         }
 
         $theme = model_themes::find($theme_id);

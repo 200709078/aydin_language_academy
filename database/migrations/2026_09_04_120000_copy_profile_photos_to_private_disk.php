@@ -6,12 +6,14 @@ use Illuminate\Support\Facades\Storage;
 
 return new class extends Migration
 {
+    private const TEMPORARY_PATH_PREFIX = '.profile-photo-migration/';
+
     /**
      * Move legacy public profile photos into the private disk.
      *
-     * A public source is removed only after its private copy has matching size
-     * and checksum. Interrupted runs are safe to retry: a verified private
-     * copy is enough to remove the still-public source on the next run.
+     * A public source is removed only after its private copy has a matching
+     * fingerprint. An incomplete private copy is replaced only after a fresh
+     * temporary copy and the public source have both been verified.
      */
     public function up(): void
     {
@@ -37,7 +39,7 @@ return new class extends Migration
                         continue;
                     }
 
-                    if (! $privateExists) {
+                    if (! $privateExists || ! $this->filesMatch($publicDisk, $privateDisk, $path)) {
                         $this->copyToPrivateDisk($publicDisk, $privateDisk, $path);
                     }
 
@@ -78,36 +80,113 @@ return new class extends Migration
 
     private function copyToPrivateDisk($publicDisk, $privateDisk, string $path): void
     {
-        $stream = $publicDisk->readStream($path);
-
-        if (! is_resource($stream)) {
-            throw new RuntimeException('Profil fotoğrafı public diskten okunamadı.');
-        }
+        $sourceFingerprint = $this->fingerprint($publicDisk, $path);
+        $temporaryPath = self::TEMPORARY_PATH_PREFIX.bin2hex(random_bytes(16)).'.part';
+        $stream = null;
 
         try {
-            $copied = $privateDisk->writeStream($path, $stream, [
+            $stream = $publicDisk->readStream($path);
+
+            if (! is_resource($stream)) {
+                throw new RuntimeException('Profil fotoğrafı public diskten okunamadı.');
+            }
+
+            $copied = $privateDisk->writeStream($temporaryPath, $stream, [
                 'visibility' => 'private',
             ]);
-        } finally {
-            fclose($stream);
-        }
 
-        if (! $copied || ! $privateDisk->exists($path)) {
-            throw new RuntimeException('Profil fotoğrafı private diske kopyalanamadı.');
+            if (! $copied || ! $privateDisk->exists($temporaryPath)) {
+                throw new RuntimeException('Profil fotoğrafı private diske kopyalanamadı.');
+            }
+
+            $temporaryFingerprint = $this->fingerprint($privateDisk, $temporaryPath);
+            $currentSourceFingerprint = $this->fingerprint($publicDisk, $path);
+
+            if (
+                ! $this->fingerprintsMatch($sourceFingerprint, $temporaryFingerprint)
+                || ! $this->fingerprintsMatch($sourceFingerprint, $currentSourceFingerprint)
+            ) {
+                throw new RuntimeException('Profil fotoğrafı kopyalama sırasında değişti; public kaynak silinmedi.');
+            }
+
+            if ($privateDisk->exists($path) && ! $privateDisk->delete($path)) {
+                throw new RuntimeException('Geçersiz private profil fotoğrafı kaldırılamadı.');
+            }
+
+            if (! $privateDisk->move($temporaryPath, $path)) {
+                throw new RuntimeException('Doğrulanmış profil fotoğrafı private hedefe taşınamadı.');
+            }
+
+            $temporaryPath = null;
+
+            if (! $this->fingerprintsMatch($sourceFingerprint, $this->fingerprint($privateDisk, $path))) {
+                throw new RuntimeException('Profil fotoğrafı private hedefte doğrulanamadı.');
+            }
+        } finally {
+            if (is_resource($stream)) {
+                fclose($stream);
+            }
+
+            if ($temporaryPath !== null) {
+                try {
+                    $privateDisk->delete($temporaryPath);
+                } catch (\Throwable) {
+                    // The random command-owned temporary path can be cleaned up later.
+                }
+            }
         }
     }
 
     private function filesMatch($publicDisk, $privateDisk, string $path): bool
     {
-        if ($publicDisk->size($path) !== $privateDisk->size($path)) {
-            return false;
+        return $this->fingerprintsMatch(
+            $this->fingerprint($publicDisk, $path),
+            $this->fingerprint($privateDisk, $path),
+        );
+    }
+
+    /**
+     * @return array{size: int, sha256: string}
+     */
+    private function fingerprint($disk, string $path): array
+    {
+        $stream = $disk->readStream($path);
+
+        if (! is_resource($stream)) {
+            throw new RuntimeException('Profil fotoğrafı stream olarak okunamadı.');
         }
 
-        $publicChecksum = $publicDisk->checksum($path);
-        $privateChecksum = $privateDisk->checksum($path);
+        $context = hash_init('sha256');
+        $size = 0;
 
-        return is_string($publicChecksum)
-            && is_string($privateChecksum)
-            && hash_equals($publicChecksum, $privateChecksum);
+        try {
+            while (! feof($stream)) {
+                $chunk = fread($stream, 1024 * 1024);
+
+                if ($chunk === false || ($chunk === '' && ! feof($stream))) {
+                    throw new RuntimeException('Profil fotoğrafı okunurken beklenmeyen bir hata oluştu.');
+                }
+
+                $size += strlen($chunk);
+                hash_update($context, $chunk);
+            }
+        } finally {
+            fclose($stream);
+        }
+
+        return [
+            'size' => $size,
+            'sha256' => hash_final($context),
+        ];
+    }
+
+    /**
+     * @param  array{size: int, sha256: string}  $left
+     * @param  array{size: int, sha256: string}  $right
+     */
+    private function fingerprintsMatch(array $left, array $right): bool
+    {
+        return $left['size'] === $right['size']
+            && hash_equals($left['sha256'], $right['sha256']);
     }
 };

@@ -39,9 +39,24 @@
     <div class="container-xxl py-5">
         <div class="container">
             <div class="row g-5">
-                <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
+                <!-- Mobil: 1. Metin | PC: sağ üst -->
+                <div class="col-lg-6 order-1 order-lg-2 wow fadeIn" data-wow-delay="0.5s">
+                    <h1 class="mb-4">Muğla Dalaman Dil Kursu</h1>
+                    <p>{{ __('dictt.dalaman_intro') }}</p>
+                    <p>{{ __('dictt.dalaman_section_1_title') }}<br>{{ __('dictt.dalaman_section_1_text') }}</p>
+                    <p>{{ __('dictt.dalaman_section_2_title') }}<br>{{ __('dictt.dalaman_section_2_text') }}</p>
+                    <p>{{ __('dictt.dalaman_section_3_title') }}<br>{{ __('dictt.dalaman_section_3_text') }}</p>
+                    <p>{{ __('dictt.dalaman_section_4_title') }}<br>{{ __('dictt.dalaman_section_4_text') }}</p>
+                    <p>{{ __('dictt.dalaman_section_5_title') }}<br>{{ __('dictt.dalaman_section_5_text') }}</p>
+                    <p>{{ __('dictt.dalaman_outro') }}</p>
+                </div>
+                <!-- Mobil: 2. dalaman-1.jpg | PC: sol üst -->
+                <div class="col-lg-6 order-2 order-lg-1 wow fadeIn" data-wow-delay="0.1s">
                     <img class="img-fluid rounded w-100" src="{{ asset('frontend/images/branches/dalaman-1.jpg') }}" alt="Dalaman">
-                    <div class="mt-4">
+                </div>
+                <!-- Mobil: 3. Kartlar | PC: sol alt -->
+                <div class="col-lg-6 order-3 order-lg-3 wow fadeIn" data-wow-delay="0.1s">
+                    <div>
                         <a class="text-decoration-none" href="https://maps.google.com/?cid=13451178032151641036&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAMYASAF&hl=tr&gl=TR&source=embed" target="_blank" rel="noopener noreferrer">
                             <div class="bg-light rounded d-flex align-items-center p-3 mb-4">
                                 <div class="d-flex flex-shrink-0 align-items-center justify-content-center rounded-circle bg-white" style="width: 55px; height: 55px;">
@@ -110,16 +125,9 @@
                         </a>
                     </div>
                 </div>
-                <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
-                    <h1 class="mb-4">Muğla Dalaman Dil Kursu</h1>
-                    <p>{{ __('dictt.dalaman_intro') }}</p>
-                    <p>{{ __('dictt.dalaman_section_1_title') }}<br>{{ __('dictt.dalaman_section_1_text') }}</p>
-                    <p>{{ __('dictt.dalaman_section_2_title') }}<br>{{ __('dictt.dalaman_section_2_text') }}</p>
-                    <p>{{ __('dictt.dalaman_section_3_title') }}<br>{{ __('dictt.dalaman_section_3_text') }}</p>
-                    <p>{{ __('dictt.dalaman_section_4_title') }}<br>{{ __('dictt.dalaman_section_4_text') }}</p>
-                    <p>{{ __('dictt.dalaman_section_5_title') }}<br>{{ __('dictt.dalaman_section_5_text') }}</p>
-                    <p>{{ __('dictt.dalaman_outro') }}</p>
-                    <img class="img-fluid rounded d-block mx-auto mt-4 ala-branch-secondary-image" src="{{ asset('frontend/images/branches/dalaman-2.jpg') }}" alt="Dalaman">
+                <!-- Mobil: 4. dalaman-2.jpg | PC: sağ alt -->
+                <div class="col-lg-6 order-4 order-lg-4 wow fadeIn" data-wow-delay="0.5s">
+                    <img class="img-fluid rounded d-block mx-auto ala-branch-secondary-image" src="{{ asset('frontend/images/branches/dalaman-2.jpg') }}" alt="Dalaman">
                 </div>
             </div>
         </div>

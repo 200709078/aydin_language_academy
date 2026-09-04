@@ -32,4 +32,13 @@ class model_themes extends Model
     {
         return $this->hasMany(model_declarations::class, 'theme_id');
     }
+
+    public function privateImageUrl(): ?string
+    {
+        if ($this->image === null || trim($this->image) === '' || $this->image === 'noimage.jpg') {
+            return null;
+        }
+
+        return route('legacy.media.themes.image', ['theme' => $this]);
+    }
 }

@@ -80,10 +80,11 @@
                             <th class="col-md-3" scope="row">{{ $declaration->title }}</th>
                             <th class="col-md-3" scope="row">{{ Str::limit($declaration->context, 20) }}</th>
                             <th class="col-md-3" scope="row">
-                                @if($declaration->image)
-                                    <a href="{{ asset('photos/' . $declaration->image) }}" target="_blank">
+                                @php($imageUrl = $declaration->privateImageUrl())
+                                @if($imageUrl)
+                                    <a href="{{ $imageUrl }}" target="_blank" rel="noopener">
                                         <img class="img-fluid rounded align-self-end"
-                                            src="{{ asset('photos/' . $declaration->image) }}" style="width:120px"
+                                            src="{{ $imageUrl }}" style="width:120px"
                                             class="img-responsive">
                                     </a>
                                 @else
@@ -91,7 +92,11 @@
                                         style="width:120px" class="img-responsive">
                                 @endif
                             </th>
-                            <th class="col-md-3" scope="row">{{ $declaration->pdf }}</th>
+                            <th class="col-md-3" scope="row">
+                                @if ($pdfUrl = $declaration->privatePdfUrl())
+                                    <a href="{{ $pdfUrl }}" target="_blank" rel="noopener">{{ $declaration->pdf }}</a>
+                                @endif
+                            </th>
                             <th class="col-md-3" scope="row">{{ $declaration->video }}</th>
                             <th class="col-md-3" scope="row">{{ $declaration->voice }}</th>
                             <td>

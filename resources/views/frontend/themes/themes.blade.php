@@ -54,8 +54,8 @@
                         <div class="col-lg-3 col-md-4 col-sm-6 wow fadeInUp" data-wow-delay="{{ $loop->iteration * 0.2 <= 0.5 ? $loop->iteration * 0.2 : 0.5 }}s">
                             <div class="service-item bg-light rounded h-100 theme-card d-flex flex-column">
                                 <div class="theme-thumb mb-3">
-                                    @if ($theme->image)
-                                        <img src="{{ asset('photos/' . $theme->image) }}" alt="{{ $theme->name }}">
+                                    @if ($imageUrl = $theme->privateImageUrl())
+                                        <img src="{{ $imageUrl }}" alt="{{ $theme->name }}">
                                     @else
                                         <i class="fa fa-book text-primary fs-2"></i>
                                     @endif

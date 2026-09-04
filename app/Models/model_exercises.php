@@ -40,4 +40,13 @@ class model_exercises extends Model
             ]
         ];
     }
+
+    public function privateImageUrl(): ?string
+    {
+        if ($this->image === null || trim($this->image) === '' || $this->image === 'noimage.jpg') {
+            return null;
+        }
+
+        return route('legacy.media.exercises.image', ['exercise' => $this]);
+    }
 }

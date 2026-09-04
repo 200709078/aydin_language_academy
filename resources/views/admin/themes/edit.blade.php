@@ -38,10 +38,11 @@
                 </div>
                 <div class="form-group">
                 <label>{{ __('dictt.image') }}</label>
-                                @if($theme->image)
-                                    <a href="{{ asset('photos/' . $theme->image) }}" target="_blank">
+                                @php($imageUrl = $theme->privateImageUrl())
+                                @if($imageUrl)
+                                    <a href="{{ $imageUrl }}" target="_blank" rel="noopener">
                                         <img class="img-fluid rounded align-self-end"
-                                            src="{{ asset('photos/' . $theme->image) }}" style="width:120px"
+                                            src="{{ $imageUrl }}" style="width:120px"
                                             class="img-responsive">
                                     </a>
                                 @else

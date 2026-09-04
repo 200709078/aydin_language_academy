@@ -81,9 +81,10 @@
 
             <div class="form-group mb-3">
                 <label for="image">{{ __('dictt.image') }}</label>
-                @if ($currentQuestion?->image)
-                    <a href="{{ asset('photos/' . $currentQuestion->image) }}" target="_blank" rel="noopener">
-                        <img class="img-fluid rounded d-block mb-2" src="{{ asset('photos/' . $currentQuestion->image) }}"
+                @php($imageUrl = $currentQuestion?->privateImageUrl())
+                @if ($imageUrl)
+                    <a href="{{ $imageUrl }}" target="_blank" rel="noopener">
+                        <img class="img-fluid rounded d-block mb-2" src="{{ $imageUrl }}"
                             style="width:120px" alt="">
                     </a>
                 @endif

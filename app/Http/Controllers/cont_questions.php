@@ -5,10 +5,10 @@ use App\Http\Controllers\Controller;
 use App\Models\QuestionOption;
 use App\Models\model_exercises;
 use App\Models\model_questions;
+use App\Support\LegacyExerciseMedia;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
@@ -241,10 +241,9 @@ class cont_questions extends Controller
             return null;
         }
 
-        $image = $request->file('image');
-        $filename = Str::uuid() . '.' . $image->extension();
-        $image->move(public_path('photos'), $filename);
-
-        return $filename;
+        return LegacyExerciseMedia::store(
+            $request->file('image'),
+            LegacyExerciseMedia::QUESTION_IMAGES,
+        );
     }
 }

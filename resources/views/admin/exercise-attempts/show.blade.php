@@ -99,8 +99,8 @@
 
                 <div class="h6 text-dark mb-3">{{ $question->question }}</div>
 
-                @if ($question->image)
-                    <img src="{{ asset('photos/' . $question->image) }}" class="img-fluid rounded mb-3" alt="">
+                @if ($imageUrl = $question->privateImageUrl())
+                    <img src="{{ $imageUrl }}" class="img-fluid rounded mb-3" alt="">
                 @endif
 
                 <div class="vstack gap-2">

@@ -123,8 +123,8 @@
 
                             <h2 class="h5 text-dark mb-4">{{ $question->question }}</h2>
 
-                            @if ($question->image)
-                                <img src="{{ asset('photos/' . $question->image) }}" class="theme-exercise-media img-fluid rounded mb-4" alt="">
+                            @if ($imageUrl = $question->privateImageUrl())
+                                <img src="{{ $imageUrl }}" class="theme-exercise-media img-fluid rounded mb-4" alt="">
                             @endif
 
                             <div class="d-flex flex-column gap-2">

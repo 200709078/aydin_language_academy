@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Campaign;
 use App\Models\MediaAsset;
 use App\Models\News;
 use App\Models\NewsContentBlock;
@@ -497,6 +498,7 @@ class AdminNewsController extends Controller
             'heading' => ['nullable', 'string', 'max:255'],
             'body' => ['nullable', 'string'],
             'link_label' => ['nullable', 'string', 'max:255'],
+            'internal_destination' => ['nullable', 'string', 'max:100'],
         ]);
 
         $type = $validated['type'];
@@ -531,6 +533,7 @@ class AdminNewsController extends Controller
                 'body' => $body,
                 'media_asset_id' => null,
                 'external_url' => null,
+                'internal_destination' => null,
             ];
         }
 
@@ -539,6 +542,26 @@ class AdminNewsController extends Controller
                 ...$attributes,
                 'media_asset_id' => null,
                 'external_url' => $this->validatedHttpsUrl($request),
+                'internal_destination' => null,
+            ];
+        }
+
+        if ($type === NewsContentBlock::TYPE_INTERNAL_LINK) {
+            $internalDestination = $this->nullableTrimmedValue($validated['internal_destination'] ?? null);
+
+            if (! Campaign::isAllowedInternalDestination($internalDestination)) {
+                throw ValidationException::withMessages([
+                    'internal_destination' => __('validation.in', [
+                        'attribute' => __('dictt.campaign_internal_destination'),
+                    ]),
+                ]);
+            }
+
+            return [
+                ...$attributes,
+                'media_asset_id' => null,
+                'external_url' => null,
+                'internal_destination' => $internalDestination,
             ];
         }
 
@@ -555,6 +578,7 @@ class AdminNewsController extends Controller
                 ...$attributes,
                 'media_asset_id' => null,
                 'external_url' => $this->validatedHttpsUrl($request),
+                'internal_destination' => null,
             ];
         }
 
@@ -581,6 +605,7 @@ class AdminNewsController extends Controller
             ...$attributes,
             'media_asset_id' => $mediaAssetId,
             'external_url' => null,
+            'internal_destination' => null,
         ];
     }
 

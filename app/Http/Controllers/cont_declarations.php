@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\model_declarations;
 use App\Models\model_themes;
+use App\Support\LegacyExerciseMedia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Lang;
@@ -23,6 +24,7 @@ class cont_declarations extends Controller
             'title' => 'required|min:3|max:255|',
             'context' => 'required|min:3|',
             'image' => 'image|nullable|max:1024|mimes:jpg,jpeg,png',
+            'pdf' => 'file|nullable|max:10240|mimes:pdf',
         ], [
             'title.required' => __('dictt.required_item', ['name' => __('dictt.title')]),
             'title.min' => __('dictt.mincharacter_item', ['name' => __('dictt.title'), 'number' => 3]),
@@ -35,13 +37,17 @@ class cont_declarations extends Controller
 
         $imageFileName = null;
         if ($request->hasFile('image')) {
-            $imageFileName = Str::slug($request->title) . '.' . $request->image->extension();
-            $request->image->move(public_path('photos'), $imageFileName);
+            $imageFileName = LegacyExerciseMedia::store(
+                $request->file('image'),
+                LegacyExerciseMedia::DECLARATION_IMAGES,
+            );
         }
         $pdfFileName = null;
         if ($request->hasFile('pdf')) {
-            $pdfFileName = Str::slug($request->title) . '.' . $request->pdf->extension();
-            $request->pdf->move(public_path('pdfs'), $pdfFileName);
+            $pdfFileName = LegacyExerciseMedia::store(
+                $request->file('pdf'),
+                LegacyExerciseMedia::DECLARATION_DOCUMENTS,
+            );
         }
 
         $declaration = model_declarations::create([
@@ -74,6 +80,7 @@ class cont_declarations extends Controller
             'title' => 'required|min:3|max:255|',
             'context' => 'required|min:3|',
             'image' => 'image|nullable|max:1024|mimes:jpg,jpeg,png',
+            'pdf' => 'file|nullable|max:10240|mimes:pdf',
         ], [
             'title.required' => __('dictt.required_item', ['name' => __('dictt.title')]),
             'title.min' => __('dictt.mincharacter_item', ['name' => __('dictt.title'), 'number' => 3]),
@@ -86,13 +93,17 @@ class cont_declarations extends Controller
 
         $imageFileName = null;
         if ($request->hasFile('image')) {
-            $imageFileName = Str::slug($request->title) . '.' . $request->image->extension();
-            $request->image->move(public_path('photos'), $imageFileName);
+            $imageFileName = LegacyExerciseMedia::store(
+                $request->file('image'),
+                LegacyExerciseMedia::DECLARATION_IMAGES,
+            );
         }
         $pdfFileName = null;
         if ($request->hasFile('pdf')) {
-            $pdfFileName = Str::slug($request->title) . '.' . $request->pdf->extension();
-            $request->pdf->move(public_path('pdfs'), $pdfFileName);
+            $pdfFileName = LegacyExerciseMedia::store(
+                $request->file('pdf'),
+                LegacyExerciseMedia::DECLARATION_DOCUMENTS,
+            );
         }
 
         $declaration = model_declarations::find($declaration_id);
@@ -100,8 +111,8 @@ class cont_declarations extends Controller
             'title' => $request->title,
             'slug' => Str::slug($request->title),
             'context' => $request->context,
-            'image' => $imageFileName,
-            'pdf' => $pdfFileName,
+            'image' => $imageFileName ?? $declaration->image,
+            'pdf' => $pdfFileName ?? $declaration->pdf,
             'video' => $request->video,
             'voice' => $request->voice
         ]);

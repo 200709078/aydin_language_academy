@@ -70,6 +70,7 @@
                                     $hasSecureExternalUrl = $externalUrl !== ''
                                         && filter_var($externalUrl, FILTER_VALIDATE_URL) !== false
                                         && str_starts_with(strtolower($externalUrl), 'https://');
+                                    $internalLinkUrl = $block->publicInternalLinkUrl();
                                 @endphp
 
                                 <section class="news-detail-block news-detail-block--{{ $block->type }}">
@@ -113,6 +114,8 @@
                                         @endif
                                     @elseif ($block->type === \App\Models\NewsContentBlock::TYPE_EXTERNAL_LINK && $hasSecureExternalUrl)
                                         <a class="btn btn-outline-primary" href="{{ $externalUrl }}" target="_blank" rel="noopener noreferrer">{{ $block->link_label ?: __('dictt.news_external_open') }}<i class="fa fa-external-link-alt ms-2" aria-hidden="true"></i></a>
+                                    @elseif ($block->type === \App\Models\NewsContentBlock::TYPE_INTERNAL_LINK && $internalLinkUrl)
+                                        <a class="btn btn-outline-primary" href="{{ $internalLinkUrl }}">{{ $block->link_label ?: __('dictt.news_internal_open') }}<i class="fa fa-arrow-right ms-2" aria-hidden="true"></i></a>
                                     @endif
 
                                     @if ($block->type !== \App\Models\NewsContentBlock::TYPE_RICH_TEXT && filled($block->body))

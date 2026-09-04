@@ -105,13 +105,13 @@
                                         @if ($declaration->content)
                                             <p>{{ $declaration->contents }}</p>
                                         @endif
-                                        @if ($declaration->image)
+                                        @if ($imageUrl = $declaration->privateImageUrl())
                                             <img class="img-fluid rounded my-2"
-                                                src="{{ asset('photos/' . $declaration->image) }}" style="height:120px"
+                                                src="{{ $imageUrl }}" style="height:120px"
                                                 alt="{{ $declaration->title }}" />
                                         @endif
-                                        @if ($declaration->pdf)
-                                            <iframe src="{{ asset('pdfs/' . $declaration->pdf) }}" width="90%"
+                                        @if ($pdfUrl = $declaration->privatePdfUrl())
+                                            <iframe src="{{ $pdfUrl }}" width="90%"
                                                 height="600px" title="{{ $declaration->title }}"></iframe>
                                         @endif
                                         <div class="d-flex flex-wrap justify-content-center gap-1 mt-2">
@@ -125,9 +125,9 @@
                                                     target="_blank" rel="noopener"><i class="fab fa-itunes-note"></i>
                                                     {{ __('dictt.voice') }}</a>
                                             @endif
-                                            @if ($declaration->answerkey)
-                                                <a href="{{ asset('pdfs/' . $declaration->answerkey) }}"
-                                                    class="btn btn-primary" target="_blank"><i class="fab fa-adobe"></i>
+                                            @if ($answerkeyUrl = $declaration->privateAnswerkeyUrl())
+                                                <a href="{{ $answerkeyUrl }}"
+                                                    class="btn btn-primary" target="_blank" rel="noopener"><i class="fab fa-adobe"></i>
                                                     {{ __('dictt.answerkey') }}</a>
                                             @endif
                                         </div>
@@ -160,8 +160,8 @@
                                     <div class="accordion-body">
                                         @if ($exercise->image || $exercise->qtext || $exercise->video || $exercise->voice)
                                             <section class="theme-exercise-content-card rounded p-3 p-lg-4 mb-4">
-                                                @if ($exercise->image)
-                                                    <img src="{{ asset('photos/' . $exercise->image) }}"
+                                                @if ($imageUrl = $exercise->privateImageUrl())
+                                                    <img src="{{ $imageUrl }}"
                                                         class="theme-exercise-media img-fluid rounded mb-3" alt="">
                                                 @endif
                                                 @if ($exercise->qtext)
@@ -261,8 +261,8 @@
 
                                                         <h3 class="h5 text-dark mb-4">{{ $question->question }}</h3>
 
-                                                        @if ($question->image)
-                                                            <img src="{{ asset('photos/' . $question->image) }}"
+                                                        @if ($imageUrl = $question->privateImageUrl())
+                                                            <img src="{{ $imageUrl }}"
                                                                 class="theme-exercise-media img-fluid rounded mb-4" alt="">
                                                         @endif
 

@@ -33,4 +33,13 @@ class model_questions extends Model
     {
         return $this->hasMany(ExerciseAttemptAnswer::class, 'question_id');
     }
+
+    public function privateImageUrl(): ?string
+    {
+        if ($this->image === null || trim($this->image) === '' || $this->image === 'noimage.jpg') {
+            return null;
+        }
+
+        return route('legacy.media.questions.image', ['question' => $this]);
+    }
 }

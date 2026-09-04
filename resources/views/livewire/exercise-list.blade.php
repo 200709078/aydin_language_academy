@@ -80,10 +80,11 @@
                             <th class="col-md-2" scope="row">{{ $exercise->title }}</th>
                             <th class="col-md-2" scope="row">{{ Str::limit($exercise->qtext, 20) }}</th>
                             <th class="col-md-2" scope="row">
-                                @if($exercise->image)
-                                    <a href="{{ asset('photos/' . $exercise->image) }}" target="_blank">
+                                @php($imageUrl = $exercise->privateImageUrl())
+                                @if($imageUrl)
+                                    <a href="{{ $imageUrl }}" target="_blank" rel="noopener">
                                         <img class="img-fluid rounded align-self-end"
-                                            src="{{ asset('photos/' . $exercise->image) }}" style="width:120px"
+                                            src="{{ $imageUrl }}" style="width:120px"
                                             class="img-responsive">
                                     </a>
                                 @else

@@ -23,6 +23,7 @@ use App\Http\Controllers\Frontend\ProgramFinderController;
 use App\Http\Controllers\Frontend\ReviewController;
 use App\Http\Controllers\Frontend\ThemeListController;
 use App\Http\Controllers\ExerciseAttemptReviewController;
+use App\Http\Controllers\LegacyExerciseMediaController;
 use App\Http\Controllers\PlacementTestAttemptController;
 use App\Http\Controllers\PlacementTestLevelController;
 use App\Http\Controllers\PlacementTestQuestionController;
@@ -281,6 +282,25 @@ Route::get('/profil-fotograflari/{user}', [ProfilePhotoController::class, 'show'
     ->middleware('auth')
     ->whereNumber('user')
     ->name('profile.photos.show');
+
+Route::middleware('auth')->prefix('legacy-medya')->name('legacy.media.')->group(function (): void {
+    Route::get('/temalar/{theme}/gorsel', [LegacyExerciseMediaController::class, 'themeImage'])
+        ->whereNumber('theme')
+        ->name('themes.image');
+    Route::get('/alistirmalar/{exercise}/gorsel', [LegacyExerciseMediaController::class, 'exerciseImage'])
+        ->whereNumber('exercise')
+        ->name('exercises.image');
+    Route::get('/sorular/{question}/gorsel', [LegacyExerciseMediaController::class, 'questionImage'])
+        ->whereNumber('question')
+        ->name('questions.image');
+    Route::get('/beyanlar/{declaration}/gorsel', [LegacyExerciseMediaController::class, 'declarationImage'])
+        ->whereNumber('declaration')
+        ->name('declarations.image');
+    Route::get('/beyanlar/{declaration}/dosyalar/{document}', [LegacyExerciseMediaController::class, 'declarationDocument'])
+        ->whereNumber('declaration')
+        ->where('document', 'pdf|answerkey')
+        ->name('declarations.document');
+});
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/basarilarimiz', [AchievementController::class, 'index'])->name('frontend.achievements');

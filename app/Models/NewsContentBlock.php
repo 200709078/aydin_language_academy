@@ -20,6 +20,8 @@ class NewsContentBlock extends Model
 
     public const TYPE_EXTERNAL_LINK = 'external_link';
 
+    public const TYPE_INTERNAL_LINK = 'internal_link';
+
     public const CONTENT_FORMAT_PLAIN = 'plain';
 
     public const CONTENT_FORMAT_MARKDOWN = 'markdown';
@@ -70,6 +72,24 @@ class NewsContentBlock extends Model
 
             $block->external_url = $hasExternalUrl ? $externalUrl : null;
 
+            $internalDestination = trim((string) $block->internal_destination);
+
+            if ($block->type === self::TYPE_INTERNAL_LINK) {
+                if (
+                    ! Campaign::isAllowedInternalDestination($internalDestination)
+                    || $hasMediaAsset
+                    || $hasExternalUrl
+                ) {
+                    throw new LogicException('Site içi bağlantı bloğu yalnız izinli bir site içi hedef içermelidir.');
+                }
+
+                $block->internal_destination = $internalDestination;
+
+                return;
+            }
+
+            $block->internal_destination = null;
+
             if ($block->type === self::TYPE_RICH_TEXT) {
                 if (trim((string) $block->body) === '' || $hasMediaAsset || $hasExternalUrl) {
                     throw new LogicException('Metin bloğu yalnız boş olmayan metin içermelidir.');
@@ -106,6 +126,7 @@ class NewsContentBlock extends Model
         'body',
         'media_asset_id',
         'external_url',
+        'internal_destination',
         'link_label',
         'metadata',
         'is_active',
@@ -135,6 +156,30 @@ class NewsContentBlock extends Model
     }
 
     /**
+     * Return a public URL only when this block uses one of Campaign's approved internal destinations.
+     */
+    public function publicInternalLinkUrl(): ?string
+    {
+        if (
+            $this->type !== self::TYPE_INTERNAL_LINK
+            || ! Campaign::isAllowedInternalDestination($this->internal_destination)
+        ) {
+            return null;
+        }
+
+        return route($this->internal_destination);
+    }
+
+    public function internalDestinationLabel(): ?string
+    {
+        if (! Campaign::isAllowedInternalDestination($this->internal_destination)) {
+            return null;
+        }
+
+        return Campaign::internalDestinations()[$this->internal_destination];
+    }
+
+    /**
      * @return list<string>
      */
     public static function types(): array
@@ -146,6 +191,7 @@ class NewsContentBlock extends Model
             self::TYPE_VIDEO,
             self::TYPE_FILE,
             self::TYPE_EXTERNAL_LINK,
+            self::TYPE_INTERNAL_LINK,
         ];
     }
 

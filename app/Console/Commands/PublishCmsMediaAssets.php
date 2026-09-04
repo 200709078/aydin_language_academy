@@ -169,7 +169,7 @@ class PublishCmsMediaAssets extends Command
                 return $this->wouldMigrate('Doğrulanmış public kopya mevcut; yalnız MediaAsset kaydı public yapılacak.');
             }
 
-            return $this->markAsPublic($mediaAsset, $path)
+            return $this->markAsPublic($mediaAsset, $path, $sourceFingerprint)
                 ? $this->migrated('Doğrulanmış mevcut public kopya kullanıldı; MediaAsset kaydı public yapıldı.')
                 : $this->blocked('MediaAsset kaydı public yapılamadı.');
         }
@@ -183,7 +183,7 @@ class PublishCmsMediaAssets extends Command
         try {
             $createdTarget = $this->copyAndVerify($path, $sourceFingerprint);
 
-            if (! $this->markAsPublic($mediaAsset, $path)) {
+            if (! $this->markAsPublic($mediaAsset, $path, $sourceFingerprint)) {
                 throw new RuntimeException('MediaAsset kaydı public yapılamadı.');
             }
         } catch (Throwable $exception) {
@@ -272,10 +272,12 @@ class PublishCmsMediaAssets extends Command
      * Update only after the target file is fully verified. Re-checking the
      * candidate under a row lock avoids publishing a record that changed while
      * a larger file was being copied.
+     *
+     * @param  array{size: int, sha256: string}  $sourceFingerprint
      */
-    private function markAsPublic(MediaAsset $mediaAsset, string $path): bool
+    private function markAsPublic(MediaAsset $mediaAsset, string $path, array $sourceFingerprint): bool
     {
-        return DB::transaction(function () use ($mediaAsset, $path): bool {
+        return DB::transaction(function () use ($mediaAsset, $path, $sourceFingerprint): bool {
             $lockedMediaAsset = MediaAsset::query()
                 ->lockForUpdate()
                 ->find($mediaAsset->getKey());
@@ -286,6 +288,24 @@ class PublishCmsMediaAssets extends Command
 
             if (! $this->eligibleMediaAssets()->whereKey($lockedMediaAsset->getKey())->exists()) {
                 throw new RuntimeException('MediaAsset kaydı veya CMS bağlantısı kopyalama sırasında değişti.');
+            }
+
+            $lockedPath = trim((string) $lockedMediaAsset->path);
+            $lockedChecksum = trim((string) $lockedMediaAsset->checksum);
+
+            if (
+                $lockedMediaAsset->disk !== self::SOURCE_DISK
+                || $lockedMediaAsset->visibility !== MediaAsset::VISIBILITY_PRIVATE
+                || $lockedPath !== $path
+                || $lockedMediaAsset->path_hash !== $this->pathHash(self::SOURCE_DISK, $path)
+                || (int) $lockedMediaAsset->size_bytes !== $sourceFingerprint['size']
+                || ($lockedChecksum !== '' && ! hash_equals(strtolower($lockedChecksum), $sourceFingerprint['sha256']))
+            ) {
+                throw new RuntimeException('MediaAsset kaynağı kopyalama sırasında değişti.');
+            }
+
+            if (! $this->fingerprintsMatch($sourceFingerprint, $this->fingerprint(self::SOURCE_DISK, $path))) {
+                throw new RuntimeException('Private kaynak dosya kopyalama sırasında değişti.');
             }
 
             if ($this->hasPublicMediaAssetAtPath($path, (int) $lockedMediaAsset->getKey())) {

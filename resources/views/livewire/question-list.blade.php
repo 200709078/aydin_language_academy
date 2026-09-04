@@ -74,10 +74,11 @@
                         <tr class="align-middle">
                             <th class="col-md-3" scope="row">{{ $question->question }}</th>
                             <th class="col-md-3" scope="row">
-                                @if($question->image)
-                                    <a href="{{ asset('photos/' . $question->image) }}" target="_blank">
+                                @php($imageUrl = $question->privateImageUrl())
+                                @if($imageUrl)
+                                    <a href="{{ $imageUrl }}" target="_blank" rel="noopener">
                                         <img class="img-fluid rounded align-self-end"
-                                            src="{{ asset('photos/' . $question->image) }}" style="width:120px"
+                                            src="{{ $imageUrl }}" style="width:120px"
                                             class="img-responsive">
                                     </a>
                                 @else

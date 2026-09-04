@@ -26,10 +26,11 @@
                 </div>
                 <div class="form-group">
                     <label>{{ __('dictt.image') }}</label>
-                    @if($declaration->image)
-                            <a href="{{ asset('photos/' . $declaration->image) }}" target="_blank">
+                    @php($imageUrl = $declaration->privateImageUrl())
+                    @if($imageUrl)
+                            <a href="{{ $imageUrl }}" target="_blank" rel="noopener">
                             <img class="img-fluid rounded align-self-end"
-                            src="{{ asset('photos/' . $declaration->image) }}" style="width:120px"
+                            src="{{ $imageUrl }}" style="width:120px"
                             class="img-responsive">
                         </a>
                     @else
@@ -40,8 +41,8 @@
                 </div>
                 <div class="form-group">
                     <label>{{ __('dictt.pdffile') }}</label>
-                    @if ($declaration->pdf)
-                    <br><label>{{ $declaration->pdf }}</label>
+                    @if ($pdfUrl = $declaration->privatePdfUrl())
+                    <br><a href="{{ $pdfUrl }}" target="_blank" rel="noopener">{{ $declaration->pdf }}</a>
                     @endif
                     <input type="file" name="pdf" class="form-control">
                 </div>

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\model_exercises;
 use Illuminate\Http\Request;
 use App\Models\model_themes;
+use App\Support\LegacyExerciseMedia;
 use Illuminate\Support\Str;
 
 class cont_exercises extends Controller
@@ -31,8 +32,10 @@ class cont_exercises extends Controller
 
         $imageFileName = null;
         if ($request->hasFile('image')) {
-            $imageFileName = Str::slug($request->title) . '.' . $request->image->extension();
-            $request->image->move(public_path('photos'), $imageFileName);
+            $imageFileName = LegacyExerciseMedia::store(
+                $request->file('image'),
+                LegacyExerciseMedia::EXERCISE_IMAGES,
+            );
         }
         $exercise = model_exercises::create([
             'theme_id' => $theme_id,
@@ -73,8 +76,10 @@ class cont_exercises extends Controller
 
         $imageFileName = null;
         if ($request->hasFile('image')) {
-            $imageFileName = Str::slug($request->title) . '.' . $request->image->extension();
-            $request->image->move(public_path('photos'), $imageFileName);
+            $imageFileName = LegacyExerciseMedia::store(
+                $request->file('image'),
+                LegacyExerciseMedia::EXERCISE_IMAGES,
+            );
         }
 
         $exercise = model_exercises::find($exercise_id);

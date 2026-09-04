@@ -14,6 +14,7 @@
         \App\Models\NewsContentBlock::TYPE_VIDEO => __('dictt.news_block_type_video'),
         \App\Models\NewsContentBlock::TYPE_FILE => __('dictt.news_block_type_file'),
         \App\Models\NewsContentBlock::TYPE_EXTERNAL_LINK => __('dictt.news_block_type_external_link'),
+        \App\Models\NewsContentBlock::TYPE_INTERNAL_LINK => __('dictt.news_block_type_internal_link'),
     ];
     $hasExistingAsset = $currentBlock?->media_asset_id !== null;
 @endphp
@@ -27,6 +28,9 @@
     },
     get isExternalLink() {
         return this.type === 'external_link';
+    },
+    get isInternalLink() {
+        return this.type === 'internal_link';
     },
     get needsExternalUrl() {
         return this.isExternalLink || (this.isMedia && this.sourceMode === 'external');
@@ -159,6 +163,23 @@
                     class="form-control @error('external_url') is-invalid @enderror" maxlength="2048" placeholder="https://">
                 <div class="form-text">{{ __('dictt.news_external_url_https') }}</div>
                 @error('external_url')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div x-show="isInternalLink" style="display: none;" class="mb-4">
+                <label for="internal_destination" class="form-label">{{ __('dictt.campaign_internal_destination') }}</label>
+                <select id="internal_destination" name="internal_destination"
+                    x-bind:disabled="!isInternalLink" x-bind:required="isInternalLink"
+                    class="form-select @error('internal_destination') is-invalid @enderror">
+                    <option value="">{{ __('dictt.none') }}</option>
+                    @foreach (\App\Models\Campaign::internalDestinations() as $destination => $destinationLabel)
+                        <option value="{{ $destination }}" @selected(old('internal_destination', $currentBlock?->internal_destination) === $destination)>
+                            {{ $destinationLabel }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('internal_destination')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
