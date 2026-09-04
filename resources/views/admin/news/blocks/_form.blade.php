@@ -131,18 +131,18 @@
                     <div class="mb-3">
                         <div class="small fw-semibold mb-2">{{ __('dictt.news_block_media_current') }}</div>
                         @if ($currentBlock->type === \App\Models\NewsContentBlock::TYPE_IMAGE)
-                            <img src="{{ route('admin.news.media.show', $currentBlock->mediaAsset) }}" alt="{{ $currentBlock->heading ?? '' }}"
+                            <img src="{{ $currentBlock->mediaAsset->publicUrl() }}" alt="{{ $currentBlock->heading ?? '' }}"
                                 class="img-thumbnail" style="max-width: 16rem; max-height: 10rem;">
                         @elseif ($currentBlock->type === \App\Models\NewsContentBlock::TYPE_AUDIO)
                             <audio controls class="w-100">
-                                <source src="{{ route('admin.news.media.show', $currentBlock->mediaAsset) }}" type="{{ $currentBlock->mediaAsset->mime_type }}">
+                                <source src="{{ $currentBlock->mediaAsset->publicUrl() }}" type="{{ $currentBlock->mediaAsset->mime_type }}">
                             </audio>
                         @elseif ($currentBlock->type === \App\Models\NewsContentBlock::TYPE_VIDEO)
                             <video controls class="w-100" style="max-width: 32rem;">
-                                <source src="{{ route('admin.news.media.show', $currentBlock->mediaAsset) }}" type="{{ $currentBlock->mediaAsset->mime_type }}">
+                                <source src="{{ $currentBlock->mediaAsset->publicUrl() }}" type="{{ $currentBlock->mediaAsset->mime_type }}">
                             </video>
                         @else
-                            <a href="{{ route('admin.news.media.show', $currentBlock->mediaAsset) }}" target="_blank" rel="noopener"
+                            <a href="{{ $currentBlock->mediaAsset->publicUrl() }}" target="_blank" rel="noopener"
                                 class="btn btn-sm btn-outline-secondary">
                                 <i class="fa fa-up-right-from-square" aria-hidden="true"></i> {{ __('dictt.news_media_open') }}
                             </a>

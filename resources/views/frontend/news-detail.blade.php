@@ -14,7 +14,7 @@
     <link rel="canonical" href="{{ $newsCanonicalUrl }}">
 
     @if ($news->coverMediaAsset)
-        <meta property="og:image" content="{{ route('frontend.news.media', ['news' => $news->slug, 'mediaAsset' => $news->coverMediaAsset->id]) }}">
+        <meta property="og:image" content="{{ $news->coverMediaAsset->publicUrl() }}">
     @endif
 
     <link href="{{ asset('frontend/images/logo/favicon.png') }}" rel="icon">
@@ -48,7 +48,7 @@
                 <article class="news-detail-card wow fadeInUp" data-wow-delay="0.1s">
                     @if ($news->coverMediaAsset)
                         <figure class="news-detail-card__cover mb-0">
-                            <img src="{{ route('frontend.news.media', ['news' => $news->slug, 'mediaAsset' => $news->coverMediaAsset->id]) }}" alt="{{ $news->title }}">
+                            <img src="{{ $news->coverMediaAsset->publicUrl() }}" alt="{{ $news->title }}">
                         </figure>
                     @endif
 
@@ -81,14 +81,14 @@
                                         <div class="news-detail-block__text">{!! nl2br(e($block->body)) !!}</div>
                                     @elseif ($block->type === \App\Models\NewsContentBlock::TYPE_IMAGE)
                                         @if ($mediaAsset && $mediaAsset->kind === \App\Models\MediaAsset::KIND_IMAGE)
-                                            <img class="news-detail-block__image" src="{{ route('frontend.news.media', ['news' => $news->slug, 'mediaAsset' => $mediaAsset->id]) }}" alt="{{ $block->heading ?: $news->title }}">
+                                            <img class="news-detail-block__image" src="{{ $mediaAsset->publicUrl() }}" alt="{{ $block->heading ?: $news->title }}">
                                         @elseif ($hasSecureExternalUrl)
                                             <img class="news-detail-block__image" src="{{ $externalUrl }}" alt="{{ $block->heading ?: $news->title }}">
                                         @endif
                                     @elseif ($block->type === \App\Models\NewsContentBlock::TYPE_AUDIO)
                                         @if ($mediaAsset && $mediaAsset->kind === \App\Models\MediaAsset::KIND_AUDIO)
                                             <audio class="news-detail-block__audio" controls preload="metadata">
-                                                <source src="{{ route('frontend.news.media', ['news' => $news->slug, 'mediaAsset' => $mediaAsset->id]) }}" type="{{ $mediaAsset->mime_type }}">
+                                                <source src="{{ $mediaAsset->publicUrl() }}" type="{{ $mediaAsset->mime_type }}">
                                             </audio>
                                         @elseif ($hasSecureExternalUrl)
                                             <audio class="news-detail-block__audio" controls preload="metadata">
@@ -98,7 +98,7 @@
                                     @elseif ($block->type === \App\Models\NewsContentBlock::TYPE_VIDEO)
                                         @if ($mediaAsset && $mediaAsset->kind === \App\Models\MediaAsset::KIND_VIDEO)
                                             <video class="news-detail-block__video" controls preload="metadata">
-                                                <source src="{{ route('frontend.news.media', ['news' => $news->slug, 'mediaAsset' => $mediaAsset->id]) }}" type="{{ $mediaAsset->mime_type }}">
+                                                <source src="{{ $mediaAsset->publicUrl() }}" type="{{ $mediaAsset->mime_type }}">
                                             </video>
                                         @elseif ($hasSecureExternalUrl)
                                             <video class="news-detail-block__video" controls preload="metadata">
@@ -107,7 +107,7 @@
                                         @endif
                                     @elseif ($block->type === \App\Models\NewsContentBlock::TYPE_FILE)
                                         @if ($mediaAsset && $mediaAsset->kind === \App\Models\MediaAsset::KIND_FILE)
-                                            <a class="btn btn-outline-primary" href="{{ route('frontend.news.media', ['news' => $news->slug, 'mediaAsset' => $mediaAsset->id]) }}" target="_blank" rel="noopener noreferrer">{{ $block->link_label ?: $mediaAsset->original_filename ?: __('dictt.news_file_open') }}<i class="fa fa-file-download ms-2" aria-hidden="true"></i></a>
+                                            <a class="btn btn-outline-primary" href="{{ $mediaAsset->publicUrl() }}" target="_blank" rel="noopener noreferrer">{{ $block->link_label ?: $mediaAsset->original_filename ?: __('dictt.news_file_open') }}<i class="fa fa-file-download ms-2" aria-hidden="true"></i></a>
                                         @elseif ($hasSecureExternalUrl)
                                             <a class="btn btn-outline-primary" href="{{ $externalUrl }}" target="_blank" rel="noopener noreferrer">{{ $block->link_label ?: __('dictt.news_file_open') }}<i class="fa fa-external-link-alt ms-2" aria-hidden="true"></i></a>
                                         @endif

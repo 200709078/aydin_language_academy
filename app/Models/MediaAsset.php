@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Storage;
 use LogicException;
 
 class MediaAsset extends Model
@@ -27,7 +28,7 @@ class MediaAsset extends Model
      * @var array<string, string>
      */
     protected $attributes = [
-        'visibility' => self::VISIBILITY_PRIVATE,
+        'visibility' => self::VISIBILITY_PUBLIC,
     ];
 
     protected static function booted(): void
@@ -118,6 +119,27 @@ class MediaAsset extends Model
     public function newsContentBlocks(): HasMany
     {
         return $this->hasMany(NewsContentBlock::class);
+    }
+
+    /**
+     * Return the direct, web-server-served URL for a public media asset.
+     *
+     * Public site media must live on Laravel's public disk so the web server
+     * can serve it from /storage without a PHP controller in the request path.
+     */
+    public function publicUrl(): string
+    {
+        $path = trim((string) $this->path);
+
+        if (
+            $this->visibility !== self::VISIBILITY_PUBLIC
+            || $this->disk !== 'public'
+            || ! self::isSafeStoragePath($path)
+        ) {
+            throw new LogicException('Yalnız public diskteki public medya için doğrudan URL üretilebilir.');
+        }
+
+        return Storage::disk('public')->url($path);
     }
 
     /**

@@ -1,7 +1,7 @@
 <article class="news-card h-100 w-100">
     <a class="news-card__media" href="{{ route('frontend.news.show', ['news' => $news->slug]) }}" aria-label="{{ $news->title }}">
         @if ($news->coverMediaAsset)
-            <img src="{{ route('frontend.news.media', ['news' => $news->slug, 'mediaAsset' => $news->coverMediaAsset->id]) }}" alt="{{ $news->title }}">
+            <img src="{{ $news->coverMediaAsset->publicUrl() }}" alt="{{ $news->title }}">
         @else
             <span class="news-card__media-placeholder" aria-hidden="true"><i class="fa fa-newspaper"></i></span>
         @endif

@@ -73,11 +73,11 @@
                         @if ($achievementPageSetting?->heroMediaAsset)
                             <div class="mb-3">
                                 <p class="form-label mb-2">{{ __('dictt.page_image_preview') }}</p>
-                                <img src="{{ route('admin.achievements.media.show', $achievementPageSetting->heroMediaAsset) }}"
+                                <img src="{{ $achievementPageSetting->heroMediaAsset->publicUrl() }}"
                                     alt="{{ $achievementPageSetting->localized_title }}" class="img-thumbnail"
                                     style="max-width: 16rem; max-height: 16rem;">
                                 <div class="mt-2">
-                                    <a href="{{ route('admin.achievements.media.show', $achievementPageSetting->heroMediaAsset) }}"
+                                    <a href="{{ $achievementPageSetting->heroMediaAsset->publicUrl() }}"
                                         target="_blank" rel="noopener" class="btn btn-sm btn-outline-secondary">
                                         <i class="fa fa-up-right-from-square" aria-hidden="true"></i>
                                         {{ __('dictt.achievement_media_open') }}

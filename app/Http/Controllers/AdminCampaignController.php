@@ -11,7 +11,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
@@ -19,13 +18,7 @@ use RuntimeException;
 
 class AdminCampaignController extends Controller
 {
-    private const MEDIA_DISK = 'local';
-
-    /**
-     * The broad prefix permits the one-time imported legacy hero as well as
-     * subsequently uploaded hero images.
-     */
-    private const MEDIA_PATH_PREFIX = 'campaigns/media-assets/';
+    private const MEDIA_DISK = 'public';
 
     private const HERO_MEDIA_PATH_PREFIX = 'campaigns/media-assets/image';
 
@@ -217,39 +210,6 @@ class AdminCampaignController extends Controller
     }
 
     /**
-     * Stream only the private hero image referenced by the current singleton setting.
-     */
-    public function media(MediaAsset $mediaAsset)
-    {
-        $campaignPageSetting = CampaignPageSetting::query()
-            ->orderBy('id')
-            ->first();
-        $path = trim((string) $mediaAsset->path);
-
-        if (
-            $campaignPageSetting === null
-            || (int) $campaignPageSetting->hero_media_asset_id !== (int) $mediaAsset->getKey()
-            || $mediaAsset->kind !== MediaAsset::KIND_IMAGE
-            || $mediaAsset->visibility !== MediaAsset::VISIBILITY_PRIVATE
-            || $mediaAsset->disk !== self::MEDIA_DISK
-            || ! $this->isSafeCampaignMediaPath($path)
-        ) {
-            abort(404);
-        }
-
-        $disk = Storage::disk(self::MEDIA_DISK);
-
-        if (! $disk->exists($path)) {
-            abort(404);
-        }
-
-        return $disk->response($path, $mediaAsset->original_filename, [
-            'Content-Type' => $mediaAsset->mime_type,
-            'X-Content-Type-Options' => 'nosniff',
-        ]);
-    }
-
-    /**
      * @return array<string, string>
      */
     private function validatedCampaign(Request $request): array
@@ -360,7 +320,7 @@ class AdminCampaignController extends Controller
             'disk' => self::MEDIA_DISK,
             'path' => $path,
             'kind' => MediaAsset::KIND_IMAGE,
-            'visibility' => MediaAsset::VISIBILITY_PRIVATE,
+            'visibility' => MediaAsset::VISIBILITY_PUBLIC,
             'original_filename' => $file->getClientOriginalName(),
             'mime_type' => $file->getMimeType() ?: 'application/octet-stream',
             'size_bytes' => $file->getSize() ?: 0,
@@ -484,18 +444,4 @@ class AdminCampaignController extends Controller
             && isset($parts['host']);
     }
 
-    private function isSafeCampaignMediaPath(string $path): bool
-    {
-        if (
-            $path === ''
-            || ! str_starts_with($path, self::MEDIA_PATH_PREFIX)
-            || str_starts_with($path, '/')
-            || str_contains($path, '\\')
-            || str_contains(strtolower($path), '://')
-        ) {
-            return false;
-        }
-
-        return ! in_array('..', explode('/', $path), true);
-    }
 }

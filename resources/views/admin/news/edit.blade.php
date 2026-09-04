@@ -62,7 +62,7 @@
                                     @if ($block->type === \App\Models\NewsContentBlock::TYPE_RICH_TEXT)
                                         <div class="small text-muted">{{ \Illuminate\Support\Str::limit($block->body, 180) }}</div>
                                     @elseif ($block->mediaAsset)
-                                        <a href="{{ route('admin.news.media.show', $block->mediaAsset) }}" target="_blank" rel="noopener"
+                                        <a href="{{ $block->mediaAsset->publicUrl() }}" target="_blank" rel="noopener"
                                             class="btn btn-sm btn-outline-secondary mt-1">
                                             <i class="fa fa-up-right-from-square" aria-hidden="true"></i> {{ __('dictt.news_media_open') }}
                                         </a>

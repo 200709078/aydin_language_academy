@@ -61,7 +61,7 @@
                 @if ($hasHeroImage)
                     <div class="col-lg-5 wow fadeIn" data-wow-delay="0.5s">
                         <div class="text-center">
-                            <img class="img-fluid" src="{{ route('frontend.campaigns.media', $pageSettings->heroMediaAsset) }}" alt="{{ $pageTitle }}" style="max-height: 360px;">
+                            <img class="img-fluid" src="{{ $pageSettings->heroMediaAsset->publicUrl() }}" alt="{{ $pageTitle }}" style="max-height: 360px;">
                         </div>
                     </div>
                 @endif

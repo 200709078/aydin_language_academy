@@ -140,10 +140,10 @@
                 <h6 class="mb-3">{{ __('dictt.news_cover_image') }}</h6>
                 @if ($currentNews?->coverMediaAsset)
                     <div class="mb-3">
-                        <img src="{{ route('admin.news.media.show', $currentNews->coverMediaAsset) }}"
+                        <img src="{{ $currentNews->coverMediaAsset->publicUrl() }}"
                             alt="{{ $currentNews->title }}" class="img-thumbnail" style="max-width: 16rem; max-height: 10rem;">
                         <div class="mt-2">
-                            <a href="{{ route('admin.news.media.show', $currentNews->coverMediaAsset) }}" target="_blank"
+                            <a href="{{ $currentNews->coverMediaAsset->publicUrl() }}" target="_blank"
                                 rel="noopener" class="btn btn-sm btn-outline-secondary">
                                 <i class="fa fa-up-right-from-square" aria-hidden="true"></i> {{ __('dictt.news_media_open') }}
                             </a>

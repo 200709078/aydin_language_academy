@@ -68,7 +68,7 @@
                             <div class="owl-carousel-item position-relative">
                                 @if ($news->coverMediaAsset?->kind === \App\Models\MediaAsset::KIND_IMAGE)
                                     <img class="img-fluid"
-                                        src="{{ route('frontend.news.media', ['news' => $news->slug, 'mediaAsset' => $news->coverMediaAsset->id]) }}"
+                                        src="{{ $news->coverMediaAsset->publicUrl() }}"
                                         alt="{{ $news->title }}">
                                 @else
                                     <div class="header-carousel-news-placeholder" aria-hidden="true"></div>

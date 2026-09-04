@@ -12,7 +12,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
@@ -20,11 +19,7 @@ use RuntimeException;
 
 class AdminAchievementController extends Controller
 {
-    private const MEDIA_DISK = 'local';
-
-    private const MEDIA_PATH_PREFIX = 'achievements/media-assets/';
-
-    private const SHARED_CAMPAIGN_MEDIA_PATH_PREFIX = 'campaigns/media-assets/';
+    private const MEDIA_DISK = 'public';
 
     private const HERO_MEDIA_PATH_PREFIX = 'achievements/media-assets/image';
 
@@ -85,39 +80,6 @@ class AdminAchievementController extends Controller
         return redirect()
             ->route('admin.achievements.settings')
             ->with('success', __('dictt.achievement_page_settings_updated'));
-    }
-
-    /**
-     * Stream only the private hero image assigned to the current page setting.
-     */
-    public function media(MediaAsset $mediaAsset)
-    {
-        $achievementPageSetting = AchievementPageSetting::query()
-            ->orderBy('id')
-            ->first();
-        $path = trim((string) $mediaAsset->path);
-
-        if (
-            $achievementPageSetting === null
-            || (int) $achievementPageSetting->hero_media_asset_id !== (int) $mediaAsset->getKey()
-            || $mediaAsset->kind !== MediaAsset::KIND_IMAGE
-            || $mediaAsset->visibility !== MediaAsset::VISIBILITY_PRIVATE
-            || $mediaAsset->disk !== self::MEDIA_DISK
-            || ! $this->isSafeAchievementMediaPath($path)
-        ) {
-            abort(404);
-        }
-
-        $disk = Storage::disk(self::MEDIA_DISK);
-
-        if (! $disk->exists($path)) {
-            abort(404);
-        }
-
-        return $disk->response($path, $mediaAsset->original_filename, [
-            'Content-Type' => $mediaAsset->mime_type,
-            'X-Content-Type-Options' => 'nosniff',
-        ]);
     }
 
     /**
@@ -628,7 +590,7 @@ class AdminAchievementController extends Controller
             'disk' => self::MEDIA_DISK,
             'path' => $path,
             'kind' => MediaAsset::KIND_IMAGE,
-            'visibility' => MediaAsset::VISIBILITY_PRIVATE,
+            'visibility' => MediaAsset::VISIBILITY_PUBLIC,
             'original_filename' => $file->getClientOriginalName(),
             'mime_type' => $file->getMimeType() ?: 'application/octet-stream',
             'size_bytes' => $file->getSize() ?: 0,
@@ -639,26 +601,6 @@ class AdminAchievementController extends Controller
             'metadata' => null,
             'uploaded_by' => $uploadedBy,
         ]);
-    }
-
-    /**
-     * The page may temporarily share the campaign hero, then switch to its
-     * own achievement-specific upload without exposing unrelated private media.
-     */
-    private function isSafeAchievementMediaPath(string $path): bool
-    {
-        if (
-            $path === ''
-            || (! str_starts_with($path, self::MEDIA_PATH_PREFIX)
-                && ! str_starts_with($path, self::SHARED_CAMPAIGN_MEDIA_PATH_PREFIX))
-            || str_starts_with($path, '/')
-            || str_contains($path, '\\')
-            || str_contains(strtolower($path), '://')
-        ) {
-            return false;
-        }
-
-        return ! in_array('..', explode('/', $path), true);
     }
 
     /**

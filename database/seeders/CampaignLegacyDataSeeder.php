@@ -84,21 +84,21 @@ class CampaignLegacyDataSeeder extends Seeder
             throw new LogicException('Mevcut kampanya sayfası hero görseli geçerli bir PNG dosyası değil.');
         }
 
-        $disk = Storage::disk('local');
+        $disk = Storage::disk('public');
 
         if (! $disk->exists(self::HERO_TARGET) && ! $disk->put(self::HERO_TARGET, $contents)) {
-            throw new LogicException('Kampanya sayfası hero görseli private depoya kopyalanamadı.');
+            throw new LogicException('Kampanya sayfası hero görseli public depoya kopyalanamadı.');
         }
 
         return MediaAsset::query()->firstOrCreate(
             [
-                'disk' => 'local',
-                'path_hash' => hash('sha256', "local\0".self::HERO_TARGET),
+                'disk' => 'public',
+                'path_hash' => hash('sha256', "public\0".self::HERO_TARGET),
             ],
             [
                 'path' => self::HERO_TARGET,
                 'kind' => MediaAsset::KIND_IMAGE,
-                'visibility' => MediaAsset::VISIBILITY_PRIVATE,
+                'visibility' => MediaAsset::VISIBILITY_PUBLIC,
                 'original_filename' => basename(self::HERO_SOURCE),
                 'mime_type' => $dimensions['mime'],
                 'size_bytes' => strlen($contents),

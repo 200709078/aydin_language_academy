@@ -28,6 +28,7 @@ use App\Http\Controllers\PlacementTestLevelController;
 use App\Http\Controllers\PlacementTestQuestionController;
 use App\Http\Controllers\PlacementTestQuestionContentController;
 use App\Http\Controllers\PlacementTestReviewController;
+use App\Http\Controllers\ProfilePhotoController;
 use App\Http\Middleware\isAdmin_middle;
 use App\Support\FrontendReturnRoutes;
 use Illuminate\Http\Request;
@@ -122,9 +123,6 @@ Route::group(['middleware' => ['auth', isAdmin_middle::class], 'prefix' => 'admi
         Route::get('/', [AdminNewsController::class, 'index'])->name('index');
         Route::get('/create', [AdminNewsController::class, 'create'])->name('create');
         Route::post('/', [AdminNewsController::class, 'store'])->name('store');
-        Route::get('/media-assets/{mediaAsset}', [AdminNewsController::class, 'media'])
-            ->whereNumber('mediaAsset')
-            ->name('media.show');
         Route::get('/{news}/blocks/create', [AdminNewsController::class, 'createBlock'])
             ->whereNumber('news')
             ->name('blocks.create');
@@ -174,9 +172,6 @@ Route::group(['middleware' => ['auth', isAdmin_middle::class], 'prefix' => 'admi
         Route::post('/', [AdminCampaignController::class, 'store'])->name('store');
         Route::get('/settings', [AdminCampaignController::class, 'settings'])->name('settings');
         Route::put('/settings', [AdminCampaignController::class, 'updateSettings'])->name('settings.update');
-        Route::get('/media-assets/{mediaAsset}', [AdminCampaignController::class, 'media'])
-            ->whereNumber('mediaAsset')
-            ->name('media.show');
         Route::post('/{campaign}/move', [AdminCampaignController::class, 'move'])
             ->whereNumber('campaign')
             ->name('move');
@@ -198,9 +193,6 @@ Route::group(['middleware' => ['auth', isAdmin_middle::class], 'prefix' => 'admi
         Route::get('/', [AdminAchievementController::class, 'index'])->name('index');
         Route::get('/settings', [AdminAchievementController::class, 'settings'])->name('settings');
         Route::put('/settings', [AdminAchievementController::class, 'updateSettings'])->name('settings.update');
-        Route::get('/media-assets/{mediaAsset}', [AdminAchievementController::class, 'media'])
-            ->whereNumber('mediaAsset')
-            ->name('media.show');
         Route::get('/create', [AdminAchievementController::class, 'create'])->name('create');
         Route::post('/', [AdminAchievementController::class, 'store'])->name('store');
         Route::post('/{achievementYear}/move', [AdminAchievementController::class, 'move'])
@@ -278,19 +270,15 @@ Route::group(['middleware' => ['auth', isAdmin_middle::class], 'prefix' => 'admi
     Route::put('question/{question_id}/update', [cont_questions::class, 'update'])->name('question_update');
 });
 
+Route::get('/profil-fotograflari/{user}', [ProfilePhotoController::class, 'show'])
+    ->middleware('auth')
+    ->whereNumber('user')
+    ->name('profile.photos.show');
+
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/basarilarimiz', [AchievementController::class, 'index'])->name('frontend.achievements');
-Route::get('/basarilarimiz/medya/{mediaAsset}', [AchievementController::class, 'media'])
-    ->whereNumber('mediaAsset')
-    ->name('frontend.achievements.media');
-Route::get('/kampanyalarimiz/medya/{mediaAsset}', [CampaignController::class, 'media'])
-    ->whereNumber('mediaAsset')
-    ->name('frontend.campaigns.media');
 Route::get('/kampanyalarimiz', [CampaignController::class, 'index'])->name('frontend.campaigns');
 Route::get('/haberler', [NewsController::class, 'index'])->name('frontend.news.index');
-Route::get('/haberler/{news:slug}/medya/{mediaAsset}', [NewsController::class, 'media'])
-    ->whereNumber('mediaAsset')
-    ->name('frontend.news.media');
 Route::get('/haberler/{news:slug}', [NewsController::class, 'show'])->name('frontend.news.show');
 Route::get('/yorumlar', [ReviewController::class, 'index'])->name('frontend.reviews');
 Route::view('/yorumlarim', 'frontend.my-reviews')

@@ -70,10 +70,10 @@
                         @if ($campaignPageSetting?->heroMediaAsset)
                             <div class="mb-3">
                                 <p class="form-label mb-2">{{ __('dictt.page_image_preview') }}</p>
-                                <img src="{{ route('admin.campaigns.media.show', $campaignPageSetting->heroMediaAsset) }}"
+                                <img src="{{ $campaignPageSetting->heroMediaAsset->publicUrl() }}"
                                     alt="{{ $campaignPageSetting->localized_title }}" class="img-thumbnail" style="max-width: 16rem; max-height: 16rem;">
                                 <div class="mt-2">
-                                    <a href="{{ route('admin.campaigns.media.show', $campaignPageSetting->heroMediaAsset) }}" target="_blank"
+                                    <a href="{{ $campaignPageSetting->heroMediaAsset->publicUrl() }}" target="_blank"
                                         rel="noopener" class="btn btn-sm btn-outline-secondary">
                                         <i class="fa fa-up-right-from-square" aria-hidden="true"></i> {{ __('dictt.campaign_media_open') }}
                                     </a>

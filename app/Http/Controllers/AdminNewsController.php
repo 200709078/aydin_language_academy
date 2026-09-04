@@ -11,7 +11,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
@@ -20,7 +19,7 @@ use RuntimeException;
 
 class AdminNewsController extends Controller
 {
-    private const MEDIA_DISK = 'local';
+    private const MEDIA_DISK = 'public';
 
     private const MEDIA_PATH_PREFIX = 'news/media-assets/';
 
@@ -401,31 +400,6 @@ class AdminNewsController extends Controller
     }
 
     /**
-     * Stream a locally stored news-media file to an authenticated administrator.
-     */
-    public function media(MediaAsset $mediaAsset)
-    {
-        $path = trim((string) $mediaAsset->path);
-
-        if (
-            $mediaAsset->disk !== self::MEDIA_DISK
-            || ! $this->isSafeNewsMediaPath($path)
-        ) {
-            abort(404);
-        }
-
-        $disk = Storage::disk(self::MEDIA_DISK);
-
-        if (! $disk->exists($path)) {
-            abort(404);
-        }
-
-        return $disk->response($path, $mediaAsset->original_filename, [
-            'Content-Type' => $mediaAsset->mime_type,
-        ]);
-    }
-
-    /**
      * @return array<string, mixed>
      */
     private function validatedNews(Request $request, ?News $currentNews = null): array
@@ -680,7 +654,7 @@ class AdminNewsController extends Controller
             'disk' => self::MEDIA_DISK,
             'path' => $path,
             'kind' => $kind,
-            'visibility' => MediaAsset::VISIBILITY_PRIVATE,
+            'visibility' => MediaAsset::VISIBILITY_PUBLIC,
             'original_filename' => $file->getClientOriginalName(),
             'mime_type' => $file->getMimeType() ?: 'application/octet-stream',
             'size_bytes' => $file->getSize() ?: 0,
@@ -784,17 +758,4 @@ class AdminNewsController extends Controller
         return $value === '' ? null : $value;
     }
 
-    private function isSafeNewsMediaPath(string $path): bool
-    {
-        if (
-            $path === ''
-            || ! str_starts_with($path, self::MEDIA_PATH_PREFIX)
-            || str_contains($path, '\\')
-            || str_contains(strtolower($path), '://')
-        ) {
-            return false;
-        }
-
-        return ! in_array('..', explode('/', $path), true);
-    }
 }
