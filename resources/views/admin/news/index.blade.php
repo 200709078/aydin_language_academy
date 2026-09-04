@@ -95,8 +95,7 @@
                             @endphp
                             <tr>
                                 <td class="text-break">
-                                    <div class="fw-semibold">{{ $item->title }}</div>
-                                    <div class="small text-muted">/{{ $item->slug }}</div>
+                                    <div class="fw-semibold">{{ Illuminate\Support\Str::limit($item->title, 50) }}</div>
                                 </td>
                                 <td><span class="badge {{ $statusClass }}">{{ $statusLabel }}</span></td>
                                 <td>{{ $displayLabels[$item->display_location] ?? $item->display_location }}</td>

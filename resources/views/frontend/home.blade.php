@@ -55,7 +55,7 @@
                     </div>
                     <div class="col-4 col-sm-4">
                         <div class="border-start border-light ps-4">
-                            <h2 class="text-white mb-1"><span data-toggle="counter-up">200</span>+</h2>
+                            <h2 class="text-white mb-1"><span data-toggle="counter-up">500</span>+</h2>
                             <p class="text-light mb-0">Aktif Öğrenci</p>
                         </div>
                     </div>
@@ -88,23 +88,7 @@
                         <img class="img-fluid" src="{{ asset('frontend/images/branches/ortaca-1.jpg') }}" alt="Ortaca">
                         <div class="owl-carousel-text">
                             <h1 class="display-1 text-white mb-0">
-                                <a class="header-carousel-branch-link" href="{{ route('frontend.branches.ortaca') }}">Ortaca Şubemiz</a>
-                            </h1>
-                        </div>
-                    </div>
-                    <div class="owl-carousel-item position-relative">
-                        <img class="img-fluid" src="{{ asset('frontend/images/branches/dalaman-1.jpg') }}" alt="Dalaman">
-                        <div class="owl-carousel-text">
-                            <h1 class="display-1 text-white mb-0">
-                                <a class="header-carousel-branch-link" href="{{ route('frontend.branches.dalaman') }}">Dalaman Şubemiz</a>
-                            </h1>
-                        </div>
-                    </div>
-                    <div class="owl-carousel-item position-relative">
-                        <img class="img-fluid" src="{{ asset('frontend/images/branches/koycegiz-1.jpg') }}" alt="Köyceğiz">
-                        <div class="owl-carousel-text">
-                            <h1 class="display-1 text-white mb-0">
-                                <a class="header-carousel-branch-link" href="{{ route('frontend.branches.koycegiz') }}">Köyceğiz Şubemiz</a>
+                                <a class="header-carousel-branch-link" href="{{ route('frontend.branches') }}">Şubelerimiz</a>
                             </h1>
                         </div>
                     </div>

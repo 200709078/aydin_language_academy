@@ -28,9 +28,7 @@ final class FrontendReturnRoutes
             'frontend.courses.sat' => 'frontend.courses.sat',
             'frontend.courses.general-english' => 'frontend.courses.general-english',
             'frontend.courses.speaking-clubs' => 'frontend.courses.speaking-clubs',
-            'frontend.branches.ortaca' => 'frontend.branches.ortaca',
-            'frontend.branches.dalaman' => 'frontend.branches.dalaman',
-            'frontend.branches.koycegiz' => 'frontend.branches.koycegiz',
+            'frontend.branches' => 'frontend.branches',
             'frontend.reviews' => 'frontend.reviews',
             'frontend.my-reviews' => 'frontend.my-reviews',
         ];

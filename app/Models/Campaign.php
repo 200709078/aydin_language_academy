@@ -188,9 +188,7 @@ class Campaign extends Model
             'frontend.courses.test-of-english' => __('dictt.ourcourses').' — '.__('dictt.test_of_english'),
             'frontend.courses.sat' => __('dictt.ourcourses').' — '.__('dictt.sat'),
             'frontend.courses.speaking-clubs' => __('dictt.ourcourses').' — '.__('dictt.speaking_clubs'),
-            'frontend.branches.ortaca' => __('dictt.branches').' — Ortaca',
-            'frontend.branches.dalaman' => __('dictt.branches').' — Dalaman',
-            'frontend.branches.koycegiz' => __('dictt.branches').' — Köyceğiz',
+            'frontend.branches' => __('dictt.branches'),
             'frontend.contact' => __('dictt.contact'),
         ];
     }

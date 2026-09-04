@@ -101,7 +101,7 @@
                         class="admin-navigation-trigger {{ request()->routeIs('levels_list', 'sub_levels_list', 'themes_list', 'admin.exercise-attempts.*') ? 'is-active' : '' }}"
                         @click="toggleGroup('themesOpen')" :aria-expanded="themesOpen.toString()">
                         <i class="fas fa-layer-group admin-navigation-icon" aria-hidden="true"></i>
-                        <span class="admin-navigation-label">{{ __('dictt.themes') }}</span>
+                        <span class="admin-navigation-label">{{ __('dictt.materials') }}</span>
                         <svg class="admin-navigation-arrow h-4 w-4" :class="{ 'is-open': themesOpen }" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                             <path fill-rule="evenodd" d="M8.72 15.47a.75.75 0 0 1 0-1.06L12.19 10 8.72 6.53a.75.75 0 1 1 1.06-1.06l4 4a.75.75 0 0 1 0 1.06l-4 4a.75.75 0 0 1-1.06 0Z" clip-rule="evenodd" />
                         </svg>
@@ -152,6 +152,11 @@
                     </div>
                 </div>
 
+                <hr class="admin-navigation-divider">
+                <a href="{{ route('home') }}" target="_blank" rel="noopener" class="admin-navigation-trigger text-decoration-none">
+                    <i class="fas fa-eye admin-navigation-icon" aria-hidden="true"></i>
+                    <span class="admin-navigation-label">{{ __('dictt.view_site') }}</span>
+                </a>
                 <hr class="admin-navigation-divider">
 
             </div>

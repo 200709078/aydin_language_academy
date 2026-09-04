@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\PlacementTest;
 use App\Models\Review;
+use App\Models\User;
 use App\Models\model_messages;
 use App\Notifications\AdminApprovalRequiredNotification;
 use Illuminate\Support\Facades\Log;
@@ -89,21 +90,37 @@ class AdminApprovalNotificationService
         string $actionLabel,
         string $actionUrl,
     ): void {
-        $recipient = trim((string) config('admin_notifications.recipient'));
+        $admins = User::query()
+            ->where('type', 'admin')
+            ->orderBy('id')
+            ->get();
 
-        if (
-            filter_var($recipient, FILTER_VALIDATE_EMAIL) === false
-            || ! str_ends_with(strtolower($recipient), '@gmail.com')
-        ) {
-            Log::warning('Admin e-posta bildirimi gönderilmedi: Gmail alıcısı yapılandırılmamış.', [
+        $recipients = $admins->filter(static fn (User $admin): bool => filter_var(
+            trim((string) $admin->email),
+            FILTER_VALIDATE_EMAIL,
+        ) !== false);
+
+        if ($recipients->isEmpty()) {
+            Log::warning('Admin e-posta bildirimi gönderilmedi: geçerli e-posta adresi olan yönetici bulunamadı.', [
                 'subject' => $subject,
+                'admin_count' => $admins->count(),
             ]);
 
             return;
         }
 
+        $invalidRecipientCount = $admins->count() - $recipients->count();
+
+        if ($invalidRecipientCount > 0) {
+            Log::warning('Admin e-posta bildirimi için geçersiz e-posta adresine sahip yönetici atlandı.', [
+                'subject' => $subject,
+                'invalid_recipient_count' => $invalidRecipientCount,
+            ]);
+        }
+
         try {
-            Notification::route('mail', $recipient)->notify(
+            Notification::send(
+                $recipients,
                 new AdminApprovalRequiredNotification($subject, $lines, $actionLabel, $actionUrl),
             );
         } catch (Throwable $exception) {

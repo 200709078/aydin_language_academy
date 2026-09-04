@@ -31,14 +31,6 @@
                 @foreach ($headerNavigation['secondary_links'] as $secondaryLink)
                     <a href="{{ route($secondaryLink['route']) }}" class="nav-item nav-link {{ $secondaryLink['is_active'] ? 'active' : '' }}"><i class="fa {{ $desktopSecondaryLinkIcons[$secondaryLink['route']] ?? 'fa-link' }} fa-sm fa-fw me-1" aria-hidden="true"></i>{{ $secondaryLink['label'] }}</a>
                 @endforeach
-                <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle {{ $headerNavigation['branches']['is_active'] ? 'active' : '' }}" data-bs-toggle="dropdown"><i class="fa fa-map-marker-alt fa-sm fa-fw me-1" aria-hidden="true"></i>{{ __('dictt.branches') }}</a>
-                    <div class="dropdown-menu bg-light rounded-0 rounded-bottom m-0">
-                        @foreach ($headerNavigation['branches']['items'] as $branch)
-                            <a href="{{ route($branch['route']) }}" class="dropdown-item {{ $branch['is_active'] ? 'active' : '' }}"><i class="fa fa-map-marker-alt fa-sm fa-fw me-1" aria-hidden="true"></i>{{ $branch['label'] }}</a>
-                        @endforeach
-                    </div>
-                </div>
                 <a href="{{ route($headerNavigation['placement_test']['route']) }}" class="nav-item nav-link {{ $headerNavigation['placement_test']['is_active'] ? 'active' : '' }}"><i class="fa fa-clipboard-check fa-sm fa-fw me-1" aria-hidden="true"></i>{{ $headerNavigation['placement_test']['label'] }}</a>
                 <a href="{{ route('changeLanguage', $headerLocale === 'tr' ? 'en' : 'tr') }}" class="nav-item nav-link">
                     <i class="fa fa-globe fa-sm fa-fw me-1" aria-hidden="true"></i>

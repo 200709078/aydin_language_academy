@@ -398,10 +398,11 @@ Route::middleware('auth')->prefix('alistirmalar')->group(function (): void {
         ->whereNumber('exerciseAttempt')
         ->name('frontend.exercise-attempts.complete');
 });
-Route::view('/dokumanlar', 'frontend.documents')->name('frontend.documents');
-Route::view('/subelerimiz/ortaca', 'frontend.branches.ortaca')->name('frontend.branches.ortaca');
-Route::view('/subelerimiz/dalaman', 'frontend.branches.dalaman')->name('frontend.branches.dalaman');
-Route::view('/subelerimiz/koycegiz', 'frontend.branches.koycegiz')->name('frontend.branches.koycegiz');
+Route::view('/materyaller', 'frontend.materials')->name('frontend.materials');
+Route::view('/subelerimiz', 'frontend.branches.subelerimiz')->name('frontend.branches');
+Route::permanentRedirect('/subelerimiz/ortaca', '/subelerimiz');
+Route::permanentRedirect('/subelerimiz/dalaman', '/subelerimiz');
+Route::permanentRedirect('/subelerimiz/koycegiz', '/subelerimiz');
 Route::get('/iletisim/{branch?}', [ContactController::class, 'show'])
     ->where('branch', 'ortaca|dalaman|koycegiz')
     ->name('frontend.contact');

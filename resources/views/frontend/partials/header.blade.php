@@ -106,14 +106,6 @@
                 ['route' => 'frontend.achievements', 'label' => __('dictt.achievements'), 'is_active' => request()->routeIs('frontend.achievements')],
                 ['route' => 'frontend.campaigns', 'label' => __('dictt.campaigns'), 'is_active' => request()->routeIs('frontend.campaigns')],
             ],
-            'branches' => [
-                'is_active' => request()->routeIs('frontend.branches.*'),
-                'items' => [
-                    ['route' => 'frontend.branches.ortaca', 'label' => 'Ortaca', 'is_active' => request()->routeIs('frontend.branches.ortaca')],
-                    ['route' => 'frontend.branches.dalaman', 'label' => 'Dalaman', 'is_active' => request()->routeIs('frontend.branches.dalaman')],
-                    ['route' => 'frontend.branches.koycegiz', 'label' => 'Köyceğiz', 'is_active' => request()->routeIs('frontend.branches.koycegiz')],
-                ],
-            ],
             'placement_test' => [
                 'route' => 'frontend.placement-test',
                 'label' => __('dictt.placement_test'),

@@ -43,20 +43,12 @@
                 @foreach ($headerNavigation['secondary_links'] as $secondaryLink)
                     <a href="{{ route($secondaryLink['route']) }}" class="nav-item nav-link {{ $secondaryLink['is_active'] ? 'active' : '' }}"><i class="fa {{ $mobileSecondaryLinkIcons[$secondaryLink['route']] ?? 'fa-link' }} fa-sm fa-fw me-2" aria-hidden="true"></i>{{ $secondaryLink['label'] }}</a>
                 @endforeach
-                <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle mobile-dropdown-toggle {{ $headerNavigation['branches']['is_active'] ? 'active' : '' }}" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-map-marker-alt fa-sm fa-fw me-2" aria-hidden="true"></i>{{ __('dictt.branches') }}</a>
-                    <div class="dropdown-menu bg-light rounded-0 rounded-bottom m-0">
-                        @foreach ($headerNavigation['branches']['items'] as $branch)
-                            <a href="{{ route($branch['route']) }}" class="dropdown-item {{ $branch['is_active'] ? 'active' : '' }}"><i class="fa fa-map-marker-alt fa-sm fa-fw me-2" aria-hidden="true"></i>{{ $branch['label'] }}</a>
-                        @endforeach
-                    </div>
-                </div>
                 <a href="{{ route($headerNavigation['placement_test']['route']) }}" class="nav-item nav-link {{ $headerNavigation['placement_test']['is_active'] ? 'active' : '' }}"><i class="fa fa-clipboard-check fa-sm fa-fw me-2" aria-hidden="true"></i>{{ $headerNavigation['placement_test']['label'] }}</a>
                 <hr class="mobile-documents-divider">
                 <div class="nav-item dropdown frontend-documents-dropdown">
                     <a href="#" class="nav-link dropdown-toggle mobile-dropdown-toggle mobile-documents-heading {{ $headerHasActiveDocument ? 'active' : '' }}" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
                         <i class="fa fa-folder-open fa-sm fa-fw me-2" aria-hidden="true"></i>
-                        <span>{{ __('dictt.documents') }}</span>
+                        <span>{{ __('dictt.materials_menu') }}</span>
                     </a>
                     <div id="frontendMobileDocumentGroups" class="dropdown-menu bg-light rounded-0 rounded-bottom m-0">
                         @if ($headerHasDocumentThemes)
@@ -76,7 +68,7 @@
                                         @auth
                                             <a href="{{ route('frontend.themes.list', [$headerDocumentLevel->slug, $headerDocumentSubLevel->slug]) }}" class="nav-item nav-link mobile-document-subitem {{ $mobileDocumentSubLevelIsActive ? 'active' : '' }}"><i class="fa fa-circle fa-xs fa-fw me-2" aria-hidden="true"></i>{{ mb_convert_case($headerDocumentSubLevel->name, MB_CASE_TITLE, 'UTF-8') }}</a>
                                         @else
-                                            <a href="{{ route('frontend.documents') }}" class="nav-item nav-link mobile-document-subitem {{ $mobileDocumentSubLevelIsActive ? 'active' : '' }}"><i class="fa fa-circle fa-xs fa-fw me-2" aria-hidden="true"></i>{{ mb_convert_case($headerDocumentSubLevel->name, MB_CASE_TITLE, 'UTF-8') }}</a>
+                                            <a href="{{ route('frontend.materials') }}" class="nav-item nav-link mobile-document-subitem {{ $mobileDocumentSubLevelIsActive ? 'active' : '' }}"><i class="fa fa-circle fa-xs fa-fw me-2" aria-hidden="true"></i>{{ mb_convert_case($headerDocumentSubLevel->name, MB_CASE_TITLE, 'UTF-8') }}</a>
                                         @endauth
                                     @endforeach
                                 </div>

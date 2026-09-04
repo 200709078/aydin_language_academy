@@ -94,7 +94,7 @@ class GenerateSitemap extends Command
             '/uye-ol',
             '/user',
             '/profile',
-            '/dokumanlar',
+            '/materyaller',
             '/temalar',
             '/tema',
             '/alistirmalar',
