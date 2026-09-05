@@ -91,7 +91,7 @@
                                         </div>
 
                                         @if ($contentSnapshot->type_snapshot === 'text')
-                                            <div class="text-dark lh-lg">{!! nl2br(e($contentSnapshot->text_content_snapshot)) !!}</div>
+                                            <div class="text-dark lh-lg">{!! \Mews\Purifier\Facades\Purifier::clean($contentSnapshot->text_content_snapshot, 'quill') !!}</div>
                                         @elseif ($contentSnapshot->type_snapshot === 'image')
                                             <img src="{{ $mediaUrl }}" class="img-fluid rounded" alt="{{ __('dictt.placement_test_shared_image_alt') }}">
                                         @elseif ($contentSnapshot->type_snapshot === 'audio')

@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
+use Mews\Purifier\Facades\Purifier;
 use RuntimeException;
 
 class PlacementTestQuestionContentController extends Controller
@@ -217,10 +218,11 @@ class PlacementTestQuestionContentController extends Controller
 
         if ($placementTestQuestionContent->type === 'text') {
             $validated = $request->validate($this->textRules());
+            $textContent = $this->sanitizeTextContent($validated['text_content']);
 
             return [
                 ...$attributes,
-                'text_content' => trim($validated['text_content']),
+                'text_content' => $textContent,
                 'media_disk' => null,
                 'media_path' => null,
             ];
@@ -249,9 +251,10 @@ class PlacementTestQuestionContentController extends Controller
     {
         if ($type === 'text') {
             $validated = $request->validate($this->textRules());
+            $textContent = $this->sanitizeTextContent($validated['text_content']);
 
             return [
-                'text_content' => trim($validated['text_content']),
+                'text_content' => $textContent,
                 'media_disk' => null,
                 'media_path' => null,
             ];
@@ -284,6 +287,19 @@ class PlacementTestQuestionContentController extends Controller
                 },
             ],
         ];
+    }
+
+    private function sanitizeTextContent(string $textContent): string
+    {
+        $cleanContent = trim(Purifier::clean($textContent, 'quill'));
+
+        if (trim(strip_tags($cleanContent)) === '') {
+            throw ValidationException::withMessages([
+                'text_content' => 'Ortak içerik metni boş olamaz.',
+            ]);
+        }
+
+        return $cleanContent;
     }
 
     /**

@@ -30,9 +30,10 @@
 
                 @if ($placementTestQuestionContent->type === 'text')
                     <div class="form-group mb-3">
-                        <label for="text_content" class="form-label">{{ __('dictt.shared_content_text') }}</label>
-                        <textarea id="text_content" name="text_content" rows="8"
-                            class="form-control @error('text_content') is-invalid @enderror" required>{{ old('text_content', $placementTestQuestionContent->text_content) }}</textarea>
+                        <label for="text_content_editor" class="form-label">{{ __('dictt.shared_content_text') }}</label>
+                        <div id="text_content_editor" class="quill-editor @error('text_content') is-invalid @enderror"
+                            data-quill-editor data-quill-input="text_content"></div>
+                        <textarea id="text_content" name="text_content" rows="8" class="d-none">{{ old('text_content', $placementTestQuestionContent->text_content) }}</textarea>
                         @error('text_content')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
