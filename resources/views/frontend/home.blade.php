@@ -342,11 +342,6 @@
                 </div>
             @elseif (($latestReview ?? null) || ($previousReview ?? null) || ($firstReview ?? null))
                 <div class="row g-4 justify-content-center wow fadeInUp" data-wow-delay="0.1s">
-                    @if ($firstReview ?? null)
-                        <div class="col-lg-4 col-md-6 d-flex">
-                            @include('frontend.partials.review-card', ['review' => $firstReview])
-                        </div>
-                    @endif
                     @if ($latestReview ?? null)
                         <div class="col-lg-4 col-md-6 d-flex">
                             @include('frontend.partials.review-card', ['review' => $latestReview])
@@ -355,6 +350,11 @@
                     @if ($previousReview ?? null)
                         <div class="col-lg-4 col-md-6 d-flex">
                             @include('frontend.partials.review-card', ['review' => $previousReview])
+                        </div>
+                    @endif
+                    @if ($firstReview ?? null)
+                        <div class="col-lg-4 col-md-6 d-flex">
+                            @include('frontend.partials.review-card', ['review' => $firstReview])
                         </div>
                     @endif
                 </div>

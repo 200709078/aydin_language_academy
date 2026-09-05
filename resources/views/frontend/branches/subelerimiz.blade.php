@@ -45,7 +45,7 @@
             <div class="row g-5">
                 <!-- Mobil: 1. ortaca-1.png | PC: sol alt -->
                 <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
-                    <img class="img-fluid rounded w-100" src="{{ asset('frontend/images/branches/ortaca-2.png') }}" alt="Ortaca">
+                    <img class="img-fluid rounded w-100" src="{{ asset('frontend/images/branches/ortaca-1.jpg') }}" alt="Ortaca">
                 </div>
                 <!-- Mobil: 2. Kartlar | PC: sağ alt -->
                 <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">

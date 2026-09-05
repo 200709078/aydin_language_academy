@@ -10,6 +10,6 @@
             @endfor
         </div>
         <h5 class="mb-1">{{ $review->user?->name ?? __('dictt.member_fallback') }}</h5>
-        <span class="fst-italic">{{ $review->branchLabel() }} · {{ $review->created_at?->format('d.m.Y') }}</span>
+        <span class="fst-italic">{{ $review->branchLabel() }} · {{ $review->created_at?->format('d.m.Y H:i') }}</span>
     </div>
 </div>

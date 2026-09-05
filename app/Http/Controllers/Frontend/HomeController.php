@@ -37,14 +37,9 @@ class HomeController extends Controller
         $approved = Review::query()
             ->where('status', Review::STATUS_APPROVED)
             ->with('user')
-            ->orderBy('created_at')
+            ->orderByDesc('created_at')
+            ->orderByDesc('id')
             ->get();
-
-        $carousel = collect();
-        if ($approved->isNotEmpty()) {
-            $carousel = collect([$approved->first()])
-                ->merge($approved->slice(1)->sortByDesc('created_at')->values());
-        }
 
         return view('frontend.home', [
             'heroNews' => $heroNews,
@@ -52,10 +47,10 @@ class HomeController extends Controller
             'primarySlogan' => $sloganService->randomText(
                 fallback: __('dictt.primary_slogan'),
             ),
-            'latestReview' => $approved->last(),
-            'previousReview' => $approved->count() >= 2 ? $approved->slice(-2, 1)->first() : null,
-            'firstReview' => $approved->count() >= 3 ? $approved->first() : null,
-            'reviewCarousel' => $carousel,
+            'latestReview' => $approved->get(0),
+            'previousReview' => $approved->get(1),
+            'firstReview' => $approved->get(2),
+            'reviewCarousel' => $approved->values(),
         ]);
     }
 }
