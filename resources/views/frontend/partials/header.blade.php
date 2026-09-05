@@ -147,5 +147,5 @@
         'fsmHasDocumentThemes' => $headerHasDocumentThemes,
     ])
 
-    <script src="{{ asset('frontend/js/whatsapp-link.js') }}?v=1" defer></script>
+    <script src="{{ asset('frontend/js/whatsapp-link.js') }}?v=2" defer></script>
     <script src="{{ asset('frontend/js/button-titles.js') }}" defer></script>

@@ -3,6 +3,10 @@
 
     var APP_OPEN_TIMEOUT = 1500;
 
+    function isMobileViewport() {
+        return window.matchMedia('(max-width: 767.98px)').matches;
+    }
+
     document.addEventListener('click', function (event) {
         var link = event.target.closest('a[data-whatsapp-app-url]');
 
@@ -10,10 +14,9 @@
             return;
         }
 
-        // Let links explicitly marked for a new tab follow their normal HTML
-        // behaviour. Intercepting them would make window.location.assign()
-        // replace the current page and ignore target="_blank".
-        if (link.target === '_blank') {
+        // Desktop links use target="_blank" for WhatsApp Web. Mobile links
+        // try the native app first and fall back to WhatsApp Web.
+        if (!isMobileViewport()) {
             return;
         }
 

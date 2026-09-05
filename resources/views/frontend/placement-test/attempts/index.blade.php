@@ -42,6 +42,7 @@
                                         <th scope="col">#</th>
                                         <th scope="col">{{ __('dictt.placement_test_history_date') }}</th>
                                         <th scope="col">{{ __('dictt.placement_test_result_level') }}</th>
+                                        <th scope="col">{{ __('dictt.placement_test_english_level') }}</th>
                                         <th scope="col">{{ __('dictt.status') }}</th>
                                         <th scope="col">{{ __('dictt.operations') }}</th>
                                     </tr>
@@ -55,6 +56,9 @@
                                             </td>
                                             <td>
                                                 {{ $placementTest->status === 'approved' ? ($placementTest->resultLevel?->code ?? '—') : '—' }}
+                                            </td>
+                                            <td>
+                                                {{ $placementTest->status === 'approved' ? ($placementTest->resultLevel?->englishLevelCode() ?? '—') : '—' }}
                                             </td>
                                             <td>
                                                 @if ($placementTest->status === 'in_progress')
@@ -89,7 +93,7 @@
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="5" class="text-center text-muted py-4">{{ __('dictt.placement_test_my_attempts_empty') }}</td>
+                                            <td colspan="6" class="text-center text-muted py-4">{{ __('dictt.placement_test_my_attempts_empty') }}</td>
                                         </tr>
                                     @endforelse
                                 </tbody>
