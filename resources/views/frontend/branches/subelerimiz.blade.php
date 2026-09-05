@@ -105,7 +105,7 @@
                                 </div>
                             </div>
                         </a>
-                        <a class="text-decoration-none" href="https://www.instagram.com/aydindilakademisidalaman?igsh=MTVjaXl2eDJ2MjJwYg==" target="_blank" rel="noopener noreferrer">
+                        <a class="text-decoration-none" href="https://www.instagram.com/aydindilakademisiortaca" target="_blank" rel="noopener noreferrer">
                             <div class="bg-light rounded d-flex align-items-center p-3">
                                 <div class="d-flex flex-shrink-0 align-items-center justify-content-center rounded-circle bg-white" style="width: 55px; height: 55px;">
                                     <i class="fab fa-instagram text-primary"></i>
