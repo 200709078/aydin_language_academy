@@ -36,6 +36,19 @@ class PlacementTestLevel extends Model
         ];
     }
 
+    public function englishLevelCode(): ?string
+    {
+        return match (strtoupper((string) $this->code)) {
+            'A1' => 'A0',
+            'A2' => 'A1',
+            'B1' => 'A2',
+            'B2' => 'B1',
+            'C1' => 'B2',
+            'C2' => 'C1',
+            default => null,
+        };
+    }
+
     public function questions(): HasMany
     {
         return $this->hasMany(PlacementTestQuestion::class);

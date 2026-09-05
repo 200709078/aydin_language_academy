@@ -30,28 +30,11 @@
 
     <div class="card mb-4">
         <div class="card-body">
-            <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+            <div class="d-flex flex-wrap align-items-center gap-2 mb-4">
                 <a href="{{ route('placement_test_attempts_list') }}" class="btn btn-sm btn-secondary">
                     <i class="fa fa-arrow-left" aria-hidden="true"></i> {{ __('dictt.back_short') }}
                 </a>
-
-                @if ($placementTest->status === 'pending_approval')
-                    <form id="placement-test-approve" method="POST"
-                        action="{{ route('placement_test_attempts_approve', $placementTest) }}">
-                        @csrf
-                        @method('PUT')
-                        <button type="button" class="btn btn-sm btn-success"
-                            data-action-confirmation
-                            data-confirm-form="placement-test-approve"
-                            data-confirm-title="{{ __('dictt.approve') }}"
-                            data-confirm-content="{{ __('dictt.placement_test_attempt_approve_confirm') }}"
-                            data-confirm-action="{{ __('dictt.approve') }}"
-                            data-confirm-icon="fa-check"
-                            data-confirm-tone="success">
-                            <i class="fa fa-check" aria-hidden="true"></i> {{ __('dictt.approve') }}
-                        </button>
-                    </form>
-                @endif
+                <h1 class="h3 flex-grow-1 text-center mb-0">{{ $placementTest->user?->name ?? ('#' . $placementTest->user_id) }} - {{ __('dictt.placement_test_review') }}</h1>
             </div>
 
             <dl class="row mb-0">
@@ -65,6 +48,8 @@
                 <dd class="col-sm-9">{{ $placementTest->submitted_at?->format('d.m.Y H:i:s') ?? '—' }}</dd>
                 <dt class="col-sm-3">{{ __('dictt.placement_test_result_level') }}</dt>
                 <dd class="col-sm-9">{{ $placementTest->resultLevel?->code ?? '—' }}</dd>
+                <dt class="col-sm-3">{{ __('dictt.placement_test_english_level') }}</dt>
+                <dd class="col-sm-9">{{ $placementTest->resultLevel?->englishLevelCode() ?? '—' }}</dd>
                 <dt class="col-sm-3">{{ __('dictt.status') }}</dt>
                 <dd class="col-sm-9">
                     @if ($placementTest->status === 'pending_approval')

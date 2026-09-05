@@ -62,16 +62,18 @@ class PlacementTestReviewController extends Controller
      */
     public function approve(Request $request, PlacementTest $placementTest): RedirectResponse
     {
+        $returnToList = $request->boolean('return_to_list');
+
         try {
             $this->attempts->approveByAdmin($request->user(), $placementTest);
         } catch (PlacementTestStateException) {
             return redirect()
-                ->route('placement_test_attempts_show', $placementTest)
+                ->route($returnToList ? 'placement_test_attempts_list' : 'placement_test_attempts_show', $returnToList ? [] : $placementTest)
                 ->with('error', __('dictt.placement_test_attempt_not_pending'));
         }
 
         return redirect()
-            ->route('placement_test_attempts_show', $placementTest)
+            ->route($returnToList ? 'placement_test_attempts_list' : 'placement_test_attempts_show', $returnToList ? [] : $placementTest)
             ->with('modalSuccessTitle', __('dictt.savesuccesstitle', ['type' => 'Sınav']))
             ->with('modalSuccessContent', __('dictt.placement_test_attempt_approved_success'));
     }

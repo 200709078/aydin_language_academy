@@ -5,11 +5,12 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use App\Models\News;
 use App\Models\Review;
+use App\Services\SloganService;
 use Illuminate\Contracts\View\View;
 
 class HomeController extends Controller
 {
-    public function index(): View
+    public function index(SloganService $sloganService): View
     {
         $homepageNews = News::query()
             ->publiclyAvailable()
@@ -48,6 +49,9 @@ class HomeController extends Controller
         return view('frontend.home', [
             'heroNews' => $heroNews,
             'homepageNews' => $homepageNews,
+            'primarySlogan' => $sloganService->randomText(
+                fallback: __('dictt.primary_slogan'),
+            ),
             'latestReview' => $approved->last(),
             'previousReview' => $approved->count() >= 2 ? $approved->slice(-2, 1)->first() : null,
             'firstReview' => $approved->count() >= 3 ? $approved->first() : null,

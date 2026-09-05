@@ -12,6 +12,7 @@ use App\Http\Controllers\AdminContactMessageController;
 use App\Http\Controllers\AdminAchievementController;
 use App\Http\Controllers\AdminCampaignController;
 use App\Http\Controllers\AdminNewsController;
+use App\Http\Controllers\AdminSloganController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\Frontend\ContactController;
 use App\Http\Controllers\Frontend\AchievementController;
@@ -188,6 +189,21 @@ Route::group(['middleware' => ['auth', isAdmin_middle::class], 'prefix' => 'admi
         Route::patch('/{campaign}/status', [AdminCampaignController::class, 'updateStatus'])
             ->whereNumber('campaign')
             ->name('status.update');
+    });
+
+    Route::prefix('slogans')->name('admin.slogans.')->group(function (): void {
+        Route::get('/', [AdminSloganController::class, 'index'])->name('index');
+        Route::get('/create', [AdminSloganController::class, 'create'])->name('create');
+        Route::post('/', [AdminSloganController::class, 'store'])->name('store');
+        Route::get('/{slogan}/edit', [AdminSloganController::class, 'edit'])
+            ->whereNumber('slogan')
+            ->name('edit');
+        Route::put('/{slogan}', [AdminSloganController::class, 'update'])
+            ->whereNumber('slogan')
+            ->name('update');
+        Route::delete('/{slogan}', [AdminSloganController::class, 'destroy'])
+            ->whereNumber('slogan')
+            ->name('destroy');
     });
 
     Route::prefix('achievements')->name('admin.achievements.')->group(function (): void {

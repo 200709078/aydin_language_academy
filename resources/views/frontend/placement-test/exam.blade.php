@@ -85,8 +85,8 @@
         }
 
         .placement-question-progress-segment.is-current {
-            background: rgba(var(--primary-rgb), 0.28);
-            color: #176869;
+            background: #f8d7da;
+            color: #842029;
         }
 
         .placement-question-progress-link {
