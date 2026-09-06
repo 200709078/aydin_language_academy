@@ -13,6 +13,9 @@ class AdminUserController extends Controller
      */
     public function index(Request $request): View
     {
+        $filter = in_array($request->query('filter'), ['admin', 'user'], true)
+            ? $request->query('filter')
+            : 'all';
         $sort = in_array($request->query('sort'), ['name', 'created_at'], true)
             ? $request->query('sort')
             : 'created_at';
@@ -30,12 +33,16 @@ class AdminUserController extends Controller
                 'updated_at',
             ]);
 
+        if ($filter !== 'all') {
+            $usersQuery->where('type', $filter);
+        }
+
         $usersQuery->orderBy($sort, $direction)->orderBy('id');
 
         $users = $usersQuery
             ->paginate(20)
             ->withQueryString();
 
-        return view('admin.users.index', compact('direction', 'sort', 'users'));
+        return view('admin.users.index', compact('direction', 'filter', 'sort', 'users'));
     }
 }

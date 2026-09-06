@@ -655,6 +655,8 @@ return [
     'search' => 'Search',
     'clear' => 'Clear',
     'users' => 'Users',
+    'users_list' => 'User List',
+    'users_filter_admin' => 'Admin',
     'users_empty' => 'There are no users yet.',
     'created_at' => 'Registered At',
     'sort_name_ascending' => 'Sort by name, A to Z',

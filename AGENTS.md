@@ -1,371 +1,1015 @@
-Proje: ALA — Learn English With ALA
+# AGENTS.md
 
-Bu repository mevcut çalışan ALA Laravel uygulamasını ve yayında olan yeni public dil kursu tanıtım sitesini içerir.
+## Proje: ALA — Learn English With ALA
 
-Kullanıcı belirli bir değişikliği açıkça istemedikçe mevcut ALA uygulamasını bozma, yeniden tasarlama, refactor etme, yeniden adlandırma, taşıma veya değiştirme.
+Bu repository mevcut çalışan ALA Laravel uygulamasını ve yayındaki public tanıtım sitesini içerir.
 
-1. Mevcut sistem
-Laravel 12
-PHP 8.4+
-Composer
-Yerelde MariaDB, canlıda MySQL
-DB_CONNECTION=mysql
-Jetstream / Fortify authentication
-Livewire
+Bu dosya:
+1. Codex/agent için kalıcı proje kurallarını,
+2. şu anda aktif olan geliştirme planını
 
-Çalışan admin ve üye alanı
-Mevcut Authentication, Admin, Users, Levels, Sub Levels, Themes, Exercises, Questions, Results, controller, model, migration, factory, seeder, route, Blade ve Livewire kodlarını çalışan mevcut uygulama olarak kabul et.
+tanımlar.
 
-2. Mevcut ALA'yı koru
-Açıkça istenmedikçe mevcut controller/model/migration/route/Blade/Livewire/business logic/authentication/admin/üye alanını değiştirme, taşıma veya refactor etme. Jetstream/Fortify'ı değiştirme. İlgisiz kod temizliği, dependency güncellemesi veya toplu formatlama yapma.
+Tamamlanmış özelliklerin ayrıntılı geçmişi burada tutulmaz.
 
-Bir değişiklik mevcut uygulamaya dokunmayı gerektiriyorsa önce nedenini bildir.
+---
 
-3. Yeni public frontend
-Public tanıtım sitesi resources/views/frontend/ ve public/frontend/ altında, mevcut uygulamadan izole geliştirilmiştir ve yayınlanmıştır.
+# 1. Mevcut sistem
 
-Ana menü:
-Ana Sayfa
-Kurslarımız
-Başarılarımız
-Kampanyalarımız
-Şubelerimiz
-Seviye Tespit Sınavı
-Dökümanlar
+- Laravel 12
+- PHP 8.4+
+- Composer
+- Yerelde MariaDB, canlıda MySQL
+- `DB_CONNECTION=mysql`
+- Jetstream / Fortify authentication
+- Livewire
+- Çalışan admin alanı
+- Çalışan üye alanı
+- Çalışan public frontend
 
-Erişim: İlk beş sayfa public'tir. Seviye Tespit Sınavı'nın tanıtım sayfası public olabilir; sınavı başlatma, sınav kaydı ve sonuçlar login gerektirir. Dökümanlar login gerektirir.
+Mevcut controller, model, migration, factory, seeder, route, Blade, Livewire, authentication ve business logic yapısını çalışan mevcut uygulama olarak kabul et.
 
-Kalıcı frontend kuralları:
-Internal URL'lerde Laravel route helper kullan.
-Asset'lerde asset() kullan.
-Responsive davranışı ve yararlı animasyonları koru.
-Onaysız yeni frontend framework veya gereksiz paket ekleme.
-Kullanıcı istemedikçe metinlerin yerine yeni pazarlama metni uydurma.
+Kullanıcı açıkça istemedikçe mevcut ALA uygulamasını:
+- bozma,
+- yeniden tasarlama,
+- refactor etme,
+- yeniden adlandırma,
+- taşıma,
+- gereksiz yere değiştirme.
+
+Mevcut çalışan özelliği yeniden yazmak yerine mevcut yapıyı genişlet.
+
+---
+
+# 2. Genel koruma kuralları
+
+Açıkça istenmedikçe:
+- Jetstream/Fortify'ı değiştirme.
+- İkinci authentication sistemi oluşturma.
+- İkinci `users` yapısı oluşturma.
+- İkinci üye portalı oluşturma.
+- İlgisiz kod temizliği yapma.
+- Dependency güncelleme.
+- Toplu formatlama yapma.
+- Kapsam dışı refactor yapma.
+
+Bir değişiklik mevcut uygulamaya dokunmayı gerektiriyorsa neden gerekli olduğunu kısa ve somut biçimde bildir.
+
+Belirsiz bir teknik detayda tahmin etme; projedeki mevcut uygulamayı incele.
+
+---
+
+# 3. Public frontend
+
+Public tanıtım sitesi ağırlıklı olarak:
+- `resources/views/frontend/`
+- `public/frontend/`
+
+altındadır.
+
+Kurallar:
+- Internal URL'lerde Laravel route helper kullan.
+- Asset'lerde mevcut proje yaklaşımını ve gerektiğinde `asset()` kullanımını koru.
+- Responsive davranışı koru.
+- Kullanıcı açıkça istemedikçe yeni frontend/CSS/UI framework ekleme.
+- Gereksiz JavaScript paketi ekleme.
+- Mevcut metinlerin yerine pazarlama metni uydurma.
 
 ALA marka sloganları:
-- Primary slogan: Türkçe `Dil öğren, dünyanı genişlet.` / İngilizce `Master language, empower success.`
-- Secondary slogan: Türkçe `Sadece dil öğrenme. Onu yaşamaya başla.` / İngilizce `Don't just learn a language, start living it.`
-- Ana sayfa hero alanında, kullanıcı aksini istemedikçe primary slogan kullanılır. Secondary slogan ancak açıkça istenen başka bir bağlamda kullanılır.
+Site genelinde kullanıcı aksini istemedikçe veritabanındaki slogans tablosundaki sloganlar, mevcut sistemdeki rastgele kullanıma (Örnek: Ana sayfada slider satırının solunda) uygun olarak kullanılır.
 
-4. Authentication akışı
-Public frontend
-    ↓
-Seviye Tespit Sınavını Başlat / Dökümanlar
-    ↓
-Giriş yapılmış mı?
-    ├── Evet → belirlenen mevcut ALA üye sayfası
-    └── Hayır → mevcut ALA login
-                    ↓
-                 login
-                    ↓
-              belirlenen mevcut ALA üye sayfası
+---
 
-İkinci authentication sistemi, ikinci users yapısı veya ikinci üye portalı oluşturma. Mevcut Jetstream/Fortify sistemini kullan.
+# 4. Authentication ve kullanıcı türleri
 
-Login sonrası kesin hedef sayfa daha sonra kullanıcı tarafından belirlenecek. Route/hedef uydurma.
+Mevcut Jetstream/Fortify authentication sistemi kullanılır.
 
-Seviye Tespit Sınavı'nın kendisi ayrıca/daha sonra geliştirilecektir.
+Temel kullanıcı türleri:
+1. Login gerektirmeyen ziyaretçi
+2. Login gerektiren üye
+3. Admin kullanıcı
 
-Seviye Tespit Sınavı için girişsiz ziyaretçiye yalnız tanıtım/yer tutucu içerik gösterilebilir; sınavı başlatma, sınav kaydı ve sonucu görüntüleme giriş gerektirir. Mevcut legacy exercise sistemi yeni sınav sisteminin çalışan altyapısı olarak kabul edilmez.
+Yeni özelliklerde mevcut kullanıcı hesabı ve login akışı yeniden kullanılır.
 
-4.1 Seviye Tespit Sınavı — kalıcı domain ve veri katmanı kuralları
-Bu özellik üyelik gerektirir ve mevcut legacy exercise sisteminden bağımsızdır. Kullanıcı açıkça istemedikçe bu aşamada yalnız migration, model, ilişki, index/constraint, seviye seed'i ve bunlarla doğrudan ilgili güvenli doğrulamalar yapılır; controller, route, frontend, admin ekranı, sınav ekranı, authorization değişikliği veya sınav başlatma servisi yapılmaz.
+Yeni bir login redirect davranışı uydurma; mevcut çalışan yönlendirmeyi koru.
 
-Temel seviye ve sonuç kuralları:
+---
 
-- CEFR seviyeleri A1 → A2 → B1 → B2 → C1 → C2 sırasındadır. Sınav yalnız A1, A2, B1, B2 ve C1 için vardır; C2 için sınav yoktur.
-- C1 sınavından success alan kullanıcının nihai seviyesi C2 olur. Başarısız olunan ilk sınav seviyesi, kullanıcının nihai seviyesidir.
-- Her seviyenin soru sayısı ve geçme yüzdesi admin tarafından değiştirilebilir. Soru sayıları kod içine hard-code edilmez; A1–C1 için question_count nullable tutulur. Sınav oluşturulurken o seviyedeki tüm aktif sorular atanır; rastgele ya da alt küme soru seçimi yapılmaz. Bu nedenle uygulama katmanı, tanımlı question_count ile aktif soru sayısının eşitliğini sınav başlamadan doğrulamalıdır. C2 istisnası has_exam=false, question_count=0 ve pass_percentage=NULL'dır.
-- Her aktif master sorunun pozitif bir puanı admin tarafından girilir; puan otomatik üretilmez. Başarı formülü score_percentage = correct_points / total_points_snapshot * 100 şeklindedir. score_percentage, pass_percentage_snapshot değerine eşit ya da büyükse success, aksi durumda unsuccess olur. Geçme yüzdesi seviye ayarı olarak admin tarafından değiştirilebilir ve attempt başında snapshot alınır.
-- Yanlış ve boş cevapların negatif puanı yoktur. Yarım bırakılan sınavda cevaplanmamış sorular blank sayılır; yeterli doğru varsa yine success mümkündür.
-- Attempt, admin tarafından approved edilene kadar yeni attempt başlatılamaz. Bu iş kuralı ileride controller/service katmanında uygulanır; veri modeli bunu desteklemelidir.
+# 5. UI ve tasarım standardı
 
-Veri sözleşmesi:
+Yeni frontend veya admin ekranlarında **mevcut ALA tasarım dili korunur**.
 
-- placement_test_levels: code ve sequence benzersiz; question_count negatif olmayacak unsigned türde; pass_percentage decimal; has_exam ve is_active alanları bulunur.
-- placement_test_question_contents: Bir seviyeye ait, type değeri text, audio, image veya video olan ortak içerik grubudur. text için boş olmayan text_content; audio, image veya video için boş olmayan media_disk + media_path bilgisi içerir. Audio, image ve video yalnız sunucudaki dosya referanslarıyla saklanır; harici URL kullanılmaz.
-- placement_test_questions: placement_test_level_id, nullable placement_test_question_content_id, nullable content_position, question_text, pozitif points ve is_active içerir. Bağımsız sorunun ortak içeriği ile content_position değeri NULL'dır. Ortak içeriğe bağlı sorunun content_position değeri pozitif ve aynı grup altında benzersizdir; böylece grup soruları kesin sıraya sahip olur ve grup hâlinde ardışık atanır. Bu koşullu content_position kuralı model/admin doğrulamasında zorunlu tutulur; MySQL foreign-key uyumluluğu için aynı sütunlarda CHECK kuralı kullanılmaz. Master soruda global order alanı bulunmaz. C2'ye soru veya ortak içerik atama uygulama katmanında engellenir.
-- placement_test_question_options: placement_test_question_id, option_text, display_position ve is_correct içerir. Şıkların görüntüleme sırası sabittir; aynı soru altında display_position benzersizdir. Şık sayısı hard-code edilmez.
-- placement_tests: user_id, status, nullable result_level_id, started_at, nullable submitted_at/approved_at ve nullable approved_by içerir. Status yalnız in_progress, pending_approval ve approved yaşam döngüsünü destekler; kullanıcı + status sorgusu için index bulunur.
-- placement_test_level_results: her placement_test + level çifti için tek kayıttır. question_count_snapshot, pass_percentage_snapshot, pozitif total_points_snapshot, 0 ile toplam puan arasında correct_points, correct_count, wrong_count, blank_count, score_percentage, result, started_at ve nullable completed_at saklar. Result yalnız success veya unsuccess değerini destekler.
-- placement_test_level_result_contents: Bir level result içindeki her ortak içerik grubu için yalnız bir kez içerik snapshot'ı saklar. Kendi placement_test_level_id değeri level result ile eşleşir; master ortak içerik bağlıyken onun seviyesinin de aynı olması model doğrulamasında zorunludur. Master ortak içerik silinirse nullable/nullOnDelete kaynak FK NULL olur; history için type/text/media snapshot'ı ile level result ilişkisi korunur.
-- placement_test_level_questions: atanan soru için nullable master soru FK'si, nullable level-result ortak içerik snapshot FK'si, attempt içi display_position, question_text_snapshot, options_snapshot JSON, correct_option_snapshot, pozitif points_snapshot, nullable selected_option, answer_status ve nullable answered_at saklar. Aynı level result içinde display_position benzersizdir. Aynı ortak içerik snapshot'ına bağlı sorular ardışık display_position değerleriyle atanır. Snapshot'taki seçenekler en az position ve text bilgisini içerir; doğru/seçili seçenekler master option tablosuna ihtiyaç duymadan bu konumu tanımlar.
+Önce projedeki mevcut örnekleri incele.
 
-İlişkiler, geçmiş ve silme politikası:
+Varsa mevcut:
+- button,
+- card,
+- form,
+- input/select,
+- checkbox/radio,
+- table,
+- pagination,
+- badge,
+- alert,
+- modal,
+- dropdown,
+- tab/accordion,
+- spacing,
+- typography,
+- renk,
+- ikon,
+- loading/empty state
 
-- PlacementTestLevel hasMany questions, questionContents ve levelResults; PlacementTestQuestion belongsTo level ve nullable questionContent'a, hasMany options; PlacementTestQuestionContent belongsTo level ve hasMany questions.
-- PlacementTest belongsTo user, resultLevel ve approver; hasMany levelResults. PlacementTestLevelResult belongsTo placementTest ve level; hasMany levelQuestions ve contentSnapshots. PlacementTestLevelResultContent belongsTo levelResult, level'e ve kayıt hâlâ mevcutsa özgün/master questionContent'a; hasMany levelQuestions. PlacementTestLevelQuestion belongsTo levelResult, özgün/master soruya ve nullable contentSnapshot'a bağlanır. Composite foreign key'ler soru–ortak içerik, result–içerik snapshot ve soru snapshot–içerik snapshot sahipliklerini aynı seviye/result içinde tutar; nullable master içerik kaynak seviyesi model doğrulamasında korunur.
-- Master soru/seçenek/ortak içerik değişse, pasife alınsa veya silinse bile geçmiş sınav sonucu değişmemeli ya da kaybolmamalıdır. Attempt soru ve ortak içerik snapshot kayıtları geçmişin asıl kaynağıdır; master bağları yalnız yardımcıdır. Medya dosyaları değişmez, benzersiz path'lerle saklanır ve geçmişte kullanılan dosya path'i üzerine yazılmaz veya silinmez.
-- PlacementTestLevelQuestion içindeki master soru FK'si ile PlacementTestLevelResultContent içindeki master ortak içerik FK'si nullable/nullOnDelete olmalı; geçmiş snapshot kayıtlarını silmeyecek şekilde tasarlanmalıdır. Kullanıcı ve approver silinirse sınav geçmişi kalacak biçimde nullable/nullOnDelete ilişki kullanılır.
-- Tarihçe zinciri ve master seviye/soru ilişkilerinde cascade delete kullanma. Kullanıcıları, sınav geçmişini veya sonuçları yanlışlıkla silebilecek ilişki kurma. Projede soft delete yaklaşımı varsa önce incele ve onunla uyumlu davran.
-- Mevcut User modeline yalnız placementTests ve approvedPlacementTests gibi gerçekten gerekli ilişkileri ekle; fillable, auth ve kullanıcı türü davranışını değiştirme.
-- PHP enum proje standardı yoksa yalnız bu özellik için enum mimarisi kurma. JSON snapshot alanlarına array, tarih/saat alanlarına datetime ve sayı/yüzde alanlarına uygun cast tanımla.
-- Canlı MySQL sunucusu CHECK constraint'lerini zorlamalıdır (MySQL 8.0.16+). Daha eski MySQL sürümünde model/admin doğrulaması zorunlu koruma katmanıdır; canlıya geçmeden önce sürüm doğrulanır.
+desenlerini yeniden kullan.
 
-Seed kuralları:
+Aynı amaca hizmet eden paralel ve farklı görünümlü ikinci bir UI bileşeni oluşturma.
 
-- A1, A2, B1, B2, C1 ve C2 seviyelerini ayrı ve idempotent bir seeder oluşturur. Aynı seeder tekrar çalıştığında duplicate kayıt oluşturmaz veya adminin sonradan değiştirdiği ayarları ezmez.
-- A1–C1: sequence sırasıyla 1–5, has_exam=true, is_active=true, question_count=NULL, pass_percentage=60. C2: sequence=6, has_exam=false, is_active=true, question_count=0, pass_percentage=NULL.
-- Mevcut DatabaseSeeder'ı çalıştırma/değiştirme; soru veya seçenek içerikleri verilmedikçe soru/şık seed etme.
+Mevcut bileşen ihtiyacı karşılamıyorsa yeni bileşen oluşturulabilir; ancak mevcut ALA:
+- renk,
+- boyut,
+- boşluk,
+- tipografi,
+- etkileşim,
+- admin/üye alanı
 
-Migration ve doğrulama güvenliği:
+desenleriyle uyumlu olmalıdır.
 
-- Mevcut migration dosyalarını değiştirme; yalnız yeni migration dosyaları oluştur. Mevcut verileri silme ve MariaDB/MySQL uyumluluğunu koru. Uzun placement-table constraint adlarını MariaDB/MySQL'nin 64 karakter sınırını aşmayacak açık, kısa adlarla tanımla.
-- Kullanıcı açıkça onaylamadıkça migrate, db, database reset veya drop database komutlarını çalıştırma. Onaylı migration yalnız kapsamındaki pending migration'ları çalıştırır; reset/drop veya mevcut veriyi silme kesinlikle yapılmaz.
-- Doğrulamada güvenli migration syntax/schema kontrolü ve model syntax kontrolü kullan. Yerel MariaDB'yi sıfırlayan veya değiştiren test komutları çalıştırılmaz; bunun için izole bir test veritabanı gerekir.
-- Bu kapsam tamamlandığında dosyaları, tabloları, önemli foreign key/unique constraint'leri, snapshot yapısını, status/result alanlarını, seed yaklaşımını, çalıştırılan doğrulamaları ve açık teknik sorunları kısa ve somut olarak raporla. Kapsam dışı özellik geliştirme ve burada dur.
+Kullanıcı açıkça istemedikçe yeni tasarım sistemi veya farklı görsel dil oluşturma.
 
-5. Route kuralları
-Yeni route eklemeden veya taşımadan önce mevcut route'ları incele, çakışmaları belirle, yapılacak değişikliği bildir ve yalnızca onaylanan değişikliği yap.
+Desktop ve mobil görünümü birlikte koru.
 
-6. Veritabanı
-Frontend/içerik işlerinde mevcut migration, seeder veya factory'leri değiştirme; migration yalnız açıkça istenen özellikler için oluşturulur. Sonraki DB değişikliklerinde MySQL/MariaDB uyumluluğunu koru.
+## 5.1 Onay modalı
 
-7. Git disiplini
-Dosya değiştirmeden önce git status kontrol et. Repository'deki mevcut değişikliklerin bu göreve ait olduğunu varsayma.
+Arşivleme, silme, kalıcı silme ve geri döndürülemez yönetici işlemlerinde tarayıcı `confirm()` veya Livewire `wire:confirm` kullanma.
 
-Kullanıcı istemedikçe mevcut değişiklikleri discard/restore/reset/clean/stash etme veya üzerlerine yazma.
-Açık talep olmadan şu yıkıcı komutları kullanma:
-git reset --hard
-git clean -fd
-git checkout -- .
-.env, parola, secret, cache veya yerel database dosyalarını commit etme.
+Normal Blade/form akışlarında mevcut `x-action-confirmation-modal`, Livewire akışlarında mevcut `x-review-action-modal` veya aynı ALA görsel kabuğunu kullan.
 
-8. Secret'lar
-.env içindeki database/SMTP parolası, API key veya diğer secret'ları gösterme, hard-code etme, dokümana veya frontend'e kopyalama ve commit etme.
+Parola/2FA gerektiren mevcut güvenlik adımlarını kaldırma.
 
-9. Çalışma yöntemi
+---
+
+# 6. Route kuralları
+
+Yeni route eklemeden veya değiştirmeden önce:
+1. mevcut route'ları incele,
+2. isimlendirme desenini belirle,
+3. çakışmaları kontrol et,
+4. yalnız istenen kapsamı değiştir.
+
+Mevcut çalışan route'ları gereksiz yere yeniden adlandırma veya taşıma.
+
+Internal linklerde mümkün olduğunca route helper kullan.
+
+---
+
+# 7. Veritabanı ve migration güvenliği
+
+MariaDB/MySQL uyumluluğunu koru.
+
+Kurallar:
+- Mevcut migration dosyalarını değiştirme.
+- Yeni özellik için yeni migration oluştur.
+- Mevcut verileri silme.
+- Gereksiz schema refactor yapma.
+- Foreign key, unique constraint ve index'leri bilinçli tanımla.
+- MySQL/MariaDB constraint/index isim sınırlarını dikkate al.
+- Geçmiş/veri kaybına yol açabilecek cascade ilişkilerini dikkatle değerlendir.
+- Projede soft delete yaklaşımı varsa önce onu incele.
+
+Kullanıcı bir geliştirme adımını açıkça başlattığında o adımın kapsamındaki normal model/migration/write işlemleri için sürekli tekrar izin isteme.
+
+Kullanıcı açıkça istemedikçe şu yıkıcı işlemleri yapma:
+- `migrate:fresh`
+- `migrate:reset`
+- database drop
+- toplu veri silme
+- production database üzerinde doğrudan değişiklik
+- gerçek veriyi geri döndürülemez biçimde değiştiren komutlar
+
+Gerçek veri kaybı riski varsa işlemi yapma; bildir.
+
+Testte mümkünse izole test veritabanı kullan.
+
+---
+
+# 8. Git ve secret kuralları
+
+Dosya değiştirmeden önce `git status` kontrol et.
+
+Repository'deki mevcut değişikliklerin bu göreve ait olduğunu varsayma.
+
+Kullanıcı istemedikçe:
+- discard,
+- restore,
+- reset,
+- clean,
+- stash
+
+yapma ve mevcut kullanıcı değişikliklerinin üzerine yazma.
+
+Açık talep olmadan:
+- `git reset --hard`
+- `git clean -fd`
+- `git checkout -- .`
+
+kullanma.
+
+`.env`, parola, API key, token, secret, cache veya yerel database dosyalarını:
+- gösterme,
+- hard-code etme,
+- frontend'e koyma,
+- dokümana kopyalama,
+- commit etme.
+
+---
+
+# 9. Çalışma yöntemi
+
 Kapsamlı işlerde:
-İncele.
-Bulguları bildir.
-En küçük implementasyon adımını öner.
-Yalnızca istenen/onaylanan kapsamı uygula.
-Test et.
-Değişen dosyaları ve test sonuçlarını bildir.
-Dur.
-Kullanıcı yalnızca analiz istiyorsa dosya değiştirme, write operation yapma, migration oluşturma veya route değiştirme.
+1. İncele.
+2. Bulguları bildir.
+3. Yalnız istenen adımın en küçük güvenli implementasyonunu uygula.
+4. Test et.
+5. Değişen dosyaları ve test sonuçlarını bildir.
+6. Dur.
 
-Frontend'de en az sayfanın hatasız render edilmesini, CSS/JS/görselleri, desktop/mobil görünümü, internal linkleri ve korumalı linklerin mevcut auth akışını kullanmasını test et.
+Kullanıcı yalnız analiz istiyorsa dosya değiştirme.
 
-Onay ekranı standardı — [YAPILDI]:
-- Kullanıcı başlatmalı arşivleme, silme, kalıcı silme ve geri döndürülemez yönetici işlemlerinin onayı, yorumlardaki sayfa içi ALA modalı ile aynı görünüm ve davranışta olmalıdır.
-- Normal Blade/form akışları `x-action-confirmation-modal`, Livewire akışları `x-review-action-modal` veya aynı görsel kabuğu kullanır. Yeni paralel onay tasarımı, tarayıcı `confirm()` veya Livewire `wire:confirm` kullanılmaz.
-- Mevcut eşdeğer Livewire silme modalları bu standardı zaten karşılar. Parola/2FA gibi güvenlik doğrulaması gereken akışlarda parola/ikinci doğrulama zorunluluğu korunur; yalnız modalın görsel kabuğu bu standarda uyar.
+Kullanıcı belirli bir geliştirme adımını isterse **yalnız o adımı uygula**.
 
-10. Tahmin etme
-Belirsizse projeyi incele. Özellikle mevcut route isimleri, login redirect'i, authenticated home, mevcut frontend ve görsel kullanımını uydurma.
+**Bir sonraki numaralı adıma kendiliğinden geçme.**
 
-11. Kullanıcı türleri ve erişim
-Sistemde üç tür kullanıcı var. 
-1) Login gerektirmeyen kullanıcı:
-Ana Sayfa, Başarılarımız, Kurslarımız, Kampanyalarımız, Şubelerimiz ve Seviye Tespit Sınavı'nın tanıtım sayfasına ulaşabilir.
-2) Login gerektiren kullanıcı:
-Ana Sayfa, Başarılarımız, Kurslarımız, Kampanyalarımız, Şubelerimiz sayfaları ile birlikte Seviye Tespit Sınavı'nı başlatma, sınav kayıtları ve sonuçlarına da ulaşabilir.
-3) Admin Kullanıcı:
-/admin ile admin panel de dahil bütün sayfalara ulaşabilir.
+Aynı adım içindeki normal ve güvenli işlemler için sürekli tekrar izin isteme.
 
-Mevcut Level/Sub Level/Theme/Exercise/Question alanlarını ayrıca istenmedikçe yeniden tasarlama.
+Kapsam dışı iyileştirme görürsen uygulama; kısa not olarak bildir.
 
-12. Yorumlar (Reviews) Sistemi
-Durum: [YAPILDI — yerel uygulama]. Canlıdaki eski/demo kayıtların temizliği ve SEO doğrulaması ayrı bir TODO'dur.
+---
 
-Amaç:
-Ana sayfadaki Reviews bölümü gerçek, moderasyonlu üye yorumlarını gösterir. Üyeler yorum bırakır; admin onay, ret, düzenleme ve arşivleme işlemlerini yönetir.
+# 10. Test standardı
 
-Veri modeli ve görünürlük:
-- `reviews`: nullable `user_id`, nullable `branch` (Ortaca/Dalaman/Köyceğiz), düz metin `content`, 1–5 `rating`, `pending / approved / rejected / archived` `status`, nullable `approved_by / approved_at`, nullable `display_order`, timestamps ve geçmişteki kayıt uyumluluğu için `softDeletes` içerir. İndeksler `(status, created_at)` ve `branch` üzerindedir.
-- Kullanıcı başına aynı anda en fazla bir pending yorum kuralı uygulama katmanında zorlanır.
-- Public sorgular yalnız silinmemiş `status=approved` yorumları döndürür. Pending, rejected, archived, demo/test ve statik demo fallback metinleri public HTML'de yer alamaz.
+Değişikliğin türüne göre uygun testleri çalıştır.
 
-Yetki ve arşiv politikası:
-- Yorum yazma ve “Yorumlarım” login gerektirir; girişsiz ziyaretçi mevcut ALA login akışına gider. Admin de yorum oluşturabilir.
-- Üye pending/rejected yorumunu düzenleyebilir; approved yorumunu düzenleyemez. Kendi yorumundaki normal silme işlemi artık `archived` durumuna taşır.
-- Admin aktif tüm yorumları onaylayabilir, reddedebilir, düzenleyebilir, sıralayabilir veya arşivleyebilir. Arşivlenen yorum düzenleme/onay/red ile yeniden aktifleşemez.
-- Normal silme yoktur: yorum önce arşivlenir. Yalnız admin listesindeki Arşiv sekmesinden kalıcı silme yapılabilir. Önceki soft-delete kayıtları da Arşiv sekmesinde görünür ve aynı kalıcı silme akışıyla temizlenebilir.
+UI işlerinde en az:
+- hatasız render,
+- validation,
+- hata/başarı mesajları,
+- CSS/JS/görseller,
+- desktop,
+- mobil,
+- internal linkler,
+- auth/authorization
 
-Görüntüleme ve yönetim:
-- Ana sayfa Reviews alanı üç gerçek onaylı kartı gösterir: en eski, en yeni ve en yeniden önceki. Yeterli kayıt yoksa eksik slot gizlenir; statik/demo fallback kullanılmaz.
-- Public `/yorumlar` yalnız onaylı yorumları, şube filtresi ve sayfalama ile gösterir; ana sayfada “Tümünü Gör” bağlantısı vardır.
-- `/yorumlarim` Livewire formu ve durum rozetleriyle üyeye ait aktif kayıtları gösterir. Admin listesi varsayılan olarak pending (eskiden yeniye) sonra approved (yeniden eskiye) gösterir; rejected ve archived için ayrı filtre/sekme vardır.
-- Admin yorum düzenleme ekranında `İptal` ve sağında `Güncelle` düğmesi bulunur.
+kontrol edilir.
 
-Teknik yaklaşım — [YAPILDI]:
-- Review modeli `user`, `approver` ilişkileri; User modelinde yalnız gerekli `reviews` ilişkisi; mevcut auth/fillable davranışı korunur.
-- Üye tarafı Livewire + policy + rate limit; admin tarafı mevcut `cont_*` controller ve Livewire liste deseni; admin menüsü aktiftir.
-- Türkçe/İngilizce metinler `dictt` çeviri dosyalarındadır. Ayrı enum, ikinci auth veya ikinci yorum sistemi kurulmaz.
+Database işlerinde en az:
+- migration/schema,
+- model ilişkileri,
+- foreign key,
+- unique constraint,
+- index,
+- nullable/default,
+- veri kaybı riski
 
-Yayın/SEO temizliği — [TODO — canlı veri denetimi gerekli]:
-- Yayındaki kayıtlar salt-okunur incelenerek gerçek approved yorumlar; demo/test, pending, rejected ve archived kayıtlar kesin ayrılır. Gerçek approved yorumlar korunur.
-- Temizlikten önce Search Console'daki eski/demo URL'ler canlı rendered HTML ile eşleştirilir; yalnız normal Google arama sonucu tek başına indeks kanıtı sayılmaz.
-- Demo/test kayıtları arşivlenir veya kalıcı silme için Arşiv'e alınır; public HTML kaynak çıktısında bunların hiçbir metni kalmaz.
-- Girişsiz ziyaretçiyle ana sayfa, `/yorumlar`, şube filtresi, sayfalama ve HTML kaynak çıktısı doğrulanır. Ana sayfa `noindex` olmaz; temiz canlı çıktı sonrasında sitemap güncellenir ve Search Console yeniden tarama isteği yapılır.
+kontrol edilir.
 
-13. Public frontend geliştirme yol haritası
-Durum: Tamamlanan maddeler aşağıda `[YAPILDI]` olarak işaretlidir. Kalan her TODO, kullanıcı onayıyla ve mevcut ALA uygulaması korunarak ele alınır.
+Gerçek veritabanını resetleme.
 
-Genel ilkeler:
-- Gerçek olmayan öğrenci sayısı, başarı oranı, yorum, eğitmen veya görsel production'da kullanılmaz. Önce kaynak, güncellik ve gerekli açık izinler belirlenir.
-- Yeni içerik yapıları yalnız gerçek yönetim ihtiyacı oluştuğunda eklenir; onaysız genel CMS/refactor veya yeni frontend framework kurulmaz.
-- Yeni public/admin route eklemeden önce mevcut route'lar incelenir; internal URL'ler route helper, görseller `asset()` veya mevcut güvenli medya yaklaşımıyla kullanılır.
-- Reviews, yıllık kazanan listeleri ve editoryal başarı hikâyeleri üç ayrı içerik türüdür; birbirlerinden otomatik üretilmez veya aynı veri modeline zorlanmaz.
+Her adım sonunda:
+- değişen dosyalar,
+- yapılan işlemler,
+- çalıştırılan testler,
+- test sonucu,
+- açık teknik notlar
 
-Tamamlanan özellikler:
-1) “Sana uygun programı bul” — [YAPILDI]
-   - Public `/sana-uygun-programi-bul` akışı giriş/AI/kişisel veri kaydı gerektirmeden 3–4 kısa seçimle program kartı üretir.
-   - Giriş yapmış kullanıcının en güncel onaylı placement test sonucu seviye girdisidir. Sonuç yoksa, sınav yarım/pending ise veya ziyaretçi giriş yapmamışsa kullanıcı kendi seviyesini beyan eder.
-   - Sonuçta program, uygunsa alternatif program ve üç şubeyle görüşme bağlantıları vardır. Yeni bir sınav motoru veya ayrı veri sistemi kurulmadı.
+kısa ve somut raporlanır.
 
-2) Haberler MVP'si — [YAPILDI — canlıya alma doğrulaması bekliyor]
-   - `media_assets`, `news` ve `news_content_blocks` ile bağımsız editoryal haber yapısı; admin CRUD, taslak/yayın/zamanlama/arşiv, kalıcı silme, slug ve sitemap desteği vardır.
-   - Haber içeriği sıralı düz metin, görsel, ses, video, dosya ve HTTPS haricî bağlantı blokları içerebilir. Yüklenen medya korumalı uygulama endpoint'i üzerinden sunulur.
-   - `display_location` tek seçimdir: `none` (yalnız Haberler listesi/detayı), `homepage` veya `hero`. Public görünürlük yayın/zaman aralığına bağlıdır. Ana sayfadaki haberler uygun sıralama ile; hero haberleri en çok iki öğe olarak mevcut ALA/şube slaytlarından önce gelir.
-   - Public `/haberler` liste/detay sayfaları, ana sayfa kart kaydırıcısı ve hero entegrasyonu tamamlandı. Canlıya çıkarken migration, private medya ve sitemap ayrıca doğrulanır.
+---
 
-Kalan ve kısmen tamamlanmış aşamalar — kolaydan zora, her biri ayrı onayla:
-3) İçerik ve izin envanteri — [TODO, kodsuz hazırlık]
-   - Her şube için kullanılabilecek gerçek sınıf/etkinlik görselleri, eğitmen bilgileri, güncel istatistikler ve sorumlu kişiler; ayrıca başarı verileri için kanıt ve izinler listelenir.
-   - Hero, Başarılarımız ve eğitmen kartlarının görsel oranı, minimum çözünürlüğü ve onaylı kısa metni netleştirilir.
-   - 12. bölümdeki yorumların canlı veri/SEO temizliği bu envanterden bağımsız öncelikli bakım işidir.
+# 11. Aktif özellik: Bursluluk Başvuru ve Takip Sistemi
 
-4) Statik güven ve yönlendirme bölümleri — [TODO]
-   - ALA kimliğini koruyarak CEFR yolculuğu (A1 → A2 → B1 → B2 → C1 → C2) ve “ALA’da eğitim nasıl ilerliyor?” dört adımlı açıklaması eklenebilir.
-   - Önce onaylı sabit içerik uygulanır. Placement test sonuçları kullanılmaya başladığında seviyeler için ikinci, çelişen bir kaynak oluşturulmaz.
+## 11.1 Amaç ve ilk sürüm kapsamı
 
-5) Başarılarımız: veri, izin ve yıllık kayıt altyapısı — [KISMEN YAPILDI — yerel uygulama]
-   - [YAPILDI] Mevcut `/basarilarimiz` URL'si korunarak `achievements` ve `achievement_entries` ile yıllık veritabanı kaydı, `draft / published` yayın durumu ve sıralama altyapısı kuruldu. Tasarım JPEG'leri public liste kaynağı değildir.
-   - [YAPILDI] Öğrencinin gerçek adı admin alanında tutulur. Public Blade ham `full_name` kullanmaz; yalnız isim yayın izni `granted` ise güvenli gösterim erişicisiyle adı gösterir, aksi durumda anonim öğrenci metni kullanır.
-   - [YAPILDI] Yıllık başarı tabloları, Reviews ve gelecekteki seçilmiş editoryal başarı hikâyeleri ayrı içerik türleri olarak kalır; biri diğerinden otomatik üretilmez.
-   - [TODO] Gerçek kaynak kayıtları, yayın izni kanıtı/tarihi/iç notu, arşiv yaşam döngüsü ve isim dışındaki fotoğraf/video/ses/hikâye izinleri ayrıca tamamlanır. İzin yoksa veya belirsizse public, SEO, sitemap ve paylaşılabilir çıktılar anonim ya da kapalı kalır.
+Bu sistem **site üzerinden sınav yapmaz**. Sınavlar kurumda manuel/kağıt üzerinde yapılır.
 
-6) Yıllık başarı kayıtları ve admin manuel girişi — [YAPILDI — yerel uygulama]
-   - Admin, benzersiz yıl kaydını ve bağlı öğrenci kayıtlarını tek tek ekleyebilir/düzenleyebilir; başlık/açıklama, üniversite, bölüm, açıklama, şube/program etiketi, yayın durumu, isim yayın izni ve sıralamayı yönetebilir.
-   - Yıl ve öğrenci kayıtları için admin listeleri, taslak/yayın switch'leri ve yukarı/aşağı sıralama kontrolleri vardır. Mevcut statik şube yapısı için zorunlu bir `branches` FK'sı eklenmedi.
+Sistem, öğrencinin mevcut ALA hesabıyla sınav döneminde kendi başvurusunu oluşturduğu ve takip ettiği kayıt sistemi olarak çalışır.
 
-7) Başarılarımız public listesi — [YAPILDI — yerel uygulama]
-   - Public sayfa yalnız yayınlanmış yıl ve yayınlanmış bağlı kayıtları responsive, yıl bazlı HTML akordeon listesinde gösterir; boş/yayınlanmamış yıllar görünmez.
-   - Public görünüm isim izni denetimli tek erişiciyi kullanır; mevcut JPEG şablonları sayfaya doğrudan basılmaz.
+İlk sürüm:
+- sınav dönemlerini ve dönem genelinde başvuruları açma/kapatmayı,
+- şubeleri, öğrencinin mevcut okul/sınıf bilgilerini ve ayrı sınav gruplarını,
+- tarih, başlangıç/bitiş saati ve yapılacak sınavı içeren oturumları,
+- oturum başına kontenjanı, askıya almayı ve arşivlemeyi,
+- başvuru, admin onayı, değişiklik ve kalıcı silme işlemlerini,
+- sınava katılımı, notları ve burs oranlarını,
+- başvuru ve sınav/burs sonuçlarının ayrı yayınlanmasını,
+- iki ayrı iletişim takibini ve admin tarafından başlatılan gerçek e-posta/WhatsApp gönderimlerini,
+- üye **Başvurularım** alanını
 
-8) Seçilmiş editoryal başarı hikâyeleri — [TODO]
-   - `success_stories` yıllık kazanan girdisine isteğe bağlı bağlanabilir ancak ayrı draft/published/featured yaşam döngüsü, başlangıç–sonuç metni, yıl/şube/program alanları ve ayrı hikâye/medya izinleri taşır.
-   - Bir kazananın public kaydı otomatik hikâyeye dönüşmez; hikâye ve fotoğraf yalnız açık izinle, gerektiğinde insan onayıyla yayınlanır.
-   - Public sayfanın ana omurgası yıl bazlı, doğrulanmış başarı listesidir. Başarı hikâyeleri bu listenin yerine geçen ya da otomatik üretilen içerikler değil; yalnız seçilmiş az sayıdaki öğrenci için gösterilen ayrı “Öne Çıkan Başarı Hikâyeleri” kartları ve gerekirse detaylarıdır.
-   - Hikâye, öğrencinin başlangıç/hedef/süreç/sonuç anlatımı, izinli kısa alıntısı ve yalnız ayrı izin varsa görsel, video veya ses içerebilir. Gerçek olmayan başarı vaadi, doldurma amacıyla hikâye, izinsiz öğrenci bilgisi veya statik demo kullanılmaz.
-   - İsim gösterme izni; hikâye metni, alıntı, fotoğraf, video, ses, sosyal paylaşım metası veya broşür izni anlamına gelmez. Her yayın türü için kaynak/izin, izin tarihi, sürümü ve iç denetim notu ayrı saklanır; izin yoksa hikâye taslakta kalır veya anonim/medyasız biçimde ayrıca onaylanır.
-   - Uygulama sırası: önce onaylı hikâye içerik/izin envanteri; sonra `success_stories` veri sözleşmesi ve admin taslak-yayın akışı; ardından Başarılarımız sayfasındaki kart/liste görünümü; en son gerekli görülürse public hikâye detayı, paylaşım metaları ve izinli medya. Her aşama ayrı onay gerektirir.
+yönetir.
 
-9) Broşür ve dışa aktarımlar — [TODO]
-   - “Broşür hazırla / dışa aktar” yalnız veritabanındaki seçili yıl/kayıtlardan üretilir. Public/paylaşılabilir Excel, PDF ve JPG aynı public-güvenli gösterim/anonimleştirme kuralını kullanır.
-   - Adminin iç kullanım Excel çıktısında gerçek ad ve izin takibi ancak yetkili yönetici için ayrıca değerlendirilebilir; bu çıktı public broşürle karıştırılmaz.
-   - Uygulama sırası: önce Excel, sonra tarayıcıya uygun yazdırılabilir PDF, en son uzun liste/şablon yerleşimi doğrulandıktan sonra tasarımlı JPG/PDF. JPEG referansları yalnız tasarım yönü verir.
+Excel içe/dışa aktarma ve dönem sonrasında başvurusu bulunan oturumların kalıcı silinmesi ilk sürümde uygulanmaz; gelecek sürümler için tasarımda dikkate alınır.
 
-10) Toplu kazanan içe aktarma — [TODO]
-   - Önce Excel/CSV alan eşleştirme, satır bazlı hata/çakışma ön izlemesi, duplicate kontrolü ve admin onayından sonra taslak kayıt oluşturma yapılır; dosya doğrudan yayın yapmaz.
-   - PDF/OCR alma sonraki aşamadır: yalnız taslak/staging üretir, insan doğrulaması ve izin kontrolü olmadan public kayda dönüşmez.
+Referans Google Form:
+https://docs.google.com/forms/d/1MfPikJJN3-5ZKaYwjL8XU_D90uSh-tZt2_C_lq3rCr4/viewform?edit_requested=true&pli=1
 
-11) Eğitmen profilleri — [TODO]
-   - Yalnız gerçek ve izinli içerik hazır olduğunda bağımsız editoryal eğitmen profilleri eklenir: ad, görev/uzmanlık, kısa biyografi, fotoğraf, aktiflik, sıralama ve gerekirse şube ilişkisi.
-   - Eğitmenler giriş yapan User hesaplarına bağlanmaz; authentication, user rolleri ve mevcut admin kullanıcıları değişmez.
+Google Form'daki alanlar ve seçenekler bağlayıcı iş kuralı değildir. Gerekli ve tutarlı bilgiler yalnız örnek geliştirme seed'lerinde kullanılabilir; bu bölümde kararlaştırılan kurallar esas alınır.
 
-12) Merkezi şube yönetimi — [TODO, yalnız ihtiyaç oluşursa]
-   - Ortaca, Dalaman ve Köyceğiz bugün statik yapı/route'larla çalışır; yalnız metin veya görsel değişikliği için CMS'e taşınmaz.
-   - Yeni şube veya sık adres/iletişim/harita/görsel/istatistik güncellemesi ihtiyacı oluşursa ayrı kapsam ve route denetimiyle Branch CMS değerlendirilir.
+Bursluluk sistemi mevcut online Seviye Tespit Sınavı domaininden bağımsızdır; placement-test tablolarını bursluluk altyapısı olarak kullanma.
 
-14. Public SEO ve arama görünürlüğü
-Durum: [KISMEN YAPILDI — Search Console alan mülkü doğrulandı ve başlangıç teknik envanteri çıkarıldı; içerik/onay ve uygulama adımları ayrı TODO'dur]
+---
 
-Mevcut doğrulanmış hazırlık — [YAPILDI]:
-- Google Search Console alan mülkünün DNS doğrulaması tamamlandı ve mülk erişimi açıldı.
-- Salt-okunur başlangıç envanteriyle canonical sitemap/`robots.txt`, güncel ve legacy URL yapısı, public head metaları, locale davranışı, public yayın filtreleri ve büyük görseller incelendi. Bu inceleme uygulama değişikliği veya canlı veri temizliği değildir.
+## 11.2 Üyelik, öğrenci ve tek başvuru kuralı
 
-İlkeler:
-- `meta name="keywords"` Google Search tarafından sıralama veya indeksleme için kullanılmaz. Anahtar kelime doldurma, keyword stuffing veya sayfa başına anahtar kelime listesi üretme işi yapılmaz.
-- Eski public/guest Blade head'lerindeki boş ya da dolu tüm `meta name="keywords"` etiketleri, ayrı ve düşük riskli bir SEO bakım adımında kaldırılır. Bu işlem anlamlı title, description veya robots etiketlerini değiştirmez.
-- SEO metinleri gerçek ALA içeriğine, mevcut hizmete, doğrulanmış şube bilgilerine ve seçili dile dayanır; yalnız arama trafiği için pazarlama metni uydurulmaz.
-- Giriş, kayıt, kullanıcı profili, üye alanı, admin ve sınavın kişisel sonuç/kayıt ekranları indexlenmez; public sayfaların index kuralları bunlardan ayrı değerlendirilir.
-- Eski URL yalnız gerçek ve yakın yeni karşılığı varsa 301 ile yönlendirilir. Karşılığı olmayan URL gerçek 404/410 olarak kalır; eski URL'ler topluca ana sayfaya veya ilgisiz tek bir sayfaya yönlendirilmez.
-- Demo/test/pending/archived içeriği yalnız sitemapten çıkararak veya `robots.txt` ile engelleyerek indeks dışına çıkmış sayılmaz. Kaynak görünürlüğü, uygun canonical/redirect/noindex/404 politikası ve Search Console sonucu birlikte doğrulanır.
-- Yerel görünürlük; şube adına anahtar kelime ekleyerek, aynı metni şehir adı değiştirerek çoğaltarak veya doğrulanmamış öğrenci sayısı/başarı/yorum iddialarıyla artırılmaya çalışılmaz.
+- Başvuru yalnız giriş yapmış mevcut ALA kullanıcısı tarafından yapılır.
+- Her öğrenci ayrı üye hesabı kullanır; aynı hesap üzerinden birden fazla öğrenci başvurusu yapılmaz.
+- Mevcut üyelik kuralları korunur: e-posta benzersizdir; ad soyad ve telefon benzersiz değildir. Ayrı öğrenci hesapları farklı e-posta ve aynı veli telefonuyla oluşturulabilir.
+- Öğrenci sonraki sınav dönemlerinde aynı hesabını kullanabilir.
+- Başvuru iletişiminde ilgili User kaydındaki güncel e-posta ve telefon kullanılır; başvuru için ayrı iletişim e-postası/telefonu istenmez.
+- İletişim bilgilerinin güncel ve kullanılabilir olması gerektiği uyarısı gösterilir; güncellemede mevcut profil akışı kullanılır.
+- Mevcut uygun öğrenci/person yapısı varsa önce incelenir; yoksa yalnız gerekli en küçük hesap/öğrenci/başvuru ilişkisi tasarlanır. İkinci üyelik veya kimlik doğrulama sistemi kurulmaz.
+- **Aynı hesap, aynı sınav döneminde aynı anda en fazla bir başvuruya sahip olabilir.** Kural şube, sınav grubu ve oturumdan bağımsızdır; kontrol hesap + sınav dönemi kapsamındadır.
+- Bu kontrolün farklı hesapların aynı gerçek kişiye ait olduğunu kendiliğinden tespit ettiği varsayılmaz.
+- İzin verilen koşullarda başvuru kalıcı silinirse aynı dönemde yeniden başvuru yapılabilir. Silme dönemlik başvuru hakkını tüketmez; bu amaçla geçmiş başvuru hakkı kaydı tutulmaz.
+- Her yeni başvurunun benzersiz başvuru numarası olur. Başvuru düzenlendiğinde numarası korunur; silip yeniden başvurulduğunda yeni numara üretilir.
 
-Uygulama sırası — her adım ayrıca onaylanır:
-0) Canlı indeks, eski URL ve demo envanteri — [KISMEN YAPILDI]
-   - [YAPILDI] Başlangıçta canonical `www` sitemap/`robots.txt`, güncel public rotalar, legacy `/course/...` ve `/tab1/...` örnekleri ile bazı public meta/locale davranışları salt-okunur incelendi.
-   - [TODO] Search Console URL Denetimi ve Sayfalar raporundan tüm eski/demo URL'ler, indeks durumu, Google'ın seçtiği canonical ve geçerli yönlendirme/404 sonucu URL bazında eşleme tablosuna alınır.
-   - [TODO] Her legacy URL için 301, noindex, 404/410 veya işlem yapmama kararı; içerik yakınlığı ve gerekçesiyle kayda geçirilir. Search Console kaldırma aracı yalnız acil ve geçici destek olarak değerlendirilir.
-   - [TODO] Yayındaki demo haber/yorum/başarı ve eski yabancı dil/dummy sonuçlar canlı HTML kaynağıyla denetlenir; gerçek olmayan içerik ve iddialar kaynakta kaldırılmadan SEO çalışması tamamlanmış sayılmaz.
+Duplicate ve sahiplik kontrolü yalnız frontend'e bırakılmaz. Eşzamanlı isteklerde de hesap başına dönemlik tek mevcut başvuru kuralı korunur.
 
-1) Teknik indeksleme, metadata envanteri ve keyword temizliği — [TODO]
-   - Tüm indexlenebilir public route'lar için mevcut `title`, `meta description`, canonical, robots ve sosyal paylaşım metaları envanteri çıkarılır.
-   - `meta name="keywords"` etiketleri kaldırılır; yalnız Google açısından etkisiz olan bu etiketler yerine yeni bir meta etiketi eklenmez.
-   - Mevcut `robots.txt`, sitemap üretimi, dil URL'leri ve auth gerektiren URL'ler salt-okunur olarak denetlenir; noindex kararları rendered HTML ve gerektiğinde HTTP header üzerinden açıkça doğrulanır. `robots.txt`, noindex yerine geçmez.
-   - Sitemap'in yalnız canonical, 200 dönen ve indexlenebilir yayın URL'lerini (yayımlanmış haberler dâhil) içerdiği; taslak/private/üye URL'lerini içermediği ve üretim/yayın zamanının güncel olduğu denetlenir. Sitemap üretiminin deploy veya zamanlayıcıyla güvenilir biçimde güncellenmesi ayrıca tasarlanır.
-   - Oturum dili, locale URL yapısı, canonical ve olası `hreflang` ihtiyacı birlikte değerlendirilir. Bağımsız ve eşdeğer taranabilir locale URL'ler yoksa `hreflang` uydurulmaz; route/dil mimarisi ayrı onay olmadan değiştirilmez.
+Öğrencinin başvurudaki adı, mevcut okulu ve sınıf/durumu ilgili döneme ait bilgi olarak korunur. Profil güncellemeleri onaylı/kapalı başvurunun öğrenci bilgilerini dolaylı biçimde değiştirmemelidir; iletişim bilgileri mevcut User kaydından alınmaya devam eder. Kesin alan ve ilişki tasarımı 1B'dedir.
 
-2) Sayfa bazlı title ve description — [TODO]
-   - Ana Sayfa, Kurslarımız ve tekil kurslar, Şubelerimiz ve tekil şubeler, Başarılarımız, Kampanyalarımız, Haberler ve haber detayı için özgün, açıklayıcı, locale uyumlu title/description metinleri hazırlanır.
-   - Metinler içerik sahibi tarafından onaylanır; her sayfaya aynı açıklama veya anahtar kelime dizisi kopyalanmaz.
-   - Haber detayındaki mevcut dinamik title/description yaklaşımı korunur; yeni içerik yapılarıyla çelişen ikinci bir kaynak oluşturulmaz.
-   - Her şube ve kurs sayfasının title/description/H1'i gerçek hizmete ve seçili dile dayanır. Üç şubede yalnız şehir adı değişen seri metinler yerine doğrulanmış, anlamlı farklı bilgiler kullanılır.
+---
 
-3) Canonical ve paylaşım görünümü — [TODO]
-   - Her indexlenebilir public sayfa kendi route helper tabanlı canonical URL'sine sahip olur; query/filter veya dil varyasyonları önce mevcut route yapısı incelenerek ele alınır.
-   - Onaylanmış legacy URL eşleme tablosu tamamlandıktan sonra canonical host/protocol, `/public` benzeri eski yollar, iç linkler ve sitemap tek kaynakta toplanır. 301 yalnız eşdeğer hedefe uygulanır; route eklemeden önce mevcut rotalar incelenir.
-   - Open Graph/Twitter paylaşım başlığı, açıklaması ve görseli eklenir. Varsayılan ALA görseli ile haberlerin izinli kapak görseli ayrılır; private medya ya da izinsiz öğrenci görseli paylaşım metasına verilmez.
+## 11.3 Şube, mevcut okul/sınıf, sınav grubu ve oturum
 
-4) Yapılandırılmış veri ve yerel görünürlük — [TODO, doğrulanmış veri şart]
-   - Kurum ve şube bilgileri kesinleştikten sonra `Organization` ve uygun olduğunda her şube için `LocalBusiness` yapılandırılmış verisi değerlendirilir.
-   - Adres, telefon, çalışma saati, harita URL'si, logo ve sosyal bağlantılar doğrulanmadan schema eklenmez. Yorum, puan veya başarı verisi gerçek ve yayın izni açık olmadıkça schema ile işaretlenmez.
-   - [YAPILDI] Ortaca, Dalaman ve Köyceğiz şubelerinin mevcut Google Business Profile kayıtları ALA'nın resmî Google hesabında sahip/yönetici yetkisiyle yönetilebilmektedir.
-   - [YAPILDI] Mevcut public sitedeki şube telefon, adres, e-posta ve benzeri iletişim bilgileri kurum tarafından doğru olarak doğrulandı.
-   - [YAPILDI] İşletme adı gerçek hayatta kullanılan marka adı olarak kalır; web sitesi, tabela ve Google Business Profile bilgileri karşılıklı olarak gerçek ve tutarlıdır. Çalışma saatleri, kategori ve fotoğraflar günceldir.
-   - [TODO] Özel gün saatleri ile gelecekteki adres, telefon, kategori, fotoğraf ve marka değişiklikleri düzenli olarak üç kanalda yeniden denetlenir.
-   - Yorum isteği gerçek deneyim yaşayan herkese, karşılıksız ve yıldız/metin şartı olmadan yapılır; yalnız olumlu yorum seçilmez. Kendi sitedeki yorumlar için self-serving `AggregateRating`/review yıldız şeması eklenmez.
+Birbirinden ayrı kavramlar:
 
-5) Canlı doğrulama — [TODO]
-   - Yayın sonrası rendered HTML, canonical/robots, sitemap, mobil görünüm ve sosyal paylaşım ön izlemesi kontrol edilir.
-   - Search Console URL Denetimi ve sitemap raporu ile indekslenebilir public sayfalar doğrulanır; demo, pending, rejected, archived veya üyeye özel içeriklerin indekslenmediği yeniden kontrol edilir.
-   - Search Console organik görünürlük için, her doğrulanmış şubenin Business Profile Performance ekranı ise harita/profil performansı için ayrı takip edilir; yerel sıralama garantisi varsayılmaz.
-   - PageSpeed Insights/CrUX ile mobil ve masaüstü LCP, INP ve CLS önce ölçülür; görsel optimizasyonu ölçülen soruna göre sınırlı uygulanır. Hero/LCP görseli ölçüm olmadan lazy-load edilmez.
+1. **ALA şubesi:** Ortaca, Dalaman, Köyceğiz birer ALA okulu gibi ele alınır. Başvuruda şube seçilir.
+2. **Öğrencinin mevcut okulu:** Öğrencinin halen öğrenim gördüğü okul başvuruda seçilir ve saklanır. Bu okul ALA şubesinden ayrıdır; okul listesi admin tarafından yönetilir.
+3. **Öğrencinin mevcut sınıfı/durumu:** 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, Mezun, YKS vb. seçenekler ayrı listede yönetilir ve başvuruda saklanır.
+4. **Sınav grubu:** Adminin tanımladığı başvuru seviyesidir. İlkokul, Ortaokul, Lise, Mezun veya ihtiyaca göre 9. Sınıf gibi adlar kullanılabilir. Admin grup ekleyebilir, düzenleyebilir ve pasifleştirebilir. Grup listesi koda sabitlenmez.
+5. **Sınav oturumu:** Bir dönemde, bir şube ve sınav grubu için belirli tarih ve başlangıç/bitiş saatlerinde yapılacak sınavdır. Yapılacak sınavın adı/türü de tanımlanır.
 
-15. KVKK, gizlilik ve yayın izinleri
-Durum: [TODO — hukukî metin ve işleme şartları kurumun KVKK danışmanı/avukatı tarafından onaylanmadan uygulanmaz]
+Öğrencinin mevcut sınıfı/durumu ile sınav grubu farklı alanlardır. Mevcut sınıftan otomatik grup ataması veya sınıf–grup eşleşmesine dayalı başvuru engeli oluşturulmaz. Seçim başvuru sahibinin sorumluluğundadır; seçilen kayıtların mevcut ve başvuruya uygun olması doğrulanır.
 
-Temel ayrım:
-- `KVKK Aydınlatma Metni`, kişisel veri toplanırken yapılan zorunlu bilgilendirmedir; veri sorumlusu, amaç, aktarım, toplama yöntemi/hukukî sebep ve ilgili kişi haklarını ALA'nın gerçek uygulamasına göre açıklar.
-- Açık rıza yalnız gerçekten rıza gerektiren belirli ve isteğe bağlı işlemler için alınır. Aydınlatma metni ile aynı checkbox/metin yapılmaz; hizmet, üyelik veya iletişim talebi gereksiz pazarlama/yayın rızasına bağlanmaz.
-- İsim, yorum, başarı kaydı, hikâye, fotoğraf, video, ses ve ticari ileti izni birbirinin yerine geçmez. Öğrenci reşit değilse veli/vasi doğrulama ve izin süreci hukukî olarak ayrıca belirlenir.
+Örnek: mevcut okulu Atatürk Ortaokulu, mevcut sınıfı 8 olan öğrenci Ortaca şubesindeki Ortaokul grubunun belirlenen tarihli 08.00–10.00 oturumunu seçebilir.
 
-Yerleşim ve kapsam:
-1) Kalıcı erişim ve sürümlü metinler — [TODO]
-   - Public footer'a `KVKK Aydınlatma Metni`, `KVKK Başvuru / İlgili Kişi Hakları` ve hukuken/onaylı şekilde gerekli ise `Gizlilik Politikası` ile `Çerez Politikası` bağlantıları eklenir.
-   - Metinlerin sorumlu kişi/iletişim kanalı, güncelleme tarihi ve sürümü kurumca doğrulanır. Genel footer bağlantısı, form anındaki bağlamsal aydınlatmanın yerine geçmez.
-   - Çerez metni, `Çerez Aydınlatma Metni` adıyla KVKK'nın genel aydınlatma metninden ayrı, özel bir public sayfa olur. İlk sürümde hukukî danışmanın onayladığı metin, sürüm/yürürlük tarihi ve önceki sürüm kaydıyla birlikte proje içinde statik ve değişiklik geçmişi izlenebilir biçimde tutulur; onaysız, sürümsüz genel CMS metni kullanılmaz.
-   - Public ve giriş/kayıt ekranlarında footer bağlantıları bulunur. Üye/admin görünümünde de mevcut navigasyon veya footer üzerinden metinlere ve kalıcı `Çerez Tercihleri` kontrolüne erişim sağlanır. Yeni route eklemeden önce mevcut route'lar incelenir.
-   - Seçili dilde sunulacak hukukî metnin Türkçe asıl metni ve varsa diğer dil çevirisi ayrı ayrı onaylanır; otomatik makine çevirisi hukukî metin yerine geçmez.
+Temel oturum tanımı **sınav dönemi + şube + sınav grubu + yapılacak sınav + tarih + başlangıç/bitiş saati** bilgilerini içerir. Kesin alanlar, ilişkiler ve çakışma/unique kuralları 1B'de tasarlanır.
 
-2) Çerez ve benzeri teknolojiler envanteri — [TODO]
-   - Canlı public, giriş/kayıt, üye ve admin sayfalarında çerez, `localStorage`, `sessionStorage`, iframe ve üçüncü taraf ağ isteği envanteri çıkarılır. Her kayıt için ad/anahtar, çerez veya tarayıcı depolama türü, birinci/üçüncü taraf, amaç, süre, zorunlu/isteğe bağlı sınıfı, alıcı/aktarım noktası ve hukukî dayanak belgelenir.
-   - Mevcut canlı yanıtta görülen Laravel oturum ve CSRF çerezleri (`ala_session`, `XSRF-TOKEN`) ile uygulamanın oturum/güvenlik işlevleri, production envanterinde tekrar doğrulanır. Zorunlu çerezler site erişimi, güvenlik veya açıkça talep edilen login işlevini sağlamakla sınırlı tutulur; bunlar için sahte bir “kabul” rızası istenmez, fakat aydınlatma metninde açıklanır.
-   - Yönetici kenar menüsü tercihi ve sınavdaki medya konumu gibi `localStorage`/`sessionStorage` kayıtları da envantere girer; gereksiz kişisel veri taşımadıkları ve sürelerinin amaçla sınırlı olduğu doğrulanır.
-   - Google Fonts/CDN, Google Maps, YouTube, sosyal ağ ve benzeri dış servisler çerez olmasa dahi IP/adresleme ve yurt dışı aktarımı bakımından tedarikçi/aktarım envanterinde değerlendirilir. Bu değerlendirme, bunların otomatik olarak çerez rızası gerektirdiği varsayımı değildir.
-   - Şube sayfalarındaki Google Maps ve ilerideki YouTube/sosyal medya gibi harici medya iframe'lerinin gerçek çerez, kişisel veri ve aktarım etkisi canlı tarayıcı testiyle belirlenir. İsteğe bağlı çerez/izleme veya rıza gerektiren harici medya kapsamına girdikleri doğrulanırsa, açık seçim olmadan otomatik yüklenmez; bilgilendiren yer tutucu, doğrudan harita bağlantısı ve ilgili içeriği yükleme kontrolü sunulur. Otomatik yükleme ancak hukukî dayanak, gerekli aydınlatma ve aktarım kararı belgelenip onaylandıktan sonra değerlendirilir.
+Farklı şubelerde aynı grup, tarih ve saatlerde ayrı oturumlar olabilir. Her oturum kendi kontenjanını taşır.
 
-3) Form bazlı aydınlatma — [TODO]
-   - İletişim formunda gönder düğmesinin yanında/üstünde ad, iletişim bilgisi, şube ve mesajın talebi yanıtlamak amacıyla işlendiğini açıklayan kısa metin ve ilgili sayfaya link bulunur.
-   - Üyelik, profil fotoğrafı ve hesap yönetimi akışlarında hesap/güvenlik/iletişim verileri için kayıt öncesi veya veri elde edilirken bağlamsal aydınlatma eklenir. Mevcut Jetstream/Fortify akışı hukukî metin onayı olmadan değiştirilmez.
-   - Yorum formu, onaylanan yorumun public HTML'de ve arama motorlarında görünür olabileceğini açıkça bildirir. Moderasyon, yorum sahibinin adı veya başka kişisel bilgisinin yayın izni değildir.
-   - Seviye tespit başlatılmadan önce cevap/sonuç geçmişinin eğitim değerlendirmesi amacıyla saklanmasına ilişkin bağlamsal aydınlatma verilir. Mevcut sınav/sonuç verisinin yayınlanması veya pazarlama amacıyla kullanılması için ayrı dayanak gerekir.
-   - “Sana uygun programı bul” bugün kalıcı kişisel veri kaydetmez; gelecekte danışmanlık lead'i, geri arama veya iletişim alanı eklenirse aynı form bazlı aydınlatma ve gerekirse ayrı rıza akışı kurulmadan veri saklanmaz.
+Fiziksel salon/sınıf ayrı kavramdır; ilk sürümde fiziksel salon kontenjanını gruplar arasında otomatik paylaştıran yapı kurulmaz. Aynı salona girecek grupların kontenjanlarını admin planlar.
 
-4) Ayrı rıza, çerez tercihleri ve kanıt kaydı — [TODO]
-   - İsteğe bağlı e-posta/SMS/WhatsApp/arama pazarlaması için zorunlu olmayan, önceden işaretlenmemiş, amaç kanalı açık ayrı rıza alınır. İletişim talebini yanıtlamak için gereken veri işleme ile pazarlama izni birleştirilmez.
-   - Başarılarımız, başarı hikâyeleri, haber görselleri ve sosyal paylaşım için her isim, alıntı, fotoğraf, video, ses ve dışa aktarım kullanımının izin durumu/kanıtı/tarihi/metin sürümü saklanır. İzin bilinmiyorsa public, SEO, sitemap ve paylaşılabilir çıktı anonim veya kapalı kalır.
-   - Sadece zorunlu çerez varsa, ilk ziyarette kullanıcıyı engellemeyen kısa bir bilgilendirme bandı `Çerez Aydınlatma Metni`ne yönlendirir; bu banttaki kapatma işlemi rıza kaydı olarak sunulmaz.
-   - Analytics, reklam pikseli veya zorunlu olmayan üçüncü taraf çerezleri/harici medya eklenirse, bunlar varsayılan kapalı kalır. Aktif rıza gerektiren panelde `Kabul et`, `Reddet` ve `Tercihler` seçenekleri eşit derecede erişilebilir olur; önceden seçili kutu, sayfayı kullanmayı kabul koşuluna bağlama veya reddetmeyi zorlaştırma kullanılmaz.
-   - Tercihler en az `Zorunlu`, `Harici medya`, `Analitik` ve `Pazarlama` amaçlarına ayrılır. Zorunlu olmayan script/iframe, ilgili tercih olmadan tarayıcıya gönderilmez; Google Maps'in bu kapsama girip girmediği envanter ve hukukî değerlendirme sonucuna göre belirlenir.
-   - Kullanıcının tercihi, tercih zamanı ve metin sürümü amaçla orantılı şekilde kaydedilir; tercih geri alma veya değiştirme her sayfadan erişilebilir `Çerez Tercihleri` kontrolüyle mümkün olur. Rıza geri çekilince ilgili yeni izleme/harici medya yüklemeleri durur.
+Projede merkezi şube yapısı varsa yeniden kullanım için incelenir. Yoksa bütün siteyi Branch CMS'e dönüştürme; şube verisinin paylaşılmış mı bursluluğa özel mi olacağı teknik olarak 1A/1B'de belirlenir.
 
-5) Uygulama ve denetim sırası — [TODO]
-   - Önce mevcut veri envanteri, saklama süreleri, veri sorumlusu bilgisi, aktarım noktaları ve hukukî dayanaklar kurum tarafından doğrulanır; metinler hukukî danışman tarafından onaylanır.
-   - Ardından sürümlü public politika/başvuru sayfaları, footer bağlantıları, ilk ziyaret bilgi bandı, değerlendirme gerektirirse Google Maps/harici medya yer tutucuları ve form bazlı kısa aydınlatmalar tasarlanır; gerekli olan açık rızalar bağımsız checkbox ve kanıt kaydıyla uygulanır.
-   - Son olarak gizli pencere ve tarayıcı geliştirici araçlarıyla girişsiz, üye ve admin görünümünde; kabul, ret, tercih değiştirme ve geri çekme durumlarında çerez/tarayıcı depolama/üçüncü taraf istekleri test edilir. Zorunlu olmayan script veya iframe'in rızadan önce yüklenmediği ayrıca doğrulanır.
-   - Yeni bir alan, medya türü, analytics/piksel, harici iframe veya tedarikçi eklendiğinde envanter, metin sürümü, aktarım analizi ve tercih kapsamı yeniden değerlendirilir.
+---
+
+## 11.4 Sınav dönemi ve dönem genelinde başvurular
+
+Admin sınav dönemi oluşturabilir. En az:
+- başlık,
+- başvuru başlangıç/bitiş zamanı,
+- sınav tarih aralığı,
+- açıklama,
+- aktif/pasif durum,
+- dönem genelinde başvuruları açma/kapatma kontrolü
+
+desteklenir.
+
+Sınav birden fazla güne yayılabilir. Oturumlar dönemin sınav tarih aralığı içinde tanımlanır; geçmiş oturumdan yeni başvuru başlatılmaz. Zaman dilimi ve tarih/saat doğrulamalarının teknik karşılığı 1B'de belirlenir.
+
+Üye başvuru işlemleri için dönem aktif, başvuru tarih aralığı uygun ve dönem genelindeki başvurular açık olmalıdır. Admin tarih aralığı bitmeden de dönemin başvurularını kapatabilir. Tarih aralığı dışında yalnız açma anahtarı yeni üye başvurusuna izin vermez.
+
+Dönemin başvuruları kapandığında üye mevcut başvurusunu düzenleyemez veya silemez; durumunu ve yayınlanmış bilgilerini görebilir. Admin gerekli yönetim işlemlerini yapabilir; sahiplik, veri bütünlüğü ve kapasite kuralları korunur.
+
+Dönem genelinde başvuruları kapatma ile tek oturumu askıya alma ayrı işlemlerdir.
+
+---
+
+## 11.5 Oturum başına kontenjan ve askıya alma
+
+**Admin kontenjanı her oturum için ayrı belirler.** Eşit veya farklı dağılım seçebilir. Şube/grup toplam kontenjanı ayrıca girilmez; ilgili oturumların kontenjanlarının toplamından hesaplanır. Ortak bir şube/grup kotası veya otomatik eşit dağıtım zorunluluğu yoktur.
+
+Örnek: aynı dönemde Dalaman / Lise için:
+- 08.00–10.00 → 15 kişi,
+- 10.00–12.00 → 25 kişi,
+- 16.00–19.00 → 20 kişi.
+
+Toplam 60'tır; her oturum yalnız kendi doluluğuna göre başvuru kabul eder.
+
+Kurallar:
+- Başvuru oluşturulduğu anda seçilen oturumda yer ayrılır. Onay bekleyen ve onaylanan başvurular kontenjan tüketir; yayın durumu kontenjanı etkilemez.
+- Oturum kendi kontenjanına ulaştığında yalnız o oturuma başvuru kapanır. Dolu oturum görünür, seçilemez ve Dolu olarak belirtilir. Diğer uygun oturumlar başvuru alabilir.
+- Admin doluluğu örneğin 18 / 20 olarak görür.
+- Admin kapasiteyi mevcut doluluğun altına indiremez. Dolu oturuma admin aktarımı için önce kapasite artırılmalıdır; admin kapasiteyi aşamaz.
+- İzin verilen kalıcı başvuru silme işlemi ilgili oturumda yer açar.
+- Oturum değişiminde eski yerin bırakılması ve yeni yerin ayrılması birlikte güvenli yapılır. Yeni oturum uygun değilse mevcut başvuru/yer kaybedilmez.
+- Oluşturma, silme, aktarma ve kapasite güncellemede server-side doğrulama ve eşzamanlılık koruması uygulanır.
+
+Her oturumun kendi aktif/pasif anahtarı vardır. Dalaman / Lise / 08.00–10.00 oturumunun askıya alınması aynı grubun diğer oturumlarını kapatmaz.
+
+Askıya alınmış oturumda admin dışındaki kullanıcılar işlem yapamaz; yeni başvuru, mevcut başvuruyu değiştirme/başka oturuma taşıma ve silme engellenir. Mevcut başvurular korunur ve yer tutmaya devam eder.
+
+Üyeye oturumun yönetici tarafından askıya alındığı açıklanır ve mevcut iletişim akışına yönlendirme gösterilir. Dolu, askıda, arşivli ve dönem başvuruları kapalı durumları birbirinden ayrılır. Arşivleme/silme politikası 11.18'dedir.
+
+---
+
+## 11.6 Başvuru yaşam döngüsü, değişiklik ve kalıcı silme
+
+Başvuru karar durumları:
+- admin onayı bekliyor,
+- onaylandı/kabul edildi.
+
+Admin red işlemi yapmaz; gerekli durumda başvuruyu kalıcı siler. Ayrı reddedildi veya iptal edildi durumlarıyla bu akış değiştirilmez. Kesin teknik status adları 1B'de belirlenir.
+
+Üyenin başvurusunu değiştirebilmesi veya kalıcı silebilmesi için birlikte:
+- başvurunun kendi hesabına ait olması,
+- başvuru döneminin üye işlemlerine açık olması,
+- başvurunun henüz onaylanmamış olması,
+- mevcut oturumun askıda veya arşivde olmaması
+
+gerekir.
+
+Değişiklikte hedef şube/grup/oturum başvuruya açık ve müsait olmalıdır. Başvuru sahibi farklı grup veya seviyeyi seçebilir; örneğin 5. Sınıf grubundaki başvuruyu uygun 12. Sınıf grubuna taşımasına mevcut sınıf bilgisi üzerinden engel konulmaz.
+
+Üye onaylanan başvuruyu **düzenleyemez ve silemez**; yalnız durumunu ve yayınlanan bilgileri görebilir. Bu kilit, başvuru sonucu henüz yayınlanmamış olsa da geçerlidir.
+
+Onaylı başvuruyu admin değiştirebilir veya silebilir. Admin oturum değişikliğinde duplicate/kontenjan kurallarını korur. Onaylı başvurunun admin tarafından düzenlenmesi üye için yeniden düzenleme hakkı oluşturmaz.
+
+Kalıcı silme sonrası, başvuruya açık bir oturum bulunuyorsa aynı hesap aynı dönemde yeniden başvurabilir. Önceki şube/grup/saat veya önceki başvuru sayısı yeni başvuruyu engellemez; aynı anda tek mevcut başvuru kuralı korunur.
+
+Başvuru bilgilerinin admin tarafından değiştirilmesi ilgili başvuru iletişimini yeniden ulaşılmadı yapar. Yayın açıksa değişiklik üyeye hemen görünür; otomatik mesaj gönderilmez.
+
+Silme ve kritik yönetim işlemlerinde mevcut ALA onay modalı kullanılır. İzin verilen kalıcı başvuru silme ile oturum arşivleme farklı işlemlerdir.
+
+---
+
+## 11.7 Başvuru sonucunu yayınlama
+
+**Admin onayı ile üyeye yayınlama ayrı tutulur.** Her başvurunun kendi Başvuru sonucunu yayınla anahtarı bulunur; başlangıçta yayın kapalıdır.
+
+Admin tek başvuruyu yayınlayabilir veya seçilen başvuruların anahtarlarını toplu açabilir. Bütün başvuruları yayınlamak da aynı kayıt bazlı anahtarları toplu açma işlemidir; dönem için bütün mevcut/gelecek kayıtları otomatik yayınlayan ortak bayrak kullanılmaz.
+
+Üye duruma göre:
+- Başvurunuz değerlendiriliyor / Admin onayı bekleniyor,
+- Başvuru sonucu henüz yayınlanmadı,
+- Başvurunuz onaylandı
+
+bilgilerini görür. Onaylanmış fakat yayını kapalı başvurunun kabul kararı üyeye açıklanmaz.
+
+Onay yayınlandığında tarih, başlangıç/bitiş saati, şube, sınav grubu ve sınav bilgileriyle birlikte **en az 30 dakika önce hazır bulunma** uyarısı gösterilir.
+
+Yayındaki başvuru bilgileri admin tarafından değiştirildiğinde yayın açık kalır ve güncel bilgiler hemen üyeye yansır. Başvuru sonucunun yayını ile sınav/burs sonucunun yayını birbirinden bağımsızdır.
+
+---
+
+## 11.8 Başvuru sonrası iletişim ve gerçek bildirimler
+
+Gerçek e-posta ve WhatsApp gönderimi ilk sürümdedir. Gönderimler adminin her başvuru için ayrı düğmeye basması veya seçilen başvurular için toplu gönderim başlatmasıyla yapılır.
+
+Başvuru oluşturma, onaylama, yayınlama veya değiştirme kendiliğinden e-posta/WhatsApp göndermez. Gönderim kararını ve gerekli kontrolleri admin verir.
+
+Başvuru bildiriminde uygun olarak kabul bilgisi, tarih, başlangıç/bitiş saati, şube, sınav grubu ve gerekli sınav bilgileri yer alır. Alıcı bilgileri ilgili User kaydından alınır.
+
+Başvuru iletişimi için ayrı alan:
+- ulaşılmadı — varsayılan,
+- ulaşıldı.
+
+Admin sistem dışında e-posta gönderebilir veya telefonla görüşebilir; ardından ulaşıldı durumunu elle işaretleyebilir. İlgili aşamada ulaşıldı olan kayda tekrar sistem bildirimi gerekmez; toplu gönderim bu kayıtları atlar.
+
+Başvuruya ait kullanıcıya bildirilen bilgiler admin tarafından değiştirildiğinde başvuru iletişimi tekrar ulaşılmadı olur. Bu değişiklik otomatik gönderim başlatmaz.
+
+E-posta ve WhatsApp için teknik gönderim durumları ayrı takip edilir; en az bekliyor, gönderildi ve gönderilemedi durumları desteklenir. Teknik gönderildi ile adminin ulaşıldı kaydı aynı kavram değildir. İletişimin yeniden ulaşılmadı olması geçmişte başarılı olan gönderimi gönderilmedi olarak değiştirmez.
+
+İletişim veya teknik gönderim durumunu güncellemek, kendi başına iletişimi tekrar ulaşılmadı yapan bir başvuru bilgisi değişikliği sayılmaz.
+
+Gerçek sağlayıcılar 2I entegrasyon adımında mevcut altyapı incelenerek kullanıcıyla belirlenir. Tekli/toplu gönderim ve yeniden denemede aynı mesajın istenmeyen tekrarını önleyen teknik kurallar bu adımda uygulanır.
+
+---
+
+## 11.9 Sınava katılım
+
+Admin katılım durumunu tutar:
+- işaretlenmedi,
+- katıldı,
+- katılmadı.
+
+Katılımı işaretlenmemiş veya katılmış fakat sonucu henüz girilmemiş öğrenciye başlangıçtan itibaren 0 not ve %0 burs atanmaz.
+
+**Katılmadı olarak işaretlenen öğrenci için not 0 ve burs %0 / Burs Yok olur.** Katılım durumu ayrıca saklanır; böylece sınava katılıp gerçekten 0 alan öğrenci ile katılmayan öğrenci ayırt edilir.
+
+Katılım/sonuç bilgisinin admin tarafından değiştirilmesi sınav/burs sonucu iletişimini yeniden ulaşılmadı yapar; otomatik bildirim göndermez. Katılım düzeltmelerinin mevcut not/bursla tutarlılığı 1B'de ortak doğrulama kurallarıyla tasarlanır.
+
+---
+
+## 11.10 Not
+
+Admin notları liste üzerinden hızlı girebilir; filtreleme ve nota göre sıralama desteklenir.
+
+Kurallar:
+- Not **0–100 arasında tam sayı** olmalıdır; ondalıklı not kabul edilmez.
+- Not girilmedi durumu NULL'dır; gerçek 0 puandan ayrıdır.
+- Katılmadı için 11.9'daki 0 kuralı uygulanır.
+- Yayındaki sonuç değişirse güncel not hemen üyeye yansır ve sonuç iletişimi tekrar ulaşılmadı olur.
+- İlk sürümde Excel not importu yapılmaz.
+
+---
+
+## 11.11 Burs oranı
+
+Öğrencinin **ilgili dönem başvurusuna ait tek burs oranı** tutulur. Aynı öğrenci sonraki dönemde farklı burs alabilir; eski dönem sonucu korunur. Arayüzde öğrencinin bursu olarak gösterilir.
+
+Değerler:
+- %100,
+- %90,
+- %80,
+- %70,
+- %60,
+- %50,
+- %40,
+- %30,
+- %20,
+- %10,
+- %0 / Burs Yok.
+
+Burs belirlenmedi durumu NULL'dır; %0 / Burs Yok değerinden ayrıdır. Katılmadı için 11.9'daki %0 kuralı uygulanır.
+
+Admin nota göre sıralı listede mevcut ALA tek seçim/radio yaklaşımını kullanır. Yayındaki burs değişirse güncel oran hemen üyeye yansır ve sonuç iletişimi yeniden ulaşılmadı olur.
+
+---
+
+## 11.12 Sınav/burs sonucunu yayınlama
+
+Not/burs girilmesi tek başına üyeye görünürlük sağlamaz. Her başvurunun, başvuru sonucunun yayınından ayrı **Sınav/burs sonucunu yayınla** anahtarı bulunur; başlangıçta kapalıdır.
+
+Admin anahtarı tekli veya toplu açabilir. Toplu yayın, seçilen kayıtların kendi anahtarlarını açar; gelecekte oluşacak başvuruları veya eksik sonuçları kendiliğinden yayınlayan dönem bayrağı kullanılmaz.
+
+**Notu veya bursu henüz girilmemiş kayıt tekli veya toplu işlemde yayınlanamaz.** Eksik kayıtlar yayına açılmaz ve admine bildirilir. 0 not ve %0 burs geçerli değerlerdir; eksiklik kontrolü NULL üzerinden yapılır.
+
+Yayın açıkken yapılacak düzenlemeler de eksik sonuç yayınlanmaması kuralını korumalıdır. Geçerli not/burs değiştiğinde yayın açık kalır; kullanıcıya güncel sonuç hemen gösterilir ve ilgili sonuç iletişimi ulaşılmadı olur.
+
+Yayın öncesinde Sonuçlar hazırlanıyor / Sonuç henüz yayınlanmadı gibi durum gösterilir. Yayından sonra not ve burs oranı Başvurularım alanında görünür.
+
+Yayınlanmamış not/burs verisi frontend, HTML/Livewire verisi veya API çıktısına sızmamalıdır.
+
+---
+
+## 11.13 Sınav/burs sonucu iletişimi
+
+Başvuru iletişiminden bağımsız ikinci bir iletişim alanı bulunur:
+- ulaşılmadı — varsayılan,
+- ulaşıldı.
+
+Başvuru kabulü için ulaşıldı olması, sınav/burs sonucu için de ulaşıldı sayılmaz.
+
+Admin yayınlanan sonuç için gerçek e-posta/WhatsApp gönderimini tekli veya toplu başlatabilir; bildirim not, burs oranı ve varsa sonraki işlem açıklamasını içerir. Telefon veya sistem dışı e-postayla iletişim kurduysa sonuç için ulaşıldı durumunu elle işaretleyebilir.
+
+Sonuç aşamasında ulaşıldı olan kayıtlar ilgili toplu gönderimden çıkarılır. Katılım, not veya burs sonucu admin tarafından değişirse yalnız ilgili sonuç iletişimi yeniden ulaşılmadı olur; yayın açık kalır ve otomatik mesaj gönderilmez.
+
+E-posta/WhatsApp teknik durumları ve manuel iletişim alanının ayrımı için 11.8'deki kurallar uygulanır. İletişimin kendisini güncellemek tekrar ulaşılmadı sıfırlaması yapmaz.
+
+---
+
+## 11.14 Başvurularım
+
+Üye ekranının adı **Başvurularım** olacaktır; Sınavlarım kullanılmaz. Üye yalnız kendi hesabının başvurularını ve geçmiş dönem sonuçlarını görebilir.
+
+Uygun alanlar:
+- başvuru numarası ve öğrenci,
+- sınav dönemi,
+- öğrencinin mevcut okulu ve mevcut sınıfı/durumu,
+- ALA şubesi, sınav grubu ve yapılacak sınav,
+- tarih, başlangıç/bitiş saati,
+- kullanıcıya açıklanabilecek başvuru durumu ve başvuru yayın durumu,
+- katılım bilgisi,
+- sınav/burs sonucu yayın durumu,
+- yalnız yayınlandıysa not ve burs oranı.
+
+Onay/yayın/askı/arşiv/dönem kapanışı durumuna uygun açıklamalar gösterilir. Onaylanmış başvuru, kapalı dönem veya askıda/arşivli oturum için üyeye düzenleme/silme izni verilmez. Uygun başvuruda değişiklik ve kalıcı silme 11.6'ya göre yapılır.
+
+Admin-only operasyon alanları üyeye gösterilmez. Başvuru ve sonuç yayın kuralları liste, detay ve bütün veri çıktılarında aynı şekilde uygulanır.
+
+---
+
+## 11.15 Admin filtreleri ve toplu işlemler
+
+Admin filtreleri en az:
+- sınav dönemi,
+- şube,
+- sınav grubu ve sınav/oturum,
+- tarih ve başlangıç/bitiş saati,
+- öğrencinin mevcut okulu ve mevcut sınıfı/durumu,
+- başvuru onay durumu,
+- katılım durumu,
+- başvuru iletişimi ve sonuç iletişimi ayrı ayrı,
+- burs oranı,
+- başvuru yayını ve sınav/burs sonucu yayını ayrı ayrı,
+- oturumun açık/askıda/arşivli durumu.
+
+Aramada başvuru numarası, öğrenci/kullanıcı adı, User telefonu ve User e-postası kullanılabilir.
+
+Toplu işlemler:
+- başvuru onayı,
+- başvuru sonuçlarını yayınlama,
+- sınav/burs sonuçlarını yayınlama,
+- başvuru veya sonuç aşaması için ayrı e-posta/WhatsApp gönderimi.
+
+Seçili kayıtlar ile filtreye uyan bütün kayıtların kapsamı admin arayüzünde açık gösterilir. Tekli işlemdeki yetki, eksik sonuç ve iletişim kuralları toplu işlemlerde de uygulanır. Kritik toplu işlemler mevcut ALA onay modalını kullanır.
+
+İlk sürümde Excel içe/dışa aktarma işlemleri eklenmez.
+
+---
+
+## 11.16 Gelecekte Excel içe/dışa aktarma
+
+**Excel import ve export ilk sürüm kapsamında değildir.** Başvuru/sonuç dışa aktarma ekranı, indirme düğmesi, not importu veya sırf bunlar için paket eklenmez.
+
+Veri modeli ve ortak iş kuralları gelecekte aktarımı destekleyecek şekilde tasarlanır:
+- benzersiz başvuru numarası,
+- dönem, öğrenci/hesap, okul, mevcut sınıf/durum, şube, sınav grubu ve oturum ilişkileri,
+- not/burs NULL ve 0 ayrımı,
+- tek başvuru, kapasite, yayın ve iletişim doğrulamalarının bütün yazma yollarında kullanılabilmesi.
+
+Gelecekteki ayrı bir geliştirmede başvuru/sonuç .xlsx exportu ve not importu değerlendirilebilir. Kolonlar, dosya doğrulama, ön izleme, eşleştirme, duplicate ve satır bazlı hata davranışları o adımda belirlenir. Mevcut Excel altyapısı varsa önce incelenir.
+
+---
+
+## 11.17 Gelecekte şube bazlı yetki
+
+İlk sürüm mevcut admin yetkileriyle çalışır. Veri modeli ve sorgular ileride yalnız Dalaman, Ortaca veya Köyceğiz erişimine engel olmayacak şekilde tasarlanır.
+
+Kullanıcı açıkça istemeden mevcut global authorization sistemi değiştirilmez.
+
+---
+
+## 11.18 Arşivleme, silme ve işlem geçmişi
+
+- Başvurusu bulunan oturum ilk sürümde silinemez; admin tarafından arşive alınabilir.
+- Arşivleme mevcut başvuruları, notları ve burs sonuçlarını silmez. Üye kendi başvurusunun izin verilen durum/yayın bilgilerini görmeye devam eder; arşivli oturuma yeni üye başvurusu ve üyeden değişiklik/silme yapılamaz.
+- Başvuru ve sınav dönemi bittikten sonra oturumların kalıcı silinmesi gelecekte ayrı geliştirme olabilir. İlişkiler, bağımlılıklar ve silme politikası 1B'de buna engel olmayacak şekilde değerlendirilir; ilk sürümde başvurusu olan oturum için silme akışı uygulanmaz.
+- Bu oturum politikası, 11.6'daki yetkili üye/admin kalıcı başvuru silme akışını ortadan kaldırmaz. Başvurunun bağlı verilerinin silinme davranışı 1B'de açıkça tanımlanır; başka başvurular, User hesabı ve ortak tanımlar etkilenmez.
+- Başvuru veya sonuç kaydında adminin yaptığı değişikliklerin tarihçesi, önceki değerleri veya değiştiren adminin kimliği saklanmaz. Bursluluk için audit tablosu/framework'ü kurulmaz.
+- Mevcut uygulamanın genel log altyapısı değiştirilmez. E-posta/WhatsApp teknik gönderim durumları, admin değişiklik tarihçesinden ayrı ihtiyaçtır ve takip edilir.
+
+---
+
+# 12. Bursluluk sistemi geliştirme planı
+
+Kurallar:
+- Kullanıcı hangi adımı isterse yalnız o adımı uygula.
+- Adım sonunda raporla ve dur; sonraki adıma otomatik geçme.
+- 1A, 1B, 2A, 3A analiz adımlarıdır; kod değiştirmez.
+- 1B yalnız veri sözleşmesi tasarlar; migration oluşturmaz.
+- 11. maddede kesinleşmiş iş kurallarını yeniden karar konusu yapma; teknik ayrıntıları mevcut uygulamayı inceleyerek ilgili adımda belirle.
+- Ortak domain kuralları 1C'de kurulur, 1E'de doğrulanır; admin ve üye ekranları aynı kuralları kullanır.
+- Üye ekranları geliştirilene kadar görünürlük, sahiplik ve üye işlem sınırları ortak domain/sunum kuralları üzerinden test edilir. Gerçek üye HTML/Livewire/API çıktısı ve uçtan uca akışlar ilgili 3.x adımlarında doğrulanır; test gerekçesiyle sonraki adıma erken geçilmez.
+- Excel içe/dışa aktarma ilk sürümde uygulanmaz; 2J sonraki sürüm için ayrılmıştır.
+
+Örnek Codex promptu:
+
+`AGENTS.md dosyasını oku ve yalnız 1A adımını uygula. Bir sonraki adıma geçme.`
+
+---
+
+## 1. Veri Modeli
+
+### 1A — Mevcut yapıyı analiz et
+Kod değiştirme.
+
+İncele:
+- mevcut `users`, profil, üyelik ve iletişim bilgileri; benzersiz e-posta ve benzersiz olmayan telefon kullanımı,
+- bir hesabın tek öğrenciyi temsil etmesi için yeniden kullanılabilecek öğrenci/person yapıları,
+- şube verisinin mevcut kullanımı ve öğrencinin öğrenim gördüğü okul yapısı,
+- mevcut sınıf/durum seçenekleri ile sınav gruplarını ayrı tutmaya uygun yapılar,
+- admin mimarisi, model/controller/route isimlendirmesi ve CRUD/List/Livewire desenleri,
+- status/enum, arşivleme, soft delete ve ilişkili kayıt silme yaklaşımları,
+- notification/mail altyapısı ve mevcut log davranışı.
+
+Yeniden kullanılabilecek yapıları ve riskleri bildir. Yeni auth sistemi, çok öğrencili hesap akışı veya merkezi Branch CMS oluşturma. Başvuru/sonuç değişiklik geçmişi ve değiştiren kişi kaydı bu modülün kapsamı değildir; mevcut genel log altyapısını değiştirme.
+
+İleride Excel desteğini engelleyecek mevcut bir kısıt varsa bildir; ilk sürüm için Excel entegrasyonu tasarlama veya paket ekleme.
+
+1B'nin teknik karar noktalarını çıkar ve dur.
+
+### 1B — Veri sözleşmesini tasarla
+Kod değiştirme.
+
+1A'ya ve 11. maddedeki kararlara göre şu yapıları tasarla:
+- sınav dönemi, başvuru tarih aralığı ve dönem genelinde başvuruları kapatma,
+- ALA şubesi ve öğrencinin öğrenim gördüğü okulun ayrı ilişkileri,
+- mevcut kullanıcı hesabına bağlı tek öğrenci ve sonraki dönemlerde aynı hesabın kullanımı,
+- öğrencinin mevcut sınıf/durumu ile admin tanımlı sınav grubunun ayrı ilişkileri,
+- sınav türü/başlığı, oturum tarihi, başlangıç/bitiş saati,
+- oturumun bağımsız kontenjanı, doluluğu, askıya alınması ve arşivlenmesi,
+- benzersiz başvuru numarası ve hesap + dönem başına en fazla bir mevcut başvuru,
+- onay bekleyen/onaylanan başvuru, ayrı başvuru sonucu yayını,
+- kullanıcı/admin düzenlemesi, kalıcı silme ve yeniden başvuru,
+- hesaptaki iletişim bilgilerinin kullanımı; başvuru ve sonuç iletişimi için ayrı ulaşılma durumları,
+- kanal ve aşama bazında teknik gönderim kayıtları; ilgili bilgi değişince iletişimin sıfırlanması,
+- katılım, nullable tam sayı not, nullable burs oranı ve ayrı sonuç yayını.
+
+Her yapı için alan, veri tipi, nullable/default, index, unique, foreign key, ilişki, silme politikası ve validation/business rule öner.
+
+Özellikle açıkla:
+- MariaDB/MySQL uyumluluğu; eşzamanlı başvuru ve oturum aktarımında transaction/locking yaklaşımı,
+- bekleyen/onaylanan başvuruların yer tutması, silmede yer açılması ve kontenjanın doluluğun altına indirilememesi,
+- aynı hesaba aynı dönemde ikinci mevcut başvurunun veritabanında da engellenmesi; kalıcı silmeden sonra yeni başvurunun mümkün olması,
+- onaylı başvuruların, dönemi başvurulara kapanmış kayıtların ve askıya/arşive alınmış oturumlardaki başvuruların üyeye salt okunur olması,
+- `not girilmedi != 0` ve `burs belirlenmedi != %0`; notun 0–100 tam sayı olması ve katılmayan öğrenci için `0/0` davranışı,
+- not veya burs boşken tekli/toplu sonuç yayınının engellenmesi; yayınlanmamış verinin üye çıktılarından korunması,
+- yayınlanmış bilgi değişince hemen görünmesi ve yalnız ilgili iletişim aşamasının tekrar `ulaşılmadı` olması; otomatik mesaj gönderilmemesi,
+- kalıcı başvuru silmenin ilişkili kayıtlara etkisi; başvurusu bulunan oturumun silinememesi ve arşivlenebilmesi,
+- başvuru/sınav dönemi sonrasında ileride eklenebilecek oturum silme ve Excel işlemlerini engellemeyen ilişkiler.
+
+Ayrı toplam kontenjan alanı, red/iptal durumları, başvuru hakkını kalıcı tüketen kayıt veya admin değişiklik tarihçesi tasarlama. Mevcut auth/user davranışını koru. Gelecekteki silme ve Excel işlemlerini bu adımda uygulama kapsamına alma.
+
+Migration/model oluşturma; dur.
+
+### 1C — Veri modelini ve ortak domain kurallarını uygula
+Yalnız onaylanan 1B sözleşmesini uygula:
+- yeni migration, model, ilişki, cast, index, unique ve foreign key,
+- hesap/dönem başına tek mevcut başvuru ve kalıcı silmeden sonra yeniden başvuru,
+- oturum kapasitesi, güvenli aktarım, silmede yer açılması ve doluluğun altına kapasite indirilememesi,
+- başvuru zamanı, onay, dönem kapanışı, oturum askısı/arşivi ve kullanıcı işlem sınırları,
+- katılım, 0–100 tam sayı not, burs seçenekleri ve boş/0 ayrımları,
+- ayrı yayın durumları ve eksik sonuçta tekli/toplu yayın engeli,
+- ilgili başvuru/sonuç bilgileri değişince ilgili iletişim durumunun sıfırlanması,
+- arşivleme ve güvenli silme ilişkileri.
+
+Admin/üye ekranlarının çağıracağı ortak kuralları mevcut proje desenleriyle kur. Gerçek bildirim sağlayıcısını bağlama veya mesaj gönderme.
+
+Mevcut migration/auth/fillable davranışını bozma. Controller/route/admin/frontend geliştirme. Yıkıcı DB komutu kullanma.
+
+Test et, raporla, dur.
+
+### 1D — Seed/geliştirme verileri
+Gerekliyse idempotent geliştirme seed'leri oluştur:
+- Ortaca, Dalaman, Köyceğiz şubeleri,
+- birden fazla örnek öğrenci okulu,
+- örnek mevcut sınıf/durum seçenekleri: 1–12, Mezun, YKS vb.,
+- bunlardan ayrı örnek sınav grupları: İlkokul, Ortaokul, Lise, Mezun vb.,
+- örnek sınav dönemi ve sınav türü/başlığı,
+- aynı şube/grupta farklı başlangıç/bitiş saatlerine ve eşit veya farklı kontenjanlara sahip oturumlar.
+
+Google Form'un yalnız gerekli ve tutarlı bilgileri örnek veri olarak kullanılabilir; form iş kurallarının kaynağı değildir. Seçenekleri kodda sabitleme. Gerçek production verisi uydurma veya admin değişikliklerini ezme.
+
+Test et ve dur.
+
+### 1E — Veri modeli ve ortak kuralların doğrulanması
+En az şu durumları test et:
+- migration/schema, ilişkiler, index, unique, foreign key ve silme politikaları,
+- mevcut üyelik ve auth yapısının korunması; farklı e-posta ve aynı telefonla ayrı hesaplar,
+- hesap/dönem başına tek mevcut başvuru; farklı sınav/şube seçerek ikinci başvuru yapılamaması,
+- izin verilen kalıcı silmeden sonra aynı dönemde yeni başvuru ve sonraki dönemde aynı hesabın kullanımı,
+- öğrenci okulu, mevcut sınıf/durumu ve sınav grubunun bağımsızlığı,
+- oturumların bağımsız doluluğu, bekleyen/onaylanan başvuruların yer tutması ve toplamların oturumlardan hesaplanması,
+- eşzamanlı kapasite ve duplicate koruması; aktarım ve silmede doğru doluluk,
+- doluluğun altına kontenjan indirilememesi; başvurulu oturumun silinememesi ve arşivde kayıtların korunması,
+- onay, dönem kapanışı, oturum askısı/arşivi nedeniyle kullanıcı değişiklik/silme engelleri,
+- notun 0–100 tam sayı aralığı, nullable/0 not ve nullable/%0 burs, katılmama için `0/0`,
+- iki bağımsız yayın durumu; not veya burs boşken tekli/toplu sonuç yayınının engellenmesi,
+- yayın sonrası değişikliklerin görünürlüğü ve doğru iletişim aşamasının sıfırlanması; otomatik gönderim olmaması.
+
+Gerçek DB resetlenmez. Raporla ve dur.
+
+---
+
+## 2. Admin Ekranları
+
+### 2A — Mevcut admin yapısını analiz et
+Kod değiştirme.
+
+Admin layout/menu, controller/Livewire, table/filter/pagination, form/validation, modal/button/card/badge/alert ve authorization desenlerini incele.
+
+Bursluluk modülünün, tanım ekranları dâhil, mevcut admin mimarisine nasıl eklenmesi gerektiğini raporla ve dur.
+
+### 2B — Sınav dönemi yönetimi
+Bursluluk sınav dönemi admin CRUD/yönetimini mevcut ALA admin tasarımına uygun uygula.
+
+Başvuru başlangıç/bitişi, sınav tarih aralığı, aktif/pasif durum ve dönem genelinde başvuruları manuel kapatma desteklensin. Dönem kapanışıyla üyelerin yeni başvuru, düzenleme ve silme işlemleri kapansın; mevcut kayıtları görüntülenebilsin.
+
+İlişkili verileri silen kontrolsüz cascade işlemleri oluşturma. Diğer admin alt ekranlarına geçme.
+
+Test et ve dur.
+
+### 2C — Tanımlar, oturum ve kontenjan yönetimi
+Mevcut ALA UI ve şube kullanımını genişleterek şu yönetimleri tamamla:
+- ALA şubelerinin burslulukta kullanımı,
+- öğrencinin öğrenim gördüğü okulların eklenmesi, düzenlenmesi ve pasifleştirilmesi,
+- öğrencinin mevcut sınıf/durum seçeneklerinin yönetimi,
+- bunlardan ayrı admin tanımlı sınav gruplarının yönetimi,
+- sınav türü/başlığı ve dönem + şube + grup + tarih + başlangıç/bitiş saatiyle oturum oluşturma,
+- her oturum için bağımsız maksimum kontenjan, askıya alma ve arşivleme.
+
+Yeni bir merkezi Branch CMS, UI framework veya paralel yönetim sistemi oluşturma. Tanım değişikliklerinde mevcut başvuru ilişkilerini koru; öğrencinin sınıfına göre otomatik sınav grubu kısıtlaması ekleme.
+
+Doluluk örneğin `18 / 20` olarak görülsün. Ayrı toplam kontenjan girilmesin; toplamlar ilgili oturumların kapasitelerinden hesaplansın. Oturumun dolması yalnız o oturuma yeni başvuruyu kapatsın; dolu, askıda ve arşivde durumları ayrı gösterilsin.
+
+Ortak domain kurallarıyla kontenjanın mevcut doluluğun altına indirilmesini engelle. Başvurusu bulunan oturum silinemesin, arşivlenebilsin ve ilişkili kayıtlar korunsun. Dönem sonunda kalıcı oturum silme işlemini ilk sürümde ekleme.
+
+Test et ve dur.
+
+### 2D — Başvuru yönetimi
+Admin listeleme, arama, filtreleme, detay, tekli/toplu onay, kalıcı silme ve oturum değiştirme işlemlerini yapabilsin. Başvuru numarası ve hesaptaki iletişim bilgilerini görüntüleyebilsin.
+
+Red veya iptal durumu oluşturma. Kalıcı silmede mevcut ALA onay modalını kullan ve kontenjanı serbest bırak; aynı hesabın uygun koşullarda yeniden başvurabilmesi korunsun.
+
+Admin onaylı başvuruyu değiştirebilsin. Ortak duplicate/kapasite kurallarını kullan; dolu oturuma aktarım için önce kontenjanın artırılması gereksin. Yayın açıkken değişiklik üyeye hemen yansısın; ilgili başvuru iletişimi `ulaşılmadı` olsun ve otomatik mesaj gönderilmesin.
+
+Başvuru/sonuç değişiklik tarihçesi ve değiştiren kişi kaydı ekleme.
+
+Test et ve dur.
+
+### 2E — Katılım
+Hızlı katılım ekranı `işaretlenmedi`, `katıldı`, `katılmadı` durumlarını desteklesin.
+
+Şube, tarih, saat, sınav grubu ve öğrencinin mevcut sınıf/durumu ayrı filtrelenebilsin. Katılmama için belirlenen `0/0` davranışını ve ilgili sonuç iletişimi sıfırlamasını ortak domain kurallarıyla uygula; işaretlenmemiş katılımı otomatik `0/0` sayma.
+
+Not/burs yönetim ekranlarına geçme. Test et ve dur.
+
+### 2F — Not
+Liste üzerinden hızlı not girişi uygula:
+- 0–100 arasında tam sayı validation,
+- `NULL` ile gerçek `0` ayrımı,
+- nota göre sıralama ve filtreler,
+- yayınlanmış not değişikliğinin hemen görünmesi ve sonuç iletişiminin `ulaşılmadı` olması.
+
+Ortak yayın kuralları korunsun; eksik sonuç yayında kalmasın. İlk sürümde Excel import/export ekleme.
+
+Test et ve dur.
+
+### 2G — Burs oranı
+Burs seçim ekranı `%100, %90, …, %10, %0 / Burs Yok` değerlerini tek seçimle desteklesin. `Belirlenmedi` ayrı kalsın; nota göre sıralama ve filtreler bulunsun.
+
+Burs ilgili dönem başvurusuna ait olsun; sonraki dönem önceki sonucu değiştirmesin. Yayınlanmış burs değişikliği hemen görünsün ve sonuç iletişimi `ulaşılmadı` olsun. Ortak eksik sonuç/yayın kuralları korunsun.
+
+Mevcut ALA radio/form/table stilini kullan. Test et ve dur.
+
+### 2H — Yayınlama
+Her başvuru için iki bağımsız yayın anahtarı uygula:
+- Başvuru sonucunu yayınla.
+- Sınav/burs sonucunu yayınla.
+
+Admin bunları kayıt bazında veya toplu açabilsin. Toplu işlem aynı kayıt anahtarlarını değiştirsin; ayrı bir dönem yayını mantığı oluşturma. Başvuru onayı ve başvuru yayını ayrı kalsın.
+
+Not veya burs boşken sonuç yayın anahtarı tekli/toplu hiçbir yoldan açılamasın. Toplu işlemde eksik kayıtlar için admini bilgilendir ve bu kayıtların yayını kapalı kalsın. `0` not ve `%0` burs eksik sonuç sayılmasın.
+
+Yayınlanmış veride sonraki düzeltme hemen görünsün; yeniden yayın zorunlu olmasın. Yayın işlemi otomatik bildirim göndermesin. Toplu kritik işlemde mevcut ALA onay modalını kullan.
+
+Yayınlanmamış kabul kararı, not ve bursun üye çıktısına sızmadığını test et. Dur.
+
+### 2I — İletişim/bildirim
+Başvuru sonucu iletişimi ve sınav/burs sonucu iletişimini ayrı yönet:
+- Her aşamada varsayılan `ulaşılmadı` ve adminin elle seçebildiği `ulaşıldı` durumu.
+- Hesabın kayıtlı e-postası/telefonuna adminin tekli veya toplu butonla başlattığı gerçek e-posta/WhatsApp gönderimi.
+- Kanal ve aşama bazında ayrı teknik gönderim durumu: bekliyor, gönderildi, gönderilemedi.
+
+Admin telefonla veya sistem dışından iletişim kurarak `ulaşıldı` işaretleyebilsin; ilgili aşamada bu kayıt için ayrıca e-posta/WhatsApp gönderilmesi gerekmesin. Teknik `gönderildi` bilgisiyle `ulaşıldı` durumunu tek alanda birleştirme.
+
+İlgili başvuru bilgisi değişince başvuru iletişimi; katılım/not/burs sonucu değişince sonuç iletişimi tekrar `ulaşılmadı` olsun. Ulaşılma durumunun kendisini düzenlemek bu sıfırlamayı tetiklemesin. Onay, yayın ve veri değişiklikleri otomatik mesaj göndermesin; gönderimi admin başlatsın.
+
+Mevcut altyapıyı incele ve sağlayıcıyı bu adımda kullanıcıyla belirle. Yeniden denemelerde kontrolsüz mükerrer gönderimi önle. Testlerde gerçek kişilere mesaj gönderme.
+
+Test et ve dur.
+
+### 2J — Excel import/export — sonraki sürüm
+Bu adım ilk sürüm kapsamı dışındadır ve ilk sürüm uygulama sırasında atlanır. İçe/dışa aktarma ekranı, dosya işleme akışı veya paket ekleme.
+
+Veri modeli benzersiz başvuru numaraları ve açık ilişkilerle ileride aktarımı desteklemelidir. Kullanıcı bu adımı ileride ayrıca başlatırsa başvuru/sonuç `.xlsx` export ve not import kapsamını, kolonları ve mevcut altyapıyı o zaman netleştir.
+
+İlerideki import; dosya/kolon doğrulama, başvuru eşleştirme, duplicate kontrolü, satır bazlı hata ve güvenli ön izleme/onay içermeli; hatalı dosya kontrolsüz veri değiştirmemelidir.
+
+Bu adımın ilk sürümde uygulanmaması sonraki ilk sürüm adımlarını engellemez.
+
+### 2K — Admin uçtan uca kontrol
+İlk sürüm admin akışını uçtan uca test et:
+- dönem, başvuruları kapatma ve tanım yönetimleri,
+- öğrenci okulu/sınıfı ile şube/sınav grubu ayrımı,
+- oturum saatleri, bağımsız kapasite, doluluk, askıya alma ve arşiv,
+- başvuru onayı, kalıcı silme, yeniden başvuru ve güvenli oturum aktarımı,
+- onaylı başvuruda kullanıcı işlem engeli ve admin değişikliği,
+- katılım, 0–100 tam sayı not ve bursun boş/0 ayrımları,
+- iki ayrı tekli/toplu yayın; eksik sonuç yayın engeli ve yayınlanmamış verinin korunması,
+- iki ayrı iletişim aşaması, manuel tekli/toplu gönderim, ilgili değişiklikte sıfırlama ve teknik hata durumları,
+- authorization, desktop/mobil admin görünümü ve mevcut ALA onay modalları.
+
+Excel ilk sürüm kontrolünün parçası değildir. Yeni özellik ekleme. Raporla ve dur.
+
+---
+
+## 3. Frontend — Başvurularım
+
+### 3A — Mevcut üye alanını analiz et
+Kod değiştirme.
+
+Üye layout/navigation, mevcut profil/iletişim güncelleme akışı, auth middleware, Blade/Livewire yaklaşımı, card/list/form UI ve responsive davranışı incele.
+
+Tek öğrenci hesabıyla dönem başvurularını yönetecek `Başvurularım` alanının nereye/nasıl ekleneceğini öner. Çok öğrencili hesap veya ikinci üyelik akışı tasarlama. Dur.
+
+### 3B — Başvuruya açık sınavlar
+Login olmuş üyeye başvuruya açık bursluluk dönemlerini/sınavlarını mevcut üye tasarımında göster.
+
+Başvuru tarihleri dışında veya admin tarafından başvuruları kapatılmış dönemde yeni başvuru başlatılamasın. Dolu, askıda ve arşivlenmiş oturumlardan başvuru başlatılamasın; askı durumunda yöneticiyle iletişim uyarısı gösterilsin.
+
+Form aşamasına geçme. Test et ve dur.
+
+### 3C — Başvuru formu
+Form şu bilgileri ayrı alanlarla desteklesin:
+- ilgili hesabın öğrencisi,
+- öğrencinin öğrenim gördüğü okul,
+- öğrencinin mevcut sınıf/durumu,
+- ALA şubesi,
+- başvurulan sınav grubu ve sınav,
+- uygun tarih, başlangıç/bitiş saati ve oturum,
+- oturum kontenjanı,
+- hesabın kayıtlı telefonu/e-postası, iletişim uyarısı ve mevcut profil güncelleme bağlantısı.
+
+Aynı hesabın ikinci öğrenci kaydını oluşturma veya başvuruya ayrı iletişim bilgisi isteme. Mevcut sınıf/durum ile sınav grubunu birbirine bağlayan otomatik uygunluk engeli ekleme; seçim başvuranın sorumluluğundadır.
+
+Dolu, askıda veya arşivlenmiş oturum seçilemesin. Mevcut ALA form stilini kullan. Test et ve dur.
+
+### 3D — Başvuru iş kurallarını üye akışına bağla
+1C'de kurulan ortak domain kurallarını kullan; aynı kuralları ikinci kez yazma.
+
+Server-side doğrula:
+- login, sahiplik ve hesabın öğrenci ilişkisi,
+- hesap/dönem başına tek mevcut başvuru,
+- başvuru tarih aralığı ve dönemin başvurulara açık olması,
+- oturumun başvuruya uygun, askıda/arşivde olmaması,
+- seçilen oturumun bağımsız kontenjanı ve eşzamanlı kapasite koruması.
+
+Farklı sınav, grup veya şube seçmek aynı dönemde ikinci mevcut başvuru hakkı sağlamasın. Başarıda benzersiz başvuru numarasını göster; onay beklerken de kontenjan ayrılsın.
+
+Test et ve dur.
+
+### 3E — Başvurularım listesi
+Üye `Başvurularım` ekranında en az başvuru no, öğrenci, dönem/sınav, şube, sınav grubu, tarih/başlangıç-bitiş saati, kullanıcıya açık başvuru durumu ve sonuç yayın durumunu görsün.
+
+Kullanıcı yalnız kendi kayıtlarını ve önceki dönem başvurularını görebilsin. Başvuru onayı ile yayınını ayır; yayınlanmamış kabul kararı, not ve bursu gösterme.
+
+Test et ve dur.
+
+### 3F — Başvuru detayı
+Duruma göre şunları göster:
+- başvurunun değerlendirildiği veya başvuru sonucunun henüz yayınlanmadığı bilgisi,
+- yayınlanmış onay ve sınav bilgileri; en az 30 dakika önce hazır bulunma uyarısı,
+- öğrencinin okulu/mevcut sınıfı ile şube/sınav grubunun ayrı bilgileri,
+- oturum askısı, arşivi ve kapanmış başvuru döneminde işlem yapılamadığı bilgisi,
+- sonuç henüz yayınlanmadı veya yayınlanmış sonuç durumu.
+
+Red/iptal durumu veya admin-only operasyon alanları gösterme. Onaylı başvuruda düzenleme/silme sunma. Test et ve dur.
+
+### 3G — Başvuru değişikliği ve kalıcı silme
+Kullanıcı yalnız başvurular açıkken, başvurusu henüz onaylanmamışken ve mevcut oturumu askıda/arşivde değilken başvurusunu düzenleyebilsin veya kalıcı silebilsin.
+
+Ortak kurallarla hedef oturumun uygunluğunu, duplicate ve kapasiteyi yeniden doğrula. Farklı şube, grup, sınıf/durum veya sınav seçimine otomatik eğitim seviyesi kısıtı ekleme. İşlem başarısızsa mevcut başvuru ve yeri korunsun.
+
+Silmede ilgili oturumun kontenjanı açılsın. Aynı dönemde uygun başka bir seçimle yeniden başvuru yapılabilsin; kalıcı bir başvuru hakkı tüketme kaydı oluşturma.
+
+Onaylanan, dönemi başvurulara kapanmış veya oturumu askıya/arşive alınmış başvuruda hem düzenleme hem silmeyi server-side engelle. Kritik işlemde mevcut ALA onay modalını kullan.
+
+Test et ve dur.
+
+### 3H — Not ve burs sonucu
+Sonuç yayını açıldıktan sonra ilgili dönem başvurusunun notunu ve burs oranını göster. Yayınlanmadan önce veri sızdırma.
+
+`%0 / Burs Yok` ile belirlenmemiş/yayınlanmamış sonucu ayır; katılmadı işaretlenen öğrencinin `0/0` sonucunda katılım bilgisini koru. Not veya burs boşken sonuç yayınlanamasın.
+
+Yayınlanmış not/burs admin tarafından değiştirildiğinde yeniden yayın beklemeden güncel değerler görünsün. Önceki dönem sonuçları yeni dönem başvurusundan etkilenmesin.
+
+Test et ve dur.
+
+### 3I — Responsive/kullanılabilirlik
+Desktop/tablet/mobil kontrol et.
+
+Formlar, okul/sınıf/grup ayrımı, oturum seçimleri, listeler/kartlar, badge'ler, hata/başarı mesajları, başvuru detayı, askı/arşiv uyarıları ve işlem yapılamayan durumlar mevcut ALA tasarımına uygun olsun.
+
+Yeni paralel tasarım oluşturma. Test et ve dur.
+
+### 3J — Kullanıcı akışı uçtan uca test
+En az şu senaryoları test et:
+- mevcut üye kendi hesabının öğrencisi için başvurur; ziyaretçi başvuramaz,
+- farklı e-postalı, aynı telefonlu öğrenci hesapları ayrı başvurabilir,
+- aynı hesap aynı dönemde farklı sınav/şube/grup seçerek ikinci mevcut başvuru oluşturamaz,
+- aynı hesap sonraki dönemde yeniden başvurabilir; önceki dönem sonuçları korunur,
+- öğrencinin mevcut okulu/sınıfı, sınav grubu ve şubesi ayrı saklanır; farklı sınıf/grup seçimine otomatik uygunluk engeli uygulanmaz,
+- aynı şube/gruptaki farklı saatlerin bağımsız kontenjanları ve bekleyen başvurunun yer tutması çalışır,
+- bir oturumun dolması diğer müsait oturumları kapatmaz; eşzamanlı başvuru kapasiteyi aşmaz,
+- admin onayı ile başvuru yayını ayrıdır; onaylı başvuru öğrenci için düzenleme/silmeye kapalıdır,
+- izin verilen değişiklik ve kalıcı silme kontenjanı doğru etkiler; silmeden sonra aynı dönemde yeniden başvuru yapılabilir,
+- dönem kapanışı ve oturum askısı/arşivi öğrenci işlemlerini engeller; görüntüleme devam eder,
+- admin değişikliği yayın açıksa hemen görünür ve yalnız ilgili iletişim aşamasını sıfırlar,
+- katılım, tam sayı not, burs ve boş/0 ayrımları doğru çalışır,
+- not veya burs boşken tekli/toplu yayın açılamaz; yayınlanmadan sonuç sızmaz, yayınlandıktan sonra görünür,
+- kullanıcı başka hesabın başvurusunu göremez, değiştiremez veya silemez.
+
+Yeni özellik ekleme. Raporla ve dur.
+
+---
+
+# 13. Uygulama sırası
+
+İlk sürüm için varsayılan sıra:
+
+`1A → 1B → 1C → 1D → 1E → 2A → 2B → 2C → 2D → 2E → 2F → 2G → 2H → 2I → 2K → 3A → 3B → 3C → 3D → 3E → 3F → 3G → 3H → 3I → 3J`
+
+`2J — Excel import/export` sonraki sürüme ertelenmiştir. İlk sürümde uygulanmaz; kullanıcı ileride ayrıca istediğinde başlatılır. Mevcut adım kimlikleri korunur.
+
+Kullanıcı açıkça değiştirmedikçe bu sıra korunur. Her adım ayrı kullanıcı talebiyle başlatılır. Bir adım tamamlanınca bir sonraki adıma otomatik geçilmez.

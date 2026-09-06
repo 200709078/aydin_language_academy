@@ -655,6 +655,8 @@ return [
     'search' => 'Ara',
     'clear' => 'Temizle',
     'users' => 'Kullanıcılar',
+    'users_list' => 'Kullanıcı Listesi',
+    'users_filter_admin' => 'Admin',
     'users_empty' => 'Henüz kullanıcı bulunmuyor.',
     'created_at' => 'Kayıt Tarihi',
     'sort_name_ascending' => 'Ada göre A’dan Z’ye sırala',

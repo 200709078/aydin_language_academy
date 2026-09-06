@@ -1,7 +1,12 @@
 <x-app-layout>
-    <x-slot name="header">{{ __('dictt.users') }}</x-slot>
+    <x-slot name="header">{{ __('dictt.users_list') }}</x-slot>
 
     @php
+        $filters = [
+            'all' => __('dictt.filter_all'),
+            'admin' => __('dictt.users_filter_admin'),
+            'user' => __('dictt.user_type_user'),
+        ];
         $typeLabels = [
             'admin' => __('dictt.user_type_admin'),
             'user' => __('dictt.user_type_user'),
@@ -20,7 +25,17 @@
 
     <div class="card">
         <div class="card-body">
-            <h5 class="card-title mb-4">{{ __('dictt.users') }}</h5>
+            <h5 class="card-title mb-4">{{ __('dictt.users_list') }}</h5>
+
+            <div class="d-flex flex-wrap gap-2 mb-4">
+                @foreach ($filters as $filterKey => $filterLabel)
+                    <a href="{{ route('admin.users.index', ['filter' => $filterKey, 'sort' => $sort, 'direction' => $direction]) }}"
+                        class="btn btn-sm {{ $filter === $filterKey ? 'btn-primary' : 'btn-outline-primary' }}"
+                        @if ($filter === $filterKey) aria-current="page" @endif>
+                        {{ $filterLabel }}
+                    </a>
+                @endforeach
+            </div>
 
             <div class="table-responsive">
                 <table class="table table-striped table-sm align-middle mb-0">
@@ -28,7 +43,7 @@
                         <tr>
                             <th scope="col">{{ __('dictt.photo') }}</th>
                             <th scope="col" aria-sort="{{ $isNameSorted ? ($direction === 'asc' ? 'ascending' : 'descending') : 'none' }}">
-                                <a href="{{ route('admin.users.index', ['sort' => 'name', 'direction' => $nextNameDirection]) }}"
+                                <a href="{{ route('admin.users.index', ['filter' => $filter, 'sort' => 'name', 'direction' => $nextNameDirection]) }}"
                                     class="text-decoration-none text-reset" title="{{ $nameSortTitle }}">
                                     {{ __('dictt.fullname') }}
                                     <span class="ms-1 text-muted" aria-hidden="true">{{ $isNameSorted ? ($direction === 'asc' ? '↑' : '↓') : '↕' }}</span>
@@ -38,7 +53,7 @@
                             <th scope="col">{{ __('dictt.phone') }}</th>
                             <th scope="col">{{ __('dictt.type') }}</th>
                             <th scope="col" aria-sort="{{ $isRegistrationDateSorted ? ($direction === 'asc' ? 'ascending' : 'descending') : 'none' }}">
-                                <a href="{{ route('admin.users.index', ['sort' => 'created_at', 'direction' => $nextRegistrationDateDirection]) }}"
+                                <a href="{{ route('admin.users.index', ['filter' => $filter, 'sort' => 'created_at', 'direction' => $nextRegistrationDateDirection]) }}"
                                     class="text-decoration-none text-reset" title="{{ $registrationDateSortTitle }}">
                                     {{ __('dictt.created_at') }}
                                     <span class="ms-1 text-muted" aria-hidden="true">{{ $isRegistrationDateSorted ? ($direction === 'asc' ? '↑' : '↓') : '↕' }}</span>
