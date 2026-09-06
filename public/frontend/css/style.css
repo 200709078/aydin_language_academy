@@ -1624,6 +1624,7 @@ body.frontend-home * {
 }
 
 .ala-achievements__intro-icon,
+.ala-achievements__year-icon,
 .ala-achievement-entry__icon {
     display: inline-flex;
     align-items: center;
@@ -1637,6 +1638,13 @@ body.frontend-home * {
     width: 4rem;
     height: 4rem;
     font-size: 1.5rem;
+}
+
+.ala-achievements__year-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    flex: 0 0 auto;
+    font-size: 1rem;
 }
 
 .ala-achievements__intro p {
@@ -1655,12 +1663,41 @@ body.frontend-home * {
 }
 
 .ala-achievements__accordion .accordion-button {
-    padding: 1.2rem 1.35rem;
+    position: relative;
+    padding: 1.2rem 3.1rem 1.2rem 1.35rem;
     font-weight: 700;
 }
 
 .ala-achievements__accordion .accordion-button::after {
-    display: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 2.3rem;
+    height: 2.3rem;
+    margin-left: 0;
+    content: "\f104";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    font-size: .85rem;
+    line-height: 1;
+    color: var(--dark);
+    background-color: rgba(var(--primary-rgb), .1);
+    background-image: none;
+    border: 1px solid rgba(27, 44, 81, .14);
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    right: 1.35rem;
+    transform: translateY(-50%);
+    text-align: center;
+    transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+}
+
+.ala-achievements__accordion .accordion-button:not(.collapsed)::after,
+.ala-achievements__accordion .accordion-button[aria-expanded="true"]::after {
+    content: "\f107";
+    background-color: #fff;
 }
 
 .ala-achievements__year-heading {
@@ -1788,7 +1825,14 @@ body.frontend-home * {
     }
 
     .ala-achievements__accordion .accordion-button {
-        padding: 1rem;
+        padding: 1rem 2.9rem 1rem 1rem;
+    }
+
+    .ala-achievements__accordion .accordion-button::after {
+        right: 1rem;
+        width: 2.2rem;
+        height: 2.2rem;
+        font-size: .8rem;
     }
 
     .ala-achievements__year-heading {

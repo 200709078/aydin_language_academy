@@ -809,6 +809,7 @@ return [
     'achievement_entries' => 'Öğrenci Kayıtları',
     'achievement_entries_count' => 'Öğrenci Sayısı',
     'achievement_entries_list' => 'Öğrencileri Listele',
+    'achievement_entries_total' => 'Toplam :total kayıt.',
     'achievement_public_intro' => 'Yerleştirme ve başarı kayıtlarımızı yıllara göre inceleyebilirsiniz.',
     'achievement_public_empty' => 'Henüz yayımlanmış bir Başarı Tablosu bulunmuyor.',
     'achievement_anonymous_student' => 'Anonim Öğrenci',

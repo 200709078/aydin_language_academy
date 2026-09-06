@@ -809,6 +809,7 @@ return [
     'achievement_entries' => 'Student Records',
     'achievement_entries_count' => 'Student Count',
     'achievement_entries_list' => 'List Students',
+    'achievement_entries_total' => 'Total :total records.',
     'achievement_public_intro' => 'Browse our placement and achievement records by year.',
     'achievement_public_empty' => 'There are no published Achievement Tables yet.',
     'achievement_anonymous_student' => 'Anonymous Student',

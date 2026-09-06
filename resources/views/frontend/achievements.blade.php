@@ -29,7 +29,7 @@
     <link href="{{ asset('frontend/css/bootstrap.min.css') }}" rel="stylesheet">
 
     <!-- Template Stylesheet -->
-    <link href="{{ asset('frontend/css/style.css') }}?v=20260904-news-nocrop-1" rel="stylesheet">
+    <link href="{{ asset('frontend/css/style.css') }}?v=20260906-achievements-arrow-circle-2" rel="stylesheet">
 </head>
 
 <body>
@@ -82,6 +82,9 @@
                             aria-expanded="{{ $isInitiallyOpen ? 'true' : 'false' }}"
                             aria-controls="achievement-year-{{ $achievementYear->id }}">
                             <span class="ala-achievements__year-heading">
+                                <span class="ala-achievements__year-icon flex-shrink-0" aria-hidden="true">
+                                    <i class="fa fa-trophy"></i>
+                                </span>
                                 <span class="ala-achievements__year-title">{{ $achievementYear->title }}</span>
                             </span>
                         </button>

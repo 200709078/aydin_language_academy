@@ -234,9 +234,12 @@
                 </table>
             </div>
 
-            @if ($entries->hasPages())
-                <div class="mt-3">{{ $entries->links() }}</div>
-            @endif
+            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-2 mt-3">
+                <div class="text-muted small">{{ __('dictt.achievement_entries_total', ['total' => $entries->total()]) }}</div>
+                @if ($entries->hasPages())
+                    <div>{{ $entries->links() }}</div>
+                @endif
+            </div>
         </div>
     </div>
 
