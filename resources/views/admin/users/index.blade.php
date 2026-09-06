@@ -97,9 +97,12 @@
                 </table>
             </div>
 
-            @if ($users->hasPages())
-                <div class="mt-3">{{ $users->links() }}</div>
-            @endif
+            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-2 mt-3">
+                <div class="text-muted small">{{ __('dictt.users_total', ['total' => $users->total()]) }}</div>
+                @if ($users->hasPages())
+                    <div>{{ $users->links() }}</div>
+                @endif
+            </div>
         </div>
     </div>
 </x-app-layout>

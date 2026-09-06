@@ -165,6 +165,8 @@
                     </tbody>
                 </table>
             </div>
+
+            <div class="text-muted small mt-3">{{ __('dictt.reviews_total', ['total' => $reviews->count()]) }}</div>
         </div>
     </div>
 </div>

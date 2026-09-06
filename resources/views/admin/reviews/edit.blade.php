@@ -19,7 +19,7 @@
                 <dt class="col-sm-2">{{ __('dictt.date') }}</dt>
                 <dd class="col-sm-10">{{ $review->created_at?->format('d.m.Y H:i') }}</dd>
                 @if ($review->status === \App\Models\Review::STATUS_APPROVED && $review->approver)
-                    <dt class="col-sm-2">{{ __('dictt.approve') }}</dt>
+                    <dt class="col-sm-2">{{ __('dictt.placement_test_approved_by') }}</dt>
                     <dd class="col-sm-10">{{ $review->approver->name }} — {{ $review->approved_at?->format('d.m.Y H:i') }}</dd>
                 @endif
             </dl>

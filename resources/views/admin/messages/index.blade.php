@@ -109,9 +109,12 @@
                 </table>
             </div>
 
-            @if ($messages->hasPages())
-                <div class="mt-3">{{ $messages->links() }}</div>
-            @endif
+            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-2 mt-3">
+                <div class="text-muted small">{{ __('dictt.contact_messages_total', ['total' => $messages->total()]) }}</div>
+                @if ($messages->hasPages())
+                    <div>{{ $messages->links() }}</div>
+                @endif
+            </div>
         </div>
     </div>
 </x-app-layout>

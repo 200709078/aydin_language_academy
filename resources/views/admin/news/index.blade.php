@@ -183,9 +183,12 @@
                 </table>
             </div>
 
-            @if ($news->hasPages())
-                <div class="mt-3">{{ $news->links() }}</div>
-            @endif
+            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-2 mt-3">
+                <div class="text-muted small">{{ __('dictt.news_total', ['total' => $news->total()]) }}</div>
+                @if ($news->hasPages())
+                    <div>{{ $news->links() }}</div>
+                @endif
+            </div>
         </div>
         </div>
 
