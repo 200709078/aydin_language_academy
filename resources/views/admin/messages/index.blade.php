@@ -30,25 +30,28 @@
 
     <div class="card">
         <div class="card-body">
-            <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3 mb-4">
-                <h5 class="card-title mb-0">{{ __('dictt.contact_messages') }}</h5>
-                <div class="d-flex flex-wrap gap-2">
-                    @php
-                        $filters = [
-                            'all' => __('dictt.filter_all'),
-                            \App\Models\model_messages::STATUS_UNREAD => __('dictt.message_status_unread'),
-                            \App\Models\model_messages::STATUS_READ => __('dictt.message_status_read'),
-                            'replied' => __('dictt.filter_replied'),
-                            \App\Models\model_messages::STATUS_ARCHIVED => __('dictt.message_status_archived'),
-                        ];
-                    @endphp
-                    @foreach ($filters as $filterKey => $filterLabel)
-                        <a href="{{ route('admin.messages.index', ['filter' => $filterKey]) }}"
-                            class="btn btn-sm {{ $filter === $filterKey ? 'btn-primary' : 'btn-outline-primary' }}">
-                            {{ $filterLabel }}
-                        </a>
-                    @endforeach
+            <div class="d-flex justify-content-between align-items-start gap-3 mb-3">
+                <div>
+                    <h5 class="card-title mb-1">{{ __('dictt.contact_messages') }}</h5>
                 </div>
+            </div>
+
+            @php
+                $filters = [
+                    'all' => __('dictt.filter_all'),
+                    \App\Models\model_messages::STATUS_UNREAD => __('dictt.message_status_unread'),
+                    \App\Models\model_messages::STATUS_READ => __('dictt.message_status_read'),
+                    'replied' => __('dictt.filter_replied'),
+                    \App\Models\model_messages::STATUS_ARCHIVED => __('dictt.message_status_archived'),
+                ];
+            @endphp
+            <div class="btn-group btn-group-sm mb-3" role="group" aria-label="{{ __('dictt.status') }}">
+                @foreach ($filters as $filterKey => $filterLabel)
+                    <a href="{{ route('admin.messages.index', ['filter' => $filterKey]) }}"
+                        class="btn {{ $filter === $filterKey ? 'btn-primary' : 'btn-outline-primary' }}">
+                        {{ $filterLabel }}
+                    </a>
+                @endforeach
             </div>
 
             <div class="table-responsive">

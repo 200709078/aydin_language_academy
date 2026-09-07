@@ -15,5 +15,11 @@
     "The provided password does not match your current password.": "Girilen şifre mevcut şifrenizle eşleşmiyor.",
     "The provided password was incorrect.": "Girilen şifre doğru değil.",
     "This password does not match our records.": "Bu şifre kayıtlarımızla eşleşmiyor.",
-    "Unknown": "Bilinmiyor"
+    "Unknown": "Bilinmiyor",
+    "Showing": "Gösteriliyor",
+    "to": "ile",
+    "of": "/",
+    "results": "sonuç",
+    "Pagination Navigation": "Sayfalama",
+    "Go to page :page": ":page. sayfaya git"
 }

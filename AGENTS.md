@@ -229,7 +229,7 @@ Kapsamlı işlerde:
 1. İncele.
 2. Bulguları bildir.
 3. Yalnız istenen adımın en küçük güvenli implementasyonunu uygula.
-4. Test et.
+4. 10. bölüme göre değişikliğe uygun doğrulamayı yap.
 5. Değişen dosyaları ve test sonuçlarını bildir.
 6. Dur.
 
@@ -247,41 +247,22 @@ Kapsam dışı iyileştirme görürsen uygulama; kısa not olarak bildir.
 
 # 10. Test standardı
 
-Değişikliğin türüne göre uygun testleri çalıştır.
+Doğrulama kapsamını değişen davranışa ve hata riskine göre seç. Her değişiklikte bütün test paketini veya bütün ekranları kontrol etme.
 
-UI işlerinde en az:
-- hatasız render,
-- validation,
-- hata/başarı mesajları,
-- CSS/JS/görseller,
-- desktop,
-- mobil,
-- internal linkler,
-- auth/authorization
+- Yalnız doküman değişikliğinde içerik, tutarlılık ve diff kontrolü yeterlidir; uygulama testlerini çalıştırma.
+- Basit metin/çeviri veya küçük görsel değişikliklerde ilgili çıktıyı kontrol et. Geri alınabilir, düşük etkili değişiklikler için yeni otomatik test yazma.
+- UI değişikliğinde etkilenen görünümü ve etkileşimi doğrula. Form validation, hata/başarı mesajları, linkler, asset'ler ve auth/authorization kontrollerini yalnız ilgili davranış değişiyorsa veya etkilenme riski varsa yap. Yeni ekranlarda bu ekranın sunduğu davranışları kapsa.
+- Yerleşim/responsive değişikliğinde masaüstü ve mobilde temsili genişlikleri kontrol et. Tablet için ayrı davranış veya breakpoint varsa onu da kontrol et; her metin değişikliğinde bütün cihaz kontrollerini tekrarlama.
+- Veritabanı değişikliğinde ilgili migration/schema, foreign key, unique, index, nullable/default ve silme davranışlarını doğrula. Model ilişkilerini yalnız model/ilişki kodu da değişiyorsa test et. MariaDB/MySQL'e özgü constraint veya kilitleme davranışını ilgili veritabanı motorunda doğrula.
+- İş kuralı, sahiplik/yetki, veri görünürlüğü, silme veya eşzamanlılık değişikliğinde ilgili başarı, hata ve sınır durumlarını hedefli testlerle doğrula. Mevcut uygun testleri kullan; yeni testi anlamlı davranış veya regresyon kapsamı eksikse ekle. Uygulamayı satır satır tekrar eden test yazma.
 
-kontrol edilir.
+İlgili kontroller geçince dur. Test kapsamını ancak yeni değişiklik, başarısızlık, çözülmemiş risk veya açık kullanıcı talebi varsa genişlet ya da tekrar çalıştır. Aynı kuralın bütün varyasyonlarını model, servis ve tarayıcı katmanlarında yeniden üretme; her katmanda o katmana ait davranışı ve bağlantıları doğrula.
 
-Database işlerinde en az:
-- migration/schema,
-- model ilişkileri,
-- foreign key,
-- unique constraint,
-- index,
-- nullable/default,
-- veri kaybı riski
-
-kontrol edilir.
+Test için kapsam dışı model, servis, ekran veya özellik geliştirme.
 
 Gerçek veritabanını resetleme.
 
-Her adım sonunda:
-- değişen dosyalar,
-- yapılan işlemler,
-- çalıştırılan testler,
-- test sonucu,
-- açık teknik notlar
-
-kısa ve somut raporlanır.
+Adım sonunda değişen dosyaları, yapılan doğrulamayı ve sonucunu kısa raporla. Gerekli olduğu halde yapılamayan kontrol veya açık teknik sorun varsa belirt; yapılmamış testi geçmiş gibi raporlama.
 
 ---
 
@@ -655,6 +636,7 @@ Kullanıcı açıkça istemeden mevcut global authorization sistemi değiştiril
 Kurallar:
 - Kullanıcı hangi adımı isterse yalnız o adımı uygula.
 - Adım sonunda raporla ve dur; sonraki adıma otomatik geçme.
+- Bütün uygulama adımlarında 10. bölümdeki doğrulama ölçütlerini kullan. Aşağıdaki test listeleri ilgili özelliğin doğrulama kapsamını tanımlar; her alt adımda baştan çalıştırılacak ortak bir kontrol listesi değildir.
 - 1A, 1B, 2A, 3A analiz adımlarıdır; kod değiştirmez.
 - 1B yalnız veri sözleşmesi tasarlar; migration oluşturmaz.
 - 11. maddede kesinleşmiş iş kurallarını yeniden karar konusu yapma; teknik ayrıntıları mevcut uygulamayı inceleyerek ilgili adımda belirle.
@@ -737,7 +719,7 @@ Admin/üye ekranlarının çağıracağı ortak kuralları mevcut proje desenler
 
 Mevcut migration/auth/fillable davranışını bozma. Controller/route/admin/frontend geliştirme. Yıkıcı DB komutu kullanma.
 
-Test et, raporla, dur.
+Raporla ve dur.
 
 ### 1D — Seed/geliştirme verileri
 Gerekliyse idempotent geliştirme seed'leri oluştur:
@@ -750,12 +732,12 @@ Gerekliyse idempotent geliştirme seed'leri oluştur:
 
 Google Form'un yalnız gerekli ve tutarlı bilgileri örnek veri olarak kullanılabilir; form iş kurallarının kaynağı değildir. Seçenekleri kodda sabitleme. Gerçek production verisi uydurma veya admin değişikliklerini ezme.
 
-Test et ve dur.
+Dur.
 
 ### 1E — Veri modeli ve ortak kuralların doğrulanması
-En az şu durumları test et:
+1C/1D'deki doğrulama kapsamını gözden geçir. Aşağıdaki kurallarda eksik kalan testleri tamamla; daha önce geçen kontrolleri yalnız 10. bölümdeki tekrar koşulları oluşursa yeniden çalıştır:
 - migration/schema, ilişkiler, index, unique, foreign key ve silme politikaları,
-- mevcut üyelik ve auth yapısının korunması; farklı e-posta ve aynı telefonla ayrı hesaplar,
+- bursluluk başvurusunun mevcut kullanıcı hesabıyla ilişkisi; farklı e-posta ve aynı telefonla ayrı hesapların başvurabilmesi,
 - hesap/dönem başına tek mevcut başvuru; farklı sınav/şube seçerek ikinci başvuru yapılamaması,
 - izin verilen kalıcı silmeden sonra aynı dönemde yeni başvuru ve sonraki dönemde aynı hesabın kullanımı,
 - öğrenci okulu, mevcut sınıf/durumu ve sınav grubunun bağımsızlığı,
@@ -787,7 +769,7 @@ Başvuru başlangıç/bitişi, sınav tarih aralığı, aktif/pasif durum ve dö
 
 İlişkili verileri silen kontrolsüz cascade işlemleri oluşturma. Diğer admin alt ekranlarına geçme.
 
-Test et ve dur.
+Dur.
 
 ### 2C — Tanımlar, oturum ve kontenjan yönetimi
 Mevcut ALA UI ve şube kullanımını genişleterek şu yönetimleri tamamla:
@@ -804,7 +786,7 @@ Doluluk örneğin `18 / 20` olarak görülsün. Ayrı toplam kontenjan girilmesi
 
 Ortak domain kurallarıyla kontenjanın mevcut doluluğun altına indirilmesini engelle. Başvurusu bulunan oturum silinemesin, arşivlenebilsin ve ilişkili kayıtlar korunsun. Dönem sonunda kalıcı oturum silme işlemini ilk sürümde ekleme.
 
-Test et ve dur.
+Dur.
 
 ### 2D — Başvuru yönetimi
 Admin listeleme, arama, filtreleme, detay, tekli/toplu onay, kalıcı silme ve oturum değiştirme işlemlerini yapabilsin. Başvuru numarası ve hesaptaki iletişim bilgilerini görüntüleyebilsin.
@@ -815,14 +797,14 @@ Admin onaylı başvuruyu değiştirebilsin. Ortak duplicate/kapasite kuralların
 
 Başvuru/sonuç değişiklik tarihçesi ve değiştiren kişi kaydı ekleme.
 
-Test et ve dur.
+Dur.
 
 ### 2E — Katılım
 Hızlı katılım ekranı `işaretlenmedi`, `katıldı`, `katılmadı` durumlarını desteklesin.
 
 Şube, tarih, saat, sınav grubu ve öğrencinin mevcut sınıf/durumu ayrı filtrelenebilsin. Katılmama için belirlenen `0/0` davranışını ve ilgili sonuç iletişimi sıfırlamasını ortak domain kurallarıyla uygula; işaretlenmemiş katılımı otomatik `0/0` sayma.
 
-Not/burs yönetim ekranlarına geçme. Test et ve dur.
+Not/burs yönetim ekranlarına geçme. Dur.
 
 ### 2F — Not
 Liste üzerinden hızlı not girişi uygula:
@@ -833,14 +815,14 @@ Liste üzerinden hızlı not girişi uygula:
 
 Ortak yayın kuralları korunsun; eksik sonuç yayında kalmasın. İlk sürümde Excel import/export ekleme.
 
-Test et ve dur.
+Dur.
 
 ### 2G — Burs oranı
 Burs seçim ekranı `%100, %90, …, %10, %0 / Burs Yok` değerlerini tek seçimle desteklesin. `Belirlenmedi` ayrı kalsın; nota göre sıralama ve filtreler bulunsun.
 
 Burs ilgili dönem başvurusuna ait olsun; sonraki dönem önceki sonucu değiştirmesin. Yayınlanmış burs değişikliği hemen görünsün ve sonuç iletişimi `ulaşılmadı` olsun. Ortak eksik sonuç/yayın kuralları korunsun.
 
-Mevcut ALA radio/form/table stilini kullan. Test et ve dur.
+Mevcut ALA radio/form/table stilini kullan. Dur.
 
 ### 2H — Yayınlama
 Her başvuru için iki bağımsız yayın anahtarı uygula:
@@ -853,7 +835,7 @@ Not veya burs boşken sonuç yayın anahtarı tekli/toplu hiçbir yoldan açıla
 
 Yayınlanmış veride sonraki düzeltme hemen görünsün; yeniden yayın zorunlu olmasın. Yayın işlemi otomatik bildirim göndermesin. Toplu kritik işlemde mevcut ALA onay modalını kullan.
 
-Yayınlanmamış kabul kararı, not ve bursun üye çıktısına sızmadığını test et. Dur.
+Yayınlanmamış kabul kararı, not ve bursun görünürlüğünü ortak sunum kuralları üzerinden doğrula. Gerçek üye HTML/Livewire/API çıktıları ilgili 3.x adımlarında kontrol edilir. Dur.
 
 ### 2I — İletişim/bildirim
 Başvuru sonucu iletişimi ve sınav/burs sonucu iletişimini ayrı yönet:
@@ -867,7 +849,7 @@ Admin telefonla veya sistem dışından iletişim kurarak `ulaşıldı` işaretl
 
 Mevcut altyapıyı incele ve sağlayıcıyı bu adımda kullanıcıyla belirle. Yeniden denemelerde kontrolsüz mükerrer gönderimi önle. Testlerde gerçek kişilere mesaj gönderme.
 
-Test et ve dur.
+Dur.
 
 ### 2J — Excel import/export — sonraki sürüm
 Bu adım ilk sürüm kapsamı dışındadır ve ilk sürüm uygulama sırasında atlanır. İçe/dışa aktarma ekranı, dosya işleme akışı veya paket ekleme.
@@ -879,16 +861,11 @@ Veri modeli benzersiz başvuru numaraları ve açık ilişkilerle ileride aktar�
 Bu adımın ilk sürümde uygulanmaması sonraki ilk sürüm adımlarını engellemez.
 
 ### 2K — Admin uçtan uca kontrol
-İlk sürüm admin akışını uçtan uca test et:
-- dönem, başvuruları kapatma ve tanım yönetimleri,
-- öğrenci okulu/sınıfı ile şube/sınav grubu ayrımı,
-- oturum saatleri, bağımsız kapasite, doluluk, askıya alma ve arşiv,
-- başvuru onayı, kalıcı silme, yeniden başvuru ve güvenli oturum aktarımı,
-- onaylı başvuruda kullanıcı işlem engeli ve admin değişikliği,
-- katılım, 0–100 tam sayı not ve bursun boş/0 ayrımları,
-- iki ayrı tekli/toplu yayın; eksik sonuç yayın engeli ve yayınlanmamış verinin korunması,
-- iki ayrı iletişim aşaması, manuel tekli/toplu gönderim, ilgili değişiklikte sıfırlama ve teknik hata durumları,
-- authorization, desktop/mobil admin görünümü ve mevcut ALA onay modalları.
+Admin ekranlarının ortak iş kurallarıyla bağlantısını uçtan uca doğrula. 1E ve 2.x adımlarında geçen testlerin bütün varyasyonlarını tekrarlamadan şu bağlantılardaki eksikleri tamamla:
+- dönem ve oturum ayarlarının başvuru yönetimine yansıması,
+- liste/detay üzerinden onay, aktarım ve silmenin ortak kapasite ve veri koruma kurallarına uyması,
+- tekli/toplu yayın ve bildirim işlemlerinde kayıt kapsamı, eksik sonuç engeli ve ayrı iletişim aşamalarının korunması,
+- admin erişim yetkileri ve kritik işlemlerin mevcut ALA onay modalından geçmesi.
 
 Excel ilk sürüm kontrolünün parçası değildir. Yeni özellik ekleme. Raporla ve dur.
 
@@ -908,7 +885,7 @@ Login olmuş üyeye başvuruya açık bursluluk dönemlerini/sınavlarını mevc
 
 Başvuru tarihleri dışında veya admin tarafından başvuruları kapatılmış dönemde yeni başvuru başlatılamasın. Dolu, askıda ve arşivlenmiş oturumlardan başvuru başlatılamasın; askı durumunda yöneticiyle iletişim uyarısı gösterilsin.
 
-Form aşamasına geçme. Test et ve dur.
+Form aşamasına geçme. Dur.
 
 ### 3C — Başvuru formu
 Form şu bilgileri ayrı alanlarla desteklesin:
@@ -923,7 +900,7 @@ Form şu bilgileri ayrı alanlarla desteklesin:
 
 Aynı hesabın ikinci öğrenci kaydını oluşturma veya başvuruya ayrı iletişim bilgisi isteme. Mevcut sınıf/durum ile sınav grubunu birbirine bağlayan otomatik uygunluk engeli ekleme; seçim başvuranın sorumluluğundadır.
 
-Dolu, askıda veya arşivlenmiş oturum seçilemesin. Mevcut ALA form stilini kullan. Test et ve dur.
+Dolu, askıda veya arşivlenmiş oturum seçilemesin. Mevcut ALA form stilini kullan. Dur.
 
 ### 3D — Başvuru iş kurallarını üye akışına bağla
 1C'de kurulan ortak domain kurallarını kullan; aynı kuralları ikinci kez yazma.
@@ -937,14 +914,14 @@ Server-side doğrula:
 
 Farklı sınav, grup veya şube seçmek aynı dönemde ikinci mevcut başvuru hakkı sağlamasın. Başarıda benzersiz başvuru numarasını göster; onay beklerken de kontenjan ayrılsın.
 
-Test et ve dur.
+Dur.
 
 ### 3E — Başvurularım listesi
 Üye `Başvurularım` ekranında en az başvuru no, öğrenci, dönem/sınav, şube, sınav grubu, tarih/başlangıç-bitiş saati, kullanıcıya açık başvuru durumu ve sonuç yayın durumunu görsün.
 
 Kullanıcı yalnız kendi kayıtlarını ve önceki dönem başvurularını görebilsin. Başvuru onayı ile yayınını ayır; yayınlanmamış kabul kararı, not ve bursu gösterme.
 
-Test et ve dur.
+Dur.
 
 ### 3F — Başvuru detayı
 Duruma göre şunları göster:
@@ -954,7 +931,7 @@ Duruma göre şunları göster:
 - oturum askısı, arşivi ve kapanmış başvuru döneminde işlem yapılamadığı bilgisi,
 - sonuç henüz yayınlanmadı veya yayınlanmış sonuç durumu.
 
-Red/iptal durumu veya admin-only operasyon alanları gösterme. Onaylı başvuruda düzenleme/silme sunma. Test et ve dur.
+Red/iptal durumu veya admin-only operasyon alanları gösterme. Onaylı başvuruda düzenleme/silme sunma. Dur.
 
 ### 3G — Başvuru değişikliği ve kalıcı silme
 Kullanıcı yalnız başvurular açıkken, başvurusu henüz onaylanmamışken ve mevcut oturumu askıda/arşivde değilken başvurusunu düzenleyebilsin veya kalıcı silebilsin.
@@ -965,7 +942,7 @@ Silmede ilgili oturumun kontenjanı açılsın. Aynı dönemde uygun başka bir 
 
 Onaylanan, dönemi başvurulara kapanmış veya oturumu askıya/arşive alınmış başvuruda hem düzenleme hem silmeyi server-side engelle. Kritik işlemde mevcut ALA onay modalını kullan.
 
-Test et ve dur.
+Dur.
 
 ### 3H — Not ve burs sonucu
 Sonuç yayını açıldıktan sonra ilgili dönem başvurusunun notunu ve burs oranını göster. Yayınlanmadan önce veri sızdırma.
@@ -974,31 +951,21 @@ Sonuç yayını açıldıktan sonra ilgili dönem başvurusunun notunu ve burs o
 
 Yayınlanmış not/burs admin tarafından değiştirildiğinde yeniden yayın beklemeden güncel değerler görünsün. Önceki dönem sonuçları yeni dönem başvurusundan etkilenmesin.
 
-Test et ve dur.
+Dur.
 
 ### 3I — Responsive/kullanılabilirlik
-Desktop/tablet/mobil kontrol et.
+Üye ekranlarında henüz doğrulanmamış veya değişmiş yerleşim ve etkileşimleri 10. bölümdeki cihaz kapsamına göre kontrol et. Önceki adımlarda doğrulanan ve etkilenmeyen görünümleri tekrar kontrol etme.
 
 Formlar, okul/sınıf/grup ayrımı, oturum seçimleri, listeler/kartlar, badge'ler, hata/başarı mesajları, başvuru detayı, askı/arşiv uyarıları ve işlem yapılamayan durumlar mevcut ALA tasarımına uygun olsun.
 
-Yeni paralel tasarım oluşturma. Test et ve dur.
+Yeni paralel tasarım oluşturma. Dur.
 
 ### 3J — Kullanıcı akışı uçtan uca test
-En az şu senaryoları test et:
-- mevcut üye kendi hesabının öğrencisi için başvurur; ziyaretçi başvuramaz,
-- farklı e-postalı, aynı telefonlu öğrenci hesapları ayrı başvurabilir,
-- aynı hesap aynı dönemde farklı sınav/şube/grup seçerek ikinci mevcut başvuru oluşturamaz,
-- aynı hesap sonraki dönemde yeniden başvurabilir; önceki dönem sonuçları korunur,
-- öğrencinin mevcut okulu/sınıfı, sınav grubu ve şubesi ayrı saklanır; farklı sınıf/grup seçimine otomatik uygunluk engeli uygulanmaz,
-- aynı şube/gruptaki farklı saatlerin bağımsız kontenjanları ve bekleyen başvurunun yer tutması çalışır,
-- bir oturumun dolması diğer müsait oturumları kapatmaz; eşzamanlı başvuru kapasiteyi aşmaz,
-- admin onayı ile başvuru yayını ayrıdır; onaylı başvuru öğrenci için düzenleme/silmeye kapalıdır,
-- izin verilen değişiklik ve kalıcı silme kontenjanı doğru etkiler; silmeden sonra aynı dönemde yeniden başvuru yapılabilir,
-- dönem kapanışı ve oturum askısı/arşivi öğrenci işlemlerini engeller; görüntüleme devam eder,
-- admin değişikliği yayın açıksa hemen görünür ve yalnız ilgili iletişim aşamasını sıfırlar,
-- katılım, tam sayı not, burs ve boş/0 ayrımları doğru çalışır,
-- not veya burs boşken tekli/toplu yayın açılamaz; yayınlanmadan sonuç sızmaz, yayınlandıktan sonra görünür,
-- kullanıcı başka hesabın başvurusunu göremez, değiştiremez veya silemez.
+Üye ekranlarının ortak kuralları doğru çağırdığını ve gerçek çıktıları doğru sunduğunu uçtan uca doğrula. Önceki domain testlerini tarayıcıda yeniden üretmeden şu akışlardaki eksik kontrolleri tamamla:
+- mevcut hesapla başvuru oluşturma, Başvurularım üzerinden takip, izin verilen düzenleme/silme ve yeniden başvuru,
+- duplicate, dolu/askıda/arşivli oturum, dönem kapanışı ve onay kilidi gibi engellerin üye isteklerinde uygulanması; başarısız işlemde mevcut başvuru ve yerin korunması,
+- ziyaretçi ve başka hesap erişiminin liste, detay ve yazma isteklerinde engellenmesi,
+- onay/yayın ayrımı ile yayınlanmamış kabul kararı, not ve bursun gerçek HTML/Livewire/API çıktılarında korunması; yayın sonrası güncellemenin ve geçmiş dönem sonuçlarının doğru görünmesi.
 
 Yeni özellik ekleme. Raporla ve dur.
 
