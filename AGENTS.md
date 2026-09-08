@@ -633,6 +633,8 @@ Kullanıcı açıkça istemeden mevcut global authorization sistemi değiştiril
 
 # 12. Bursluluk sistemi geliştirme planı
 
+Admin öncesi hazırlık (1A–1E ve 2A) tamamlandı. Sıradaki uygulama adımı **2B — Sınav dönemi yönetimi**. Mevcut servislerin kullanım sözleşmesi, kilitleme düzeni ve doğrulama komutu [docs/scholarship-foundation.md](docs/scholarship-foundation.md) dosyasındadır; ekranlar bu ortak altyapıyı kullanır.
+
 Kurallar:
 - Kullanıcı hangi adımı isterse yalnız o adımı uygula.
 - Adım sonunda raporla ve dur; sonraki adıma otomatik geçme.

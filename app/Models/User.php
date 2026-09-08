@@ -65,6 +65,11 @@ class User extends Authenticatable
         return $this->hasMany(PlacementTest::class);
     }
 
+    public function scholarshipApplications(): HasMany
+    {
+        return $this->hasMany(ScholarshipApplication::class);
+    }
+
     public function approvedPlacementTests(): HasMany
     {
         return $this->hasMany(PlacementTest::class, 'approved_by');
