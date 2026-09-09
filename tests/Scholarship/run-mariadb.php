@@ -1,6 +1,11 @@
 <?php
 
 /** Run only scholarship domain tests on an ephemeral, socket-only MariaDB. */
+if (count($argv) !== 1 && (count($argv) !== 3 || $argv[1] !== '--filter' || $argv[2] === '')) {
+    fwrite(STDERR, "Usage: php tests/Scholarship/run-mariadb.php [--filter PHPUnitFilter]\n");
+    exit(2);
+}
+$filterArguments = count($argv) === 3 ? ['--filter', $argv[2]] : [];
 $root = dirname(__DIR__, 2);
 $directory = '/tmp/ala-scholarship-tests-'.bin2hex(random_bytes(8));
 mkdir($directory, 0700);
@@ -89,6 +94,7 @@ try {
     $process = proc_open([
         PHP_BINARY, $root.'/vendor/phpunit/phpunit/phpunit', '--no-configuration',
         '--bootstrap', __DIR__.'/bootstrap.php', '--do-not-cache-result', '--colors=never',
+        ...$filterArguments,
         __DIR__,
     ], [0 => ['file', '/dev/null', 'r'], 1 => STDOUT, 2 => STDERR], $pipes, $root);
     if (! is_resource($process)) {

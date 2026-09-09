@@ -182,6 +182,14 @@ return [
     */
 
     'attributes' => [
+        'title' => 'başlık',
+        'description' => 'açıklama',
+        'applications_open_at' => 'başvuru başlangıcı',
+        'applications_close_at' => 'başvuru bitişi',
+        'exam_starts_on' => 'ilk sınav günü',
+        'exam_ends_on' => 'son sınav günü',
+        'is_active' => 'aktiflik durumu',
+        'applications_open' => 'başvurulara izin ver',
         'name' => 'ad soyad',
         'email' => 'e-posta',
         'phone' => 'telefon numarası',

@@ -13,6 +13,7 @@ use App\Http\Controllers\AdminAchievementController;
 use App\Http\Controllers\AdminCampaignController;
 use App\Http\Controllers\AdminNewsController;
 use App\Http\Controllers\AdminSloganController;
+use App\Http\Controllers\AdminScholarshipPeriodController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\Frontend\ContactController;
 use App\Http\Controllers\Frontend\AchievementController;
@@ -189,6 +190,20 @@ Route::group(['middleware' => ['auth', isAdmin_middle::class], 'prefix' => 'admi
         Route::patch('/{campaign}/status', [AdminCampaignController::class, 'updateStatus'])
             ->whereNumber('campaign')
             ->name('status.update');
+    });
+
+    Route::prefix('scholarship/periods')->name('admin.scholarship.periods.')->group(function (): void {
+        Route::get('/', [AdminScholarshipPeriodController::class, 'index'])->name('index');
+        Route::get('/create', [AdminScholarshipPeriodController::class, 'create'])->name('create');
+        Route::post('/', [AdminScholarshipPeriodController::class, 'store'])->name('store');
+        Route::get('/{period}/edit', [AdminScholarshipPeriodController::class, 'edit'])
+            ->whereNumber('period')->name('edit');
+        Route::put('/{period}', [AdminScholarshipPeriodController::class, 'update'])
+            ->whereNumber('period')->name('update');
+        Route::patch('/{period}/applications', [AdminScholarshipPeriodController::class, 'updateApplications'])
+            ->whereNumber('period')->name('applications.update');
+        Route::delete('/{period}', [AdminScholarshipPeriodController::class, 'destroy'])
+            ->whereNumber('period')->name('destroy');
     });
 
     Route::prefix('slogans')->name('admin.slogans.')->group(function (): void {

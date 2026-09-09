@@ -35,7 +35,7 @@ class ScholarshipCatalogService
             if ($period->exists && $period->sessions()->where(function ($query) use ($attributes): void {
                 $query->where('exam_date', '<', $attributes['exam_starts_on'])->orWhere('exam_date', '>', $attributes['exam_ends_on']);
             })->lockForUpdate()->first(['id']) !== null) {
-                ScholarshipRules::fail('exam_starts_on', 'Sınav tarih aralığı mevcut oturumları kapsamaya devam etmelidir.');
+                ScholarshipRules::fail('exam_starts_on', __('dictt.scholarship_period_must_include_sessions'));
             }
             $period->fill($attributes);
             $communicatedChange = $period->exists && $period->isDirty(['title', 'description']);
@@ -54,7 +54,7 @@ class ScholarshipCatalogService
         ScholarshipRules::transaction(function () use ($id): void {
             $period = ScholarshipRules::period($id);
             if ($period->sessions()->lockForUpdate()->first(['id']) !== null || $period->applications()->lockForUpdate()->first(['id']) !== null) {
-                ScholarshipRules::fail('period_id', 'Oturumu veya başvurusu bulunan dönem silinemez.');
+                ScholarshipRules::fail('period_id', __('dictt.scholarship_period_has_dependents'));
             }
             $period->delete();
         });

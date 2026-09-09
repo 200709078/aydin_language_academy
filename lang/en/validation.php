@@ -181,6 +181,15 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'title' => 'title',
+        'description' => 'description',
+        'applications_open_at' => 'applications start',
+        'applications_close_at' => 'applications end',
+        'exam_starts_on' => 'first exam day',
+        'exam_ends_on' => 'last exam day',
+        'is_active' => 'active status',
+        'applications_open' => 'allow applications',
+    ],
 
 ];

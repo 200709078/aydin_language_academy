@@ -92,3 +92,17 @@ Test komutu yerel MariaDB araçlarıyla `/tmp` içinde geçici, ağ bağlantıs�
 - Silme/arşiv/toplu kritik işlemde Blade için `x-action-confirmation-modal`, Livewire için `x-review-action-modal` kullanılır.
 - Genel liste/filtre işleri mevcut controller/Blade deseninden; hızlı giriş ve etkileşim gerektiğinde mevcut Livewire liste desenlerinden genişletilebilir. İlk ekran dönem yönetimidir (2B).
 - Üye ekranlarının gerçek çıktıları 3.x'te doğrulanır. Sağlayıcı, gerçek gönderim ve yeniden deneme entegrasyonu 2I kapsamındadır; mevcut otomatik admin onay bildirim servisi bursluluk komutlarına bağlanmaz. Excel ilk sürüm kapsamı dışındadır.
+
+## Sınav dönemi admin ekranı (2B)
+
+Admin menüsünde **Bursluluk → Sınav Dönemleri**, `admin.scholarship.periods.*` route'larına bağlanır. `AdminScholarshipPeriodController` listeleme, oluşturma, düzenleme, bağımlılığı olmayan dönemi onay modalıyla silme ve dönem genelinde başvuru iznini değiştirme işlemlerini sunar. Bütün yazmalar `ScholarshipCatalogService` üzerinden yapılır.
+
+Aktiflik ile manuel başvuru izni ayrı alanlardır. Listedeki anahtar manuel izni, yanındaki durum ise aktiflik ve tarih aralığını da dikkate alan güncel başvuru durumunu gösterir. Tarih/saat formu saniyeleri korur; yeni dönem varsayılan olarak pasif ve başvurulara kapalıdır. Oturum veya başvurusu bulunan dönemin silinmesi engellenir.
+
+Yalnız bu ekranın HTTP bağlantılarını izole MariaDB üzerinde doğrulamak için:
+
+```bash
+php tests/Scholarship/run-mariadb.php --filter ScholarshipPeriodAdminTest
+```
+
+Bu kapsam; admin yetkisi, TR/EN görünüm ve form çıktıları, sayfalama, tarih doğrulaması, oluşturma/düzenleme/silme, manuel başvuru kapanışının ortak üye kurallarına yansıması ve ilişkili kayıtların korunmasıdır. Tanım ve oturum yönetimi 2C'dedir.

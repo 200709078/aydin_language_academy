@@ -5,6 +5,7 @@
         placementOpen: {{ request()->routeIs('placement_test_levels_*', 'placement_test_question_contents_*', 'placement_test_questions_*', 'placement_test_attempts_*') ? 'true' : 'false' }},
         userOpen: {{ request()->routeIs('admin.profile.show') ? 'true' : 'false' }},
         languageOpen: false,
+        scholarshipOpen: {{ request()->routeIs('admin.scholarship.*') ? 'true' : 'false' }},
         toggleSidebar() {
             this.sidebarOpen = !this.sidebarOpen;
             localStorage.setItem('adminSidebarOpenV2', this.sidebarOpen ? 'true' : 'false');
@@ -132,6 +133,23 @@
                         <a @click="closeSidebarOnMobile()" href="{{ route('placement_test_question_contents_list') }}" class="admin-navigation-collapse-link {{ request()->routeIs('placement_test_question_contents_list') ? 'is-active' : '' }}"><i class="fas fa-photo-film admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.question_contents') }}</a>
                         <a @click="closeSidebarOnMobile()" href="{{ route('placement_test_questions_list') }}" class="admin-navigation-collapse-link {{ request()->routeIs('placement_test_questions_list') ? 'is-active' : '' }}"><i class="fas fa-circle-question admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.questions') }}</a>
                         <a @click="closeSidebarOnMobile()" href="{{ route('placement_test_attempts_list') }}" class="admin-navigation-collapse-link {{ request()->routeIs('placement_test_attempts_*') ? 'is-active' : '' }}"><i class="fas fa-clipboard-list admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.placement_test_results') }}</a>
+                    </div>
+                </div>
+
+                <hr class="admin-navigation-divider">
+
+                <div class="admin-navigation-group">
+                    <button type="button"
+                        class="admin-navigation-trigger {{ request()->routeIs('admin.scholarship.*') ? 'is-active' : '' }}"
+                        @click="toggleGroup('scholarshipOpen')" :aria-expanded="scholarshipOpen.toString()">
+                        <i class="fas fa-graduation-cap admin-navigation-icon" aria-hidden="true"></i>
+                        <span class="admin-navigation-label">{{ __('dictt.scholarship') }}</span>
+                        <svg class="admin-navigation-arrow h-4 w-4" :class="{ 'is-open': scholarshipOpen }" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M8.72 15.47a.75.75 0 0 1 0-1.06L12.19 10 8.72 6.53a.75.75 0 1 1 1.06-1.06l4 4a.75.75 0 0 1 0 1.06l-4 4a.75.75 0 0 1-1.06 0Z" clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                    <div x-show="scholarshipOpen" x-transition class="admin-navigation-collapse" style="display: none;">
+                        <a @click="closeSidebarOnMobile()" href="{{ route('admin.scholarship.periods.index') }}" class="admin-navigation-collapse-link {{ request()->routeIs('admin.scholarship.periods.*') ? 'is-active' : '' }}"><i class="fas fa-calendar-days admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.scholarship_periods') }}</a>
                     </div>
                 </div>
 
