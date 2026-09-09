@@ -182,6 +182,18 @@ return [
     */
 
     'attributes' => [
+        'period_id' => 'exam period',
+        'branch_id' => 'ALA branch',
+        'exam_group_id' => 'exam group',
+        'exam_title' => 'exam name / type',
+        'exam_date' => 'exam date',
+        'starts_at' => 'start time',
+        'ends_at' => 'end time',
+        'capacity' => 'session capacity',
+        'archived' => 'archive status',
+        'code' => 'code',
+        'address' => 'address',
+        'sort_order' => 'sort order',
         'title' => 'title',
         'description' => 'description',
         'applications_open_at' => 'applications start',

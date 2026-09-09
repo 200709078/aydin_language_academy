@@ -39,20 +39,20 @@ class ScholarshipRules
         return $current;
     }
 
-    public static function validate(array $data, array $rules): array
+    public static function validate(array $data, array $rules, array $attributes = []): array
     {
         foreach (array_diff(array_keys($data), array_keys($rules)) as $field) {
-            self::fail((string) $field, 'Bu alan bu işlemde değiştirilemez.');
+            self::fail((string) $field, __('scholarship.field_read_only'));
         }
 
-        return Validator::make($data, $rules)->validate();
+        return Validator::make($data, $rules, [], $attributes)->validate();
     }
 
     public static function integer(): Closure
     {
         return static function (string $attribute, mixed $value, Closure $fail): void {
             if (! is_int($value) && (! is_string($value) || ! preg_match('/^-?\d+$/D', $value))) {
-                $fail('Bu alan tam sayı olmalıdır.');
+                $fail(__('scholarship.integer_required'));
             }
         };
     }

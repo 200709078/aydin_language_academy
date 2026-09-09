@@ -182,6 +182,18 @@ return [
     */
 
     'attributes' => [
+        'period_id' => 'sınav dönemi',
+        'branch_id' => 'ALA şubesi',
+        'exam_group_id' => 'sınav grubu',
+        'exam_title' => 'sınav adı / türü',
+        'exam_date' => 'sınav tarihi',
+        'starts_at' => 'başlangıç saati',
+        'ends_at' => 'bitiş saati',
+        'capacity' => 'oturum kontenjanı',
+        'archived' => 'arşiv durumu',
+        'code' => 'kod',
+        'address' => 'adres',
+        'sort_order' => 'sıralama',
         'title' => 'başlık',
         'description' => 'açıklama',
         'applications_open_at' => 'başvuru başlangıcı',

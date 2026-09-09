@@ -14,6 +14,8 @@ use App\Http\Controllers\AdminCampaignController;
 use App\Http\Controllers\AdminNewsController;
 use App\Http\Controllers\AdminSloganController;
 use App\Http\Controllers\AdminScholarshipPeriodController;
+use App\Http\Controllers\AdminScholarshipDefinitionController;
+use App\Http\Controllers\AdminScholarshipSessionController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\Frontend\ContactController;
 use App\Http\Controllers\Frontend\AchievementController;
@@ -204,6 +206,37 @@ Route::group(['middleware' => ['auth', isAdmin_middle::class], 'prefix' => 'admi
             ->whereNumber('period')->name('applications.update');
         Route::delete('/{period}', [AdminScholarshipPeriodController::class, 'destroy'])
             ->whereNumber('period')->name('destroy');
+    });
+
+    Route::prefix('scholarship/definitions/{type}')->name('admin.scholarship.definitions.')
+        ->where(['type' => 'branch|school|student_level|exam_group'])->group(function (): void {
+            Route::get('/', [AdminScholarshipDefinitionController::class, 'index'])->name('index');
+            Route::get('/create', [AdminScholarshipDefinitionController::class, 'create'])->name('create');
+            Route::post('/', [AdminScholarshipDefinitionController::class, 'store'])->name('store');
+            Route::get('/{definition}/edit', [AdminScholarshipDefinitionController::class, 'edit'])
+                ->whereNumber('definition')->name('edit');
+            Route::put('/{definition}', [AdminScholarshipDefinitionController::class, 'update'])
+                ->whereNumber('definition')->name('update');
+            Route::patch('/{definition}/status', [AdminScholarshipDefinitionController::class, 'updateStatus'])
+                ->whereNumber('definition')->name('status.update');
+            Route::delete('/{definition}', [AdminScholarshipDefinitionController::class, 'destroy'])
+                ->whereNumber('definition')->name('destroy');
+        });
+
+    Route::prefix('scholarship/sessions')->name('admin.scholarship.sessions.')->group(function (): void {
+        Route::get('/', [AdminScholarshipSessionController::class, 'index'])->name('index');
+        Route::get('/create', [AdminScholarshipSessionController::class, 'create'])->name('create');
+        Route::post('/', [AdminScholarshipSessionController::class, 'store'])->name('store');
+        Route::get('/{session}/edit', [AdminScholarshipSessionController::class, 'edit'])
+            ->whereNumber('session')->name('edit');
+        Route::put('/{session}', [AdminScholarshipSessionController::class, 'update'])
+            ->whereNumber('session')->name('update');
+        Route::patch('/{session}/status', [AdminScholarshipSessionController::class, 'updateStatus'])
+            ->whereNumber('session')->name('status.update');
+        Route::patch('/{session}/archive', [AdminScholarshipSessionController::class, 'updateArchive'])
+            ->whereNumber('session')->name('archive.update');
+        Route::delete('/{session}', [AdminScholarshipSessionController::class, 'destroy'])
+            ->whereNumber('session')->name('destroy');
     });
 
     Route::prefix('slogans')->name('admin.slogans.')->group(function (): void {

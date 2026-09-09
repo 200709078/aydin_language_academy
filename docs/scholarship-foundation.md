@@ -106,3 +106,19 @@ php tests/Scholarship/run-mariadb.php --filter ScholarshipPeriodAdminTest
 ```
 
 Bu kapsam; admin yetkisi, TR/EN görünüm ve form çıktıları, sayfalama, tarih doğrulaması, oluşturma/düzenleme/silme, manuel başvuru kapanışının ortak üye kurallarına yansıması ve ilişkili kayıtların korunmasıdır. Tanım ve oturum yönetimi 2C'dedir.
+
+## Tanım, oturum ve kontenjan admin ekranları (2C)
+
+- `admin.scholarship.definitions.*`: URL'deki `type` yalnız `branch`, `school`, `student_level`, `exam_group` olabilir. Her liste kendi kayıtlarını, kullanım sayısını, sıralamasını ve aktifliğini gösterir; ada ve aktiflik durumuna göre filtrelenir. Mevcut okul/sınıf seçenekleri sınav gruplarından bağımsızdır. Şube adresi başvuru detayında kullanılan şube bilgisidir.
+- `admin.scholarship.sessions.*`: dönem, şube, grup, oturum durumu ve sınav adına göre filtreleme; tarih/saat sırasıyla sayfalama; oturum bazında `başvuru / kapasite` gösterimi. Üstteki toplamlar sayfalama öncesindeki bütün filtre sonucundan hesaplanır; arşivli kayıtları dahil etmek veya dışarıda bırakmak durum filtresine bağlıdır.
+- Oturum formunda dönem, şube, grup, sınav adı/türü, tarih, başlangıç/bitiş saati, kapasite ve aktiflik bulunur. Kayıtlı oturumun dönemi değiştirilemez. Tarih dönemin sınav aralığında kalır, saatlerde saniyeler korunur. Mevcut doluluğun altına kapasite kaydedilemez.
+- Oturumun aktiflik anahtarı yalnız o oturumun askısını yönetir. Dolu işareti doluluktan hesaplanır; ayrı bir durum kaydı veya toplam kota yoktur. Arşivleme ve arşivden çıkarma onay modalıyla yapılır; arşivden çıkarma önceki aktiflik/askı seçimini değiştirmez. Arşivde düzenleme kaydı kendiliğinden arşivden çıkarmaz.
+- Referans verilen tanımlar ve başvurusu bulunan oturumlar silinemez. Boş kayıtların silinmesi onay modalından ve ortak servis kontrolünden geçer. Başvurular, öğrenci bilgileri ve sonuçlar arşivlemede korunur; başvuru yönetimi bu ekranlara dahil değildir.
+
+`AdminScholarshipDefinitionController` ve `AdminScholarshipSessionController` bütün yazmaları `ScholarshipCatalogService` üzerinden yapar. Yeni ekran metinleri `lang/tr/scholarship.php` ve `lang/en/scholarship.php` içindedir. Mevcut dönem ekranından dönemin oturumlarına, admin menüsünden bütün tanım ve oturum listelerine erişilir.
+
+Yalnız 2C HTTP doğrulamaları:
+
+```bash
+php tests/Scholarship/run-mariadb.php --filter 'Scholarship(Definition|Session)AdminTest'
+```

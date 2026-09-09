@@ -86,6 +86,10 @@
                                 </td>
                                 <td>
                                     <div class="d-flex flex-wrap align-items-center gap-2">
+                                        <a href="{{ route('admin.scholarship.sessions.index', ['period_id' => $period->id]) }}" class="btn btn-sm btn-outline-secondary" title="{{ __('scholarship.sessions') }}">
+                                            <i class="fa fa-clock" aria-hidden="true"></i>
+                                            <span class="visually-hidden">{{ __('scholarship.sessions') }}</span>
+                                        </a>
                                         <a href="{{ route('admin.scholarship.periods.edit', $period) }}" class="btn btn-sm btn-outline-primary" title="{{ __('dictt.edit') }}">
                                             <i class="fa fa-pen" aria-hidden="true"></i>
                                             <span class="visually-hidden">{{ __('dictt.edit') }}</span>

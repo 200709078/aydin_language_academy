@@ -84,15 +84,15 @@ class ScholarshipCatalogService
             $attributes = ScholarshipRules::validate($this->merge($session, $data, $rules), $rules);
             foreach (['branch_id' => ScholarshipBranch::class, 'exam_group_id' => ScholarshipExamGroup::class] as $field => $model) {
                 if (! $model::query()->lockForUpdate()->find($attributes[$field])) {
-                    ScholarshipRules::fail($field, 'Seçilen tanım bulunamadı.');
+                    ScholarshipRules::fail($field, __('scholarship.definition_not_found'));
                 }
             }
             if ($session->exists && $session->applications()->lockForUpdate()->get(['id'])->count() > (int) $attributes['capacity']) {
-                ScholarshipRules::fail('capacity', 'Kontenjan mevcut başvuru sayısının altına indirilemez.');
+                ScholarshipRules::fail('capacity', __('scholarship.capacity_below_occupancy'));
             }
             $definition = array_intersect_key($attributes, array_flip(['period_id', 'branch_id', 'exam_group_id', 'exam_title', 'exam_date', 'starts_at', 'ends_at']));
             if (ScholarshipExamSession::query()->where($definition)->when($id !== null, fn ($query) => $query->where('id', '!=', $id))->lockForUpdate()->first(['id']) !== null) {
-                ScholarshipRules::fail('starts_at', 'Bu sınav için aynı tarih ve saatlerde bir oturum zaten var.');
+                ScholarshipRules::fail('starts_at', __('scholarship.session_duplicate'));
             }
             $session->fill($attributes);
             $communicatedChange = $session->exists && $session->isDirty(['branch_id', 'exam_group_id', 'exam_title', 'exam_date', 'starts_at', 'ends_at']);
@@ -128,7 +128,7 @@ class ScholarshipCatalogService
             ScholarshipRules::period($periodId);
             $session = ScholarshipExamSession::query()->lockForUpdate()->findOrFail($id);
             if ($session->applications()->lockForUpdate()->first(['id']) !== null) {
-                ScholarshipRules::fail('session_id', 'Başvurusu bulunan oturum silinemez; arşive alınabilir.');
+                ScholarshipRules::fail('session_id', __('scholarship.session_has_applications'));
             }
             $session->delete();
         });
@@ -157,7 +157,12 @@ class ScholarshipCatalogService
             if ($type === 'branch') {
                 $rules['address'] = ['nullable', 'string'];
             }
-            $definition->fill(ScholarshipRules::validate($this->merge($definition, $data, $rules), $rules));
+            $definition->fill(ScholarshipRules::validate($this->merge($definition, $data, $rules), $rules, [
+                'name' => __('scholarship.'.match ($type) {
+                    'branch' => 'branch_name', 'school' => 'school_name',
+                    'student_level' => 'student_level_name', 'exam_group' => 'exam_group_name',
+                }),
+            ]));
             $communicatedChange = $definition->exists && in_array($type, ['branch', 'exam_group'], true) && $definition->isDirty(['name', 'address']);
             $definition->save();
             if ($communicatedChange) {
@@ -182,7 +187,7 @@ class ScholarshipCatalogService
                 default => $definition->applications()->lockForUpdate()->first(['id']) !== null,
             };
             if ($used) {
-                ScholarshipRules::fail('definition', 'Kullanılan tanım silinemez; pasifleştirilebilir.');
+                ScholarshipRules::fail('definition', __('scholarship.definition_has_dependents'));
             }
             $definition->delete();
         });

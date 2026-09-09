@@ -150,6 +150,10 @@
                     </button>
                     <div x-show="scholarshipOpen" x-transition class="admin-navigation-collapse" style="display: none;">
                         <a @click="closeSidebarOnMobile()" href="{{ route('admin.scholarship.periods.index') }}" class="admin-navigation-collapse-link {{ request()->routeIs('admin.scholarship.periods.*') ? 'is-active' : '' }}"><i class="fas fa-calendar-days admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.scholarship_periods') }}</a>
+                        <a @click="closeSidebarOnMobile()" href="{{ route('admin.scholarship.sessions.index') }}" class="admin-navigation-collapse-link {{ request()->routeIs('admin.scholarship.sessions.*') ? 'is-active' : '' }}"><i class="fas fa-clock admin-navigation-subicon" aria-hidden="true"></i>{{ __('scholarship.sessions') }}</a>
+                        @foreach (['branch' => ['branches', 'fa-school'], 'school' => ['schools', 'fa-building-columns'], 'student_level' => ['student_levels', 'fa-list-ol'], 'exam_group' => ['exam_groups', 'fa-layer-group']] as $definitionType => [$definitionLabel, $definitionIcon])
+                            <a @click="closeSidebarOnMobile()" href="{{ route('admin.scholarship.definitions.index', ['type' => $definitionType]) }}" class="admin-navigation-collapse-link {{ request()->routeIs('admin.scholarship.definitions.*') && request()->route('type') === $definitionType ? 'is-active' : '' }}"><i class="fas {{ $definitionIcon }} admin-navigation-subicon" aria-hidden="true"></i>{{ __('scholarship.'.$definitionLabel) }}</a>
+                        @endforeach
                     </div>
                 </div>
 
