@@ -100,26 +100,6 @@
 
                 <div class="admin-navigation-group">
                     <button type="button"
-                        class="admin-navigation-trigger {{ request()->routeIs('levels_list', 'sub_levels_list', 'themes_list', 'admin.exercise-attempts.*') ? 'is-active' : '' }}"
-                        @click="toggleGroup('themesOpen')" :aria-expanded="themesOpen.toString()">
-                        <i class="fas fa-layer-group admin-navigation-icon" aria-hidden="true"></i>
-                        <span class="admin-navigation-label">{{ __('dictt.materials') }}</span>
-                        <svg class="admin-navigation-arrow h-4 w-4" :class="{ 'is-open': themesOpen }" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                            <path fill-rule="evenodd" d="M8.72 15.47a.75.75 0 0 1 0-1.06L12.19 10 8.72 6.53a.75.75 0 1 1 1.06-1.06l4 4a.75.75 0 0 1 0 1.06l-4 4a.75.75 0 0 1-1.06 0Z" clip-rule="evenodd" />
-                        </svg>
-                    </button>
-                    <div x-show="themesOpen" x-transition class="admin-navigation-collapse" style="display: none;">
-                        <a @click="closeSidebarOnMobile()" href="{{ route('levels_list') }}" class="admin-navigation-collapse-link {{ request()->routeIs('levels_list') ? 'is-active' : '' }}"><i class="fas fa-list-ol admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.levels') }}</a>
-                        <a @click="closeSidebarOnMobile()" href="{{ route('sub_levels_list') }}" class="admin-navigation-collapse-link {{ request()->routeIs('sub_levels_list') ? 'is-active' : '' }}"><i class="fas fa-sitemap admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.sublevels') }}</a>
-                        <a @click="closeSidebarOnMobile()" href="{{ route('themes_list') }}" class="admin-navigation-collapse-link {{ request()->routeIs('themes_list') ? 'is-active' : '' }}"><i class="fas fa-palette admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.themes') }}</a>
-                        <a @click="closeSidebarOnMobile()" href="{{ route('admin.exercise-attempts.index') }}" class="admin-navigation-collapse-link {{ request()->routeIs('admin.exercise-attempts.*') ? 'is-active' : '' }}"><i class="fas fa-clipboard-list admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.exercise_attempt_results') }}</a>
-                    </div>
-                </div>
-
-                <hr class="admin-navigation-divider">
-
-                <div class="admin-navigation-group">
-                    <button type="button"
                         class="admin-navigation-trigger {{ request()->routeIs('placement_test_levels_*', 'placement_test_question_contents_*', 'placement_test_questions_*', 'placement_test_attempts_*') ? 'is-active' : '' }}"
                         @click="toggleGroup('placementOpen')" :aria-expanded="placementOpen.toString()">
                         <i class="fas fa-clipboard-check admin-navigation-icon" aria-hidden="true"></i>
@@ -154,6 +134,26 @@
                         @foreach (['branch' => ['branches', 'fa-school'], 'school' => ['schools', 'fa-building-columns'], 'student_level' => ['student_levels', 'fa-list-ol'], 'exam_group' => ['exam_groups', 'fa-layer-group']] as $definitionType => [$definitionLabel, $definitionIcon])
                             <a @click="closeSidebarOnMobile()" href="{{ route('admin.scholarship.definitions.index', ['type' => $definitionType]) }}" class="admin-navigation-collapse-link {{ request()->routeIs('admin.scholarship.definitions.*') && request()->route('type') === $definitionType ? 'is-active' : '' }}"><i class="fas {{ $definitionIcon }} admin-navigation-subicon" aria-hidden="true"></i>{{ __('scholarship.'.$definitionLabel) }}</a>
                         @endforeach
+                    </div>
+                </div>
+
+                <hr class="admin-navigation-divider">
+
+                <div class="admin-navigation-group">
+                    <button type="button"
+                        class="admin-navigation-trigger {{ request()->routeIs('levels_list', 'sub_levels_list', 'themes_list', 'admin.exercise-attempts.*') ? 'is-active' : '' }}"
+                        @click="toggleGroup('themesOpen')" :aria-expanded="themesOpen.toString()">
+                        <i class="fas fa-layer-group admin-navigation-icon" aria-hidden="true"></i>
+                        <span class="admin-navigation-label">{{ __('dictt.materials') }}</span>
+                        <svg class="admin-navigation-arrow h-4 w-4" :class="{ 'is-open': themesOpen }" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M8.72 15.47a.75.75 0 0 1 0-1.06L12.19 10 8.72 6.53a.75.75 0 1 1 1.06-1.06l4 4a.75.75 0 0 1 0 1.06l-4 4a.75.75 0 0 1-1.06 0Z" clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                    <div x-show="themesOpen" x-transition class="admin-navigation-collapse" style="display: none;">
+                        <a @click="closeSidebarOnMobile()" href="{{ route('levels_list') }}" class="admin-navigation-collapse-link {{ request()->routeIs('levels_list') ? 'is-active' : '' }}"><i class="fas fa-list-ol admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.levels') }}</a>
+                        <a @click="closeSidebarOnMobile()" href="{{ route('sub_levels_list') }}" class="admin-navigation-collapse-link {{ request()->routeIs('sub_levels_list') ? 'is-active' : '' }}"><i class="fas fa-sitemap admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.sublevels') }}</a>
+                        <a @click="closeSidebarOnMobile()" href="{{ route('themes_list') }}" class="admin-navigation-collapse-link {{ request()->routeIs('themes_list') ? 'is-active' : '' }}"><i class="fas fa-palette admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.themes') }}</a>
+                        <a @click="closeSidebarOnMobile()" href="{{ route('admin.exercise-attempts.index') }}" class="admin-navigation-collapse-link {{ request()->routeIs('admin.exercise-attempts.*') ? 'is-active' : '' }}"><i class="fas fa-clipboard-list admin-navigation-subicon" aria-hidden="true"></i>{{ __('dictt.exercise_attempt_results') }}</a>
                     </div>
                 </div>
 

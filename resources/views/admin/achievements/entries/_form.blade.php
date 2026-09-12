@@ -40,6 +40,7 @@
             @if ($method !== 'POST')
                 @method($method)
             @endif
+            <input type="hidden" name="name_permission_granted" value="{{ $initialPermissionGranted ? '1' : '0' }}">
 
             <div class="border rounded p-3 mb-4">
                 <div class="row">
@@ -102,23 +103,6 @@
                             class="form-control @error('card_sub_title') is-invalid @enderror" maxlength="100">
                         @error('card_sub_title')
                             <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <div class="col-12 mb-3">
-                        <label for="name_permission_granted" class="form-label">
-                            {{ __('dictt.achievement_name_permission') }}
-                        </label>
-                        <div class="form-check form-switch mb-0">
-                            <input type="hidden" name="name_permission_granted" value="0">
-                            <input id="name_permission_granted" type="checkbox" class="form-check-input"
-                                name="name_permission_granted" value="1" role="switch"
-                                aria-describedby="name_permission_auto_date_help" @checked($initialPermissionGranted)>
-                        </div>
-                        <div id="name_permission_auto_date_help" class="form-text">
-                            {{ __('dictt.achievement_name_permission_auto_date_help') }}
-                        </div>
-                        @error('name_permission_granted')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
                 </div>
