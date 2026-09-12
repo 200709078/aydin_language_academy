@@ -22,36 +22,15 @@
                         <i class="fa fa-ban mr-1"></i> {{ __('dictt.back_short') }}
                     </button>
                     <button wire:click="executePendingAction"
-                        class="px-4 py-2 text-white rounded-md transition {{ $pendingAction === 'force-delete' ? 'bg-red-600 hover:bg-red-700' : 'bg-secondary hover:bg-gray-700' }}">
-                        <i class="fa {{ $pendingAction === 'force-delete' ? 'fa-trash-alt' : 'fa-archive' }} mr-1"></i>
-                        {{ $pendingAction === 'force-delete' ? __('dictt.review_permanently_delete') : __('dictt.review_archive_action') }}
+                        class="px-4 py-2 text-white rounded-md transition {{ $pendingAction === 'force-delete' ? 'bg-red-600 hover:bg-red-700' : ($pendingAction === 'unarchive' ? 'bg-success' : 'bg-secondary hover:bg-gray-700') }}">
+                        <i class="fa {{ $pendingAction === 'force-delete' ? 'fa-trash-alt' : ($pendingAction === 'unarchive' ? 'fa-box-open' : 'fa-archive') }} mr-1"></i>
+                        {{ $pendingAction === 'force-delete' ? __('dictt.review_permanently_delete') : ($pendingAction === 'unarchive' ? __('dictt.review_restore_action') : __('dictt.review_archive_action')) }}
                     </button>
                 </div>
             </div>
         </x-modal>
     @endif
     <!-- Archive / permanent delete modal end -->
-    <!-- Success Start -->
-    @if ((session('modalSuccessTitle') && session('modalSuccessContent')) || ($modalSuccessTitle && $modalSuccessContent))
-        <div class="relative bg-green-100 text-green-800 px-6 py-4 rounded-lg shadow mb-6 w-full">
-            <div
-                class="absolute bottom-[-10px] left-10 w-0 h-0 border-l-[10px] border-l-transparent border-r-[10px] border-r-transparent border-t-[10px] border-t-green-100">
-            </div>
-            <div class="flex justify-between items-center">
-                <h2 class="text-lg font-semibold flex items-center">
-                    <i class="fas fa-check-circle mr-2"></i>
-                    {!! session('modalSuccessTitle') ?? $modalSuccessTitle !!}
-                </h2>
-                <button type="button" wire:click="dismissSuccess" class="text-gray-500 hover:text-red-600 ml-4" title="{{ __('dictt.close') }}">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="mt-2 text-sm">
-                {!! session('modalSuccessContent') ?? $modalSuccessContent !!}
-            </div>
-        </div>
-    @endif
-    <!-- Success End  -->
     <div class="card">
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-start gap-3 mb-3">
@@ -132,6 +111,11 @@
                                 <td class="text-end">
                                     <div class="d-flex justify-content-end gap-1">
                                         @if ($review->status === \App\Models\Review::STATUS_ARCHIVED || $review->trashed())
+                                            <button type="button" wire:click="confirmUnarchive({{ $review->id }})"
+                                                class="btn btn-sm btn-outline-success" title="{{ __('dictt.review_restore_action') }}">
+                                                <i class="fa fa-box-open w-4" aria-hidden="true"></i>
+                                                <span class="visually-hidden">{{ __('dictt.review_restore_action') }}</span>
+                                            </button>
                                             <button type="button" wire:click="confirmForceDelete({{ $review->id }})"
                                                 class="btn btn-sm btn-outline-primary admin-danger-action" title="{{ __('dictt.review_permanently_delete') }}">
                                                 <i class="fa fa-trash w-4" aria-hidden="true"></i>

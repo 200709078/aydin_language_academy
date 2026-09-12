@@ -39,6 +39,9 @@
             'admin-main-content' => Auth::check() && Auth::user()->type === 'admin',
         ])>
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                @if (Auth::check() && Auth::user()->type === 'admin')
+                    @include('partials.admin-toasts')
+                @else
                 <!-- Errors Start -->
                 @if ($errors->any())
                     <div class="relative bg-red-100 text-red-800 px-6 py-4 rounded-lg shadow mb-6 w-full max-w-full">
@@ -63,6 +66,7 @@
                     </div>
                 @endif
                 <!-- Errors End -->
+                @endif
                 {{ $slot }}
             </div>
         </div>

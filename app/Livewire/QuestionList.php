@@ -14,8 +14,6 @@ class QuestionList extends Component
     public $questionToDelete = null;
     public $modalConfirmTitle;
     public $modalConfirmContent;
-    public $modalSuccessTitle;
-    public $modalSuccessContent;
 
     public function mount($exercise_id, $theme_id)
     {
@@ -37,8 +35,7 @@ class QuestionList extends Component
         if ($this->questionToDelete) {
             $question= $this->questionToDelete;
             $this->questionToDelete->delete();
-            $this->modalSuccessTitle = __('dictt.deletesuccesstitle', ['type' => __('dictt.question')]);
-            $this->modalSuccessContent = __('dictt.deletesuccesscontent', ['type' => Str::lower(__('dictt.question')), 'name' => $question->question]);
+            $this->dispatch('admin-toast', type: 'success', title: __('dictt.deletesuccesstitle', ['type' => __('dictt.question')]), message: __('dictt.deletesuccesscontent', ['type' => Str::lower(__('dictt.question')), 'name' => $question->question]));
             $this->confirmingDelete = false;
         }
     }

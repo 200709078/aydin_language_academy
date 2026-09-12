@@ -1,7 +1,6 @@
 <x-app-layout>
     <x-slot name="header">{{ __('scholarship.sessions') }}</x-slot>
 
-    @include('admin.scholarship._success')
 
     <div class="card">
         <div class="card-body">

@@ -1,27 +1,6 @@
 <x-app-layout>
     <x-slot name="header">{{ __('dictt.slogans') }}</x-slot>
 
-    @if (session('modalSuccessTitle') && session('modalSuccessContent'))
-        <div class="relative bg-green-100 text-green-800 px-6 py-4 rounded-lg shadow mb-6 w-full">
-            <div
-                class="absolute bottom-[-10px] left-10 w-0 h-0 border-l-[10px] border-l-transparent border-r-[10px] border-r-transparent border-t-[10px] border-t-green-100">
-            </div>
-            <div class="flex justify-between items-center">
-                <h2 class="text-lg font-semibold flex items-center">
-                    <i class="fas fa-check-circle mr-2" aria-hidden="true"></i>
-                    {!! session('modalSuccessTitle') !!}
-                </h2>
-                <button type="button" onclick="this.parentElement.parentElement.remove()"
-                    class="text-gray-500 hover:text-red-600 ml-4" title="{{ __('dictt.close') }}"
-                    aria-label="{{ __('dictt.close') }}">
-                    <i class="fas fa-times" aria-hidden="true"></i>
-                </button>
-            </div>
-            <div class="mt-2 text-sm">
-                {!! session('modalSuccessContent') !!}
-            </div>
-        </div>
-    @endif
 
     <div class="card">
         <div class="card-body">

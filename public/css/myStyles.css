@@ -458,3 +458,87 @@ table th {
         row-gap: 0.75rem;
     }
 }
+
+/* Admin toast bildirimleri */
+.admin-toasts {
+    position: fixed;
+    right: 1rem;
+    bottom: 1rem;
+    z-index: 3000;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    width: min(22rem, calc(100vw - 2rem));
+}
+
+.admin-toast {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.875rem 1rem;
+    border-radius: 0.5rem;
+    background: #ffffff;
+    border-left: 4px solid #6b7280;
+    box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.18);
+    animation: admin-toast-in 250ms ease;
+}
+
+.admin-toast--success {
+    border-left-color: #16a34a;
+}
+
+.admin-toast--error {
+    border-left-color: #dc2626;
+}
+
+.admin-toast__icon {
+    flex-shrink: 0;
+    margin-top: 0.125rem;
+    font-size: 1.25rem;
+}
+
+.admin-toast--success .admin-toast__icon {
+    color: #16a34a;
+}
+
+.admin-toast--error .admin-toast__icon {
+    color: #dc2626;
+}
+
+.admin-toast__body {
+    flex: 1;
+    min-width: 0;
+    color: #111827;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    overflow-wrap: break-word;
+}
+
+.admin-toast__title {
+    font-weight: 600;
+}
+
+.admin-toast__close {
+    flex-shrink: 0;
+    border: 0;
+    background: transparent;
+    color: #9ca3af;
+    cursor: pointer;
+    padding: 0.125rem 0.25rem;
+    line-height: 1;
+}
+
+.admin-toast__close:hover {
+    color: #dc2626;
+}
+
+@keyframes admin-toast-in {
+    from {
+        opacity: 0;
+        transform: translateY(0.75rem);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

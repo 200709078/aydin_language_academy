@@ -12,8 +12,6 @@ class LevelList extends Component
     public $levelToDelete = null;
     public $modalConfirmTitle;
     public $modalConfirmContent;
-    public $modalSuccessTitle;
-    public $modalSuccessContent;
     public function confirmDelete($id)
     {
         $level = model_levels::withCount('themes')->find($id);
@@ -43,8 +41,7 @@ class LevelList extends Component
         }
 
         $level->delete();
-        $this->modalSuccessTitle = __('dictt.deletesuccesstitle', ['type' => __('dictt.level')]);
-        $this->modalSuccessContent = __('dictt.deletesuccesscontent', ['type' => Str::lower(__('dictt.level')), 'name' => $level->name]);
+        $this->dispatch('admin-toast', type: 'success', title: __('dictt.deletesuccesstitle', ['type' => __('dictt.level')]), message: __('dictt.deletesuccesscontent', ['type' => Str::lower(__('dictt.level')), 'name' => $level->name]));
         $this->confirmingDelete = false;
     }
 

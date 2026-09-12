@@ -12,8 +12,6 @@ class SubLevelList extends Component
     public $sublevelToDelete = null;
     public $modalConfirmTitle;
     public $modalConfirmContent;
-    public $modalSuccessTitle;
-    public $modalSuccessContent;
     public function confirmDelete($id)
     {
         $sublevel = model_sub_levels::withCount('themes')->find($id);
@@ -43,8 +41,7 @@ class SubLevelList extends Component
         }
 
         $sublevel->delete();
-        $this->modalSuccessTitle = __('dictt.deletesuccesstitle', ['type' => __('dictt.sublevel')]);
-        $this->modalSuccessContent = __('dictt.deletesuccesscontent', ['type' => Str::lower(__('dictt.sublevel')), 'name' => $sublevel->name]);
+        $this->dispatch('admin-toast', type: 'success', title: __('dictt.deletesuccesstitle', ['type' => __('dictt.sublevel')]), message: __('dictt.deletesuccesscontent', ['type' => Str::lower(__('dictt.sublevel')), 'name' => $sublevel->name]));
         $this->confirmingDelete = false;
     }
 

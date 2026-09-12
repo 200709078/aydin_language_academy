@@ -30,27 +30,7 @@
         </x-modal>
     @endif
     <!-- Delete Modal End -->
-    <!-- Success Start -->
-    @if ((session('modalSuccessTitle') && session('modalSuccessContent')) || ($modalSuccessTitle && $modalSuccessContent))
-        <div class="relative bg-green-100 text-green-800 px-6 py-4 rounded-lg shadow mb-6 w-full">
-            <div
-                class="absolute bottom-[-10px] left-10 w-0 h-0 border-l-[10px] border-l-transparent border-r-[10px] border-r-transparent border-t-[10px] border-t-green-100">
-            </div>
-            <div class="flex justify-between items-center">
-                <h2 class="text-lg font-semibold flex items-center">
-                    <i class="fas fa-check-circle mr-2"></i>
-                    {!! session('modalSuccessTitle') ?? $modalSuccessTitle !!}
-                </h2>
-                <button onclick="this.parentElement.parentElement.remove()" class="text-gray-500 hover:text-red-600 ml-4" title="{{ __('dictt.close') }}">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="mt-2 text-sm">
-                {!! session('modalSuccessContent') ?? $modalSuccessContent !!}
-            </div>
-        </div>
-    @endif
-    <!-- Success End  -->
+
     <div class="card">
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-start gap-3 mb-3">

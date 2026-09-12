@@ -13,8 +13,6 @@ class DeclarationList extends Component
     public $declarationToDelete = null;
     public $modalConfirmTitle;
     public $modalConfirmContent;
-    public $modalSuccessTitle;
-    public $modalSuccessContent;
 
     public function mount($theme_id)
     {
@@ -36,8 +34,7 @@ class DeclarationList extends Component
             $declaration = $this->declarationToDelete;
             $this->declarationToDelete->delete();
             $this->declarations = model_declarations::all();
-            $this->modalSuccessTitle = __('dictt.deletesuccesstitle', ['type' => __('dictt.declaration')]);
-            $this->modalSuccessContent = __('dictt.deletesuccesscontent', ['type' => Str::lower(__('dictt.declaration')), 'name' => $declaration->title]);
+            $this->dispatch('admin-toast', type: 'success', title: __('dictt.deletesuccesstitle', ['type' => __('dictt.declaration')]), message: __('dictt.deletesuccesscontent', ['type' => Str::lower(__('dictt.declaration')), 'name' => $declaration->title]));
             $this->confirmingDelete = false;
         }
     }

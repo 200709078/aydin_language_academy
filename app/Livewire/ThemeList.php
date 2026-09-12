@@ -14,8 +14,6 @@ class ThemeList extends Component
     public $themeToDelete = null;
     public $modalConfirmTitle;
     public $modalConfirmContent;
-    public $modalSuccessTitle;
-    public $modalSuccessContent;
     public function confirmDelete($id)
     {
         $theme = model_themes::withCount(['declarations', 'exercises'])->find($id);
@@ -53,8 +51,7 @@ class ThemeList extends Component
         }
 
         $theme->delete();
-        $this->modalSuccessTitle = __('dictt.deletesuccesstitle', ['type' => __('dictt.theme')]);
-        $this->modalSuccessContent = __('dictt.deletesuccesscontent', ['type' => Str::lower(__('dictt.theme')), 'name' => $theme->name]);
+        $this->dispatch('admin-toast', type: 'success', title: __('dictt.deletesuccesstitle', ['type' => __('dictt.theme')]), message: __('dictt.deletesuccesscontent', ['type' => Str::lower(__('dictt.theme')), 'name' => $theme->name]));
         $this->confirmingDelete = false;
     }
 

@@ -13,8 +13,6 @@ class ExerciseList extends Component
     public $exerciseToDelete = null;
     public $modalConfirmTitle;
     public $modalConfirmContent;
-    public $modalSuccessTitle;
-    public $modalSuccessContent;
 
     public function mount($theme_id)
     {
@@ -50,8 +48,7 @@ class ExerciseList extends Component
         }
 
         $exercise->delete();
-        $this->modalSuccessTitle = __('dictt.deletesuccesstitle', ['type' => __('dictt.exercise')]);
-        $this->modalSuccessContent = __('dictt.deletesuccesscontent', ['type' => Str::lower(__('dictt.exercise')), 'name' => $exercise->title]);
+        $this->dispatch('admin-toast', type: 'success', title: __('dictt.deletesuccesstitle', ['type' => __('dictt.exercise')]), message: __('dictt.deletesuccesscontent', ['type' => Str::lower(__('dictt.exercise')), 'name' => $exercise->title]));
         $this->confirmingDelete = false;
     }
 

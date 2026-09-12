@@ -21,10 +21,6 @@ class ReviewList extends Component
 
     public $modalConfirmContent;
 
-    public $modalSuccessTitle;
-
-    public $modalSuccessContent;
-
     public function mount()
     {
         $this->loadReviews();
@@ -47,8 +43,7 @@ class ReviewList extends Component
             $review->approved_at = now();
             $review->save();
 
-            $this->modalSuccessTitle = __('dictt.updatesuccesstitle', ['type' => __('dictt.review')]);
-            $this->modalSuccessContent = __('dictt.admin_review_approve_success', ['name' => $this->displayName($review)]);
+            $this->dispatch('admin-toast', type: 'success', title: __('dictt.updatesuccesstitle', ['type' => __('dictt.review')]), message: __('dictt.admin_review_approve_success', ['name' => $this->displayName($review)]));
         }
 
         $this->loadReviews();
@@ -66,8 +61,7 @@ class ReviewList extends Component
             $review->approved_at = null;
             $review->save();
 
-            $this->modalSuccessTitle = __('dictt.updatesuccesstitle', ['type' => __('dictt.review')]);
-            $this->modalSuccessContent = __('dictt.admin_review_reject_success', ['name' => $this->displayName($review)]);
+            $this->dispatch('admin-toast', type: 'success', title: __('dictt.updatesuccesstitle', ['type' => __('dictt.review')]), message: __('dictt.admin_review_reject_success', ['name' => $this->displayName($review)]));
         }
 
         $this->loadReviews();
@@ -85,16 +79,14 @@ class ReviewList extends Component
             $review->approved_at = null;
             $review->save();
 
-            $this->modalSuccessTitle = __('dictt.updatesuccesstitle', ['type' => __('dictt.review')]);
-            $this->modalSuccessContent = __('dictt.admin_review_update_success', ['name' => $this->displayName($review)]);
+            $this->dispatch('admin-toast', type: 'success', title: __('dictt.updatesuccesstitle', ['type' => __('dictt.review')]), message: __('dictt.admin_review_update_success', ['name' => $this->displayName($review)]));
         } else {
             $review->status = Review::STATUS_APPROVED;
             $review->approved_by = auth()->id();
             $review->approved_at = now();
             $review->save();
 
-            $this->modalSuccessTitle = __('dictt.updatesuccesstitle', ['type' => __('dictt.review')]);
-            $this->modalSuccessContent = __('dictt.admin_review_approve_success', ['name' => $this->displayName($review)]);
+            $this->dispatch('admin-toast', type: 'success', title: __('dictt.updatesuccesstitle', ['type' => __('dictt.review')]), message: __('dictt.admin_review_approve_success', ['name' => $this->displayName($review)]));
         }
 
         $this->loadReviews();
@@ -126,6 +118,19 @@ class ReviewList extends Component
         $this->confirmingAction = true;
     }
 
+    public function confirmUnarchive($id): void
+    {
+        $review = Review::withTrashed()->findOrFail($id);
+
+        $this->ensureReviewIsArchived($review);
+
+        $this->reviewToActOn = $review->id;
+        $this->pendingAction = 'unarchive';
+        $this->modalConfirmTitle = __('dictt.review_restore_action');
+        $this->modalConfirmContent = __('dictt.review_restore_confirm', ['name' => $this->displayName($review)]);
+        $this->confirmingAction = true;
+    }
+
     public function executePendingAction(): void
     {
         if (! $this->reviewToActOn || ! $this->pendingAction) {
@@ -134,13 +139,27 @@ class ReviewList extends Component
             return;
         }
 
+        if ($this->pendingAction === 'unarchive') {
+            $review = Review::withTrashed()->findOrFail($this->reviewToActOn);
+            $this->ensureReviewIsArchived($review);
+
+            if ($review->trashed()) {
+                $review->restore();
+            }
+            $review->forceFill([
+                'status' => Review::STATUS_PENDING,
+                'approved_by' => null,
+                'approved_at' => null,
+            ])->save();
+            $this->dispatch('admin-toast', type: 'success', title: __('dictt.review_restore_action'), message: __('dictt.review_restored'));
+        }
+
         if ($this->pendingAction === 'archive') {
             $review = Review::findOrFail($this->reviewToActOn);
             $this->ensureReviewIsActive($review);
 
             $review->update(['status' => Review::STATUS_ARCHIVED]);
-            $this->modalSuccessTitle = __('dictt.review_archive_action');
-            $this->modalSuccessContent = __('dictt.review_archived');
+            $this->dispatch('admin-toast', type: 'success', title: __('dictt.review_archive_action'), message: __('dictt.review_archived'));
         }
 
         if ($this->pendingAction === 'force-delete') {
@@ -148,20 +167,11 @@ class ReviewList extends Component
             $this->ensureReviewIsArchived($review);
 
             $review->forceDelete();
-            $this->modalSuccessTitle = __('dictt.review_permanently_delete');
-            $this->modalSuccessContent = __('dictt.review_permanently_deleted');
+            $this->dispatch('admin-toast', type: 'success', title: __('dictt.review_permanently_delete'), message: __('dictt.review_permanently_deleted'));
         }
 
         $this->clearPendingAction();
         $this->loadReviews();
-    }
-
-    public function dismissSuccess(): void
-    {
-        $this->modalSuccessTitle = null;
-        $this->modalSuccessContent = null;
-
-        session()->forget(['modalSuccessTitle', 'modalSuccessContent']);
     }
 
     private function displayName(Review $review): string
