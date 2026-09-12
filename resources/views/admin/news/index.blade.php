@@ -75,7 +75,7 @@
                             <th scope="col">{{ __('dictt.news_display_location') }}</th>
                             <th scope="col">{{ __('dictt.news_content_blocks') }}</th>
                             <th scope="col">{{ __('dictt.news_published_at') }}</th>
-                            <th scope="col">{{ __('dictt.updated_at') }}</th>
+                            <th scope="col">{{ __('dictt.news_unpublished_at') }}</th>
                             <th scope="col">{{ __('dictt.operations') }}</th>
                         </tr>
                     </thead>
@@ -101,7 +101,7 @@
                                 <td>{{ $displayLabels[$item->display_location] ?? $item->display_location }}</td>
                                 <td>{{ $item->content_blocks_count }}</td>
                                 <td class="text-nowrap">{{ $item->published_at?->format('d.m.Y H:i') ?? '—' }}</td>
-                                <td class="text-nowrap">{{ $item->updated_at?->format('d.m.Y H:i') ?? '—' }}</td>
+                                <td class="text-nowrap">{{ $item->unpublished_at?->format('d.m.Y H:i') ?? '—' }}</td>
                                 <td>
                                     <div class="d-flex flex-wrap align-items-center gap-1">
                                         <a href="{{ route('admin.news.edit', $item) }}" class="btn btn-sm btn-outline-primary"
