@@ -29,3 +29,7 @@ Homestead.json
 .env.production
 .phpactor.json
 auth.json
+
+# Local database backup and video kept outside Git
+/lear3517_ala_db.sql
+/public/frontend/images/ana_video.mp4

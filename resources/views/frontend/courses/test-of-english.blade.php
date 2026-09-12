@@ -35,12 +35,12 @@
 <body>
     @include('frontend.partials.header')
 
-    <!-- Test of English Course Start -->
+    <!-- Oxford Test of English Course Start -->
     <div class="container-xxl py-5">
         <div class="container">
             <div class="row g-5">
                 <div class="col-lg-6 order-2 wow fadeIn" data-wow-delay="0.5s">
-                    <img class="img-fluid rounded w-100" src="{{ asset('frontend/images/courses/test-of-english.jpg') }}" alt="{{ __('dictt.test_of_english') }}">
+                    <img class="img-fluid rounded w-100" src="{{ asset('frontend/images/courses/oxford-test-of-english.jpg') }}" alt="{{ __('dictt.test_of_english') }}">
                     <p class="mt-4 mb-0 clearfix"><i class="fa fa-book-open text-primary fs-4 float-start me-3" aria-hidden="true"></i>{{ __('dictt.shared_course_image_text') }}</p>
                 </div>
                 <div class="col-lg-6 order-1 wow fadeIn" data-wow-delay="0.1s">
@@ -53,7 +53,7 @@
             </div>
         </div>
     </div>
-    <!-- Test of English Course End -->
+    <!-- Oxford Test of English Course End -->
 
     @include('frontend.partials.footer')
 
