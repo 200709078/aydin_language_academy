@@ -182,6 +182,10 @@ return [
     */
 
     'attributes' => [
+        'student_name' => 'student name',
+        'school_id' => 'current school',
+        'student_level_id' => 'current grade / status',
+        'session_id' => 'exam session',
         'period_id' => 'exam period',
         'branch_id' => 'ALA branch',
         'exam_group_id' => 'exam group',

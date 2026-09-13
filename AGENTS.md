@@ -247,14 +247,20 @@ Kapsam dışı iyileştirme görürsen uygulama; kısa not olarak bildir.
 
 # 10. Test standardı
 
-Doğrulama kapsamını değişen davranışa ve hata riskine göre seç. Her değişiklikte bütün test paketini veya bütün ekranları kontrol etme.
+Alt geliştirme adımlarında varsayılan **kısa ve kritik doğrulama**dır. Ayrıntılı kontrolleri bursluluk sisteminin admin ve üye geliştirmesi tamamen bittikten sonraki **3J — Genel sistem testi** adımında topla; her alt adımı ayrı bir kapsamlı test çalışmasına dönüştürme.
 
 - Yalnız doküman değişikliğinde içerik, tutarlılık ve diff kontrolü yeterlidir; uygulama testlerini çalıştırma.
 - Basit metin/çeviri veya küçük görsel değişikliklerde ilgili çıktıyı kontrol et. Geri alınabilir, düşük etkili değişiklikler için yeni otomatik test yazma.
-- UI değişikliğinde etkilenen görünümü ve etkileşimi doğrula. Form validation, hata/başarı mesajları, linkler, asset'ler ve auth/authorization kontrollerini yalnız ilgili davranış değişiyorsa veya etkilenme riski varsa yap. Yeni ekranlarda bu ekranın sunduğu davranışları kapsa.
-- Yerleşim/responsive değişikliğinde masaüstü ve mobilde temsili genişlikleri kontrol et. Tablet için ayrı davranış veya breakpoint varsa onu da kontrol et; her metin değişikliğinde bütün cihaz kontrollerini tekrarlama.
-- Veritabanı değişikliğinde ilgili migration/schema, foreign key, unique, index, nullable/default ve silme davranışlarını doğrula. Model ilişkilerini yalnız model/ilişki kodu da değişiyorsa test et. MariaDB/MySQL'e özgü constraint veya kilitleme davranışını ilgili veritabanı motorunda doğrula.
-- İş kuralı, sahiplik/yetki, veri görünürlüğü, silme veya eşzamanlılık değişikliğinde ilgili başarı, hata ve sınır durumlarını hedefli testlerle doğrula. Mevcut uygun testleri kullan; yeni testi anlamlı davranış veya regresyon kapsamı eksikse ekle. Uygulamayı satır satır tekrar eden test yazma.
+- Kod değişikliğinde gerekli sözdizimi/diff kontrolünü ve temel işlemin çalıştığını gösteren kısa bir doğrulamayı yap. Önce mevcut hedefli testleri kullan; yeterliyse aynı akışı ayrıca tarayıcıda tekrarlama.
+- Yeni veya değişen ekranda açılma ve temel işlemin (örneğin kaydetme) çalışmasını kısa HTTP/şablon kontrolleriyle doğrula. Bütün filtre, hata mesajı, dil ve cihaz kombinasyonlarını alt adımda tarama. Geçici tarayıcı test ortamı kurma; ayrıntılı etkileşim ve görünüm kontrollerini 3J'ye bırak.
+- Yetki, sahiplik, veri görünürlüğü, kalıcı silme, kontenjan/duplicate, yayın engeli veya eşzamanlılık davranışı değiştiyse ilgili kritik başarı ve engelleme durumlarını o adımda hedefli doğrula. Bu temel güvenceleri genel sistem testine erteleme; önceden doğrulanan ortak kuralların bütün varyasyonlarını yeniden üretme.
+- Veritabanı değişikliğinde yalnız değişen şemayı ve etkilediği kritik veri bütünlüğü/silme davranışını doğrula. MariaDB/MySQL'e özgü kısıt veya kilit değiştiyse ilgili motorda kontrol et. Şema değişmediyse migration kontrollerini tekrarlama.
+
+**2K yalnız admin temel kontrollerinin değerlendirilmesidir; 3I temel responsive/kullanılabilirlik incelemesidir.** Geçici tarayıcı test ortamı, ayrıntılı TR/EN, masaüstü/mobil (ayrı davranış varsa tablet), filtre/mesaj varyasyonları ve admin–üye uçtan uca kontrollerinin tamamı **2B–2I ve 3B–3I bittikten sonra 3J** adımında yapılır.
+
+Yeni demo veri/seed ekleme, mevcut demo seed'ini genişletme veya çalıştırma işi de 3J'de, genel testten hemen önce yapılır. Mevcut seed ve veriler korunur. Temel otomatik kontrolün gerektirdiği en az sayıda, izole ve geçici test kaydı demo veri hazırlığı sayılmaz; bu amaçla geniş örnek veri seti kurma.
+
+Mevcut testleri koru. Yeni otomatik test yalnız değişen kritik davranışın veya somut bir hatanın kapsamı eksikse eklenir; ayrıntılı ek senaryolar 3J'ye bırakılır. Uygulamayı satır satır tekrar eden test yazma.
 
 İlgili kontroller geçince dur. Test kapsamını ancak yeni değişiklik, başarısızlık, çözülmemiş risk veya açık kullanıcı talebi varsa genişlet ya da tekrar çalıştır. Aynı kuralın bütün varyasyonlarını model, servis ve tarayıcı katmanlarında yeniden üretme; her katmanda o katmana ait davranışı ve bağlantıları doğrula.
 
@@ -262,7 +268,7 @@ Test için kapsam dışı model, servis, ekran veya özellik geliştirme.
 
 Gerçek veritabanını resetleme.
 
-Adım sonunda değişen dosyaları, yapılan doğrulamayı ve sonucunu kısa raporla. Gerekli olduğu halde yapılamayan kontrol veya açık teknik sorun varsa belirt; yapılmamış testi geçmiş gibi raporlama.
+Adım sonunda değişen dosyaları ve kısa doğrulama sonucunu bildir. Genel sistem testine bırakılan yeni kontrol ihtiyacını geliştirme dokümanına kısa not et. Bu erteleme tek başına alt adımı eksik bırakmaz; yapılmamış ayrıntılı kontrolleri geçmiş gibi raporlama. Kritik kontrolde açık hata varsa belirt ve ilgili kapsamda düzelt.
 
 ---
 
@@ -633,12 +639,12 @@ Kullanıcı açıkça istemeden mevcut global authorization sistemi değiştiril
 
 # 12. Bursluluk sistemi geliştirme planı
 
-Admin öncesi hazırlık (1A–1E ve 2A) ve **2B — Sınav dönemi yönetimi** tamamlandı. Sıradaki uygulama adımı **2C — Tanımlar, oturum ve kontenjan yönetimi**. Mevcut servislerin kullanım sözleşmesi, kilitleme düzeni ve doğrulama komutları [docs/scholarship-foundation.md](docs/scholarship-foundation.md) dosyasındadır; ekranlar bu ortak altyapıyı kullanır.
+Admin öncesi hazırlık (1A–1E ve 2A), **2B — Sınav dönemi yönetimi**, **2C — Tanımlar, oturum ve kontenjan yönetimi**, **2D — Başvuru yönetimi** ve **2E — Katılım** tamamlandı. Sıradaki uygulama adımı **2F — Not**. Mevcut servislerin kullanım sözleşmesi, kilitleme düzeni ve doğrulama komutları [docs/scholarship-foundation.md](docs/scholarship-foundation.md) dosyasındadır; ekranlar bu ortak altyapıyı kullanır.
 
 Kurallar:
 - Kullanıcı hangi adımı isterse yalnız o adımı uygula.
 - Adım sonunda raporla ve dur; sonraki adıma otomatik geçme.
-- Bütün uygulama adımlarında 10. bölümdeki doğrulama ölçütlerini kullan. Aşağıdaki test listeleri ilgili özelliğin doğrulama kapsamını tanımlar; her alt adımda baştan çalıştırılacak ortak bir kontrol listesi değildir.
+- Alt adımlarda, 2K ve 3I dahil, 10. bölümdeki kısa ve kritik doğrulamayı uygula. Admin ve üye alanlarının ayrıntılı kontrolleri, tarayıcı test ortamı ve demo veri hazırlığı sistem geliştirmesinin sonundaki 3J'de toplanır.
 - 1A, 1B, 2A, 3A analiz adımlarıdır; kod değiştirmez.
 - 1B yalnız veri sözleşmesi tasarlar; migration oluşturmaz.
 - 11. maddede kesinleşmiş iş kurallarını yeniden karar konusu yapma; teknik ayrıntıları mevcut uygulamayı inceleyerek ilgili adımda belirle.
@@ -724,6 +730,8 @@ Mevcut migration/auth/fillable davranışını bozma. Controller/route/admin/fro
 Raporla ve dur.
 
 ### 1D — Seed/geliştirme verileri
+Bu adımın mevcut seed altyapısı tamamlandı ve korunur. Bundan sonraki demo veri ekleme, seed genişletme veya çalıştırma işleri sistem geliştirmesi bittikten sonraki 3J'ye ertelenmiştir. Aşağıdaki liste o aşamada kullanılabilecek örnek veri kapsamıdır.
+
 Gerekliyse idempotent geliştirme seed'leri oluştur:
 - Ortaca, Dalaman, Köyceğiz şubeleri,
 - birden fazla örnek öğrenci okulu,
@@ -862,12 +870,10 @@ Veri modeli benzersiz başvuru numaraları ve açık ilişkilerle ileride aktar�
 
 Bu adımın ilk sürümde uygulanmaması sonraki ilk sürüm adımlarını engellemez.
 
-### 2K — Admin uçtan uca kontrol
-Admin ekranlarının ortak iş kurallarıyla bağlantısını uçtan uca doğrula. 1E ve 2.x adımlarında geçen testlerin bütün varyasyonlarını tekrarlamadan şu bağlantılardaki eksikleri tamamla:
-- dönem ve oturum ayarlarının başvuru yönetimine yansıması,
-- liste/detay üzerinden onay, aktarım ve silmenin ortak kapasite ve veri koruma kurallarına uyması,
-- tekli/toplu yayın ve bildirim işlemlerinde kayıt kapsamı, eksik sonuç engeli ve ayrı iletişim aşamalarının korunması,
-- admin erişim yetkileri ve kritik işlemlerin mevcut ALA onay modalından geçmesi.
+### 2K — Admin temel kontrol değerlendirmesi
+2B–2I tamamlandıktan sonra alt adımların temel kontrol sonuçlarını ve açık hata notlarını gözden geçir. Temel akış veya değişen kritik kural için eksik kontrol varsa yalnız onu mevcut hedefli testlerle tamamla; geçen testleri topluca yeniden çalıştırma.
+
+Tarayıcı ortamı veya demo veri hazırlama. Ayrıntılı admin görünüm, filtre/mesaj, toplu işlem ve ekranlar arası kontrol ihtiyaçlarını geliştirme dokümanındaki 3J genel test planına aktar.
 
 Excel ilk sürüm kontrolünün parçası değildir. Yeni özellik ekleme. Raporla ve dur.
 
@@ -956,20 +962,27 @@ Yayınlanmış not/burs admin tarafından değiştirildiğinde yeniden yayın be
 Dur.
 
 ### 3I — Responsive/kullanılabilirlik
-Üye ekranlarında henüz doğrulanmamış veya değişmiş yerleşim ve etkileşimleri 10. bölümdeki cihaz kapsamına göre kontrol et. Önceki adımlarda doğrulanan ve etkilenmeyen görünümleri tekrar kontrol etme.
+Mevcut ALA responsive desenlerinin kullanımını kod/şablon üzerinden temel düzeyde incele; görülen somut sorunları düzelt ve yalnız ilgili kısa kontrolü yap. Geçici tarayıcı ortamı ve demo veri hazırlama. Ayrıntılı TR/EN ve cihaz kontrollerini 3J'ye bırak.
 
 Formlar, okul/sınıf/grup ayrımı, oturum seçimleri, listeler/kartlar, badge'ler, hata/başarı mesajları, başvuru detayı, askı/arşiv uyarıları ve işlem yapılamayan durumlar mevcut ALA tasarımına uygun olsun.
 
 Yeni paralel tasarım oluşturma. Dur.
 
-### 3J — Kullanıcı akışı uçtan uca test
-Üye ekranlarının ortak kuralları doğru çağırdığını ve gerçek çıktıları doğru sunduğunu uçtan uca doğrula. Önceki domain testlerini tarayıcıda yeniden üretmeden şu akışlardaki eksik kontrolleri tamamla:
+### 3J — Genel sistem testi
+Admin geliştirmesi (2B–2I) ve üye geliştirmesi (3B–3I) tamamlandıktan sonra, 2K/3I ve alt adımlardan ertelenen ayrıntılı kontrolleri birlikte yap. Plan [docs/scholarship-foundation.md](docs/scholarship-foundation.md) dosyasındadır.
+
+Önce mevcut seed'i kullanarak gerektiği kadar demo veriyi izole test ortamında hazırla; eksik örnek veri kapsamını bu aşamada tamamla. Ardından geçici tarayıcı test ortamını kur ve genel test boyunca yeniden kullan. Gerçek kullanıcı verisini değiştirme; testlerde gerçek kişilere bildirim gönderme.
+
+Mevcut ilgili otomatik testleri topluca çalıştır; tarayıcıda aynı domain kurallarının bütün varyasyonlarını tekrar üretmeden admin ve üye ekranlarının birlikte çalışmasını doğrula. Kapsam:
+- admin ve üye ekranlarında TR/EN, masaüstü/mobil ve ayrı davranış varsa tablet; filtreler, arama, sayfalama, form validation, hata/başarı mesajları ve mevcut ALA onay modalları,
+- dönem, tanım ve oturum yönetiminden başvuru onayı, aktarım, silme, katılım, not/burs ve yayına kadar admin akışı; kontenjan, askı/arşiv ve dönem kapanışının üye akışına yansıması,
+- tekli/toplu onay, yayın ve bildirimlerde seçili/tüm filtre sonucu kapsamı; eksik sonuç yayın engeli, iki ayrı iletişim aşaması, ulaşıldı kayıtlarının atlanması ve mükerrer gönderim koruması,
 - mevcut hesapla başvuru oluşturma, Başvurularım üzerinden takip, izin verilen düzenleme/silme ve yeniden başvuru,
 - duplicate, dolu/askıda/arşivli oturum, dönem kapanışı ve onay kilidi gibi engellerin üye isteklerinde uygulanması; başarısız işlemde mevcut başvuru ve yerin korunması,
 - ziyaretçi ve başka hesap erişiminin liste, detay ve yazma isteklerinde engellenmesi,
 - onay/yayın ayrımı ile yayınlanmamış kabul kararı, not ve bursun gerçek HTML/Livewire/API çıktılarında korunması; yayın sonrası güncellemenin ve geçmiş dönem sonuçlarının doğru görünmesi.
 
-Yeni özellik ekleme. Raporla ve dur.
+Bulunan hataları ilgili kapsamda düzelt; düzeltmeden etkilenen kontrolleri tekrarla. Test ortamını kapat, sonuçları ve varsa açık sorunları raporla ve dur. Excel ilk sürüm testine dahil değildir; yeni özellik ekleme.
 
 ---
 
@@ -980,5 +993,7 @@ Yeni özellik ekleme. Raporla ve dur.
 `1A → 1B → 1C → 1D → 1E → 2A → 2B → 2C → 2D → 2E → 2F → 2G → 2H → 2I → 2K → 3A → 3B → 3C → 3D → 3E → 3F → 3G → 3H → 3I → 3J`
 
 `2J — Excel import/export` sonraki sürüme ertelenmiştir. İlk sürümde uygulanmaz; kullanıcı ileride ayrıca istediğinde başlatılır. Mevcut adım kimlikleri korunur.
+
+2K ve 3I temel inceleme adımlarıdır. Demo veri hazırlığı, geçici tarayıcı test ortamı ve admin–üye ayrıntılı genel testleri, geliştirme tamamlandıktan sonra son adım 3J'de yapılır.
 
 Kullanıcı açıkça değiştirmedikçe bu sıra korunur. Her adım ayrı kullanıcı talebiyle başlatılır. Bir adım tamamlanınca bir sonraki adıma otomatik geçilmez.

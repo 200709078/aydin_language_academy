@@ -75,6 +75,14 @@ Sonuç yayını kapalıyken `result` içinde yalnız `published: false` bulunur;
 
 ## Geliştirme verileri ve doğrulama
 
+Alt adımlarda temel akış ve değişen kritik iş kuralları kısa, hedefli kontrollerle doğrulanır. Ekranın açılması ve temel kaydetme işlemi HTTP/şablon düzeyinde kontrol edilir; geçici tarayıcı test ortamı veya cihaz/dil matrisi hazırlanmaz. Mevcut testler korunur; aşağıdaki komutlar her değişiklikte çalıştırılması zorunlu bir liste değildir.
+
+**2K admin temel kontrollerinin değerlendirilmesi, 3I temel responsive/kullanılabilirlik incelemesidir.** Admin ve üye geliştirmesinin tamamı bittikten sonra **3J — Genel sistem testi** aşamasında demo veri ve geçici tarayıcı ortamı hazırlanır; ayrıntılı TR/EN, cihaz, filtre/mesaj ve uçtan uca kontroller birlikte yapılır. Yetki, veri kaybı, kapasite/duplicate ve yayın görünürlüğü gibi değişen kritik kuralların temel kontrolleri ilgili alt adımda yapılmaya devam eder. Ertelenen ek kontrol ihtiyaçları aşağıdaki genel test planına kısa not edilir.
+
+Mevcut demo seed'i korunur; yeni demo veri ekleme, seed genişletme veya çalıştırma işi 3J'ye bırakılır. Temel otomatik kontroller yalnız ihtiyaç duydukları en az sayıda geçici kaydı izole test veritabanında oluşturabilir; bunlar uygulamaya demo veri ekleme işlemi değildir.
+
+2C ve 2D için aşağıda kayıtlı ayrıntılı sonuçlar daha önce tamamlanan kontrollerdir; sonraki alt adımlar için zorunlu kontrol şablonu değildir.
+
 ```bash
 php artisan db:seed --class=ScholarshipDemoSeeder
 php tests/Scholarship/run-mariadb.php
@@ -83,6 +91,16 @@ php tests/Scholarship/run-mariadb.php
 Seed yalnız `local/testing` ortamında ve henüz bursluluk dönemi yoksa çalışır. Üç şube, iki örnek okul, 14 sınıf/durum, dört sınav grubu, kapalı bir örnek dönem ve dokuz oturum oluşturur. Gerçek kullanıcı/başvuru üretmez; mevcut dönemi veya yönetici değişikliklerini yeniden oluşturmaz. Ana `DatabaseSeeder` içine otomatik bağlanmaz.
 
 Test komutu yerel MariaDB araçlarıyla `/tmp` içinde geçici, ağ bağlantısı kapalı bir sunucu kurar. Sentetik kullanıcı şeması ve bursluluk migrationlarıyla yalnız bu modülü test eder, bitince sunucuyu ve test verilerini kaldırır. Uygulamanın yapılandırılmış veritabanına test yazısı göndermez. İki bağımsız PHP süreciyle son kontenjan, çift başvuru, aktarım ve kapasite yarışı doğrulanır.
+
+## 3J: sistem tamamlandıktan sonraki genel test planı
+
+Bu plan şimdi uygulanmaz. Admin 2B–2I ve üye 3B–3I geliştirmeleri tamamlandıktan sonra uygulanır; 2K ve 3I bu plan için ayrı tarayıcı ortamı kurmaz.
+
+1. **Demo veri ve ortam:** Mevcut seed'i izole test ortamında yeniden kullan; farklı hesaplar/dönemler, boş/dolu/askıda/arşivli oturumlar, bekleyen/onaylı başvurular, farklı katılım/yayın/iletişim durumları ve NULL/0 sonuçlar için eksik sentetik örnekleri tamamla. Ardından geçici tarayıcı test ortamını kur ve genel test boyunca kullan. Mevcut gerçek verileri değiştirme.
+2. **Otomatik kontroller:** Mevcut bursluluk testlerini topluca çalıştır. Alt adımlardan kalan kapsam eksiklerini gözden geçir; somut eksikleri tamamla. Geçen ortak iş kurallarının bütün varyasyonlarını tarayıcıda yeniden üretme.
+3. **Admin–üye akışı:** Üye başvurusu → admin onayı/yayını → üyede görünürlük → katılım/not/burs → sonuç yayını → üyede sonuç akışını tamamla. Düzenleme/aktarım, kalıcı silme ve yeniden başvuru, kapasite ve dönem/askı/arşiv kilitleri, hesap sahipliği, gizli sonuçların çıktıya sızmaması, yayın sonrası güncelleme ve geçmiş dönemlerin korunmasını kontrol et. Toplu işlemlerde seçili kayıtlar ile tüm filtre sonucunun kapsamını doğrula.
+4. **Bildirim ve görünüm:** 2I'de belirlenen sağlayıcı test yöntemiyle tekli/toplu gönderim, tekrar deneme, mükerrer gönderim koruması, ulaşıldı kayıtlarının atlanması ve iki iletişim aşamasını kontrol et; gerçek kişilere mesaj gönderme. Admin ve üye ekranlarında TR/EN, masaüstü/mobil ve ayrı davranış varsa tablet; filtre/arama/sayfalama, form mesajları, modallar ve tarayıcı etkileşimlerini incele.
+5. **Kapanış:** Bulunan hataları düzelt ve yalnız etkilenen kontrolleri tekrarla. Yapılan kontrolleri, sonuçlarını ve varsa açık sorunları raporla; geçici tarayıcı/test sunucularını kapat ve bu test ortamının geçici verilerini temizle. Excel ilk sürüm kapsamı dışındadır.
 
 ## 2A: mevcut admin yapısıyla bağlantı
 
@@ -122,3 +140,43 @@ Yalnız 2C HTTP doğrulamaları:
 ```bash
 php tests/Scholarship/run-mariadb.php --filter 'Scholarship(Definition|Session)AdminTest'
 ```
+
+2C tamamlandı. Doğrulama sonuçları:
+
+- İzole MariaDB üzerinde 13 HTTP testi, 566 doğrulama geçti: admin erişimi, tanım/oturum işlemleri, filtreler ve sayfalama toplamları, kapasite sınırı, askı/arşiv ve ilişkili kayıtların silinme korumaları.
+- Chromium'da 390, 820 ve 1440 px genişliklerde tanım/oturum liste ve formları kontrol edildi. Mobilde mevcut daraltılabilir menü ve tablo içi yatay kaydırma kullanılıyor; sayfa taşması görülmedi.
+- Sentetik verilerle form kaydı, tarih sınırları, hatada alanların korunması, filtre/aktiflik işlemleri, arşivleme/geri alma ve boş kayıt silme doğrulandı. Kritik işlemlerde mevcut onay modalı; başarı ve hatalarda ortak admin toast bileşeni çalışıyor. TR/EN görünüm, yerel asset yüklemeleri ve tarayıcı JavaScript kontrolleri geçti.
+- `lang/tr/validation.php` içinde sınav tarihi, başlangıç/bitiş saati, kontenjan ve sıralama alanlarının eksik Türkçe mesajları tamamlandı. On mesaj ve İngilizce çıktının korunması veritabanı bağlantısı kurmadan doğrulandı.
+
+## Başvuru admin ekranları (2D)
+
+Admin menüsündeki **Bursluluk → Bursluluk Başvuruları**, `admin.scholarship.applications.*` route'larını kullanır. `AdminScholarshipApplicationController` liste, detay, düzenleme, tekli/toplu onay ve kalıcı silme işlemlerini sunar. Bütün yazmalar mevcut `ScholarshipApplicationService` üzerinden yapılır; yeni tablo veya migration eklenmedi.
+
+- Listede dönem, şube, grup/oturum, tarih/saat, okul/sınıf, onay, katılım, iki ayrı iletişim ve yayın durumu, burs oranı ve oturum durumu filtrelenebilir. Arama başvuru numarası, döneme ait öğrenci adı ve hesaptaki güncel ad, telefon/e-postayı kapsar. Boş burs ile `%0` ayrıdır. Filtreler sayfalamada korunur.
+- Detayda döneme ait öğrenci/okul/sınıf bilgileri ve güncel hesap iletişimi birlikte gösterilir. Hesabı silinmiş başvurular dönemlik bilgileriyle görüntülenmeye devam eder. Katılım, not, burs, yayın ve iletişim bilgileri bu adımda salt okunurdur; yönetimleri sonraki adımlardadır.
+- Düzenlemede yalnız öğrenci adı, okul, sınıf/durum ve aynı dönemin oturumu değiştirilebilir. Hesap, dönem, başvuru numarası, onay ve sonuç alanları istekten değiştirilmez. Dolu hedef oturum seçilemez; kapasite kontrolü serviste de uygulanır. Admin onaylı, kapalı dönemli, askıda/arşivli başvurularda ortak kurallarla işlem yapabilir. Onay/yayın korunur; gerçek başvuru değişikliği yalnız başvuru iletişimini sıfırlar.
+- Tekli onay ve kalıcı silme mevcut ALA onay modalından geçer. Onay yayın açmaz veya mesaj göndermez. Silme kontenjanı ve hesap/dönem başvuru hakkını serbest bırakır; kullanıcı ve ortak tanımlar korunur.
+- Toplu onayda bu sayfadan seçilen başvurular veya filtreye uyan bütün sayfalardaki bekleyen kayıtlar ön izlenir. Kayıt sayısı ve ilk 20 kayıt gösterilir. ID listesi, yönetici ve tek kullanımlık onay anahtarı yalnız oturumda, 30 dakika geçerli geçici onay bilgisi olarak tutulur; işlem tarihçesi değildir. Yeni eşleşen kayıtlar onaya dahil edilmez. Sonradan silinen kayıtlar atlanır ve işlem özeti gösterilir; süresi dolan, başka yöneticiye ait veya eski ön izleme yeniden kullanılamaz.
+
+```bash
+php tests/Scholarship/run-mariadb.php --filter ScholarshipApplicationAdminTest
+```
+
+2D doğrulaması: izole MariaDB üzerinde **9 test, 218 doğrulama** geçti. Kapsam; admin erişimi, TR/EN ve kaçışlı HTML, silinmiş hesap, filtre/arama, NULL–0 ayrımı, onay ve otomatik gönderim olmaması, kontenjan/dönem sınırı, onaylı başvuru aktarımı, sabit toplu seçim, ön izleme sahipliği/süresi ve kalıcı silmeden sonra yeniden başvurudur.
+
+Chromium'da liste, detay ve düzenleme 390/820/1440 px genişliklerde; filtre açma, sayfa seçimi, seçili/tüm filtre sonucunun ön izlemesi, modal iptali/onayı, tekli/toplu onay, aktarım, silme, boş sonuç ve toast bildirimleri kontrol edildi. TR/EN ekranlarında tarayıcı JavaScript hatası veya başarısız yerel asset isteği görülmedi. Bu kontroller sentetik ve izole test verileriyle yapıldı.
+
+## Katılım yönetimi (2E)
+
+Admin menüsündeki **Bursluluk → Katılım Yönetimi**, `admin.scholarship.attendance.index` ve `admin.scholarship.attendance.update` route'larını kullanır. `AdminScholarshipAttendanceController` ve `resources/views/admin/scholarship/attendance/index.blade.php`, öğrenci satırında İşaretlenmedi / Katıldı / Katılmadı seçimi ve kaydetme sunar.
+
+- Dönem, şube, sınav grubu, mevcut sınıf/durum, tarih, başlangıç/bitiş saati ve katılım durumu ayrı filtrelenir. Başvuru numarası, öğrenci/hesap adı, güncel telefon ve e-posta aranabilir. Liste öğrenci adına göre sıralanır; kaydetmede filtre ve sayfa korunur.
+- Yalnız katılım alanı `updateResult` servisine iletilir. Hesap, oturum, onay, not/burs ve yayın alanları istekten değiştirilemez. Katılmadı seçiminin ortak kural gereği atadığı 0/0 bu sınırdan bağımsızdır.
+- Katılmadı seçimine geçiş mevcut ALA onay modalından geçer. Servis notu/bursu 0 yapar ve yalnız sonuç iletişimini sıfırlar. Bu seçim geri alındığında otomatik sıfırlar temizlenir; yayında eksik sonuç oluşturacak değişiklik engellenir ve önce sonuç yayınının kapatılması gerektiği gösterilir. İşaretlenmedi/Katıldı durumuna kendiliğinden 0/0 atanmaz. Aynı katılımı tekrar kaydetmek iletişimi sıfırlamaz; otomatik mesaj gönderilmez.
+- Yeni tablo, migration veya demo veri eklenmedi. TR/EN ekran metinleri eklendi; ortak eksik sonuç/yayın hatası çeviri dosyasına taşındı. Not/burs ve yayın yönetim ekranları bu adıma dahil değildir.
+
+Kısa doğrulama: `php tests/Scholarship/run-mariadb.php --filter ScholarshipAttendanceAdminTest` ile izole MariaDB üzerinde **4 test, 65 doğrulama** geçti. Temel sayfa/filtre/kaydetme bağlantısı, admin erişimi, izin verilen alanlar, katılmama ve yayın engeli, ilgili iletişim sıfırlaması kontrol edildi. Sözdizimi, hedefli biçim ve diff kontrolleri geçti.
+
+**3J'ye bırakılanlar:** Tarayıcıda katılım seçimi ve modal onay/iptal akışı, kaydetme sonrası filtre/sayfa konumu, ayrıntılı filtre/arama varyasyonları, TR/EN ve cihaz görünümleri. Bu adımda tarayıcı ortamı kurulmadı ve demo seed çalıştırılmadı.
+
+Sıradaki adım 2F not yönetimidir; bu adım henüz uygulanmadı.

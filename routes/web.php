@@ -15,6 +15,9 @@ use App\Http\Controllers\AdminNewsController;
 use App\Http\Controllers\AdminSloganController;
 use App\Http\Controllers\AdminScholarshipPeriodController;
 use App\Http\Controllers\AdminScholarshipDefinitionController;
+use App\Http\Controllers\AdminScholarshipApplicationController;
+use App\Http\Controllers\AdminScholarshipAttendanceController;
+use App\Http\Controllers\AdminScholarshipScoreController;
 use App\Http\Controllers\AdminScholarshipSessionController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\Frontend\ContactController;
@@ -192,6 +195,27 @@ Route::group(['middleware' => ['auth', isAdmin_middle::class], 'prefix' => 'admi
         Route::patch('/{campaign}/status', [AdminCampaignController::class, 'updateStatus'])
             ->whereNumber('campaign')
             ->name('status.update');
+    });
+
+    Route::prefix('scholarship/scores')->name('admin.scholarship.scores.')->group(function (): void {
+        Route::get('/', [AdminScholarshipScoreController::class, 'index'])->name('index');
+        Route::patch('/{application}', [AdminScholarshipScoreController::class, 'update'])->whereNumber('application')->name('update');
+    });
+
+    Route::prefix('scholarship/attendance')->name('admin.scholarship.attendance.')->group(function (): void {
+        Route::get('/', [AdminScholarshipAttendanceController::class, 'index'])->name('index');
+        Route::patch('/{application}', [AdminScholarshipAttendanceController::class, 'update'])->whereNumber('application')->name('update');
+    });
+
+    Route::prefix('scholarship/applications')->name('admin.scholarship.applications.')->group(function (): void {
+        Route::get('/', [AdminScholarshipApplicationController::class, 'index'])->name('index');
+        Route::post('/approval-preview', [AdminScholarshipApplicationController::class, 'previewApproval'])->name('approval.preview');
+        Route::post('/approve', [AdminScholarshipApplicationController::class, 'approveBulk'])->name('approve.bulk');
+        Route::get('/{application}', [AdminScholarshipApplicationController::class, 'show'])->whereNumber('application')->name('show');
+        Route::get('/{application}/edit', [AdminScholarshipApplicationController::class, 'edit'])->whereNumber('application')->name('edit');
+        Route::put('/{application}', [AdminScholarshipApplicationController::class, 'update'])->whereNumber('application')->name('update');
+        Route::patch('/{application}/approve', [AdminScholarshipApplicationController::class, 'approve'])->whereNumber('application')->name('approve');
+        Route::delete('/{application}', [AdminScholarshipApplicationController::class, 'destroy'])->whereNumber('application')->name('destroy');
     });
 
     Route::prefix('scholarship/periods')->name('admin.scholarship.periods.')->group(function (): void {

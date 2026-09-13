@@ -168,6 +168,26 @@ return [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
+        'exam_date' => [
+            'date_format' => 'Geçerli bir sınav tarihi girin.',
+            'after_or_equal' => 'Sınav tarihi :date tarihinden önce olamaz.',
+            'before_or_equal' => 'Sınav tarihi :date tarihinden sonra olamaz.',
+        ],
+        'starts_at' => [
+            'date_format' => 'Geçerli bir başlangıç saati girin.',
+        ],
+        'ends_at' => [
+            'date_format' => 'Geçerli bir bitiş saati girin.',
+            'after' => 'Bitiş saati başlangıç saatinden sonra olmalıdır.',
+        ],
+        'capacity' => [
+            'integer' => 'Oturum kontenjanı tam sayı olmalıdır.',
+            'between' => 'Oturum kontenjanı :min ile :max arasında olmalıdır.',
+        ],
+        'sort_order' => [
+            'integer' => 'Sıralama tam sayı olmalıdır.',
+            'between' => 'Sıralama :min ile :max arasında olmalıdır.',
+        ],
     ],
 
     /*
@@ -182,6 +202,10 @@ return [
     */
 
     'attributes' => [
+        'student_name' => 'öğrenci adı soyadı',
+        'school_id' => 'mevcut okul',
+        'student_level_id' => 'mevcut sınıf / durum',
+        'session_id' => 'sınav oturumu',
         'period_id' => 'sınav dönemi',
         'branch_id' => 'ALA şubesi',
         'exam_group_id' => 'sınav grubu',

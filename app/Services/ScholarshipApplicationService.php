@@ -120,7 +120,7 @@ class ScholarshipApplicationService
             if ($attendance === 'absent') {
                 foreach (['score', 'scholarship_percentage'] as $field) {
                     if (isset($data[$field]) && (int) $data[$field] !== 0) {
-                        ScholarshipRules::fail($field, 'Katılmayan öğrenci için not ve burs sıfır olmalıdır.');
+                        ScholarshipRules::fail($field, __('scholarship.absent_result_zero'));
                     }
                     $data[$field] = 0;
                 }
@@ -252,7 +252,7 @@ class ScholarshipApplicationService
             }
             $definition = $model::query()->lockForUpdate()->find($data[$field]);
             if ($definition === null || ($requireActive && ! $definition->is_active)) {
-                ScholarshipRules::fail($field, 'Seçilen kayıt başvuruya uygun değil.');
+                ScholarshipRules::fail($field, __('scholarship.application_definition_unavailable'));
             }
             $attributes[$field] = $definition->id;
             $attributes[$snapshot] = $definition->name;
@@ -268,7 +268,7 @@ class ScholarshipApplicationService
     {
         $session = ScholarshipExamSession::query()->where('period_id', $period->id)->lockForUpdate()->find($sessionId);
         if ($session === null) {
-            ScholarshipRules::fail('session_id', 'Oturum seçilen döneme ait değil.');
+            ScholarshipRules::fail('session_id', __('scholarship.application_session_period_mismatch'));
         }
 
         return $session;
@@ -292,14 +292,14 @@ class ScholarshipApplicationService
             ->when($exceptApplication !== null, fn ($query) => $query->where('id', '!=', $exceptApplication))
             ->lockForUpdate()->get(['id'])->count();
         if ($occupied >= $session->capacity) {
-            ScholarshipRules::fail('session_id', 'Bu oturumun kontenjanı dolu.');
+            ScholarshipRules::fail('session_id', __('scholarship.application_session_full'));
         }
     }
 
     private function completePublishedResult(ScholarshipApplication $application): void
     {
         if ($application->result_published && ($application->score === null || $application->scholarship_percentage === null)) {
-            ScholarshipRules::fail('result_published', 'Not ve burs girilmeden sonuç yayınlanamaz. Eksik sonuç kaydetmek için önce yayını kapatın.');
+            ScholarshipRules::fail('result_published', __('scholarship.result_requires_complete'));
         }
     }
 }
