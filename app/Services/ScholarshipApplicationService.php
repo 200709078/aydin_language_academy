@@ -159,7 +159,7 @@ class ScholarshipApplicationService
             } catch (ValidationException $e) {
                 $result['skipped'][$id] = $e->errors();
             } catch (ModelNotFoundException) {
-                $result['skipped'][$id] = ['application' => ['Başvuru artık mevcut değil.']];
+                $result['skipped'][$id] = ['application' => [__('scholarship.application_no_longer_exists')]];
             }
         }
 

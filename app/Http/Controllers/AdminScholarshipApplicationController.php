@@ -146,6 +146,101 @@ class AdminScholarshipApplicationController extends Controller
             ->with('modalSuccessContent', __('scholarship.bulk_approval_completed', compact('approved', 'skipped')));
     }
 
+    public function updatePublication(Request $request, ScholarshipApplication $application, string $phase): RedirectResponse
+    {
+        $data = Validator::make($request->post(), ['published' => ['required', 'boolean']], [], [
+            'published' => __('scholarship.publication_management'),
+        ])->validate();
+        $result = $this->applications->publish($request->user(), [$application->id], $phase, (bool) $data['published']);
+        if (isset($result['skipped'][$application->id])) {
+            throw ValidationException::withMessages($result['skipped'][$application->id]);
+        }
+
+        return redirect()->back()->with('modalSuccessTitle', __('scholarship.publication_management'))
+            ->with('modalSuccessContent', __('scholarship.publication_updated', [
+                'number' => $application->application_number, 'phase' => __('scholarship.'.$phase.'_publication'),
+                'state' => __('scholarship.'.($data['published'] ? 'published' : 'unpublished')),
+            ]));
+    }
+
+    public function previewPublication(Request $request): View
+    {
+        $data = Validator::make($request->post(), [
+            'scope' => ['required', Rule::in(['selected', 'filtered'])],
+            'phase' => ['required', Rule::in(['application', 'result'])],
+            'published' => ['required', 'boolean'],
+            'ids' => ['required_if:scope,selected', 'array', 'max:1000'],
+            'ids.*' => ['required', 'integer', 'min:1', 'distinct'],
+            'filters' => ['sometimes', 'array'],
+        ], ['ids.required_if' => __('scholarship.publication_no_selection')], [
+            'ids' => __('scholarship.scope_selected'), 'phase' => __('scholarship.publication_phase'),
+            'published' => __('scholarship.publication_action'),
+        ])->validate();
+        $filters = $this->filters($data['filters'] ?? []);
+        $query = $this->query($filters);
+        if ($data['scope'] === 'selected') {
+            $query->whereIn('id', $data['ids']);
+            if ((clone $query)->count() !== count($data['ids'])) {
+                throw ValidationException::withMessages(['ids' => __('scholarship.selection_changed')]);
+            }
+        }
+        $ids = $query->orderBy('id')->pluck('id')->all();
+        if ($ids === []) {
+            throw ValidationException::withMessages(['ids' => __('scholarship.publication_no_selection')]);
+        }
+        $phase = $data['phase'];
+        $published = (bool) $data['published'];
+        $eligibleCount = $phase === 'result' && $published
+            ? (clone $query)->whereNotNull('score')->whereNotNull('scholarship_percentage')->count() : count($ids);
+        $token = Str::random(40);
+        // Only this temporary selection is confirmed; later matching applications are excluded.
+        $request->session()->put('scholarship_bulk_publication', [
+            'token' => $token, 'ids' => $ids, 'phase' => $phase, 'published' => $published, 'filters' => $filters,
+            'actor_id' => $request->user()->id, 'expires_at' => now()->addMinutes(30)->timestamp,
+        ]);
+
+        return view('admin.scholarship.applications.publication-preview', [
+            'token' => $token, 'phase' => $phase, 'published' => $published, 'filters' => $filters,
+            'count' => count($ids), 'eligibleCount' => $eligibleCount, 'scope' => $data['scope'],
+            'applications' => ScholarshipApplication::query()->with('period')
+                ->whereIn('id', array_slice($ids, 0, 20))->orderBy('id')->get(),
+        ]);
+    }
+
+    public function publishBulk(Request $request): RedirectResponse
+    {
+        $data = Validator::make($request->post(), ['token' => ['required', 'string', 'size:40']], [], [
+            'token' => __('scholarship.publication_preview'),
+        ])->validate();
+        $preview = $request->session()->get('scholarship_bulk_publication');
+        if (! is_array($preview) || ! hash_equals($preview['token'], $data['token'])
+            || $preview['actor_id'] !== $request->user()->id || $preview['expires_at'] < now()->timestamp) {
+            throw ValidationException::withMessages(['token' => __('scholarship.publication_preview_expired')]);
+        }
+        $request->session()->forget('scholarship_bulk_publication');
+        $updated = 0;
+        $skipped = [];
+        foreach (array_chunk($preview['ids'], 1000) as $ids) {
+            $result = $this->applications->publish($request->user(), $ids, $preview['phase'], $preview['published']);
+            $updated += count($result['updated']);
+            $skipped += $result['skipped'];
+        }
+        $firstSkipped = array_slice($skipped, 0, 20, true);
+        $numbers = ScholarshipApplication::query()->whereKey(array_keys($firstSkipped))->pluck('application_number', 'id');
+        $details = [];
+        foreach ($firstSkipped as $id => $errors) {
+            $details[] = ['number' => $numbers[$id] ?? '#'.$id, 'reason' => collect($errors)->flatten()->implode(' ')];
+        }
+
+        return redirect()->route('admin.scholarship.applications.index', $preview['filters'])
+            ->with('modalSuccessTitle', __('scholarship.publication_management'))
+            ->with('modalSuccessContent', __('scholarship.publication_completed', [
+                'phase' => __('scholarship.'.$preview['phase'].'_publication'),
+                'state' => __('scholarship.'.($preview['published'] ? 'published' : 'unpublished')),
+                'updated' => $updated, 'skipped' => count($skipped),
+            ]))->with('publicationSkipped', $details);
+    }
+
     private function filters(array $input): array
     {
         $rules = ['q' => ['nullable', 'string', 'max:255']];

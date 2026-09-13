@@ -179,4 +179,31 @@ Kısa doğrulama: `php tests/Scholarship/run-mariadb.php --filter ScholarshipAtt
 
 **3J'ye bırakılanlar:** Tarayıcıda katılım seçimi ve modal onay/iptal akışı, kaydetme sonrası filtre/sayfa konumu, ayrıntılı filtre/arama varyasyonları, TR/EN ve cihaz görünümleri. Bu adımda tarayıcı ortamı kurulmadı ve demo seed çalıştırılmadı.
 
-Sıradaki adım 2F not yönetimidir; bu adım henüz uygulanmadı.
+## Not yönetimi (2F)
+
+Admin menüsündeki **Bursluluk → Not Yönetimi**, `admin.scholarship.scores.index` ve `admin.scholarship.scores.update` route'larını kullanır. `AdminScholarshipScoreController` ve `resources/views/admin/scholarship/scores/` altındaki görünümler, öğrenci satırında hızlı not girişi ve kaydetme sunar.
+
+- Not 0–100 arasında tam sayı olmalıdır. Boş kaydetme NULL / Girilmedi durumudur; 0 gerçek nottur. İstekte not alanının hiç bulunmaması kaydı temizlemez, doğrulama hatası verir. Mevcut notun temizlenmesi ALA onay modalından geçer.
+- Varsayılan sıralama yüksek nottan düşüğedir; düşükten yükseğe veya öğrenci adına göre sıralama seçilebilir. Nota göre iki yönde de notu girilmemiş kayıtlar sonda kalır. Not girildi/girilmedi ve alt/üst not sınırı filtreleri 0 ile NULL'ı ayırır.
+- Dönem, şube, grup, oturum, okul, mevcut sınıf/durum, tarih/saat ve katılım filtreleri; başvuru numarası, öğrenci/hesap adı ve güncel iletişim bilgileriyle arama bulunur. Kaydetmede filtre, sıralama ve sayfa korunur.
+- Yalnız `score` alanı ortak `updateResult` servisine iletilir. Hesap, oturum, katılım, onay, burs ve yayın alanları istekten değiştirilemez. Katılmadı durumunda 0 gösterilir ve katılım yönetimine bağlantı sunulur; doğrudan istekte de sıfır dışı not ortak servis tarafından reddedilir.
+- Yayındaki geçerli not değişikliği ortak üye sunumuna hemen yansır ve yalnız sonuç iletişimi Ulaşılmadı olur. Aynı notu kaydetmek iletişimi sıfırlamaz. Yayındaki notun temizlenmesi engellenir; önce sonuç yayını kapatılmalıdır. Not girmek yayın veya otomatik bildirim başlatmaz.
+
+Kısa doğrulama: `php tests/Scholarship/run-mariadb.php --filter ScholarshipScoreAdminTest` ile izole MariaDB üzerinde **5 test, 68 doğrulama** geçti. Sayfa/kaydetme, not sıralaması ve NULL–0 ayrımı, admin erişimi, tam sayı/aralık kontrolü, değiştirilebilir alan sınırı, katılmama ve yayın engeli ile ilgili iletişim sıfırlaması kontrol edildi. Hedefli biçim, sözdizimi ve diff kontrolleri geçti.
+
+**3J'ye bırakılanlar:** Tarayıcıda not girişi, not temizleme modalının onay/iptali, sıralama ve sayfa değişiminde satır konumu, ayrıntılı filtre/arama varyasyonları, TR/EN ve cihaz görünümleri. Tarayıcı ortamı kurulmadı, demo veri/seed veya migration eklenmedi. Burs oranı ve yayın yönetimi ekranları bu adımın dışındadır; Excel ilk sürüm kapsamında değildir.
+
+## Burs oranı yönetimi (2G)
+
+Admin menüsündeki **Bursluluk → Burs Oranı Yönetimi**, `admin.scholarship.awards.index` ve `admin.scholarship.awards.update` route'larını kullanır. `AdminScholarshipAwardController` ve `resources/views/admin/scholarship/awards/index.blade.php`, nota göre sıralı listede öğrenci satırından burs seçimi ve kaydetme sunar.
+
+- Her satırın radio grubunda %100–%0 arasında onar puanlık tek oran seçilir. %0 / Burs Yok ile NULL / Belirlenmedi ayrı seçeneklerdir. Mevcut oranı Belirlenmedi yapmak ALA onay modalından geçer; alanın istekte bulunmaması kaydı temizlemez, doğrulama hatası verir.
+- Not ekranının filtre görünümü yeniden kullanılır; burs ekranı kendi filtre adresini ve ek burs oranı/Belirlenmedi filtresini verir. Dönem, şube, grup, oturum, okul, mevcut sınıf/durum, tarih/saat, katılım, not aralığı ve arama desteklenir. Varsayılan sıralama not azalandır; not artan veya öğrenci adı seçilebilir. Notu girilmemiş kayıtlar nota göre sıralamada sonda kalır. Kaydetmede filtre, sıralama ve sayfa korunur.
+- Yalnız `scholarship_percentage` ortak `updateResult` servisine iletilir. Not, katılım, hesap, dönem, oturum, onay ve yayın alanları istekten değiştirilemez. Aynı öğrencinin başka dönem başvurularının bursları etkilenmez. Katılmadı durumunda burs %0 kalır ve katılım yönetimine bağlantı gösterilir; sıfır dışı oran doğrudan istekte de engellenir.
+- Yayındaki geçerli burs değişikliği ortak üye sunumuna hemen yansır; yalnız sonuç iletişimi Ulaşılmadı olur. Aynı oranı tekrar kaydetmek bu alanı sıfırlamaz. Yayındaki bursun Belirlenmedi yapılması engellenir; önce sonuç yayını kapatılmalıdır. Burs kaydı yayın veya otomatik bildirim başlatmaz.
+
+Kısa doğrulama: `php tests/Scholarship/run-mariadb.php --filter 'ScholarshipAwardAdminTest|ScholarshipScoreAdminTest::test_score_list_sorts_and_filters_zero_separately_from_missing_scores'` ile izole MariaDB üzerinde **6 test, 87 doğrulama** geçti. Beş yeni kontrol burs ekranı/tek seçim/kaydetme, NULL–0 ve dönem ayrımı, admin erişimi, geçerli oranlar, katılmama/yayın engeli ve iletişim davranışını kapsar; bir mevcut not listesi kontrolü ortak filtre kullanımını doğrular. Sözdizimi, hedefli biçim ve diff kontrolleri geçti.
+
+**3J'ye bırakılanlar:** Tarayıcıda radio seçimi ve oran temizleme modalının onay/iptali, kaydetmede filtre/sıralama/sayfa konumu, ayrıntılı filtre/arama varyasyonları, TR/EN ve cihaz görünümleri. Tarayıcı ortamı kurulmadı; demo veri/seed, migration veya Excel işlemi eklenmedi.
+
+Sıradaki adım 2H yayınlama yönetimidir; bu adım henüz uygulanmadı.

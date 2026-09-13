@@ -1,4 +1,4 @@
-<form method="GET" action="{{ route('admin.scholarship.scores.index') }}" class="mb-4">
+<form method="GET" action="{{ route($filterRoute ?? 'admin.scholarship.scores.index') }}" class="mb-4">
     <div class="row g-3">
         @foreach (['period_id' => [$periods, 'period', 'title'], 'branch_id' => [$branches, 'branch', 'name'], 'exam_group_id' => [$groups, 'exam_group', 'name']] as $field => [$options, $label, $textField])
             <div class="col-md-4">
@@ -28,6 +28,18 @@
                 @foreach (['score_desc' => 'score_desc', 'score_asc' => 'score_asc', 'name' => 'score_sort_name'] as $sort => $label)<option value="{{ $sort }}" @selected(($filters['sort'] ?? 'score_desc') === $sort)>{{ __('scholarship.'.$label) }}</option>@endforeach
             </select>
         </div>
+        @if ($showAwardFilter ?? false)
+            <div class="col-md-4">
+                <label for="filter-scholarship_percentage" class="form-label">{{ __('scholarship.scholarship_percentage') }}</label>
+                <select id="filter-scholarship_percentage" name="scholarship_percentage" class="form-select">
+                    <option value="">{{ __('scholarship.filter_all') }}</option>
+                    <option value="unset" @selected(($filters['scholarship_percentage'] ?? '') === 'unset')>{{ __('scholarship.award_unset') }}</option>
+                    @foreach (range(100, 0, -10) as $percentage)
+                        <option value="{{ $percentage }}" @selected(isset($filters['scholarship_percentage']) && (string) $filters['scholarship_percentage'] === (string) $percentage)>{{ $percentage === 0 ? __('scholarship.award_none') : '%'.$percentage }}</option>
+                    @endforeach
+                </select>
+            </div>
+        @endif
         <div class="col-12">
             <label for="filter-q" class="form-label">{{ __('scholarship.application_search') }}</label>
             <input id="filter-q" name="q" value="{{ $filters['q'] ?? '' }}" type="search" maxlength="255" class="form-control">
@@ -69,6 +81,6 @@
     </details>
     <div class="d-flex gap-2 mt-3">
         <button type="submit" class="btn btn-sm btn-primary">{{ __('scholarship.filter_apply') }}</button>
-        <a href="{{ route('admin.scholarship.scores.index') }}" class="btn btn-sm btn-outline-secondary">{{ __('scholarship.filter_clear') }}</a>
+        <a href="{{ route($filterRoute ?? 'admin.scholarship.scores.index') }}" class="btn btn-sm btn-outline-secondary">{{ __('scholarship.filter_clear') }}</a>
     </div>
 </form>

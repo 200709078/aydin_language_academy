@@ -18,6 +18,7 @@ use App\Http\Controllers\AdminScholarshipDefinitionController;
 use App\Http\Controllers\AdminScholarshipApplicationController;
 use App\Http\Controllers\AdminScholarshipAttendanceController;
 use App\Http\Controllers\AdminScholarshipScoreController;
+use App\Http\Controllers\AdminScholarshipAwardController;
 use App\Http\Controllers\AdminScholarshipSessionController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\Frontend\ContactController;
@@ -197,6 +198,11 @@ Route::group(['middleware' => ['auth', isAdmin_middle::class], 'prefix' => 'admi
             ->name('status.update');
     });
 
+    Route::prefix('scholarship/awards')->name('admin.scholarship.awards.')->group(function (): void {
+        Route::get('/', [AdminScholarshipAwardController::class, 'index'])->name('index');
+        Route::patch('/{application}', [AdminScholarshipAwardController::class, 'update'])->whereNumber('application')->name('update');
+    });
+
     Route::prefix('scholarship/scores')->name('admin.scholarship.scores.')->group(function (): void {
         Route::get('/', [AdminScholarshipScoreController::class, 'index'])->name('index');
         Route::patch('/{application}', [AdminScholarshipScoreController::class, 'update'])->whereNumber('application')->name('update');
@@ -209,6 +215,10 @@ Route::group(['middleware' => ['auth', isAdmin_middle::class], 'prefix' => 'admi
 
     Route::prefix('scholarship/applications')->name('admin.scholarship.applications.')->group(function (): void {
         Route::get('/', [AdminScholarshipApplicationController::class, 'index'])->name('index');
+        Route::post('/publication-preview', [AdminScholarshipApplicationController::class, 'previewPublication'])->name('publication.preview');
+        Route::post('/publish', [AdminScholarshipApplicationController::class, 'publishBulk'])->name('publication.bulk');
+        Route::patch('/{application}/publication/{phase}', [AdminScholarshipApplicationController::class, 'updatePublication'])
+            ->whereNumber('application')->where('phase', 'application|result')->name('publication.update');
         Route::post('/approval-preview', [AdminScholarshipApplicationController::class, 'previewApproval'])->name('approval.preview');
         Route::post('/approve', [AdminScholarshipApplicationController::class, 'approveBulk'])->name('approve.bulk');
         Route::get('/{application}', [AdminScholarshipApplicationController::class, 'show'])->whereNumber('application')->name('show');
