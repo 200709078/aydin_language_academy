@@ -206,4 +206,18 @@ Kısa doğrulama: `php tests/Scholarship/run-mariadb.php --filter 'ScholarshipAw
 
 **3J'ye bırakılanlar:** Tarayıcıda radio seçimi ve oran temizleme modalının onay/iptali, kaydetmede filtre/sıralama/sayfa konumu, ayrıntılı filtre/arama varyasyonları, TR/EN ve cihaz görünümleri. Tarayıcı ortamı kurulmadı; demo veri/seed, migration veya Excel işlemi eklenmedi.
 
-Sıradaki adım 2H yayınlama yönetimidir; bu adım henüz uygulanmadı.
+## Yayınlama yönetimi (2H)
+
+**Bursluluk → Bursluluk Başvuruları** listesi ve başvuru detayında iki ayrı yayın anahtarı bulunur. `AdminScholarshipApplicationController` içindeki `updatePublication`, `previewPublication` ve `publishBulk` işlemleri, `admin.scholarship.applications.publication.*` route'ları üzerinden ortak `publish` servisini kullanır. Görünümler `resources/views/admin/scholarship/applications/` altındadır.
+
+- Başvuru yayını, onay durumunu değiştirmez. Kabul kararı ancak onaylı ve başvuru yayını açık kayıtta ortak üye sunumuna açılır; 30 dakika erken gelme bilgisi korunur. Sınav/burs yayını ayrı anahtardır. Tekli açma/kapatma diğer yayını, onayı, not/bursu veya iletişim durumlarını değiştirmez ve bildirim göndermez.
+- Notu veya bursu NULL olan kaydın sonuç anahtarı kapalı ve devre dışı gösterilir. Doğrudan istekte de ortak servis yayınlamayı engeller; 0 not ve %0 burs geçerlidir. Yayını kapatmak saklanan sonucu silmez, üye sunumundan gizler.
+- Listedeki seçim kutuları artık onaylı başvuruları da kapsar. Toplu onay ve yayın aynı seçili kayıtlar / tüm filtre sonucu kapsamını kullanır; onay işlemi yine yalnız bekleyenleri işler. Yayın ön izlemesinde aşama, açma/kapatma işlemi, toplam kayıt ve o anda uygun kayıt sayısı açıkça gösterilir. Son uygulama ALA onay modalından geçer.
+- Ön izlemenin kayıt ID'leri, aşaması, yayın değeri ve filtreleri; yöneticiye bağlı, 30 dakika geçerli, tek kullanımlık geçici oturum bilgisi olarak saklanır. Sonradan eklenen kayıtlar dahil edilmez; onay isteğinden gönderilen farklı ID/aşama/yayın değerleri kullanılmaz. Bu bilgi bir değişiklik tarihçesi değildir.
+- Onay anında her kayıt yeniden doğrulanır. Eksik sonuçlar veya silinen kayıtlar atlanır; diğerleri işlenir. Büyük seçimler ortak servisin 1000 kayıt sınırına uygun parçalara ayrılır. Sonuç özeti uygulanan/atlanmış sayısını gösterir; ilk 20 atlanan kaydın numarası ve nedeni listede bildirilir. Silinmiş kayıt için ID gösterilir. Zaten istenen yayın durumunda olan kayıt da ayarın uygulandığı sayıya dahildir.
+
+Kısa doğrulama: `ScholarshipPublicationAdminTest` ile mevcut başvuru ekranı ve toplu onayın iki ilgili testi birlikte, izole MariaDB üzerinde **7 test, 172 doğrulama** ile geçti. Kapsam; admin erişimi, bağımsız tekli yayınlar ve üye sunumu, NULL–0 yayın engeli, toplu işlemde güncel sonuç kontrolü, sabit seçim/sonradan eklenen kayıt, silinen kayıt bildirimi, onay sahibinin/sürenin/tokenın kontrolü ve otomatik gönderim olmamasıdır. Hedefli biçim, sözdizimi ve diff kontrolleri geçti.
+
+**3J'ye bırakılanlar:** Tarayıcıda yayın anahtarları, ortak seçim ve iki farklı toplu işlem düğmesi, yayın ön izleme/modal onay-iptal akışı, çok sayfalı ve büyük toplu seçimler, ayrıntılı filtre/mesaj varyasyonları, TR/EN ve cihaz görünümleri. Gerçek üye ekranlarının HTML/Livewire/API çıktıları üye geliştirmesi sonrası doğrulanacaktır. Bu adımda tarayıcı ortamı veya demo veri hazırlanmadı; migration eklenmedi.
+
+Sıradaki adım 2I iletişim/bildirim yönetimidir; gerçek sağlayıcı seçimi ve gönderim entegrasyonu bu adımda yapılacaktır.

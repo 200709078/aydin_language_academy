@@ -639,7 +639,7 @@ Kullanıcı açıkça istemeden mevcut global authorization sistemi değiştiril
 
 # 12. Bursluluk sistemi geliştirme planı
 
-Admin öncesi hazırlık (1A–1E ve 2A), **2B — Sınav dönemi yönetimi**, **2C — Tanımlar, oturum ve kontenjan yönetimi**, **2D — Başvuru yönetimi**, **2E — Katılım**, **2F — Not** ve **2G — Burs oranı** tamamlandı. Sıradaki uygulama adımı **2H — Yayınlama**. Mevcut servislerin kullanım sözleşmesi, kilitleme düzeni ve doğrulama komutları [docs/scholarship-foundation.md](docs/scholarship-foundation.md) dosyasındadır; ekranlar bu ortak altyapıyı kullanır.
+Admin öncesi hazırlık (1A–1E ve 2A), **2B — Sınav dönemi yönetimi**, **2C — Tanımlar, oturum ve kontenjan yönetimi**, **2D — Başvuru yönetimi**, **2E — Katılım**, **2F — Not**, **2G — Burs oranı** ve **2H — Yayınlama** tamamlandı. Sıradaki uygulama adımı **2I — İletişim/bildirim**. Mevcut servislerin kullanım sözleşmesi, kilitleme düzeni ve doğrulama komutları [docs/scholarship-foundation.md](docs/scholarship-foundation.md) dosyasındadır; ekranlar bu ortak altyapıyı kullanır.
 
 Kurallar:
 - Kullanıcı hangi adımı isterse yalnız o adımı uygula.
