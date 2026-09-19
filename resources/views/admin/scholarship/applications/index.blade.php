@@ -11,6 +11,9 @@
                     <ul class="mb-0">@foreach (session('publicationSkipped') as $skipped)<li>{{ $skipped['number'] }}: {{ $skipped['reason'] }}</li>@endforeach</ul>
                 </div>
             @endif
+            @if (session('notificationSkipped'))
+                <div class="alert alert-warning"><ul class="mb-0">@foreach (session('notificationSkipped') as $skipped)<li>{{ $skipped['number'] }}: {{ $skipped['reason'] }}</li>@endforeach</ul></div>
+            @endif
             <form id="bulk-approval" method="POST" action="{{ route('admin.scholarship.applications.approval.preview') }}" class="border rounded p-3 mb-3">
                 @csrf
                 @foreach ($filters as $key => $value)<input type="hidden" name="filters[{{ $key }}]" value="{{ $value }}">@endforeach
@@ -43,6 +46,17 @@
                     <div class="col-md-4"><button type="submit" formaction="{{ route('admin.scholarship.applications.publication.preview') }}" class="btn btn-sm btn-outline-primary" @disabled($applications->total() === 0)>{{ __('scholarship.publication_preview') }}</button></div>
                 </div>
                 <p class="small text-muted mb-0 mt-2">{{ __('scholarship.publication_help') }}</p>
+                <div class="row g-3 align-items-end mt-1">
+                    <div class="col-md-5">
+                        <label for="notification-channel" class="form-label">{{ __('scholarship.delivery_channel') }}</label>
+                        <select id="notification-channel" name="channel" class="form-select form-select-sm">
+                            <option value="email">{{ __('scholarship.channel_email') }}</option>
+                            <option value="whatsapp" disabled>{{ __('scholarship.channel_whatsapp') }} — {{ __('scholarship.delivery_unavailable') }}</option>
+                        </select>
+                    </div>
+                    <div class="col-md-7"><button type="submit" formaction="{{ route('admin.scholarship.applications.notification.preview') }}" class="btn btn-sm btn-outline-primary" @disabled($applications->total() === 0)>{{ __('scholarship.delivery_preview') }}</button></div>
+                </div>
+                <p class="small text-muted mb-0 mt-2">{{ __('scholarship.delivery_selection_help') }}</p>
             </form>
             <div class="table-responsive position-relative">
                 <table class="table table-striped table-sm align-middle mb-0">
@@ -64,7 +78,7 @@
                                     aria-label="{{ __('scholarship.select_application', ['number' => $application->application_number]) }}"></td>
                                 <td class="text-break"><a href="{{ route('admin.scholarship.applications.show', $application) }}">{{ $application->student_name_snapshot }}</a><div class="small">{{ $application->application_number }}</div></td>
                                 <td class="text-break">{{ $application->school_name_snapshot }}<div class="small">{{ $application->student_level_name_snapshot }}</div></td>
-                                <td class="text-break">{{ $application->user?->email ?? __('scholarship.account_deleted') }}<div class="small">{{ $application->user?->phone ?? '—' }}</div></td>
+                                <td class="text-break">{{ $application->user?->email ?? __('scholarship.account_deleted') }}<div class="small mb-2">{{ $application->user?->phone ?? '—' }}</div>@include('admin.scholarship.applications._contact-switches')</td>
                                 <td class="text-break"><div>{{ $application->period->title }}</div><div>{{ $application->session->branch->name }} / {{ $application->session->examGroup->name }}</div><div class="small">{{ $application->session->exam_title }}</div><div class="small">{{ $application->session->exam_date->format('d.m.Y') }} {{ $application->session->starts_at }}–{{ $application->session->ends_at }}</div></td>
                                 <td><span class="badge {{ $application->status === 'approved' ? 'text-bg-success' : 'text-bg-warning' }}">{{ __('scholarship.approval_'.$application->status) }}</span><div class="small mt-1">{{ __('scholarship.'.($application->application_published ? 'published' : 'unpublished')) }}</div></td>
                                 <td>@include('admin.scholarship.applications._publication-switches')</td>

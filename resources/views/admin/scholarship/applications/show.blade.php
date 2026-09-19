@@ -33,6 +33,7 @@
             @include('admin.scholarship.applications._publication-switches')
             <p class="small text-muted mb-0">{{ __('scholarship.publication_help') }}</p>
         </div>
+        @include('admin.scholarship.applications._communication')
         <p class="text-muted small mb-0">{{ __('scholarship.approval_help') }}</p>
     </div></div>
     <div class="position-relative" style="z-index: 1055;"><x-action-confirmation-modal /></div>

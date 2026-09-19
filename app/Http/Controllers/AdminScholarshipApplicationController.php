@@ -10,6 +10,7 @@ use App\Models\ScholarshipExamSession;
 use App\Models\ScholarshipSchool;
 use App\Models\ScholarshipStudentLevel;
 use App\Services\ScholarshipApplicationService;
+use App\Services\ScholarshipNotificationService;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\RedirectResponse;
@@ -22,7 +23,10 @@ use Illuminate\View\View;
 
 class AdminScholarshipApplicationController extends Controller
 {
-    public function __construct(private readonly ScholarshipApplicationService $applications) {}
+    public function __construct(
+        private readonly ScholarshipApplicationService $applications,
+        private readonly ScholarshipNotificationService $notifications,
+    ) {}
 
     public function index(Request $request): View
     {
@@ -42,7 +46,10 @@ class AdminScholarshipApplicationController extends Controller
     {
         $application->load(['user', 'period', 'session.branch', 'session.examGroup']);
 
-        return view('admin.scholarship.applications.show', compact('application'));
+        return view('admin.scholarship.applications.show', [
+            'application' => $application,
+            'deliveries' => $application->notifications()->latest('id')->paginate(20),
+        ]);
     }
 
     public function edit(ScholarshipApplication $application): View
@@ -239,6 +246,90 @@ class AdminScholarshipApplicationController extends Controller
                 'state' => __('scholarship.'.($preview['published'] ? 'published' : 'unpublished')),
                 'updated' => $updated, 'skipped' => count($skipped),
             ]))->with('publicationSkipped', $details);
+    }
+
+    public function updateContact(Request $request, ScholarshipApplication $application, string $phase): RedirectResponse
+    {
+        $data = Validator::make($request->post(), ['reached' => ['required', 'boolean']])->validate();
+        $this->applications->markContact($request->user(), $application->id, $phase, (bool) $data['reached']);
+
+        return redirect()->back()->with('modalSuccessTitle', __('scholarship.communication'))
+            ->with('modalSuccessContent', __('scholarship.contact_updated'));
+    }
+
+    public function previewNotifications(Request $request): View
+    {
+        $data = Validator::make($request->post(), [
+            'scope' => ['required', Rule::in(['selected', 'filtered'])],
+            'phase' => ['required', Rule::in(['application', 'result'])],
+            'channel' => ['required', Rule::in(['email', 'whatsapp'])],
+            'ids' => ['required_if:scope,selected', 'array', 'max:1000'],
+            'ids.*' => ['required', 'integer', 'min:1', 'distinct'],
+            'filters' => ['sometimes', 'array'],
+        ], ['ids.required_if' => __('scholarship.publication_no_selection')])->validate();
+        $filters = $this->filters($data['filters'] ?? []);
+        $query = $this->query($filters);
+        if ($data['scope'] === 'selected') {
+            $query->whereIn('id', $data['ids']);
+            if ((clone $query)->count() !== count($data['ids'])) {
+                throw ValidationException::withMessages(['ids' => __('scholarship.selection_changed')]);
+            }
+        }
+        $ids = $query->orderBy('id')->pluck('id')->all();
+        if ($ids === []) {
+            throw ValidationException::withMessages(['ids' => __('scholarship.publication_no_selection')]);
+        }
+        $rows = [];
+        foreach ((clone $query)->with(['user', 'period', 'session.branch', 'session.examGroup'])->limit(20)->get() as $application) {
+            try {
+                $message = $this->notifications->message($application, $data['phase'], $data['channel']);
+                $rows[] = ['application' => $application, 'message' => $message, 'error' => null];
+            } catch (ValidationException $error) {
+                $rows[] = ['application' => $application, 'message' => null, 'error' => collect($error->errors())->flatten()->implode(' ')];
+            }
+        }
+        $token = Str::random(40);
+        $request->session()->put('scholarship_bulk_notification', [
+            'token' => $token, 'ids' => $ids, 'phase' => $data['phase'], 'channel' => $data['channel'], 'filters' => $filters,
+            'actor_id' => $request->user()->id, 'expires_at' => now()->addMinutes(30)->timestamp,
+        ]);
+
+        return view('admin.scholarship.applications.notification-preview', [
+            'token' => $token, 'count' => count($ids), 'rows' => $rows, 'filters' => $filters,
+            'phase' => $data['phase'], 'channel' => $data['channel'], 'scope' => $data['scope'],
+        ]);
+    }
+
+    public function sendNotifications(Request $request): RedirectResponse
+    {
+        $data = Validator::make($request->post(), ['token' => ['required', 'string', 'size:40']])->validate();
+        $preview = $request->session()->get('scholarship_bulk_notification');
+        if (! is_array($preview) || ! hash_equals($preview['token'], $data['token'])
+            || $preview['actor_id'] !== $request->user()->id || $preview['expires_at'] < now()->timestamp) {
+            throw ValidationException::withMessages(['token' => __('scholarship.approval_preview_expired')]);
+        }
+        $request->session()->forget('scholarship_bulk_notification');
+        $counts = ['queued' => 0, 'duplicate' => 0, 'skipped' => 0];
+        $details = [];
+        foreach ($preview['ids'] as $id) {
+            try {
+                $counts[$this->notifications->enqueue($request->user(), $id, $preview['phase'], $preview['channel'])]++;
+            } catch (ModelNotFoundException|ValidationException $error) {
+                $counts['skipped']++;
+                if (count($details) < 20) {
+                    $details[] = [
+                        'number' => ScholarshipApplication::query()->whereKey($id)->value('application_number') ?? '#'.$id,
+                        'reason' => $error instanceof ValidationException ? collect($error->errors())->flatten()->implode(' ')
+                            : __('scholarship.application_no_longer_exists'),
+                    ];
+                }
+            }
+        }
+
+        return redirect()->route('admin.scholarship.applications.index', $preview['filters'])
+            ->with('modalSuccessTitle', __('scholarship.communication'))
+            ->with('modalSuccessContent', __('scholarship.delivery_summary', $counts))
+            ->with('notificationSkipped', $details);
     }
 
     private function filters(array $input): array

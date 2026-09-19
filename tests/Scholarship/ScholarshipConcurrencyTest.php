@@ -8,6 +8,32 @@ use Illuminate\Support\Facades\DB;
 
 class ScholarshipConcurrencyTest extends ScholarshipTestCase
 {
+    public function test_notification_requests_and_redelivered_jobs_only_send_one_message(): void
+    {
+        $application = $this->applications->create($this->student, $this->data());
+        $this->applications->approve($this->admin, $application->id);
+        $this->applications->publish($this->admin, [$application->id], 'application');
+        $request = ['operation' => 'notification', 'user_id' => $this->admin->id, 'application_id' => $application->id];
+        $results = $this->race([$request, $request]);
+        self::assertSame(1, array_sum(array_column($results, 'messages')));
+        self::assertSame(1, \App\Models\ScholarshipNotification::query()->count());
+
+        $bus = \Illuminate\Support\Facades\Bus::getFacadeRoot();
+        \Illuminate\Support\Facades\Bus::fake([\App\Jobs\SendScholarshipNotification::class]);
+        try {
+            $this->applications->update($this->admin, $application->id, ['session_id' => $this->alternative->id]);
+            app(\App\Services\ScholarshipNotificationService::class)->enqueue($this->admin, $application->id, 'application', 'email');
+        } finally {
+            \Illuminate\Support\Facades\Bus::swap($bus);
+        }
+        $notification = \App\Models\ScholarshipNotification::query()->latest('id')->firstOrFail();
+        $request = ['operation' => 'notification_delivery', 'user_id' => $this->admin->id, 'notification_id' => $notification->id];
+        $results = $this->race([$request, $request]);
+        self::assertSame(1, array_sum(array_column($results, 'messages')));
+        self::assertSame('sent', $notification->fresh()->status);
+        self::assertSame(1, $notification->fresh()->attempts);
+    }
+
     public function test_two_students_cannot_take_the_final_seat(): void
     {
         $this->catalog->saveSession($this->admin, ['capacity' => 1], $this->session->id);

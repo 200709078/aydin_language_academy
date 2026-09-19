@@ -94,13 +94,14 @@ Test komutu yerel MariaDB araçlarıyla `/tmp` içinde geçici, ağ bağlantıs�
 
 ## 3J: sistem tamamlandıktan sonraki genel test planı
 
-Bu plan şimdi uygulanmaz. Admin 2B–2I ve üye 3B–3I geliştirmeleri tamamlandıktan sonra uygulanır; 2K ve 3I bu plan için ayrı tarayıcı ortamı kurmaz.
+Bu plan şimdi uygulanmaz. Admin 2B–2I'nin etkin kapsamı ve üye 3B–3I geliştirmeleri tamamlandıktan sonra uygulanır; 2K ve 3I bu plan için ayrı tarayıcı ortamı kurmaz. Kullanıcı kararıyla bekletilen WhatsApp entegrasyonu yeniden başlatılmadıkça genel test kapsamına tamamlanmış bir özellik olarak alınmaz.
 
 1. **Demo veri ve ortam:** Mevcut seed'i izole test ortamında yeniden kullan; farklı hesaplar/dönemler, boş/dolu/askıda/arşivli oturumlar, bekleyen/onaylı başvurular, farklı katılım/yayın/iletişim durumları ve NULL/0 sonuçlar için eksik sentetik örnekleri tamamla. Ardından geçici tarayıcı test ortamını kur ve genel test boyunca kullan. Mevcut gerçek verileri değiştirme.
 2. **Otomatik kontroller:** Mevcut bursluluk testlerini topluca çalıştır. Alt adımlardan kalan kapsam eksiklerini gözden geçir; somut eksikleri tamamla. Geçen ortak iş kurallarının bütün varyasyonlarını tarayıcıda yeniden üretme.
 3. **Admin–üye akışı:** Üye başvurusu → admin onayı/yayını → üyede görünürlük → katılım/not/burs → sonuç yayını → üyede sonuç akışını tamamla. Düzenleme/aktarım, kalıcı silme ve yeniden başvuru, kapasite ve dönem/askı/arşiv kilitleri, hesap sahipliği, gizli sonuçların çıktıya sızmaması, yayın sonrası güncelleme ve geçmiş dönemlerin korunmasını kontrol et. Toplu işlemlerde seçili kayıtlar ile tüm filtre sonucunun kapsamını doğrula.
-4. **Bildirim ve görünüm:** 2I'de belirlenen sağlayıcı test yöntemiyle tekli/toplu gönderim, tekrar deneme, mükerrer gönderim koruması, ulaşıldı kayıtlarının atlanması ve iki iletişim aşamasını kontrol et; gerçek kişilere mesaj gönderme. Admin ve üye ekranlarında TR/EN, masaüstü/mobil ve ayrı davranış varsa tablet; filtre/arama/sayfalama, form mesajları, modallar ve tarayıcı etkileşimlerini incele.
-5. **Kapanış:** Bulunan hataları düzelt ve yalnız etkilenen kontrolleri tekrarla. Yapılan kontrolleri, sonuçlarını ve varsa açık sorunları raporla; geçici tarayıcı/test sunucularını kapat ve bu test ortamının geçici verilerini temizle. Excel ilk sürüm kapsamı dışındadır.
+4. **Admin etkileşimleri ve görünüm:** Dönem/tanım/oturum yönetimi, başvuru onayı/aktarımı/silmesi; katılım seçimi, not/burs temizleme, radio seçimi, yayın ve iletişim anahtarları ile modal onay/iptal akışlarını tarayıcıda incele. Kaydetme sonrasında filtre/sıralama/sayfa ve satır konumunu; ortak seçim formundaki onay/yayın/bildirim düğmelerini, çok sayfalı ve büyük toplu seçimleri kontrol et. Admin ve üye ekranlarında TR/EN, masaüstü/mobil ve ayrı davranış varsa tablet; filtre/arama, hata/boş durum mesajları ve sayfalama incelensin. 2C/2D'nin geçmiş tarayıcı sonuçları son bütünleşik görünümün test edildiği anlamına gelmez.
+5. **E-posta ve iletişim:** İzole ortamda gerçek alıcılara teslim etmeyen posta yakalayıcı/test taşıyıcısı ve kuyruk işçisiyle tekli/toplu gönderim, teknik durum ve manuel Ulaşıldı ayrımı, güvenli tekrar deneme, belirsiz teslim, mükerrer gönderim koruması ve ulaşıldı kayıtlarının atlanmasını incele. Kuyrukta beklerken yayın/alıcı/içerik değişimi, eski değere dönüş, başvuru silme ve sayfalı teknik kayıtlar genel akışta kontrol edilsin. 2I'nin array taşıyıcıyla geçen kontrolleri canlı SMTP teslim testi olarak raporlanmaz; gerçek kişilere mesaj gönderme. WhatsApp kapalı kalır; yeniden geliştirilirse sağlayıcıya özgü kontroller o adımda belirlenir.
+6. **Kapanış:** Bulunan hataları düzelt ve yalnız etkilenen kontrolleri tekrarla. Yapılan kontrolleri, sonuçlarını ve varsa açık sorunları raporla; geçici tarayıcı/test sunucularını kapat ve bu test ortamının geçici verilerini temizle. Excel ilk sürüm kapsamı dışındadır.
 
 ## 2A: mevcut admin yapısıyla bağlantı
 
@@ -220,4 +221,39 @@ Kısa doğrulama: `ScholarshipPublicationAdminTest` ile mevcut başvuru ekranı 
 
 **3J'ye bırakılanlar:** Tarayıcıda yayın anahtarları, ortak seçim ve iki farklı toplu işlem düğmesi, yayın ön izleme/modal onay-iptal akışı, çok sayfalı ve büyük toplu seçimler, ayrıntılı filtre/mesaj varyasyonları, TR/EN ve cihaz görünümleri. Gerçek üye ekranlarının HTML/Livewire/API çıktıları üye geliştirmesi sonrası doğrulanacaktır. Bu adımda tarayıcı ortamı veya demo veri hazırlanmadı; migration eklenmedi.
 
-Sıradaki adım 2I iletişim/bildirim yönetimidir; gerçek sağlayıcı seçimi ve gönderim entegrasyonu bu adımda yapılacaktır.
+## İletişim ve bildirim yönetimi (2I — e-posta/manuel iletişim tamamlandı; WhatsApp beklemede)
+
+Başvuru listesi ve detayında başvuru/sonuç için ayrı **Ulaşıldı** anahtarları bulunur. `contact.update`, mevcut `markContact` servisini kullanır; yalnız istenen aşama değişir ve mesaj gönderilmez. Bilgi değişikliklerinde ilgili iletişimin sıfırlanması mevcut ortak servislerde korunur.
+
+Başvuru detayından tek kayıt; listedeki ortak seçimden seçili başvurular veya filtreye uyan bütün kayıtlar için e-posta ön izlenebilir. `notification.preview` ve `notification.send`, mevcut ALA onay modalıyla gönderimi başlatır. Ön izleme ilk 20 kaydın alıcısını ve içeriğini veya engel nedenini gösterir. Kapsam/aşama/kanal, yöneticiye bağlı 30 dakikalık tek kullanımlık oturum kaydında sabittir; sonradan eklenen başvurular ve onay isteğindeki değiştirilmiş alanlar kapsamı genişletmez. Onayda güncel veriler kullanılır; atlanan ilk 20 kaydın nedeni ve toplam işlem sayıları gösterilir.
+
+`ScholarshipNotificationService::enqueue` ve `SendScholarshipNotification`, mevcut posta ve kuyruk altyapısını kullanır. Yerel yapılandırma SMTP ve veritabanı kuyruğudur; gerçek gönderim için mevcut kuyruk işleyicisinin çalışması gerekir. Bu geliştirmede `.env` veya genel mail/queue yapılandırması değiştirilmedi, gerçek alıcıya mesaj gönderilmedi. Log veya log'a düşebilen failover posta ayarı gerçek gönderim sayılmaz; array yalnız izole test ortamında kabul edilir. Hesapta kalıcı dil tercihi olmadığından bildirim metni Türkçedir; admin ekranları mevcut TR/EN çevirilerini kullanır.
+
+- Başvuru e-postası için onay ve başvuru yayını; sonuç e-postası için eksiksiz ve yayınlanmış sonuç gerekir. Ulaşıldı kayıtları gönderilmez. Silinmiş hesap/geçersiz e-posta atlanır. Alıcı User üzerindeki güncel e-postadır. Başvuru mesajı oturum/şube/grup ve en az 30 dakika önce gelme bilgisini, sonuç mesajı katılım/not/bursu içerir.
+- Kuyruk işçisi gönderimi üstlenmeden hemen önce yayın, iletişim, alıcı ve içeriği yeniden kontrol eder. Değişen kayıt gönderilmez; yönetici güncel bilgiyi ön izleyerek tekrar başlatabilir. Gönderim üstlenildikten sonra yapılan değişiklik, dış posta sistemine aktarılmaya başlayan mesajı geri çağıramaz.
+- Aynı başvuru/aşama/kanalın son teknik kaydındaki alıcı/içerik değişmediyse tekrarlanan düğme ve paralel istek mevcut kayıt/kimliği kullanır. İçerik değişirse yeni kimlik açılır, eski bekleyen ve henüz üstlenilmemiş mesajlar geçersiz kılınır. A → B → A değişimi son B'den farklı yeni bir bildirimdir; tarihsel A kaydı bunu engellemez. Dönem → başvuru → bildirim kilidi korunur. Gönderim hakkı dış işlemden önce kalıcı alınır; yinelenen kuyruk işi aynı mesajı göndermez. Harici gönderim, tekrar çalıştırılabilen veritabanı transaction'ının dışında yapılır.
+- Sağlayıcı çağrısı başlamadan başarısız olan kayıt aynı kimlikle yeniden kuyruğa alınabilir. SMTP kabulünden sonra bağlantı veya işçi kesilmesinde teslim kesin olarak bilinemeyebilir: otomatik yeniden deneme yapılmaz, aynı mesajın tekrar başlatılması engellenir. Yönetici alıcı/posta sağlayıcısından kontrol edip telefonla veya sistem dışında iletişimi tamamlayabilir. Bu tasarım tam bir “kesin teslim” garantisi vermez. Ham sağlayıcı istisnası/secret hata kaydına yazılmaz.
+- Detaydaki sayfalı teknik kayıtlar aşama, kanal, alıcı, bekliyor/gönderildi/gönderilemedi-doğrulanamadı ve zaman bilgisini gösterir. Gönderildi yalnız posta hizmetinin kabulüdür; Ulaşıldı otomatik değişmez. Önceki başarılı kayıtlar veri/iletişim değişiminde korunur. İletişim geçmişi/audit tablosu veya yeni migration eklenmedi.
+
+**Kullanıcı kararıyla bekletilen:** Kullanıcı WhatsApp bağlantısını şimdilik erteledi. Sağlayıcı seçilmedi; Meta Cloud API önerisi kabul edilmiş sayılmaz. WhatsApp seçeneği kapalı, doğrudan istek de gönderim yapmaz. Paylaşılan normal WhatsApp numarası yapılandırmaya eklenmedi; hesap veya numara üzerinde işlem yapılmadı. Sağlayıcı bağlantısı, gerekiyorsa onaylı mesaj şablonları ve kanalın hedefli kontrolleri yeniden istendiğinde ele alınacak. E-posta ve manuel iletişim işleri tamamlandı; WhatsApp tamamlanmış olarak raporlanmaz ve diğer geliştirme adımlarını engellemez.
+
+Kısa doğrulama: `php tests/Scholarship/run-mariadb.php --filter 'ScholarshipNotificationAdminTest|ScholarshipConcurrencyTest::test_notification_requests_and_redelivered_jobs_only_send_one_message'` ile izole MariaDB üzerinde **7 test, 121 doğrulama** geçti. Yetki, ayrı iletişim yazmaları, sabit tekli/toplu seçim ve token/sahip/süre, yayın engelleri, güncel alıcı ve içerik, geçmiş değere dönüş, gönderim/ulaşılma ayrımı, güvenli tekrar deneme ve eşzamanlı istek/işçi çalışması kapsandı. Ayrıca mevcut bağımsız yayın anahtarları ve otomatik mesaj gönderilmemesi testi bu değişiklik sırasında geçti. Gerçek posta yerine bellekteki array taşıyıcı kullanıldı.
+
+**3J'ye bırakılanlar:** Tarayıcıda iletişim anahtarları, tekli/toplu ön izleme ve modal onay/iptal, sayfalı gönderim kayıtları, ayrıntılı filtre/mesaj/TR-EN/cihaz kombinasyonları ve bütün admin–üye akışı. Bu adımda tarayıcı ortamı veya demo seed hazırlanmadı.
+
+## Admin temel kontrol değerlendirmesi (2K)
+
+**Tamamlandı.** 2B–2I'nin etkin kapsamındaki mevcut testler, yukarıda kayıtlı önceki sonuçlar, admin route/menu bağlantıları ve controller'ların ortak servisleri kullanması gözden geçirildi. Bu incelemede yeni bir kritik kontrol eksikliği veya açık hata saptanmadı. Bu sonuç genel sistem testi veya canlı teslim doğrulaması değildir.
+
+| Adım | Gözden geçirilen temel güvence | Mevcut kontrol |
+| --- | --- | --- |
+| 2B | Admin yetkisi, dönem kaydı, tarih sınırları, manuel kapanış, bağımlı kayıtların korunması | `ScholarshipPeriodAdminTest` |
+| 2C | Ayrı tanımlar, oturum kaydı, kapasite sınırı, askı/arşiv, başvurulu oturumun silinememesi | `ScholarshipDefinitionAdminTest`, `ScholarshipSessionAdminTest` |
+| 2D | Yetkili onay/aktarım/silme, kontenjan ve dönem sınırı, onaylı başvurunun korunması, sabit toplu seçim | `ScholarshipApplicationAdminTest` |
+| 2E–2G | Katılmadı için 0/0, tam sayı not, burs seçenekleri, NULL–0 ayrımı, yalnız ilgili alan ve iletişimin değişmesi | `ScholarshipAttendanceAdminTest`, `ScholarshipScoreAdminTest`, `ScholarshipAwardAdminTest` |
+| 2H | Bağımsız yayınlar, eksik sonucun tekli/toplu engellenmesi, üye sunumundan gizleme, onay/token/süre kontrolü | `ScholarshipPublicationAdminTest` |
+| 2I | Ayrı manuel iletişim, yayın/alıcı kontrolü, tekli/toplu seçim, tekrar gönderim ve eşzamanlı işçi koruması | `ScholarshipNotificationAdminTest`, `ScholarshipConcurrencyTest` içindeki bildirim yarışı |
+
+Önceden geçen testler yeniden çalıştırılmadı ve yeni test eklenmedi. Bu adım yalnız `AGENTS.md` ve bu belgeyi güncelledi; içerik/tutarlılık ve diff kontrolü yapıldı. Tarayıcı ortamı, demo veri, migration veya gerçek mesaj gönderimi yapılmadı. Önceki adımlardan kalan ayrıntılı etkileşim/görünüm ve bildirim kontrol ihtiyaçları yukarıdaki **3J genel test planında** bir araya getirildi. WhatsApp kullanıcı kararıyla beklemede; Excel ilk sürüm dışında.
+
+Sıradaki adım **3A — Mevcut üye alanını analiz et**. Bu değerlendirmede 3A başlatılmadı ve üye ekranı geliştirilmedi.

@@ -449,7 +449,7 @@ Yayındaki başvuru bilgileri admin tarafından değiştirildiğinde yayın aç�
 
 ## 11.8 Başvuru sonrası iletişim ve gerçek bildirimler
 
-Gerçek e-posta ve WhatsApp gönderimi ilk sürümdedir. Gönderimler adminin her başvuru için ayrı düğmeye basması veya seçilen başvurular için toplu gönderim başlatmasıyla yapılır.
+Gerçek e-posta gönderimi ilk sürümdedir. WhatsApp gönderimi için kararlaştırılan iş kuralları korunur; ancak **kullanıcının son kararıyla WhatsApp bağlantısı şimdilik beklemeye alınmıştır**. Bu erteleme başvuru ve sonuç aşamalarının ikisini de kapsar. Sağlayıcı seçimi, hesap/numara kurulumu ve WhatsApp entegrasyonu kullanıcı yeniden istediğinde ele alınır; tamamlanmış özellik olarak raporlanmaz. E-posta ve manuel iletişim takibiyle diğer geliştirme adımlarına devam edilebilir. Gönderimler adminin her başvuru için ayrı düğmeye basması veya seçilen başvurular için toplu gönderim başlatmasıyla yapılır.
 
 Başvuru oluşturma, onaylama, yayınlama veya değiştirme kendiliğinden e-posta/WhatsApp göndermez. Gönderim kararını ve gerekli kontrolleri admin verir.
 
@@ -639,7 +639,7 @@ Kullanıcı açıkça istemeden mevcut global authorization sistemi değiştiril
 
 # 12. Bursluluk sistemi geliştirme planı
 
-Admin öncesi hazırlık (1A–1E ve 2A), **2B — Sınav dönemi yönetimi**, **2C — Tanımlar, oturum ve kontenjan yönetimi**, **2D — Başvuru yönetimi**, **2E — Katılım**, **2F — Not**, **2G — Burs oranı** ve **2H — Yayınlama** tamamlandı. Sıradaki uygulama adımı **2I — İletişim/bildirim**. Mevcut servislerin kullanım sözleşmesi, kilitleme düzeni ve doğrulama komutları [docs/scholarship-foundation.md](docs/scholarship-foundation.md) dosyasındadır; ekranlar bu ortak altyapıyı kullanır.
+Admin öncesi hazırlık (1A–1E ve 2A), **2B — Sınav dönemi yönetimi**, **2C — Tanımlar, oturum ve kontenjan yönetimi**, **2D — Başvuru yönetimi**, **2E — Katılım**, **2F — Not**, **2G — Burs oranı** ve **2H — Yayınlama** tamamlandı. **2I — İletişim/bildirim:** ayrı manuel iletişim takibi ve mevcut posta altyapısıyla tekli/toplu e-posta gönderimi tamamlandı; WhatsApp bağlantısı kullanıcı kararıyla şimdilik beklemede ve tamamlanmış sayılmıyor. **2K — Admin temel kontrol değerlendirmesi tamamlandı**; mevcut kontrol sonuçları ve kapsam gözden geçirildi, yeni kritik eksik saptanmadı. Sıradaki adım **3A — Mevcut üye alanını analiz et**; henüz başlatılmadı. Mevcut servislerin kullanım sözleşmesi, kilitleme düzeni ve doğrulama komutları [docs/scholarship-foundation.md](docs/scholarship-foundation.md) dosyasındadır; ekranlar bu ortak altyapıyı kullanır.
 
 Kurallar:
 - Kullanıcı hangi adımı isterse yalnız o adımı uygula.
@@ -848,6 +848,8 @@ Yayınlanmış veride sonraki düzeltme hemen görünsün; yeniden yayın zorunl
 Yayınlanmamış kabul kararı, not ve bursun görünürlüğünü ortak sunum kuralları üzerinden doğrula. Gerçek üye HTML/Livewire/API çıktıları ilgili 3.x adımlarında kontrol edilir. Dur.
 
 ### 2I — İletişim/bildirim
+**Durum:** E-posta ve manuel iletişim yönetimi tamamlandı. WhatsApp bağlantısı 11.8'deki kullanıcı kararıyla beklemede; aşağıdaki WhatsApp gereksinimleri yeniden başlatılacak entegrasyon için korunur. Bekletilen bağlantı, 2K ve sonraki adımların başlamasını engellemez.
+
 Başvuru sonucu iletişimi ve sınav/burs sonucu iletişimini ayrı yönet:
 - Her aşamada varsayılan `ulaşılmadı` ve adminin elle seçebildiği `ulaşıldı` durumu.
 - Hesabın kayıtlı e-postası/telefonuna adminin tekli veya toplu butonla başlattığı gerçek e-posta/WhatsApp gönderimi.
@@ -871,7 +873,9 @@ Veri modeli benzersiz başvuru numaraları ve açık ilişkilerle ileride aktar�
 Bu adımın ilk sürümde uygulanmaması sonraki ilk sürüm adımlarını engellemez.
 
 ### 2K — Admin temel kontrol değerlendirmesi
-2B–2I tamamlandıktan sonra alt adımların temel kontrol sonuçlarını ve açık hata notlarını gözden geçir. Temel akış veya değişen kritik kural için eksik kontrol varsa yalnız onu mevcut hedefli testlerle tamamla; geçen testleri topluca yeniden çalıştırma.
+**Durum:** Tamamlandı. Mevcut hedefli test kapsamı, önceki sonuçlar ve ortak servis bağlantıları değerlendirildi; yeni kritik kontrol ihtiyacı veya açık hata saptanmadı. Testler yeniden çalıştırılmadı. Ayrıntılı kontroller geliştirme dokümanındaki 3J planında toplandı; WhatsApp beklemede.
+
+2B–2I'nin etkin kapsamı tamamlandıktan sonra alt adımların temel kontrol sonuçlarını ve açık hata notlarını gözden geçir. Kullanıcı kararıyla bekletilen WhatsApp bağlantısını tamamlanmış sayma veya bu adımda yeniden başlatma. Temel akış veya değişen kritik kural için eksik kontrol varsa yalnız onu mevcut hedefli testlerle tamamla; geçen testleri topluca yeniden çalıştırma.
 
 Tarayıcı ortamı veya demo veri hazırlama. Ayrıntılı admin görünüm, filtre/mesaj, toplu işlem ve ekranlar arası kontrol ihtiyaçlarını geliştirme dokümanındaki 3J genel test planına aktar.
 

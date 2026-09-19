@@ -215,6 +215,10 @@ Route::group(['middleware' => ['auth', isAdmin_middle::class], 'prefix' => 'admi
 
     Route::prefix('scholarship/applications')->name('admin.scholarship.applications.')->group(function (): void {
         Route::get('/', [AdminScholarshipApplicationController::class, 'index'])->name('index');
+        Route::patch('/{application}/contact/{phase}', [AdminScholarshipApplicationController::class, 'updateContact'])
+            ->whereNumber('application')->where('phase', 'application|result')->name('contact.update');
+        Route::post('/notification-preview', [AdminScholarshipApplicationController::class, 'previewNotifications'])->name('notification.preview');
+        Route::post('/notify', [AdminScholarshipApplicationController::class, 'sendNotifications'])->name('notification.send');
         Route::post('/publication-preview', [AdminScholarshipApplicationController::class, 'previewPublication'])->name('publication.preview');
         Route::post('/publish', [AdminScholarshipApplicationController::class, 'publishBulk'])->name('publication.bulk');
         Route::patch('/{application}/publication/{phase}', [AdminScholarshipApplicationController::class, 'updatePublication'])

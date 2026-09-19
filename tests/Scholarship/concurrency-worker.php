@@ -17,6 +17,10 @@ while (! is_file($barrier.'.go')) {
 try {
     $actor = App\Models\User::findOrFail($request['user_id']);
     $result = match ($request['operation'] ?? 'create') {
+        'notification' => ['notification' => app(App\Services\ScholarshipNotificationService::class)->enqueue($actor, $request['application_id'], 'application', 'email'),
+            'messages' => Illuminate\Support\Facades\Mail::mailer()->getSymfonyTransport()->messages()->count()],
+        'notification_delivery' => ['delivery' => app(App\Services\ScholarshipNotificationService::class)->deliver($request['notification_id']),
+            'messages' => Illuminate\Support\Facades\Mail::mailer()->getSymfonyTransport()->messages()->count()],
         'capacity' => ['capacity' => app(App\Services\ScholarshipCatalogService::class)->saveSession($actor, $request['data'], $request['session_id'])->capacity],
         'update' => ['updated' => app(App\Services\ScholarshipApplicationService::class)->update($actor, $request['application_id'], $request['data'])->id],
         default => ['created' => app(App\Services\ScholarshipApplicationService::class)->create($actor, $request['data'])->id],
