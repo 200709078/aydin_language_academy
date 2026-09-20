@@ -256,4 +256,41 @@ Kısa doğrulama: `php tests/Scholarship/run-mariadb.php --filter 'ScholarshipNo
 
 Önceden geçen testler yeniden çalıştırılmadı ve yeni test eklenmedi. Bu adım yalnız `AGENTS.md` ve bu belgeyi güncelledi; içerik/tutarlılık ve diff kontrolü yapıldı. Tarayıcı ortamı, demo veri, migration veya gerçek mesaj gönderimi yapılmadı. Önceki adımlardan kalan ayrıntılı etkileşim/görünüm ve bildirim kontrol ihtiyaçları yukarıdaki **3J genel test planında** bir araya getirildi. WhatsApp kullanıcı kararıyla beklemede; Excel ilk sürüm dışında.
 
-Sıradaki adım **3A — Mevcut üye alanını analiz et**. Bu değerlendirmede 3A başlatılmadı ve üye ekranı geliştirilmedi.
+2K değerlendirmesi sırasında 3A başlatılmadı ve üye ekranı geliştirilmedi. Sonraki üye adımlarının durumu aşağıdadır.
+
+## Mevcut üye alanı analizi (3A)
+
+Mevcut `x-frontend-profile-layout`, masaüstü/mobil frontend menüleri ve Blade card/liste desenleri yeniden kullanılır. Erişim mevcut `auth` middleware ve Jetstream/Fortify hesabıyla sağlanır; giriş yönlendirmeleri değişmez. E-posta ve telefon güncellemesi `profile.show` üzerinden sürer. Öğrenci başvurusu için ikinci üyelik, ayrı iletişim kaydı veya çok öğrencili hesap kurulmaz.
+
+Sınav listesi `/bursluluk-sinavlari` altında, ilerideki **Başvurularım** alanı `/basvurularim` altında planlandı. Liste, form ve başvuru yönetimi kendi numaralı adımlarında geliştirilir. Başvuruların üye çıktısı ortak servisin sahiplik ve yayın kurallarını kullanmalıdır; ham admin modeli üyeye aktarılmaz. 3A yalnız analizdi; bu kararlar 3B sonunda dokümana işlendi.
+
+## Üye sınav listesi (3B)
+
+`frontend.scholarship.exams.index` (`GET /bursluluk-sinavlari`), `Frontend\ScholarshipExamController` ve `resources/views/frontend/scholarship/exams/index.blade.php` üzerinden salt okunur liste sunar. Mevcut üye layout'u ve TR/EN çevirileri kullanılır; giriş yapmış kullanıcıların masaüstü/mobil menüsüne **Bursluluk Sınavları** bağlantısı eklendi.
+
+- Aktif dönemlerin henüz başlamamış, arşivlenmemiş oturumları; şube ve sınav grubu da aktifse listelenir. Başvuru tarihleri ile dönem anahtarı ayrı durumlarla açıklanır; tarih uygunluğu mevcut `acceptsApplications` metodundan alınır. Zaman hesabında uygulamanın İstanbul zaman dilimi kullanılır.
+- Her oturumda şube, sınav grubu, sınav adı, tarih/saat, kapasite ve kalan kontenjan gösterilir. Bekleyen ve onaylı başvurular birlikte sayılır; ortak şube/grup kotası kullanılmaz. Dolu ve askıdaki oturumlar listede kalır. Askıda, mevcut iletişim sayfasına yönlendirme bulunur. Geçmiş/başlamış ve arşivli oturumlar yeni başvuru listesinden çıkarılır; mevcut başvuruların tarihçesi bu ekranın kapsamı değildir.
+- Aynı hesabın o dönemde mevcut başvurusu varsa genel bir bilgi gösterilir ve oturum başvuruya açık olarak sunulmaz. Sorgu yalnız giriş yapan hesabın başvuru varlığını denetler; başka öğrencilerin bilgileri veya herhangi bir başvurunun onay/not/burs/iletişim alanları çıktıya eklenmez. Görünüm yalnız izin verilen dönem/oturum alanlarını alır; açıklamalar HTML olarak çalıştırılmaz.
+- Bu adım form, başvuru başlatma düğmesi veya yazma endpoint'i eklemez. Gösterilen kapasite anlık bilgidir; sonraki yazma adımı mevcut ortak servisle uygunluğu ve kapasiteyi işlem anında yeniden doğrulamalıdır.
+
+Kısa doğrulama: `php tests/Scholarship/run-mariadb.php --filter ScholarshipExamCatalogTest` ile izole MariaDB üzerinde **3 test, 55 doğrulama** geçti. Gerçek Blade/layout çıktısı, giriş zorunluluğu, kendi başvurusunun varlığı ve diğer hesapların bilgilerinin gizliliği, dönem kapanışı/tarihleri, oturum doluluğu/askısı, geçmiş/arşivli/pasif kayıtların listeden çıkarılması kontrol edildi. Hedefli biçim, PHP sözdizimi ve diff kontrolleri geçti. Gerçek veriler değişmedi; demo veri veya tarayıcı ortamı hazırlanmadı.
+
+**3J'ye bırakılanlar:** Üye menüsünün ve oturum kartlarının tarayıcıda TR/EN, masaüstü/mobil görünümü; uzun metin, çok dönemli sayfalama ve sonraki başvuru formuna geçişin bütünleşik kontrolü. Genel test planının üye görünüm/akış kapsamına dahildir.
+
+3B sonunda sıradaki adım 3C olarak belirlendi; tamamlanan formun kapsamı aşağıdadır.
+
+
+## Üye başvuru formu (3C)
+
+`frontend.scholarship.applications.create` (`GET /bursluluk-sinavlari/{period}/basvuru`), mevcut `ScholarshipExamController::createApplication` üzerinden `frontend/scholarship/applications/create.blade.php` görünümünü açar. Sınav listesindeki uygun oturum kartı formu ilgili seçimle açar; başlık menüsünün aktif durumu formda da korunur. Liste ve form, aynı oturum sorgusunu ve izin verilen alan sunumunu kullanır.
+
+- Öğrenci adı, e-posta ve telefon yalnız giriş yapan hesaptan gelir; başka hesap veya ayrı başvuru iletişimi seçilmez. İletişim alanları salt okunurdur; eksik telefon açıklanır ve mevcut profil sayfası yeni sekmede açılabilir. Okul ve mevcut sınıf/durum, adminin aktif tanımlarından ayrı ayrı seçilir. Sınıf ile sınav grubu arasında uygunluk eşlemesi yoktur.
+- Mevcut ALA form stilleriyle şube, sınav grubu, sınav ve tarih/saatli oturum seçilir. `public/frontend/js/scholarship-application-form.js`, bir üst seçim değiştiğinde alt seçimleri ve gösterilen tarih/saat/kontenjanı sıfırlar. Dolu ve askıdaki oturum seçenekleri devre dışıdır; askıda iletişim bağlantısı gösterilir. Görünen kapasite bilgisi yer ayırmaz.
+- Form açılışında dönemin güncel başvuru uygunluğu ve hesabın mevcut başvurusu kontrol edilir. Uygun oturum kalmadıysa açıklamayla listeye dönülür. URL'deki dolu/askıda/arşivli/geçmiş veya bu döneme ait olmayan oturum otomatik seçilmez; başka uygun seçim istenir. Pasif okul/sınıf seçenekleri, pasif şube/gruplar ve arşivli/geçmiş oturumlar form verisine alınmaz.
+- Bu adım yalnız form hazırlığıdır: gönder düğmesi devre dışı, form gönderimi engelli ve POST route'u yoktur. Kullanıcıya gönderimin henüz açılmadığı açıklanır. **3D** sırasında bu geçici gönderim engeli kaldırılmalı, mevcut ortak servisle kayıt oluşturma bağlanmalı; hesap, dönem ve oturum uygunluğu işlem anında tekrar doğrulanmalıdır. Şube/grup/sınav alanları filtre içindir; sunucuda yetkili oturum ilişkileri esas alınmalıdır.
+
+Kısa doğrulama: izole MariaDB üzerinde `ScholarshipExamCatalogTest` **5 test, 104 doğrulama** ile geçti; 3B'nin üç testi, ortak sorgu ve liste bağlantısı değiştiği için bu çalışmaya dahildir. İki yeni test formun gerçek HTTP/Blade çıktısını, hesap bilgilerini, ayrı seçim alanlarını, aktif tanımları, uygun oturum ön seçimini ve dolu/askıda/arşivli oturum engellerini, kapalı/başvurulu dönemde form açılmamasını ve kayıt oluşturulmamasını kapsar. `node --test tests/Scholarship/member-form.test.mjs` ile **1 kısa JavaScript testi** geçti; şube değişiminde alt seçimlerin sıfırlanması ve dolu/askıda oturumların yeniden etkinleşmemesi doğrulandı. Hedefli biçim, PHP/JavaScript sözdizimi ve diff kontrolleri geçti.
+
+**3J'ye bırakılanlar:** Formun gerçek tarayıcıda klavye ve seçim etkileşimleri, profil sekmesinden dönüş, uzun seçenek adları, TR/EN ve cihaz görünümleri; 3D sonrası gönderim ve doğrulama hatasından dönüşün bütünleşik kontrolü. Tarayıcı ortamı, demo veri, migration veya gerçek bildirim eklenmedi.
+
+Sıradaki adım **3D — Başvuru iş kurallarını üye akışına bağla**; henüz başlatılmadı.

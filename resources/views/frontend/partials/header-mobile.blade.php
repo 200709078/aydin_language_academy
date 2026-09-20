@@ -88,6 +88,7 @@
                 @guest
                     <a href="{{ route('frontend.login', ['return' => $headerReturnRoute]) }}" class="nav-item nav-link"><i class="fa fa-sign-in-alt fa-sm fa-fw me-2" aria-hidden="true"></i>{{ __('dictt.login') }}</a>
                 @else
+                    <a href="{{ route('frontend.scholarship.exams.index') }}" class="nav-item nav-link {{ request()->routeIs('frontend.scholarship.*') ? 'active' : '' }}"><i class="fa fa-graduation-cap fa-sm fa-fw me-2" aria-hidden="true"></i>{{ __('scholarship.member_exams_title') }}</a>
                     <a href="{{ route('profile.show') }}" class="nav-item nav-link {{ request()->routeIs('profile.show') ? 'active' : '' }}"><i class="fa fa-user-circle fa-sm fa-fw me-2" aria-hidden="true"></i>{{ __('dictt.profile') }}</a>
                     <div class="nav-item">
                         <form method="POST" action="{{ route('logout') }}">

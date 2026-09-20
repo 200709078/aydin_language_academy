@@ -29,6 +29,7 @@ use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\NewsController;
 use App\Http\Controllers\Frontend\ProgramFinderController;
 use App\Http\Controllers\Frontend\ReviewController;
+use App\Http\Controllers\Frontend\ScholarshipExamController;
 use App\Http\Controllers\Frontend\ThemeListController;
 use App\Http\Controllers\ExerciseAttemptReviewController;
 use App\Http\Controllers\LegacyExerciseMediaController;
@@ -413,6 +414,13 @@ Route::get('/yorumlar', [ReviewController::class, 'index'])->name('frontend.revi
 Route::view('/yorumlarim', 'frontend.my-reviews')
     ->middleware('auth')
     ->name('frontend.my-reviews');
+Route::get('/bursluluk-sinavlari', [ScholarshipExamController::class, 'index'])
+    ->middleware('auth')
+    ->name('frontend.scholarship.exams.index');
+Route::get('/bursluluk-sinavlari/{period}/basvuru', [ScholarshipExamController::class, 'createApplication'])
+    ->middleware('auth')
+    ->whereNumber('period')
+    ->name('frontend.scholarship.applications.create');
 Route::get('/seviye-tespit-sinavi', [PlacementTestAttemptController::class, 'landing'])
     ->name('frontend.placement-test');
 Route::get('/sana-uygun-programi-bul', [ProgramFinderController::class, 'show'])

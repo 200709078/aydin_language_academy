@@ -639,7 +639,7 @@ Kullanıcı açıkça istemeden mevcut global authorization sistemi değiştiril
 
 # 12. Bursluluk sistemi geliştirme planı
 
-Admin öncesi hazırlık (1A–1E ve 2A), **2B — Sınav dönemi yönetimi**, **2C — Tanımlar, oturum ve kontenjan yönetimi**, **2D — Başvuru yönetimi**, **2E — Katılım**, **2F — Not**, **2G — Burs oranı** ve **2H — Yayınlama** tamamlandı. **2I — İletişim/bildirim:** ayrı manuel iletişim takibi ve mevcut posta altyapısıyla tekli/toplu e-posta gönderimi tamamlandı; WhatsApp bağlantısı kullanıcı kararıyla şimdilik beklemede ve tamamlanmış sayılmıyor. **2K — Admin temel kontrol değerlendirmesi tamamlandı**; mevcut kontrol sonuçları ve kapsam gözden geçirildi, yeni kritik eksik saptanmadı. Sıradaki adım **3A — Mevcut üye alanını analiz et**; henüz başlatılmadı. Mevcut servislerin kullanım sözleşmesi, kilitleme düzeni ve doğrulama komutları [docs/scholarship-foundation.md](docs/scholarship-foundation.md) dosyasındadır; ekranlar bu ortak altyapıyı kullanır.
+Admin öncesi hazırlık (1A–1E ve 2A), **2B — Sınav dönemi yönetimi**, **2C — Tanımlar, oturum ve kontenjan yönetimi**, **2D — Başvuru yönetimi**, **2E — Katılım**, **2F — Not**, **2G — Burs oranı** ve **2H — Yayınlama** tamamlandı. **2I — İletişim/bildirim:** ayrı manuel iletişim takibi ve mevcut posta altyapısıyla tekli/toplu e-posta gönderimi tamamlandı; WhatsApp bağlantısı kullanıcı kararıyla şimdilik beklemede ve tamamlanmış sayılmıyor. **2K — Admin temel kontrol değerlendirmesi**, **3A — Mevcut üye alanı analizi** ve **3B — Başvuruya açık sınavlar** tamamlandı. **3C — Başvuru formu** da tamamlandı; üye kendi hesap bilgileriyle okul, mevcut sınıf/durum ve bağımsız sınav/oturum seçimini yapabiliyor. Gönderim henüz etkin değil. Sıradaki adım **3D — Başvuru iş kurallarını üye akışına bağla**. Mevcut servislerin kullanım sözleşmesi, kilitleme düzeni ve doğrulama komutları [docs/scholarship-foundation.md](docs/scholarship-foundation.md) dosyasındadır; ekranlar bu ortak altyapıyı kullanır.
 
 Kurallar:
 - Kullanıcı hangi adımı isterse yalnız o adımı uygula.
@@ -886,6 +886,8 @@ Excel ilk sürüm kontrolünün parçası değildir. Yeni özellik ekleme. Rapor
 ## 3. Frontend — Başvurularım
 
 ### 3A — Mevcut üye alanını analiz et
+**Durum:** Tamamlandı. Mevcut `x-frontend-profile-layout`, masaüstü/mobil menü, `auth` ve profil iletişim akışı incelendi. Analiz sırasında dosya değiştirilmedi; kararlar geliştirme dokümanına 3B sonunda işlendi.
+
 Kod değiştirme.
 
 Üye layout/navigation, mevcut profil/iletişim güncelleme akışı, auth middleware, Blade/Livewire yaklaşımı, card/list/form UI ve responsive davranışı incele.
@@ -893,6 +895,8 @@ Kod değiştirme.
 Tek öğrenci hesabıyla dönem başvurularını yönetecek `Başvurularım` alanının nereye/nasıl ekleneceğini öner. Çok öğrencili hesap veya ikinci üyelik akışı tasarlama. Dur.
 
 ### 3B — Başvuruya açık sınavlar
+**Durum:** Tamamlandı. `/bursluluk-sinavlari` yalnız giriş yapmış üyeye dönem/oturum durumlarını ve ayrı kontenjanları gösterir. Dolu ve askıdaki oturumlar açıklanır; askıda iletişim bağlantısı vardır. Geçmiş/arşivli oturumlar ve pasif dönem/şube/gruplar listelenmez. İzole MariaDB üzerinde 3 kısa HTTP testi, 55 doğrulama geçti. Form ve başvuru yazma işlemi eklenmedi; ayrıntılı tarayıcı kontrolleri 3J'dedir.
+
 Login olmuş üyeye başvuruya açık bursluluk dönemlerini/sınavlarını mevcut üye tasarımında göster.
 
 Başvuru tarihleri dışında veya admin tarafından başvuruları kapatılmış dönemde yeni başvuru başlatılamasın. Dolu, askıda ve arşivlenmiş oturumlardan başvuru başlatılamasın; askı durumunda yöneticiyle iletişim uyarısı gösterilsin.
@@ -900,6 +904,8 @@ Başvuru tarihleri dışında veya admin tarafından başvuruları kapatılmış
 Form aşamasına geçme. Dur.
 
 ### 3C — Başvuru formu
+**Durum:** Tamamlandı. Uygun oturumdan açılan form, hesabın öğrenci/iletişim bilgilerini ve aktif okul/sınıf seçeneklerini gösterir. Şube → grup → sınav → oturum seçimleri birbirini süzer; dolu/askıda oturum seçilemez, arşivli/geçmiş oturum listelenmez. Form ve liste için 5 kısa HTTP testi (104 doğrulama), bağımlı seçimler için 1 kısa JavaScript testi geçti. Gönderim kapalıdır; ortak servisle kayıt oluşturma 3D kapsamındadır. Tarayıcı/demo ve ayrıntılı görünüm kontrolleri 3J'de kalır.
+
 Form şu bilgileri ayrı alanlarla desteklesin:
 - ilgili hesabın öğrencisi,
 - öğrencinin öğrenim gördüğü okul,
