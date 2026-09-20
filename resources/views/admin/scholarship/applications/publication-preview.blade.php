@@ -13,7 +13,7 @@
                     <td>{{ $application->application_number }}</td><td>{{ $application->student_name_snapshot }}</td><td>{{ $application->period->title }}</td>
                     <td>{{ __('scholarship.approval_'.$application->status) }}</td><td>{{ $application->score ?? __('scholarship.not_entered') }}</td>
                     <td>{{ $application->scholarship_percentage === null ? __('scholarship.award_unset') : ($application->scholarship_percentage === 0 ? __('scholarship.award_none') : '%'.$application->scholarship_percentage) }}</td>
-                    <td>{{ $phase === 'result' && $published && ($application->score === null || $application->scholarship_percentage === null) ? __('scholarship.publication_incomplete') : __('scholarship.publication_ready') }}</td>
+                    <td>{{ $phase === 'result' && $published && $application->scholarship_percentage === null ? __('scholarship.publication_incomplete') : __('scholarship.publication_ready') }}</td>
                 </tr>@endforeach</tbody>
             </table>
         </div>

@@ -87,6 +87,7 @@ try {
         '2026_09_07_100000_create_scholarship_reference_tables.php',
         '2026_09_07_100100_create_scholarship_exam_tables.php',
         '2026_09_07_100200_create_scholarship_application_tables.php',
+        '2026_09_20_100000_add_answer_counts_to_scholarship_applications.php',
     ] as $migration) {
         (require $root.'/database/migrations/'.$migration)->up();
     }

@@ -72,7 +72,7 @@ class ScholarshipNotificationService
             ScholarshipRules::fail('notification', __('scholarship.delivery_reached'));
         }
         if (($phase === 'application' && (! $application->application_published || $application->status !== 'approved'))
-            || ($phase === 'result' && (! $application->result_published || $application->score === null || $application->scholarship_percentage === null))) {
+            || ($phase === 'result' && (! $application->result_published || $application->scholarship_percentage === null))) {
             ScholarshipRules::fail('notification', __('scholarship.delivery_not_published'));
         }
         $application->loadMissing(['user', 'period', 'session.branch', 'session.examGroup']);
@@ -101,8 +101,13 @@ class ScholarshipNotificationService
                 $label('delivery_arrive_early')];
         } else {
             $lines = [...$lines, $label('attendance').': '.$label('attendance_'.$application->attendance_status),
-                $label('score').': '.$application->score,
+                $label('score').': '.($application->score ?? $label('not_entered')),
                 $label('scholarship_percentage').': %'.$application->scholarship_percentage];
+            foreach (['correct_count', 'wrong_count', 'blank_count'] as $field) {
+                $value = $application->attendance_status === 'absent'
+                    ? $label('not_applicable') : ($application->$field ?? $label('not_entered'));
+                $lines[] = $label($field).': '.$value;
+            }
         }
 
         return ['recipient' => $recipient, 'subject' => $label('delivery_subject_'.$phase).' — '.$application->application_number,

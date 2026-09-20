@@ -13,7 +13,7 @@
                         <th scope="col">{{ __('scholarship.current_school') }} / {{ __('scholarship.current_level') }}</th>
                         <th scope="col">{{ __('scholarship.sessions') }}</th>
                         <th scope="col">{{ __('scholarship.attendance') }}</th>
-                        <th scope="col">{{ __('scholarship.score') }}</th>
+                        <th scope="col">{{ __('scholarship.score_and_counts') }}</th>
                     </tr></thead>
                     <tbody>
                         @forelse ($applications as $application)
@@ -26,12 +26,13 @@
                                     @if ($application->attendance_status === 'absent')
                                         <strong>0</strong>
                                         <p class="small text-muted mb-1">{{ __('scholarship.score_absent_help') }}</p>
+                                        <p class="small mb-1">{{ __('scholarship.answer_counts') }}: {{ __('scholarship.not_applicable') }}</p>
                                         <a class="small" href="{{ route('admin.scholarship.attendance.index', ['q' => $application->application_number]) }}">{{ __('scholarship.attendance_management') }}</a>
                                     @else
                                         <form id="score-{{ $application->id }}" method="POST"
                                             action="{{ route('admin.scholarship.scores.update', ['application' => $application->id, ...$filters]) }}"
-                                            x-data="{ score: @js((string) ($application->score ?? '')) }"
-                                            x-on:submit="if (score === '' && @js($application->score !== null)) {
+                                            x-data="{ values: @js(array_map(fn ($value) => (string) ($value ?? ''), $application->only(['score', 'correct_count', 'wrong_count', 'blank_count']))), original: @js($application->only(['score', 'correct_count', 'wrong_count', 'blank_count'])) }"
+                                            x-on:submit="if (Object.keys(values).some(field => values[field] === '' && original[field] !== null)) {
                                                 $event.preventDefault();
                                                 $dispatch('ala-action-confirmation', @js([
                                                     'formId' => 'score-'.$application->id,
@@ -43,11 +44,15 @@
                                                 ]));
                                             }">
                                             @csrf @method('PATCH')
-                                            <label for="score-value-{{ $application->id }}" class="visually-hidden">{{ __('scholarship.score_for', ['number' => $application->application_number]) }}</label>
-                                            <div class="d-flex flex-wrap gap-2">
-                                                <input id="score-value-{{ $application->id }}" name="score" type="number" min="0" max="100" step="1"
-                                                    value="{{ $application->score ?? '' }}" x-model="score" @required($application->result_published)
-                                                    placeholder="{{ __('scholarship.not_entered') }}" class="form-control form-control-sm" style="width: 7rem;">
+                                            <div class="d-flex flex-wrap align-items-end gap-2">
+                                                @foreach (['score' => 100, 'correct_count' => 65535, 'wrong_count' => 65535, 'blank_count' => 65535] as $field => $maximum)
+                                                    <div>
+                                                        <label for="{{ $field }}-value-{{ $application->id }}" class="form-label small mb-1">{{ __('scholarship.'.$field) }}</label>
+                                                        <input id="{{ $field }}-value-{{ $application->id }}" name="{{ $field }}" type="number" min="0" max="{{ $maximum }}" step="1"
+                                                            value="{{ $application->$field ?? '' }}" x-model="values.{{ $field }}"
+                                                            placeholder="{{ __('scholarship.not_entered') }}" class="form-control form-control-sm" style="width: 7rem;">
+                                                    </div>
+                                                @endforeach
                                                 <button type="submit" class="btn btn-sm btn-primary">{{ __('dictt.save') }}</button>
                                             </div>
                                         </form>

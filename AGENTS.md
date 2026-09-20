@@ -486,13 +486,17 @@ Katılım/sonuç bilgisinin admin tarafından değiştirilmesi sınav/burs sonuc
 
 ---
 
-## 11.10 Not
+## 11.10 Not ve doğru/yanlış/boş sayıları
 
 Admin notları liste üzerinden hızlı girebilir; filtreleme ve nota göre sıralama desteklenir.
 
 Kurallar:
 - Not **0–100 arasında tam sayı** olmalıdır; ondalıklı not kabul edilmez.
 - Not girilmedi durumu NULL'dır; gerçek 0 puandan ayrıdır.
+- Doğru, yanlış ve boş sayıları aynı dönem başvurusunda `correct_count`, `wrong_count`, `blank_count` olarak saklanır. Girişleri yalnız yönetici manuel yapar; negatif olmayan tam sayılar kabul edilir.
+- Bu üç alan bağımsız olarak NULL bırakılabilir; NULL girilmedi, 0 gerçek sıfırdır. Otomatik not/net hesabı veya toplam soru sayısı kontrolü uygulanmaz.
+- Katılmadı durumunda üç sayaç NULL / Uygulanamaz olur; sayaç girilemez. Mevcut not 0 ve burs %0 kuralı korunur.
+- Sayaç değişiklikleri de sonuç iletişimini yeniden ulaşılmadı yapar; otomatik mesaj göndermez. Yalnız sonuç yayını açıksa üye çıktısına eklenir.
 - Katılmadı için 11.9'daki 0 kuralı uygulanır.
 - Yayındaki sonuç değişirse güncel not hemen üyeye yansır ve sonuç iletişimi tekrar ulaşılmadı olur.
 - İlk sürümde Excel not importu yapılmaz.
@@ -528,13 +532,13 @@ Not/burs girilmesi tek başına üyeye görünürlük sağlamaz. Her başvurunun
 
 Admin anahtarı tekli veya toplu açabilir. Toplu yayın, seçilen kayıtların kendi anahtarlarını açar; gelecekte oluşacak başvuruları veya eksik sonuçları kendiliğinden yayınlayan dönem bayrağı kullanılmaz.
 
-**Notu veya bursu henüz girilmemiş kayıt tekli veya toplu işlemde yayınlanamaz.** Eksik kayıtlar yayına açılmaz ve admine bildirilir. 0 not ve %0 burs geçerli değerlerdir; eksiklik kontrolü NULL üzerinden yapılır.
+**Sonuç yayınlamak için yalnız burs oranının girilmiş olması yeterlidir.** Burs oranı NULL olan kayıt tekli veya toplu işlemde yayınlanamaz ve admine bildirilir; %0 / Burs Yok geçerli bir sonuçtur. Not ile doğru/yanlış/boş sayıları zorunlu değildir, ayrı ayrı NULL kalabilir.
 
-Yayın açıkken yapılacak düzenlemeler de eksik sonuç yayınlanmaması kuralını korumalıdır. Geçerli not/burs değiştiğinde yayın açık kalır; kullanıcıya güncel sonuç hemen gösterilir ve ilgili sonuç iletişimi ulaşılmadı olur.
+Yayın açıkken burs oranı temizlenemez; temizlemek için önce sonuç yayını kapatılır. Not veya doğru/yanlış/boş sayıları yayın açıkken değiştirilebilir ya da temizlenebilir. Yayın açık kalır; kullanıcıya güncel sonuç hemen gösterilir ve ilgili sonuç iletişimi ulaşılmadı olur. Aynı değeri yeniden kaydetmek iletişimi sıfırlamaz.
 
-Yayın öncesinde Sonuçlar hazırlanıyor / Sonuç henüz yayınlanmadı gibi durum gösterilir. Yayından sonra not ve burs oranı Başvurularım alanında görünür.
+Yayın öncesinde Sonuçlar hazırlanıyor / Sonuç henüz yayınlanmadı gibi durum gösterilir. Yayından sonra burs oranı, varsa not ve doğru/yanlış/boş sayıları Başvurularım alanında görünür. NULL değerler sıfır olarak gösterilmez; Girilmedi, katılmayan öğrencinin sayaçları için Uygulanamaz gösterilir.
 
-Yayınlanmamış not/burs verisi frontend, HTML/Livewire verisi veya API çıktısına sızmamalıdır.
+Yayınlanmamış not, burs ve doğru/yanlış/boş verisi frontend, HTML/Livewire verisi veya API çıktısına sızmamalıdır.
 
 ---
 
@@ -546,9 +550,9 @@ Başvuru iletişiminden bağımsız ikinci bir iletişim alanı bulunur:
 
 Başvuru kabulü için ulaşıldı olması, sınav/burs sonucu için de ulaşıldı sayılmaz.
 
-Admin yayınlanan sonuç için gerçek e-posta/WhatsApp gönderimini tekli veya toplu başlatabilir; bildirim not, burs oranı ve varsa sonraki işlem açıklamasını içerir. Telefon veya sistem dışı e-postayla iletişim kurduysa sonuç için ulaşıldı durumunu elle işaretleyebilir.
+Admin yayınlanan sonuç için gerçek e-posta/WhatsApp gönderimini tekli veya toplu başlatabilir; bildirim burs oranı, not, doğru/yanlış/boş sayıları ve varsa sonraki işlem açıklamasını içerir. Girilmemiş değerler Girilmedi; katılmayan öğrencinin sayaçları Uygulanamaz gösterilir. Telefon veya sistem dışı e-postayla iletişim kurduysa sonuç için ulaşıldı durumunu elle işaretleyebilir.
 
-Sonuç aşamasında ulaşıldı olan kayıtlar ilgili toplu gönderimden çıkarılır. Katılım, not veya burs sonucu admin tarafından değişirse yalnız ilgili sonuç iletişimi yeniden ulaşılmadı olur; yayın açık kalır ve otomatik mesaj gönderilmez.
+Sonuç aşamasında ulaşıldı olan kayıtlar ilgili toplu gönderimden çıkarılır. Katılım, not, doğru/yanlış/boş sayıları veya burs sonucu admin tarafından değişirse yalnız ilgili sonuç iletişimi yeniden ulaşılmadı olur; yayın açık kalır ve otomatik mesaj gönderilmez.
 
 E-posta/WhatsApp teknik durumları ve manuel iletişim alanının ayrımı için 11.8'deki kurallar uygulanır. İletişimin kendisini güncellemek tekrar ulaşılmadı sıfırlaması yapmaz.
 
@@ -567,7 +571,7 @@ Uygun alanlar:
 - kullanıcıya açıklanabilecek başvuru durumu ve başvuru yayın durumu,
 - katılım bilgisi,
 - sınav/burs sonucu yayın durumu,
-- yalnız yayınlandıysa not ve burs oranı.
+- yalnız yayınlandıysa burs oranı, not ve doğru/yanlış/boş sayıları; NULL ile 0 ayrımı korunur.
 
 Onay/yayın/askı/arşiv/dönem kapanışı durumuna uygun açıklamalar gösterilir. Onaylanmış başvuru, kapalı dönem veya askıda/arşivli oturum için üyeye düzenleme/silme izni verilmez. Uygun başvuruda değişiklik ve kalıcı silme 11.6'ya göre yapılır.
 
@@ -611,7 +615,7 @@ Seçili kayıtlar ile filtreye uyan bütün kayıtların kapsamı admin arayüz�
 Veri modeli ve ortak iş kuralları gelecekte aktarımı destekleyecek şekilde tasarlanır:
 - benzersiz başvuru numarası,
 - dönem, öğrenci/hesap, okul, mevcut sınıf/durum, şube, sınav grubu ve oturum ilişkileri,
-- not/burs NULL ve 0 ayrımı,
+- not, burs ve doğru/yanlış/boş sayılarında NULL ve 0 ayrımı,
 - tek başvuru, kapasite, yayın ve iletişim doğrulamalarının bütün yazma yollarında kullanılabilmesi.
 
 Gelecekteki ayrı bir geliştirmede başvuru/sonuç .xlsx exportu ve not importu değerlendirilebilir. Kolonlar, dosya doğrulama, ön izleme, eşleştirme, duplicate ve satır bazlı hata davranışları o adımda belirlenir. Mevcut Excel altyapısı varsa önce incelenir.
@@ -639,7 +643,7 @@ Kullanıcı açıkça istemeden mevcut global authorization sistemi değiştiril
 
 # 12. Bursluluk sistemi geliştirme planı
 
-Admin öncesi hazırlık (1A–1E ve 2A), **2B — Sınav dönemi yönetimi**, **2C — Tanımlar, oturum ve kontenjan yönetimi**, **2D — Başvuru yönetimi**, **2E — Katılım**, **2F — Not**, **2G — Burs oranı** ve **2H — Yayınlama** tamamlandı. **2I — İletişim/bildirim:** ayrı manuel iletişim takibi ve mevcut posta altyapısıyla tekli/toplu e-posta gönderimi tamamlandı; WhatsApp bağlantısı kullanıcı kararıyla şimdilik beklemede ve tamamlanmış sayılmıyor. **2K — Admin temel kontrol değerlendirmesi**, **3A — Mevcut üye alanı analizi** ve **3B — Başvuruya açık sınavlar** tamamlandı. **3C — Başvuru formu** da tamamlandı; üye kendi hesap bilgileriyle okul, mevcut sınıf/durum ve bağımsız sınav/oturum seçimini yapabiliyor. Gönderim henüz etkin değil. Sıradaki adım **3D — Başvuru iş kurallarını üye akışına bağla**. Mevcut servislerin kullanım sözleşmesi, kilitleme düzeni ve doğrulama komutları [docs/scholarship-foundation.md](docs/scholarship-foundation.md) dosyasındadır; ekranlar bu ortak altyapıyı kullanır.
+Admin öncesi hazırlık (1A–1E ve 2A), **2B — Sınav dönemi yönetimi**, **2C — Tanımlar, oturum ve kontenjan yönetimi**, **2D — Başvuru yönetimi**, **2E — Katılım**, **2F — Not**, **2G — Burs oranı** ve **2H — Yayınlama** tamamlandı. **2I — İletişim/bildirim:** ayrı manuel iletişim takibi ve mevcut posta altyapısıyla tekli/toplu e-posta gönderimi tamamlandı; WhatsApp bağlantısı kullanıcı kararıyla şimdilik beklemede ve tamamlanmış sayılmıyor. **2K — Admin temel kontrol değerlendirmesi**, **3A — Mevcut üye alanı analizi** ve **3B — Başvuruya açık sınavlar** tamamlandı. **3C — Başvuru formu** da tamamlandı; üye kendi hesap bilgileriyle okul, mevcut sınıf/durum ve bağımsız sınav/oturum seçimini yapabiliyor. Gönderim henüz etkin değil. 3D öncesindeki ek geliştirmede doğru/yanlış/boş alanları ve yalnız burs gerektiren sonuç yayın kuralı uygulandı. Sıradaki adım **3D — Başvuru iş kurallarını üye akışına bağla**. Mevcut servislerin kullanım sözleşmesi, kilitleme düzeni ve doğrulama komutları [docs/scholarship-foundation.md](docs/scholarship-foundation.md) dosyasındadır; ekranlar bu ortak altyapıyı kullanır.
 
 Kurallar:
 - Kullanıcı hangi adımı isterse yalnız o adımı uygula.
@@ -693,7 +697,7 @@ Kod değiştirme.
 - kullanıcı/admin düzenlemesi, kalıcı silme ve yeniden başvuru,
 - hesaptaki iletişim bilgilerinin kullanımı; başvuru ve sonuç iletişimi için ayrı ulaşılma durumları,
 - kanal ve aşama bazında teknik gönderim kayıtları; ilgili bilgi değişince iletişimin sıfırlanması,
-- katılım, nullable tam sayı not, nullable burs oranı ve ayrı sonuç yayını.
+- katılım, nullable tam sayı not, nullable doğru/yanlış/boş sayıları, nullable burs oranı ve ayrı sonuç yayını.
 
 Her yapı için alan, veri tipi, nullable/default, index, unique, foreign key, ilişki, silme politikası ve validation/business rule öner.
 
@@ -703,7 +707,7 @@ Her yapı için alan, veri tipi, nullable/default, index, unique, foreign key, i
 - aynı hesaba aynı dönemde ikinci mevcut başvurunun veritabanında da engellenmesi; kalıcı silmeden sonra yeni başvurunun mümkün olması,
 - onaylı başvuruların, dönemi başvurulara kapanmış kayıtların ve askıya/arşive alınmış oturumlardaki başvuruların üyeye salt okunur olması,
 - `not girilmedi != 0` ve `burs belirlenmedi != %0`; notun 0–100 tam sayı olması ve katılmayan öğrenci için `0/0` davranışı,
-- not veya burs boşken tekli/toplu sonuç yayınının engellenmesi; yayınlanmamış verinin üye çıktılarından korunması,
+- burs oranı boşken tekli/toplu sonuç yayınının engellenmesi; not ve sayaçların isteğe bağlı kalması; yayınlanmamış verinin üye çıktılarından korunması,
 - yayınlanmış bilgi değişince hemen görünmesi ve yalnız ilgili iletişim aşamasının tekrar `ulaşılmadı` olması; otomatik mesaj gönderilmemesi,
 - kalıcı başvuru silmenin ilişkili kayıtlara etkisi; başvurusu bulunan oturumun silinememesi ve arşivlenebilmesi,
 - başvuru/sınav dönemi sonrasında ileride eklenebilecek oturum silme ve Excel işlemlerini engellemeyen ilişkiler.
@@ -718,8 +722,8 @@ Yalnız onaylanan 1B sözleşmesini uygula:
 - hesap/dönem başına tek mevcut başvuru ve kalıcı silmeden sonra yeniden başvuru,
 - oturum kapasitesi, güvenli aktarım, silmede yer açılması ve doluluğun altına kapasite indirilememesi,
 - başvuru zamanı, onay, dönem kapanışı, oturum askısı/arşivi ve kullanıcı işlem sınırları,
-- katılım, 0–100 tam sayı not, burs seçenekleri ve boş/0 ayrımları,
-- ayrı yayın durumları ve eksik sonuçta tekli/toplu yayın engeli,
+- katılım, 0–100 tam sayı not, doğru/yanlış/boş sayıları, burs seçenekleri ve boş/0 ayrımları,
+- ayrı yayın durumları ve burs oranı eksikken tekli/toplu yayın engeli,
 - ilgili başvuru/sonuç bilgileri değişince ilgili iletişim durumunun sıfırlanması,
 - arşivleme ve güvenli silme ilişkileri.
 
@@ -756,7 +760,7 @@ Dur.
 - doluluğun altına kontenjan indirilememesi; başvurulu oturumun silinememesi ve arşivde kayıtların korunması,
 - onay, dönem kapanışı, oturum askısı/arşivi nedeniyle kullanıcı değişiklik/silme engelleri,
 - notun 0–100 tam sayı aralığı, nullable/0 not ve nullable/%0 burs, katılmama için `0/0`,
-- iki bağımsız yayın durumu; not veya burs boşken tekli/toplu sonuç yayınının engellenmesi,
+- iki bağımsız yayın durumu; burs oranı boşken tekli/toplu sonuç yayınının engellenmesi; not ve sayaçların isteğe bağlı kalması,
 - yayın sonrası değişikliklerin görünürlüğü ve doğru iletişim aşamasının sıfırlanması; otomatik gönderim olmaması.
 
 Gerçek DB resetlenmez. Raporla ve dur.
@@ -823,7 +827,7 @@ Liste üzerinden hızlı not girişi uygula:
 - nota göre sıralama ve filtreler,
 - yayınlanmış not değişikliğinin hemen görünmesi ve sonuç iletişiminin `ulaşılmadı` olması.
 
-Ortak yayın kuralları korunsun; eksik sonuç yayında kalmasın. İlk sürümde Excel import/export ekleme.
+Ortak yayın kuralları korunsun; burs oranı NULL olan sonuç yayında kalmasın. Doğru/yanlış/boş sayıları not ekranından manuel girilsin; not ve sayaçlar yayın için zorunlu olmasın. İlk sürümde Excel import/export ekleme.
 
 Dur.
 
@@ -841,11 +845,11 @@ Her başvuru için iki bağımsız yayın anahtarı uygula:
 
 Admin bunları kayıt bazında veya toplu açabilsin. Toplu işlem aynı kayıt anahtarlarını değiştirsin; ayrı bir dönem yayını mantığı oluşturma. Başvuru onayı ve başvuru yayını ayrı kalsın.
 
-Not veya burs boşken sonuç yayın anahtarı tekli/toplu hiçbir yoldan açılamasın. Toplu işlemde eksik kayıtlar için admini bilgilendir ve bu kayıtların yayını kapalı kalsın. `0` not ve `%0` burs eksik sonuç sayılmasın.
+Burs oranı boşken sonuç yayın anahtarı tekli/toplu hiçbir yoldan açılamasın. Toplu işlemde bursu belirlenmemiş kayıtlar için admini bilgilendir ve bu kayıtların yayını kapalı kalsın. `%0` burs geçerlidir; not ve doğru/yanlış/boş sayıları girilmeden de yayın yapılabilsin.
 
 Yayınlanmış veride sonraki düzeltme hemen görünsün; yeniden yayın zorunlu olmasın. Yayın işlemi otomatik bildirim göndermesin. Toplu kritik işlemde mevcut ALA onay modalını kullan.
 
-Yayınlanmamış kabul kararı, not ve bursun görünürlüğünü ortak sunum kuralları üzerinden doğrula. Gerçek üye HTML/Livewire/API çıktıları ilgili 3.x adımlarında kontrol edilir. Dur.
+Yayınlanmamış kabul kararı, not, burs ve doğru/yanlış/boş sayılarının görünürlüğünü ortak sunum kuralları üzerinden doğrula. Gerçek üye HTML/Livewire/API çıktıları ilgili 3.x adımlarında kontrol edilir. Dur.
 
 ### 2I — İletişim/bildirim
 **Durum:** E-posta ve manuel iletişim yönetimi tamamlandı. WhatsApp bağlantısı 11.8'deki kullanıcı kararıyla beklemede; aşağıdaki WhatsApp gereksinimleri yeniden başlatılacak entegrasyon için korunur. Bekletilen bağlantı, 2K ve sonraki adımların başlamasını engellemez.
@@ -857,7 +861,7 @@ Başvuru sonucu iletişimi ve sınav/burs sonucu iletişimini ayrı yönet:
 
 Admin telefonla veya sistem dışından iletişim kurarak `ulaşıldı` işaretleyebilsin; ilgili aşamada bu kayıt için ayrıca e-posta/WhatsApp gönderilmesi gerekmesin. Teknik `gönderildi` bilgisiyle `ulaşıldı` durumunu tek alanda birleştirme.
 
-İlgili başvuru bilgisi değişince başvuru iletişimi; katılım/not/burs sonucu değişince sonuç iletişimi tekrar `ulaşılmadı` olsun. Ulaşılma durumunun kendisini düzenlemek bu sıfırlamayı tetiklemesin. Onay, yayın ve veri değişiklikleri otomatik mesaj göndermesin; gönderimi admin başlatsın.
+İlgili başvuru bilgisi değişince başvuru iletişimi; katılım/not/doğru-yanlış-boş/burs sonucu değişince sonuç iletişimi tekrar `ulaşılmadı` olsun. Ulaşılma durumunun kendisini düzenlemek bu sıfırlamayı tetiklemesin. Onay, yayın ve veri değişiklikleri otomatik mesaj göndermesin; gönderimi admin başlatsın.
 
 Mevcut altyapıyı incele ve sağlayıcıyı bu adımda kullanıcıyla belirle. Yeniden denemelerde kontrolsüz mükerrer gönderimi önle. Testlerde gerçek kişilere mesaj gönderme.
 
@@ -963,11 +967,11 @@ Onaylanan, dönemi başvurulara kapanmış veya oturumu askıya/arşive alınmı
 Dur.
 
 ### 3H — Not ve burs sonucu
-Sonuç yayını açıldıktan sonra ilgili dönem başvurusunun notunu ve burs oranını göster. Yayınlanmadan önce veri sızdırma.
+Sonuç yayını açıldıktan sonra ilgili dönem başvurusunun burs oranını, notunu ve doğru/yanlış/boş sayılarını göster. Yayınlanmadan önce veri sızdırma.
 
-`%0 / Burs Yok` ile belirlenmemiş/yayınlanmamış sonucu ayır; katılmadı işaretlenen öğrencinin `0/0` sonucunda katılım bilgisini koru. Not veya burs boşken sonuç yayınlanamasın.
+`%0 / Burs Yok` ile belirlenmemiş/yayınlanmamış sonucu ayır; katılmadı işaretlenen öğrencinin `0/0` sonucunda katılım bilgisini koru. Burs oranı boşken sonuç yayınlanamasın; not ve doğru/yanlış/boş alanları boş olabilir ve sıfırdan ayrı gösterilsin.
 
-Yayınlanmış not/burs admin tarafından değiştirildiğinde yeniden yayın beklemeden güncel değerler görünsün. Önceki dönem sonuçları yeni dönem başvurusundan etkilenmesin.
+Yayınlanmış not/burs veya doğru/yanlış/boş sayıları admin tarafından değiştirildiğinde yeniden yayın beklemeden güncel değerler görünsün. Önceki dönem sonuçları yeni dönem başvurusundan etkilenmesin.
 
 Dur.
 
@@ -990,7 +994,7 @@ Mevcut ilgili otomatik testleri topluca çalıştır; tarayıcıda aynı domain 
 - mevcut hesapla başvuru oluşturma, Başvurularım üzerinden takip, izin verilen düzenleme/silme ve yeniden başvuru,
 - duplicate, dolu/askıda/arşivli oturum, dönem kapanışı ve onay kilidi gibi engellerin üye isteklerinde uygulanması; başarısız işlemde mevcut başvuru ve yerin korunması,
 - ziyaretçi ve başka hesap erişiminin liste, detay ve yazma isteklerinde engellenmesi,
-- onay/yayın ayrımı ile yayınlanmamış kabul kararı, not ve bursun gerçek HTML/Livewire/API çıktılarında korunması; yayın sonrası güncellemenin ve geçmiş dönem sonuçlarının doğru görünmesi.
+- onay/yayın ayrımı ile yayınlanmamış kabul kararı, not, burs ve doğru/yanlış/boş sayılarının gerçek HTML/Livewire/API çıktılarında korunması; yayın sonrası güncellemenin ve geçmiş dönem sonuçlarının doğru görünmesi.
 
 Bulunan hataları ilgili kapsamda düzelt; düzeltmeden etkilenen kontrolleri tekrarla. Test ortamını kapat, sonuçları ve varsa açık sorunları raporla ve dur. Excel ilk sürüm testine dahil değildir; yeni özellik ekleme.
 

@@ -88,13 +88,13 @@ class ScholarshipPublicationAdminTest extends ScholarshipTestCase
         self::assertFalse($application->fresh()->result_published);
         self::assertSame($application->application_number, session('publicationSkipped.0.number'));
 
-        $this->applications->updateResult($this->admin, $application->id, ['scholarship_percentage' => 0]);
+        $this->applications->updateResult($this->admin, $application->id, ['score' => null, 'scholarship_percentage' => 0]);
         $this->applications->markContact($this->admin, $application->id, 'application', true);
         $this->applications->markContact($this->admin, $application->id, 'result', true);
         $this->flushSession();
         $this->patch($resultSwitch, ['published' => 1])->assertRedirect()->assertSessionHasNoErrors();
         $result = $this->applications->forMember($this->student, $application->id)['result'];
-        self::assertSame([true, 0, 0], [$result['published'], $result['score'], $result['scholarship_percentage']]);
+        self::assertSame([true, null, 0], [$result['published'], $result['score'], $result['scholarship_percentage']]);
         $this->patch($applicationSwitch, ['published' => 0])->assertRedirect()->assertSessionHasNoErrors();
         self::assertFalse($application->fresh()->application_published);
         self::assertTrue($application->fresh()->result_published);
@@ -113,14 +113,14 @@ class ScholarshipPublicationAdminTest extends ScholarshipTestCase
         $second = $this->applications->create($this->other, $this->data());
         $outside = $this->applications->create($this->third, $this->data($this->alternative));
         foreach ([$first, $second] as $application) {
-            $this->applications->updateResult($this->admin, $application->id, ['score' => 0, 'scholarship_percentage' => 0]);
+            $this->applications->updateResult($this->admin, $application->id, ['scholarship_percentage' => 0]);
         }
         $this->actingAs($this->admin);
         $preview = $this->post($this->url('publication.preview'), ['scope' => 'selected',
             'ids' => [$first->id, $second->id], 'phase' => 'result', 'published' => 1,
         ])->assertOk()->assertViewHas('count', 2)->assertViewHas('eligibleCount', 2)->assertSee('data-action-confirmation', false);
         self::assertFalse($first->fresh()->result_published);
-        $this->applications->updateResult($this->admin, $second->id, ['score' => null]);
+        $this->applications->updateResult($this->admin, $second->id, ['scholarship_percentage' => null]);
         $token = $preview->viewData('token');
         $this->post($this->url('publication.bulk'), ['token' => $token,
             'phase' => 'application', 'published' => 0, 'ids' => [$outside->id], 'scope' => 'filtered',

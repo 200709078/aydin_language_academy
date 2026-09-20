@@ -1,7 +1,7 @@
 @foreach (['application', 'result'] as $publicationPhase)
     @php
         $publicationField = $publicationPhase.'_published';
-        $publicationBlocked = $publicationPhase === 'result' && ($application->score === null || $application->scholarship_percentage === null);
+        $publicationBlocked = $publicationPhase === 'result' && $application->scholarship_percentage === null;
     @endphp
     <form method="POST" action="{{ route('admin.scholarship.applications.publication.update', ['application' => $application->id, 'phase' => $publicationPhase]) }}" class="mb-2">
         @csrf @method('PATCH')

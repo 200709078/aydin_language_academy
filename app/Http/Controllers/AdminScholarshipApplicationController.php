@@ -198,7 +198,7 @@ class AdminScholarshipApplicationController extends Controller
         $phase = $data['phase'];
         $published = (bool) $data['published'];
         $eligibleCount = $phase === 'result' && $published
-            ? (clone $query)->whereNotNull('score')->whereNotNull('scholarship_percentage')->count() : count($ids);
+            ? (clone $query)->whereNotNull('scholarship_percentage')->count() : count($ids);
         $token = Str::random(40);
         // Only this temporary selection is confirmed; later matching applications are excluded.
         $request->session()->put('scholarship_bulk_publication', [

@@ -72,10 +72,16 @@ class AdminScholarshipScoreController extends Controller
     public function update(Request $request, ScholarshipApplication $application, ScholarshipApplicationService $applications): RedirectResponse
     {
         $filters = $this->filters($request);
-        // A missing field must not clear a score, and only the body score reaches the service.
+        // Only score/count fields in the request body reach the shared service.
         $data = Validator::make($request->post(), [
             'score' => ['bail', 'present', 'nullable', ScholarshipRules::integer(), 'integer', 'between:0,100'],
-        ], [], ['score' => __('scholarship.score')])->validate();
+            'correct_count' => ['bail', 'sometimes', 'nullable', ScholarshipRules::integer(), 'integer', 'between:0,65535'],
+            'wrong_count' => ['bail', 'sometimes', 'nullable', ScholarshipRules::integer(), 'integer', 'between:0,65535'],
+            'blank_count' => ['bail', 'sometimes', 'nullable', ScholarshipRules::integer(), 'integer', 'between:0,65535'],
+        ], [], [
+            'score' => __('scholarship.score'), 'correct_count' => __('scholarship.correct_count'),
+            'wrong_count' => __('scholarship.wrong_count'), 'blank_count' => __('scholarship.blank_count'),
+        ])->validate();
         $applications->updateResult($request->user(), $application->id, $data);
 
         return redirect()->to(route('admin.scholarship.scores.index', $filters).'#score-row-'.$application->id)

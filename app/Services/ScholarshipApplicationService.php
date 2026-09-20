@@ -112,6 +112,9 @@ class ScholarshipApplicationService
         $data = ScholarshipRules::validate($data, [
             'attendance_status' => ['sometimes', 'required', Rule::in(['unmarked', 'attended', 'absent'])],
             'score' => ['sometimes', 'nullable', ScholarshipRules::integer(), 'integer', 'between:0,100'],
+            'correct_count' => ['sometimes', 'nullable', ScholarshipRules::integer(), 'integer', 'between:0,65535'],
+            'wrong_count' => ['sometimes', 'nullable', ScholarshipRules::integer(), 'integer', 'between:0,65535'],
+            'blank_count' => ['sometimes', 'nullable', ScholarshipRules::integer(), 'integer', 'between:0,65535'],
             'scholarship_percentage' => ['sometimes', 'nullable', ScholarshipRules::integer(), 'integer', Rule::in(range(0, 100, 10))],
         ]);
 
@@ -124,6 +127,12 @@ class ScholarshipApplicationService
                     }
                     $data[$field] = 0;
                 }
+                foreach (['correct_count', 'wrong_count', 'blank_count'] as $field) {
+                    if (isset($data[$field])) {
+                        ScholarshipRules::fail($field, __('scholarship.absent_counts_unavailable'));
+                    }
+                    $data[$field] = null;
+                }
             } elseif ($application->attendance_status === 'absent') {
                 // Absence's automatic zeros are not an entered exam result.
                 $data += ['score' => null, 'scholarship_percentage' => null];
@@ -131,7 +140,7 @@ class ScholarshipApplicationService
             $application->fill($data);
             $this->completePublishedResult($application);
 
-            if ($application->isDirty(['attendance_status', 'score', 'scholarship_percentage'])) {
+            if ($application->isDirty(['attendance_status', 'score', 'correct_count', 'wrong_count', 'blank_count', 'scholarship_percentage'])) {
                 $application->result_contact_status = 'unreached';
                 $application->save();
             }
@@ -203,7 +212,7 @@ class ScholarshipApplicationService
         $application->loadMissing(['period', 'session.branch', 'session.examGroup']);
         $session = $application->session;
         $publishedApproval = $application->application_published && $application->status === 'approved';
-        $resultVisible = $application->result_published && $application->score !== null && $application->scholarship_percentage !== null;
+        $resultVisible = $application->result_published && $application->scholarship_percentage !== null;
         $block = ScholarshipRules::memberBlock($application, $application->period, $session);
 
         return [
@@ -223,7 +232,9 @@ class ScholarshipApplicationService
                 'arrival_at' => $publishedApproval ? $session->startsAt()->subMinutes(30)->format('Y-m-d H:i:s') : null,
             ],
             'result' => $resultVisible
-                ? ['published' => true, 'attendance_status' => $application->attendance_status, 'score' => $application->score, 'scholarship_percentage' => $application->scholarship_percentage]
+                ? ['published' => true, 'attendance_status' => $application->attendance_status, 'score' => $application->score,
+                    'correct_count' => $application->correct_count, 'wrong_count' => $application->wrong_count, 'blank_count' => $application->blank_count,
+                    'scholarship_percentage' => $application->scholarship_percentage]
                 : ['published' => false],
             'can_edit' => $block === null,
             'can_delete' => $block === null,
@@ -298,7 +309,7 @@ class ScholarshipApplicationService
 
     private function completePublishedResult(ScholarshipApplication $application): void
     {
-        if ($application->result_published && ($application->score === null || $application->scholarship_percentage === null)) {
+        if ($application->result_published && $application->scholarship_percentage === null) {
             ScholarshipRules::fail('result_published', __('scholarship.result_requires_complete'));
         }
     }

@@ -258,7 +258,8 @@ class ScholarshipDomainTest extends ScholarshipTestCase
         self::assertArrayHasKey($incomplete->id, $result['skipped']);
         self::assertArrayHasKey(99999999, $result['skipped']);
         self::assertSame(0, $this->applications->forMember($this->student, $ready->id)['result']['score']);
-        $this->rejects(fn () => $this->applications->updateResult($this->admin, $ready->id, ['score' => null]));
+        $this->applications->updateResult($this->admin, $ready->id, ['score' => null]);
+        self::assertNull($this->applications->forMember($this->student, $ready->id)['result']['score']);
         $this->rejects(fn () => $this->applications->updateResult($this->admin, $ready->id, ['scholarship_percentage' => null]));
         self::assertTrue($ready->fresh()->result_published);
         $later = $this->applications->create($this->third, $this->data($this->alternative));
