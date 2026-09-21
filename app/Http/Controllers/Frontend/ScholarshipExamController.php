@@ -7,10 +7,13 @@ use App\Models\ScholarshipExamPeriod;
 use App\Models\ScholarshipExamSession;
 use App\Models\ScholarshipSchool;
 use App\Models\ScholarshipStudentLevel;
+use App\Services\ScholarshipApplicationService;
 use Carbon\CarbonImmutable;
 use Closure;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
 class ScholarshipExamController extends Controller
@@ -57,8 +60,10 @@ class ScholarshipExamController extends Controller
             return to_route('frontend.scholarship.exams.index')->with('scholarship_notice', __('scholarship.member_no_available_sessions'));
         }
 
-        $requestedSession = (int) $request->old('session_id', $request->integer('session'));
-        $selectedSession = $available->firstWhere('id', $requestedSession);
+        $requestedSession = $request->old('session_id', $request->query('session'));
+        $requestedSessionId = (is_int($requestedSession) || is_string($requestedSession))
+            && preg_match('/^[0-9]+$/D', (string) $requestedSession) ? (int) $requestedSession : null;
+        $selectedSession = $available->firstWhere('id', $requestedSessionId);
 
         return view('frontend.scholarship.applications.create', [
             'period' => $data,
@@ -66,7 +71,27 @@ class ScholarshipExamController extends Controller
             'schools' => ScholarshipSchool::query()->where('is_active', true)->orderBy('sort_order')->orderBy('name')->get(['id', 'name']),
             'levels' => ScholarshipStudentLevel::query()->where('is_active', true)->orderBy('sort_order')->orderBy('id')->get(['id', 'name']),
             'selectedSession' => $selectedSession,
-            'selectionUnavailable' => $requestedSession !== 0 && $selectedSession === null,
+            'selectionUnavailable' => $requestedSession !== null && $requestedSession !== '' && $selectedSession === null,
+        ]);
+    }
+
+    public function storeApplication(Request $request, ScholarshipExamPeriod $period, ScholarshipApplicationService $applications): RedirectResponse
+    {
+        // The account/name and period come from authentication and the route.
+        // Branch/group/exam inputs only filter the form; the session is authoritative.
+        $data = Arr::only($request->post(), ['session_id', 'school_id', 'student_level_id']);
+
+        try {
+            $application = $applications->create($request->user(), ['period_id' => $period->id, ...$data]);
+        } catch (ValidationException $exception) {
+            return to_route('frontend.scholarship.applications.create', $period)
+                ->withErrors($exception->errors())
+                ->withInput(array_filter($data, fn ($value) => is_string($value) || is_int($value)));
+        }
+
+        return to_route('frontend.scholarship.exams.index')->with('scholarship_application_created', [
+            'user_id' => $application->user_id,
+            'number' => $application->application_number,
         ]);
     }
 

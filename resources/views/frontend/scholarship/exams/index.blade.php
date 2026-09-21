@@ -3,7 +3,14 @@
         <div class="mb-4">
             <h1 class="h2 mb-2">{{ __('scholarship.member_exams_title') }}</h1>
             <p class="text-muted mb-0">{{ __('scholarship.member_exams_help') }}</p>
+            <a href="{{ route('frontend.scholarship.applications.index') }}" class="btn btn-outline-primary mt-3">{{ __('scholarship.member_applications_title') }}</a>
         </div>
+
+        @if (session('scholarship_application_created.user_id') === auth()->id())
+            <div class="alert alert-success text-break" role="status">
+                {{ __('scholarship.member_application_created', ['number' => session('scholarship_application_created.number')]) }}
+            </div>
+        @endif
 
         @if (session('scholarship_notice'))
             <div class="alert alert-info" role="status">{{ session('scholarship_notice') }}</div>

@@ -11,6 +11,7 @@ use App\Models\ScholarshipSchool;
 use App\Models\ScholarshipStudentLevel;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
@@ -198,13 +199,17 @@ class ScholarshipApplicationService
         return $this->memberData($application);
     }
 
-    public function listForMember(User $user): Collection
+    public function listForMember(User $user, ?int $perPage = null): Collection|LengthAwarePaginator
     {
         $user = ScholarshipRules::actor($user);
 
-        return ScholarshipApplication::query()->where('user_id', $user->id)
+        $query = ScholarshipApplication::query()->where('user_id', $user->id)
             ->with(['period', 'session.branch', 'session.examGroup'])
-            ->orderByDesc('id')->get()->map(fn ($application) => $this->memberData($application));
+            ->orderByDesc('id');
+
+        return $perPage === null
+            ? $query->get()->map(fn ($application) => $this->memberData($application))
+            : $query->paginate($perPage)->through(fn ($application) => $this->memberData($application));
     }
 
     private function memberData(ScholarshipApplication $application): array

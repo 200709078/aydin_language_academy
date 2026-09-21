@@ -29,6 +29,7 @@ use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\NewsController;
 use App\Http\Controllers\Frontend\ProgramFinderController;
 use App\Http\Controllers\Frontend\ReviewController;
+use App\Http\Controllers\Frontend\ScholarshipApplicationController;
 use App\Http\Controllers\Frontend\ScholarshipExamController;
 use App\Http\Controllers\Frontend\ThemeListController;
 use App\Http\Controllers\ExerciseAttemptReviewController;
@@ -417,10 +418,21 @@ Route::view('/yorumlarim', 'frontend.my-reviews')
 Route::get('/bursluluk-sinavlari', [ScholarshipExamController::class, 'index'])
     ->middleware('auth')
     ->name('frontend.scholarship.exams.index');
+Route::get('/basvurularim', [ScholarshipApplicationController::class, 'index'])
+    ->middleware('auth')
+    ->name('frontend.scholarship.applications.index');
+Route::get('/basvurularim/{application}', [ScholarshipApplicationController::class, 'show'])
+    ->middleware('auth')
+    ->whereNumber('application')
+    ->name('frontend.scholarship.applications.show');
 Route::get('/bursluluk-sinavlari/{period}/basvuru', [ScholarshipExamController::class, 'createApplication'])
     ->middleware('auth')
     ->whereNumber('period')
     ->name('frontend.scholarship.applications.create');
+Route::post('/bursluluk-sinavlari/{period}/basvuru', [ScholarshipExamController::class, 'storeApplication'])
+    ->middleware('auth')
+    ->whereNumber('period')
+    ->name('frontend.scholarship.applications.store');
 Route::get('/seviye-tespit-sinavi', [PlacementTestAttemptController::class, 'landing'])
     ->name('frontend.placement-test');
 Route::get('/sana-uygun-programi-bul', [ProgramFinderController::class, 'show'])

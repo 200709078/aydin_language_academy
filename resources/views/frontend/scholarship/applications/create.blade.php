@@ -24,7 +24,7 @@
             @endif
 
             <form id="scholarship-application-form" data-scholarship-form method="POST"
-                action="{{ route('frontend.scholarship.applications.create', $period['id']) }}" onsubmit="return false;">
+                action="{{ route('frontend.scholarship.applications.store', $period['id']) }}">
                 @csrf
                 <div class="mb-3">
                     <label for="student_name" class="form-label">{{ __('scholarship.student_name') }}</label>
@@ -131,8 +131,8 @@
                         <a href="{{ route('profile.show') }}" class="alert-link" target="_blank" rel="noopener">{{ __('scholarship.member_update_profile') }}</a>
                     </div>
                 </fieldset>
-                <p id="submission-help" class="text-muted">{{ __('scholarship.member_submission_pending') }}</p>
-                <button type="submit" class="btn btn-primary" disabled aria-describedby="submission-help">{{ __('scholarship.member_submit') }}</button>
+                <p id="submission-help" class="text-muted">{{ __('scholarship.member_submission_help') }}</p>
+                <button type="submit" class="btn btn-primary" @disabled($schools->isEmpty() || $levels->isEmpty()) aria-describedby="submission-help">{{ __('scholarship.member_submit') }}</button>
             </form>
         </div>
     </div>

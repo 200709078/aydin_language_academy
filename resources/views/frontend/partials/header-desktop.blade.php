@@ -37,8 +37,11 @@
                     <span class="av-lang-badge" aria-label="{{ $headerLocale === 'tr' ? __('dictt.lang_en') : __('dictt.lang_tr') }}">{{ $headerLocale === 'tr' ? 'EN' : 'TR' }}</span>
                 </a>
                 @auth
-                    <a href="{{ route('frontend.scholarship.exams.index') }}" class="nav-item nav-link {{ request()->routeIs('frontend.scholarship.*') ? 'active' : '' }}">
+                    <a href="{{ route('frontend.scholarship.exams.index') }}" class="nav-item nav-link {{ request()->routeIs('frontend.scholarship.exams.*', 'frontend.scholarship.applications.create', 'frontend.scholarship.applications.store') ? 'active' : '' }}">
                         <i class="fa fa-graduation-cap fa-sm fa-fw me-1" aria-hidden="true"></i>{{ __('scholarship.member_exams_title') }}
+                    </a>
+                    <a href="{{ route('frontend.scholarship.applications.index') }}" class="nav-item nav-link {{ request()->routeIs('frontend.scholarship.applications.index', 'frontend.scholarship.applications.show') ? 'active' : '' }}">
+                        <i class="fa fa-file-alt fa-sm fa-fw me-1" aria-hidden="true"></i>{{ __('scholarship.member_applications_title') }}
                     </a>
                     <a href="{{ route('profile.show') }}" class="nav-item nav-link {{ request()->routeIs('profile.show') ? 'active' : '' }}">
                         <i class="fa fa-user-circle fa-sm fa-fw me-1" aria-hidden="true"></i>{{ __('dictt.profile') }}

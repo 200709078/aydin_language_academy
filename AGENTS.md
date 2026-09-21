@@ -643,7 +643,7 @@ Kullanıcı açıkça istemeden mevcut global authorization sistemi değiştiril
 
 # 12. Bursluluk sistemi geliştirme planı
 
-Admin öncesi hazırlık (1A–1E ve 2A), **2B — Sınav dönemi yönetimi**, **2C — Tanımlar, oturum ve kontenjan yönetimi**, **2D — Başvuru yönetimi**, **2E — Katılım**, **2F — Not**, **2G — Burs oranı** ve **2H — Yayınlama** tamamlandı. **2I — İletişim/bildirim:** ayrı manuel iletişim takibi ve mevcut posta altyapısıyla tekli/toplu e-posta gönderimi tamamlandı; WhatsApp bağlantısı kullanıcı kararıyla şimdilik beklemede ve tamamlanmış sayılmıyor. **2K — Admin temel kontrol değerlendirmesi**, **3A — Mevcut üye alanı analizi** ve **3B — Başvuruya açık sınavlar** tamamlandı. **3C — Başvuru formu** da tamamlandı; üye kendi hesap bilgileriyle okul, mevcut sınıf/durum ve bağımsız sınav/oturum seçimini yapabiliyor. Gönderim henüz etkin değil. 3D öncesindeki ek geliştirmede doğru/yanlış/boş alanları ve yalnız burs gerektiren sonuç yayın kuralı uygulandı. Sıradaki adım **3D — Başvuru iş kurallarını üye akışına bağla**. Mevcut servislerin kullanım sözleşmesi, kilitleme düzeni ve doğrulama komutları [docs/scholarship-foundation.md](docs/scholarship-foundation.md) dosyasındadır; ekranlar bu ortak altyapıyı kullanır.
+Admin öncesi hazırlık (1A–1E ve 2A), **2B — Sınav dönemi yönetimi**, **2C — Tanımlar, oturum ve kontenjan yönetimi**, **2D — Başvuru yönetimi**, **2E — Katılım**, **2F — Not**, **2G — Burs oranı** ve **2H — Yayınlama** tamamlandı. **2I — İletişim/bildirim:** ayrı manuel iletişim takibi ve mevcut posta altyapısıyla tekli/toplu e-posta gönderimi tamamlandı; WhatsApp bağlantısı kullanıcı kararıyla şimdilik beklemede ve tamamlanmış sayılmıyor. **2K — Admin temel kontrol değerlendirmesi**, **3A — Mevcut üye alanı analizi** ve **3B — Başvuruya açık sınavlar** tamamlandı. **3C — Başvuru formu** da tamamlandı; üye kendi hesap bilgileriyle okul, mevcut sınıf/durum ve bağımsız sınav/oturum seçimini yapabiliyor. **3D — Başvuru iş kurallarını üye akışına bağla** tamamlandı; form gönderimi ortak servise bağlı, başvuru numarası gösteriliyor ve bekleyen kayıt kontenjandan yer ayırıyor. 3D öncesindeki ek geliştirmede doğru/yanlış/boş alanları ve yalnız burs gerektiren sonuç yayın kuralı uygulandı. **3E — Başvurularım listesi** tamamlandı; yalnız hesaba ait güncel/geçmiş başvurular sayfalı listede, onay/yayın ayrımı korunarak gösteriliyor. **3F — Başvuru detayı** tamamlandı; hesap sahipliği ve yayın kurallarıyla öğrenci/sınav bilgileri, erken gelme zamanı ve işlem kısıtı uyarıları gösteriliyor. Sıradaki adım **3G — Başvuru değişikliği ve kalıcı silme**. Mevcut servislerin kullanım sözleşmesi, kilitleme düzeni ve doğrulama komutları [docs/scholarship-foundation.md](docs/scholarship-foundation.md) dosyasındadır; ekranlar bu ortak altyapıyı kullanır.
 
 Kurallar:
 - Kullanıcı hangi adımı isterse yalnız o adımı uygula.
@@ -899,7 +899,7 @@ Kod değiştirme.
 Tek öğrenci hesabıyla dönem başvurularını yönetecek `Başvurularım` alanının nereye/nasıl ekleneceğini öner. Çok öğrencili hesap veya ikinci üyelik akışı tasarlama. Dur.
 
 ### 3B — Başvuruya açık sınavlar
-**Durum:** Tamamlandı. `/bursluluk-sinavlari` yalnız giriş yapmış üyeye dönem/oturum durumlarını ve ayrı kontenjanları gösterir. Dolu ve askıdaki oturumlar açıklanır; askıda iletişim bağlantısı vardır. Geçmiş/arşivli oturumlar ve pasif dönem/şube/gruplar listelenmez. İzole MariaDB üzerinde 3 kısa HTTP testi, 55 doğrulama geçti. Form ve başvuru yazma işlemi eklenmedi; ayrıntılı tarayıcı kontrolleri 3J'dedir.
+**Durum:** Tamamlandı. `/bursluluk-sinavlari` yalnız giriş yapmış üyeye dönem/oturum durumlarını ve ayrı kontenjanları gösterir. Dolu ve askıdaki oturumlar açıklanır; askıda iletişim bağlantısı vardır. Geçmiş/arşivli oturumlar ve pasif dönem/şube/gruplar listelenmez. İzole MariaDB üzerinde 3 kısa HTTP testi, 55 doğrulama geçti. Form ve kayıt sonraki 3C/3D adımlarında tamamlandı; ayrıntılı tarayıcı kontrolleri 3J'dedir.
 
 Login olmuş üyeye başvuruya açık bursluluk dönemlerini/sınavlarını mevcut üye tasarımında göster.
 
@@ -908,7 +908,7 @@ Başvuru tarihleri dışında veya admin tarafından başvuruları kapatılmış
 Form aşamasına geçme. Dur.
 
 ### 3C — Başvuru formu
-**Durum:** Tamamlandı. Uygun oturumdan açılan form, hesabın öğrenci/iletişim bilgilerini ve aktif okul/sınıf seçeneklerini gösterir. Şube → grup → sınav → oturum seçimleri birbirini süzer; dolu/askıda oturum seçilemez, arşivli/geçmiş oturum listelenmez. Form ve liste için 5 kısa HTTP testi (104 doğrulama), bağımlı seçimler için 1 kısa JavaScript testi geçti. Gönderim kapalıdır; ortak servisle kayıt oluşturma 3D kapsamındadır. Tarayıcı/demo ve ayrıntılı görünüm kontrolleri 3J'de kalır.
+**Durum:** Tamamlandı. Uygun oturumdan açılan form, hesabın öğrenci/iletişim bilgilerini ve aktif okul/sınıf seçeneklerini gösterir. Şube → grup → sınav → oturum seçimleri birbirini süzer; dolu/askıda oturum seçilemez, arşivli/geçmiş oturum listelenmez. Form ve liste için 5 kısa HTTP testi (104 doğrulama), bağımlı seçimler için 1 kısa JavaScript testi geçti. Ortak servisle kayıt oluşturma daha sonra 3D kapsamında tamamlandı. Tarayıcı/demo ve ayrıntılı görünüm kontrolleri 3J'de kalır.
 
 Form şu bilgileri ayrı alanlarla desteklesin:
 - ilgili hesabın öğrencisi,
@@ -925,6 +925,8 @@ Aynı hesabın ikinci öğrenci kaydını oluşturma veya başvuruya ayrı ileti
 Dolu, askıda veya arşivlenmiş oturum seçilemesin. Mevcut ALA form stilini kullan. Dur.
 
 ### 3D — Başvuru iş kurallarını üye akışına bağla
+**Durum:** Tamamlandı. Formun POST gönderimi `ScholarshipApplicationService::create` metoduna bağlandı; hesap ve öğrenci adı oturumdaki kullanıcıdan, dönem route'tan alınır. Yalnız okul/sınıf/oturum girdileri kabul edilir. Başarıda benzersiz başvuru numarası gösterilir ve bekleyen kayıt yer ayırır. Form/kayıt için beş hedefli HTTP testi ve mevcut iki eşzamanlılık testi geçti. Yeni migration, demo veri veya tarayıcı ortamı eklenmedi; ayrıntılı kontroller 3J'dedir.
+
 1C'de kurulan ortak domain kurallarını kullan; aynı kuralları ikinci kez yazma.
 
 Server-side doğrula:
@@ -939,6 +941,8 @@ Farklı sınav, grup veya şube seçmek aynı dönemde ikinci mevcut başvuru ha
 Dur.
 
 ### 3E — Başvurularım listesi
+**Durum:** Tamamlandı. `/basvurularim` mevcut üye layout ve menülerine eklendi. Ortak servis, yalnız ilgili hesabın başvurularını sayfalıyor; pasif/geçmiş dönemler ve askıda/arşivli oturumların mevcut başvuruları korunuyor. Yayınlanmamış onay ve sonuç değerleri liste çıktısına alınmıyor; sonuç için yalnız yayın durumu gösteriliyor. İki yeni liste HTTP testi ve mevcut katalog erişim testi geçti. Ayrıntılı tarayıcı, TR/EN ve cihaz kontrolleri 3J'dedir.
+
 Üye `Başvurularım` ekranında en az başvuru no, öğrenci, dönem/sınav, şube, sınav grubu, tarih/başlangıç-bitiş saati, kullanıcıya açık başvuru durumu ve sonuç yayın durumunu görsün.
 
 Kullanıcı yalnız kendi kayıtlarını ve önceki dönem başvurularını görebilsin. Başvuru onayı ile yayınını ayır; yayınlanmamış kabul kararı, not ve bursu gösterme.
@@ -946,6 +950,8 @@ Kullanıcı yalnız kendi kayıtlarını ve önceki dönem başvurularını gör
 Dur.
 
 ### 3F — Başvuru detayı
+**Durum:** Tamamlandı. `/basvurularim/{application}` ortak `forMember` servisiyle yalnız başvuru sahibine açılır; liste üzerinden erişilir. Öğrenci okul/sınıf bilgileri, şube/grup/sınav, yayınlanmış kabul ve 30 dakika erken gelme zamanı gösterilir. Askı/arşiv/dönem kapanışı açıklanır; yayınlanmamış onay kısıt mesajından da açıklanmaz. İki yeni detay testi ve ortak durum görünümünden etkilenen mevcut liste testi geçti. Düzenleme/silme 3G, sonuç değerleri 3H, ayrıntılı tarayıcı kontrolleri 3J kapsamındadır.
+
 Duruma göre şunları göster:
 - başvurunun değerlendirildiği veya başvuru sonucunun henüz yayınlanmadığı bilgisi,
 - yayınlanmış onay ve sınav bilgileri; en az 30 dakika önce hazır bulunma uyarısı,

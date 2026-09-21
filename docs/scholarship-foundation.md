@@ -71,6 +71,8 @@ Tanım türleri `branch`, `school`, `student_level`, `exam_group` değerleridir.
 
 `forMember(user, id)` ve `listForMember(user)` yalnız ilgili hesabın kayıtlarını, izin verilen alanlardan oluşan diziler olarak döndürür. Admin modeli doğrudan üye HTML/Livewire/API verisi yapılmaz.
 
+`listForMember(user, perPage)` aynı hesap/yayın kurallarıyla veritabanında sayfalama yapar; sayfa boyutu verilmezse mevcut Collection sözleşmesi korunur. Başvurularım listesi 10 kayıtlık sayfalar kullanır ve sonuç değerlerini ayrıca çıkarıp yalnız sonuç yayın durumunu görünüm verisine taşır.
+
 Sonuç yayını kapalıyken `result` içinde yalnız `published: false` bulunur; not, burs, doğru/yanlış/boş ve sonuç katılım alanları eklenmez. Onay yayınlanana kadar kabul kararı döndürülmez. Onay yayını açılınca `arrival_at` oturumdan 30 dakika öncesini gösterir. `can_edit`, `can_delete` ve `restriction`, ortak üye işlem kurallarını yansıtır. Modelin hassas alanlarının ham JSON çıktısında gizlenmesi ek korumadır.
 
 ## Geliştirme verileri ve doğrulama
@@ -271,7 +273,7 @@ Sınav listesi `/bursluluk-sinavlari` altında, ilerideki **Başvurularım** ala
 - Aktif dönemlerin henüz başlamamış, arşivlenmemiş oturumları; şube ve sınav grubu da aktifse listelenir. Başvuru tarihleri ile dönem anahtarı ayrı durumlarla açıklanır; tarih uygunluğu mevcut `acceptsApplications` metodundan alınır. Zaman hesabında uygulamanın İstanbul zaman dilimi kullanılır.
 - Her oturumda şube, sınav grubu, sınav adı, tarih/saat, kapasite ve kalan kontenjan gösterilir. Bekleyen ve onaylı başvurular birlikte sayılır; ortak şube/grup kotası kullanılmaz. Dolu ve askıdaki oturumlar listede kalır. Askıda, mevcut iletişim sayfasına yönlendirme bulunur. Geçmiş/başlamış ve arşivli oturumlar yeni başvuru listesinden çıkarılır; mevcut başvuruların tarihçesi bu ekranın kapsamı değildir.
 - Aynı hesabın o dönemde mevcut başvurusu varsa genel bir bilgi gösterilir ve oturum başvuruya açık olarak sunulmaz. Sorgu yalnız giriş yapan hesabın başvuru varlığını denetler; başka öğrencilerin bilgileri veya herhangi bir başvurunun onay/not/burs/iletişim alanları çıktıya eklenmez. Görünüm yalnız izin verilen dönem/oturum alanlarını alır; açıklamalar HTML olarak çalıştırılmaz.
-- Bu adım form, başvuru başlatma düğmesi veya yazma endpoint'i eklemez. Gösterilen kapasite anlık bilgidir; sonraki yazma adımı mevcut ortak servisle uygunluğu ve kapasiteyi işlem anında yeniden doğrulamalıdır.
+- 3B yalnız liste hazırlığıydı; form ve gönderim sonraki 3C/3D adımlarında eklendi. Gösterilen kapasite anlık bilgidir; yazma adımı ortak servisle uygunluğu ve kapasiteyi işlem anında yeniden doğrular.
 
 Kısa doğrulama: `php tests/Scholarship/run-mariadb.php --filter ScholarshipExamCatalogTest` ile izole MariaDB üzerinde **3 test, 55 doğrulama** geçti. Gerçek Blade/layout çıktısı, giriş zorunluluğu, kendi başvurusunun varlığı ve diğer hesapların bilgilerinin gizliliği, dönem kapanışı/tarihleri, oturum doluluğu/askısı, geçmiş/arşivli/pasif kayıtların listeden çıkarılması kontrol edildi. Hedefli biçim, PHP sözdizimi ve diff kontrolleri geçti. Gerçek veriler değişmedi; demo veri veya tarayıcı ortamı hazırlanmadı.
 
@@ -287,13 +289,13 @@ Kısa doğrulama: `php tests/Scholarship/run-mariadb.php --filter ScholarshipExa
 - Öğrenci adı, e-posta ve telefon yalnız giriş yapan hesaptan gelir; başka hesap veya ayrı başvuru iletişimi seçilmez. İletişim alanları salt okunurdur; eksik telefon açıklanır ve mevcut profil sayfası yeni sekmede açılabilir. Okul ve mevcut sınıf/durum, adminin aktif tanımlarından ayrı ayrı seçilir. Sınıf ile sınav grubu arasında uygunluk eşlemesi yoktur.
 - Mevcut ALA form stilleriyle şube, sınav grubu, sınav ve tarih/saatli oturum seçilir. `public/frontend/js/scholarship-application-form.js`, bir üst seçim değiştiğinde alt seçimleri ve gösterilen tarih/saat/kontenjanı sıfırlar. Dolu ve askıdaki oturum seçenekleri devre dışıdır; askıda iletişim bağlantısı gösterilir. Görünen kapasite bilgisi yer ayırmaz.
 - Form açılışında dönemin güncel başvuru uygunluğu ve hesabın mevcut başvurusu kontrol edilir. Uygun oturum kalmadıysa açıklamayla listeye dönülür. URL'deki dolu/askıda/arşivli/geçmiş veya bu döneme ait olmayan oturum otomatik seçilmez; başka uygun seçim istenir. Pasif okul/sınıf seçenekleri, pasif şube/gruplar ve arşivli/geçmiş oturumlar form verisine alınmaz.
-- Bu adım yalnız form hazırlığıdır: gönder düğmesi devre dışı, form gönderimi engelli ve POST route'u yoktur. Kullanıcıya gönderimin henüz açılmadığı açıklanır. **3D** sırasında bu geçici gönderim engeli kaldırılmalı, mevcut ortak servisle kayıt oluşturma bağlanmalı; hesap, dönem ve oturum uygunluğu işlem anında tekrar doğrulanmalıdır. Şube/grup/sınav alanları filtre içindir; sunucuda yetkili oturum ilişkileri esas alınmalıdır.
+- 3C yalnız form hazırlığıydı; geçici gönderim engeli 3D sırasında kaldırıldı ve POST route'u ortak servise bağlandı. Hesap, dönem ve oturum uygunluğu işlem anında tekrar doğrulanır. Şube/grup/sınav alanları filtre içindir; sunucuda oturum ilişkileri esas alınır.
 
 Kısa doğrulama: izole MariaDB üzerinde `ScholarshipExamCatalogTest` **5 test, 104 doğrulama** ile geçti; 3B'nin üç testi, ortak sorgu ve liste bağlantısı değiştiği için bu çalışmaya dahildir. İki yeni test formun gerçek HTTP/Blade çıktısını, hesap bilgilerini, ayrı seçim alanlarını, aktif tanımları, uygun oturum ön seçimini ve dolu/askıda/arşivli oturum engellerini, kapalı/başvurulu dönemde form açılmamasını ve kayıt oluşturulmamasını kapsar. `node --test tests/Scholarship/member-form.test.mjs` ile **1 kısa JavaScript testi** geçti; şube değişiminde alt seçimlerin sıfırlanması ve dolu/askıda oturumların yeniden etkinleşmemesi doğrulandı. Hedefli biçim, PHP/JavaScript sözdizimi ve diff kontrolleri geçti.
 
 **3J'ye bırakılanlar:** Formun gerçek tarayıcıda klavye ve seçim etkileşimleri, profil sekmesinden dönüş, uzun seçenek adları, TR/EN ve cihaz görünümleri; 3D sonrası gönderim ve doğrulama hatasından dönüşün bütünleşik kontrolü. Tarayıcı ortamı, demo veri, migration veya gerçek bildirim eklenmedi.
 
-Sıradaki adım **3D — Başvuru iş kurallarını üye akışına bağla**; henüz başlatılmadı.
+3C sonunda sıradaki adım 3D olarak belirlendi; tamamlanan kayıt bağlantısının kapsamı aşağıdadır.
 
 
 ## 3D öncesi ek geliştirme: doğru/yanlış/boş ve yayın koşulu
@@ -310,4 +312,50 @@ Doğrulama, izole MariaDB üzerinde **12 hedefli test** kapsamında tamamlandı:
 
 **3J'ye bırakılanlar:** Dört giriş alanının mobil/TR–EN yerleşimi, birden fazla alanı temizlerken ALA modalının onay/iptali ve burs girilmiş fakat not/sayaç girilmemiş sonucun tamamlanacak üye ekranlarındaki görünümü. Tarayıcı ortamı ve demo veri hazırlanmadı.
 
-Bu ek geliştirme 3D'yi başlatmaz. Sıradaki adım **3D — Başvuru iş kurallarını üye akışına bağla** olarak kalır.
+Bu ek geliştirme sırasında 3D başlatılmadı; sonraki 3D çalışması aşağıda kayıtlıdır.
+
+
+## Üye başvuru kaydı (3D)
+
+Formun gönderim engeli kaldırıldı. `frontend.scholarship.applications.store` (`POST /bursluluk-sinavlari/{period}/basvuru`), mevcut `auth`/web middleware içinde `ScholarshipExamController::storeApplication` metoduna bağlanır. Yeni kimlik doğrulama, üye portalı, model veya migration eklenmedi.
+
+- İstek gövdesinden yalnız `session_id`, `school_id`, `student_level_id` ortak `ScholarshipApplicationService::create` metoduna aktarılır. Hesap ve öğrenci adı mevcut kullanıcıdan, `period_id` route'tan gelir. İstekte gönderilen başka hesap/ad, dönem, onay, yayın, not, burs ve sayaç değerleri uygulanmaz. Şube/grup/sınav seçenekleri arayüz filtresidir; kayıtlı oturumun ilişkileri kullanılır. Mevcut sınıf ile sınav grubu eşleştirilmez.
+- Form açıldıktan sonra kapanan dönem, süresi dolan başvuru aralığı, dolan/askıya alınan/arşivlenen oturum ve pasifleştirilen okul/sınıf dahil uygunluk, kayıt anında ortak serviste tekrar doğrulanır. Servisin dönem → oturum kilitlemesi, transaction ve hesap/dönem unique kısıtı korunur; controller ikinci bir transaction veya kapasite kuralı kurmaz. Bekleyen başvuru da yer ayırır.
+- Başarıda sınav listesine yönlendirilir; yalnız aynı hesaba gösterilen geçici başarı mesajında benzersiz başvuru numarası ve değerlendirme bilgisi bulunur. Başvuru/sonuç yayını kapalı kalır, otomatik bildirim gönderilmez. Başvurularım listesi ve detay ekranı bu adımda geliştirilmez.
+- Doğrulama hatasında aynı dönemin formuna dönülür. Güvenli okul/sınıf/oturum girdileri korunur; halen uygun oturum yeniden seçilir. Uygunluğu kaybolan oturum seçili kalmaz; başka uygun oturum seçilebilir. Dönem kapanmışsa, artık uygun oturum yoksa veya hesapta başvuru oluşmuşsa formun mevcut korumaları açıklamayla listeye yönlendirir. Hatalı dizi gibi seçim değerleri eski girdiye taşınmaz.
+
+Kısa doğrulama: form ve gönderim için **5 hedefli HTTP testi**, son koltuğa iki hesabın başvurması ve aynı hesabın iki şubeye eşzamanlı başvurması için **2 mevcut eşzamanlılık testi** geçti. Kapsam; giriş zorunluluğu, gerçek form gönderimi/başvuru numarası, sunucudan belirlenen hesap ve dönem, değiştirilemeyen yönetici alanları, beklerken kontenjan ayrılması, duplicate, hatada seçimlerin görünümde korunması, pasif tanımlar/başka dönem oturumu, form açıldıktan sonraki dönem ve oturum değişiklikleri ile kontenjan dolmasıdır. Ortak iş kurallarının bütün varyasyonları yeniden üretilmedi. Bir testte eski girdinin GET yanıtından sonra oturumda kalacağı varsayımı, doğrudan formdaki seçimi denetleyecek şekilde düzeltildi; ilgili test yeniden çalıştırılıp geçti. Hedefli Pint, PHP sözdizimi ve diff kontrolleri geçti.
+
+**3J'ye bırakılanlar:** Tarayıcıda gönderme/yenileme/geri dönme, doğrulama hataları ve oturumun dolması sonrası seçim akışları; TR/EN ve cihaz görünümleri; Başvurularım ve detay tamamlandığında bütünleşik başvuru takibi. Tarayıcı ortamı veya demo veri hazırlanmadı, migration ve gerçek mesaj gönderimi yapılmadı.
+
+3D sonunda sıradaki adım olarak belirlenen 3E aşağıda tamamlandı.
+
+## Başvurularım listesi (3E)
+
+`frontend.scholarship.applications.index` (`GET /basvurularim`), `Frontend\ScholarshipApplicationController::index` ve `frontend/scholarship/applications/index.blade.php` üzerinden sunulur. Mevcut `auth`, `x-frontend-profile-layout`, kart/badge ve Bootstrap sayfalama desenleri kullanılır. Masaüstü/mobil üye menüsüne ve bursluluk sınavları listesine **Başvurularım** bağlantısı eklendi; TR/EN metinleri hazırlandı.
+
+- `ScholarshipApplicationService::listForMember(user, 10)` yalnız oturumdaki hesabın kayıtlarını, en son oluşturulandan başlayarak sayfalar. İstekteki `user_id` gibi değerler kapsamı değiştirmez; yönetici hesabı da üye listesinde yalnız kendi kayıtlarını görür. Dönem veya oturumun kapalı, pasif, geçmiş, askıda ya da arşivli olması mevcut başvuruyu listeden kaldırmaz.
+- Kartlarda başvuru numarası, dönemde saklanan öğrenci adı, dönem/sınav, şube, sınav grubu ve tarih/başlangıç-bitiş saati bulunur. Başvuru onaylanmış olsa da yayını açılana kadar **Başvurunuz değerlendiriliyor** gösterilir. Başvuru yayını kapalıysa yayınlanmadığı ayrıca belirtilir. Yayınlanmış onayda kabul ve en az 30 dakika erken gelme uyarısı görünür.
+- Başvuru kararı ile sonuç yayını bağımsızdır. Liste sonuç değerlerini sunmaz; yalnız **Sonuç yayınlandı / henüz yayınlanmadı** bilgisi gösterir. Ham modeller, yönetici iletişim/teknik alanları ve düzenleme kısıtları görünüm verisine aktarılmaz. Yayınlanmamış onaylı kayıt ile bekleyen kaydın liste verisi aynıdır. Detay 3F, düzenleme/silme 3G, not/burs/sayaç gösterimi 3H kapsamındadır.
+
+Kısa doğrulama: izole MariaDB üzerinde **iki yeni liste HTTP testi ve mevcut katalog erişim testi** geçti. Giriş zorunluluğu, boş liste, hesap kapsamı ve yönetici hesabında da sahiplik, geçmiş/arşivli kayıtlar, HTML kaçışları, menü bağlantıları, sayfalama toplamı, gizli onay/sonuç verilerinin görünüm çıktısından çıkarılması ve iki yayının bağımsız açılıp kapanması doğrulandı. Yeni testte yayın servisinin ID dizisi parametresi düzeltildi; yalnız ilgili test yeniden çalıştırılıp geçti. PHP sözdizimi, hedefli Pint ve diff kontrolleri geçti.
+
+**3J'ye bırakılanlar:** Çok sayfalı geçmişte gezinme, uzun başvuru/dönem adları, menü/kart/badge yerleşimleri, TR/EN ve cihaz görünümleri ile liste–detay–sonuç bütünleşik akışı. Tarayıcı ortamı, demo veri, migration veya gerçek bildirim eklenmedi.
+
+3E sonunda sıradaki adım olarak belirlenen 3F aşağıda tamamlandı.
+
+## Başvuru detayı (3F)
+
+`frontend.scholarship.applications.show` (`GET /basvurularim/{application}`), mevcut `ScholarshipApplicationController::show` ve `frontend/scholarship/applications/show.blade.php` üzerinden sunulur. Listeden **Başvuruyu Görüntüle** bağlantısıyla erişilir; mevcut üye layout'u ve kart/uyarı desenleri korunur. Başvurularım menüsü detaydayken de aktif kalır. Liste ile detay, `applications/partials/status.blade.php` içindeki aynı başvuru/sonuç yayın görünümünü kullanır.
+
+- `ScholarshipApplicationService::forMember` kimlik ve sahiplik kontrolünü yapar. Misafir girişe yönlendirilir; başka hesap ve yönetici hesabının başka üyeye ait detay isteği 403, bulunmayan kayıt 404 alır. Route veya istek girdisi hesap kapsamını değiştirmez.
+- Öğrencinin dönemde saklanan adı, okulu ve sınıf/durumu, sınav şubesi/grubundan ayrı gösterilir. Profil veya okul tanımındaki sonraki değişiklikler bu bilgileri değiştirmez. Şube adresi varsa gösterilir; sınav tarihi ve başlangıç/bitiş saatleri güncel oturumdan gelir.
+- Kabul kararı yalnız başvuru yayını açıksa görünür. Yayınlanmış onayda en az 30 dakika erken gelme uyarısı ve ortak servisin hesapladığı son varış tarih/saati gösterilir. Yönetici oturumu değiştirdiğinde bilgiler ve varış zamanı hemen yenilenir.
+- Askıda, arşivli ve başvurulara kapalı durumlar ortak kısıtın önceliğine göre açıklanır; yöneticiyle iletişim bağlantısı bulunur. Yayınlanmış onay için düzenleme/silmenin kapalı olduğu belirtilir. Yayınlanmamış onayın `read_only` kısıtı görünüm verisinde gizlenir; henüz açıklanmayan karar uyarıdan dolaylı olarak sızmaz.
+- Sonuç için yalnız bağımsız yayın durumu gösterilir; sonuç değerleri 3H'de eklenir. Ham yönetici modeli, iletişim/teknik durumlar ve yazma izinleri şablona aktarılmaz. Düzenleme/silme işlemleri bu adımda eklenmedi; 3G kapsamındadır.
+
+Kısa doğrulama: izole MariaDB üzerinde **iki yeni detay HTTP testi ve mevcut liste yayın testi** geçti. Sahiplik, kayıt bulunamaması, öğrenci bilgilerinin korunması, HTML kaçışı, gizli onay ve sonuç alanlarının görünüm verisine alınmaması, listeden geçiş, bağımsız yayın durumları, yayın sonrası oturum değişikliği ve varış zamanının yenilenmesi, askı/arşiv/kapanış uyarıları ile yazma formu bulunmaması doğrulandı. Hedefli Pint, PHP sözdizimi ve diff kontrolleri geçti.
+
+**3J'ye bırakılanlar:** Liste–detay geri dönüşü, uzun okul/şube adresi ve sınav metinleri, TR/EN ve cihaz görünümleri; düzenleme/silme ve sonuç gösterimi tamamlandıktan sonraki bütünleşik akış. Tarayıcı ortamı, demo veri, migration veya gerçek bildirim eklenmedi.
+
+Sıradaki adım **3G — Başvuru değişikliği ve kalıcı silme**; henüz başlatılmadı.
