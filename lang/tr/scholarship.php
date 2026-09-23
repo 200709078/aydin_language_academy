@@ -1,6 +1,10 @@
 <?php
 
 return [
+    'member_changes_unavailable' => 'Bu başvuruda şu anda düzenleme veya silme yapılamaz.',
+    'member_edit_help' => 'Değişiklikler kaydedilene kadar mevcut başvurunuz ve ayrılmış yeriniz korunur. Kendi oturumunuz dolu olsa da mevcut yerinizi koruyabilirsiniz; başka bir oturum için boş kontenjan gerekir.',
+    'member_save_changes' => 'Değişiklikleri Kaydet',
+    'member_delete_confirm' => ':number numaralı başvurunuz kalıcı silinecek ve sınavdaki yeriniz boşalacak. Bu işlem geri alınamaz. Başvurular açıkken uygun bir oturuma yeniden başvurabilirsiniz. Hesabınız silinmez. Devam edilsin mi?',
     'member_applications_title' => 'Başvurularım',
     'member_applications_help' => 'Bu ve önceki dönemlerdeki bursluluk başvurularınızın durumunu buradan takip edebilirsiniz.',
     'member_applications_empty' => 'Henüz bursluluk başvurunuz bulunmuyor.',
@@ -29,6 +33,7 @@ return [
     'member_student_help' => 'Başvuru, giriş yaptığınız öğrenci hesabı adına hazırlanır.',
     'member_choose' => 'Seçiniz',
     'member_exam_selection' => 'Sınav ve Oturum Seçimi',
+    'member_exam_details' => 'Sınav ve Oturum Bilgileri',
     'member_group_help' => 'Mevcut sınıfınız ile sınav grubu ayrı bilgilerdir. Sınav grubunu kendiniz seçiniz.',
     'member_choose_exam' => 'Sınav seçin',
     'member_choose_session' => 'Tarih ve saat seçin',
@@ -176,6 +181,7 @@ return [
     'award_help' => 'Öğrencinin bu dönem başvurusuna ait burs oranını seçip satırından kaydedin. Belirlenmedi ile %0 / Burs Yok farklıdır. Burs değişikliği sonuç iletişimini Ulaşılmadı yapar; otomatik bildirim göndermez.',
     'award_total' => 'Filtreye uyan başvuru: :total',
     'award_none' => '%0 / Burs Yok',
+    'award_percentage' => '%:percentage',
     'award_unset' => 'Belirlenmedi',
     'award_for' => ':number numaralı başvurunun burs oranı',
     'award_updated' => ':number numaralı başvurunun burs oranı kaydedildi.',

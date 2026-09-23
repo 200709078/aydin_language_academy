@@ -49,27 +49,66 @@ class ScholarshipExamController extends Controller
             return to_route('frontend.scholarship.exams.index')->with('scholarship_notice', __('scholarship.member_existing_application'));
         }
 
+        return $this->applicationForm($request, $period);
+    }
+
+    public function editApplication(Request $request, int $application, ScholarshipApplicationService $service): View|RedirectResponse
+    {
+        $data = $service->forMember($request->user(), $application);
+        if (! $data['can_edit']) {
+            return to_route('frontend.scholarship.applications.show', $application)
+                ->with('scholarship_notice', __('scholarship.member_changes_unavailable'));
+        }
+
+        return $this->applicationForm($request, ScholarshipExamPeriod::query()->findOrFail($data['period']['id']), [
+            'id' => $data['id'], 'student' => $data['student'], 'session_id' => $data['session']['id'],
+        ]);
+    }
+
+    private function applicationForm(Request $request, ScholarshipExamPeriod $period, ?array $editing = null): View|RedirectResponse
+    {
+        $now = CarbonImmutable::now(config('app.timezone'));
         $futureSessions = $this->futureSessions($now);
         $period->load(['sessions' => fn ($sessions) => $futureSessions($sessions)
             ->with(['branch', 'examGroup'])->withCount('applications')
             ->orderBy('exam_date')->orderBy('starts_at')->orderBy('id')]);
         $period->setAttribute('has_application', false);
-        $data = $this->periodData($period, $now);
+        $data = $this->periodData($period, $now, $editing['session_id'] ?? null);
         $available = collect($data['sessions'])->where('state', 'available');
         if ($available->isEmpty()) {
+            if ($editing !== null) {
+                return to_route('frontend.scholarship.applications.show', $editing['id'])
+                    ->with('scholarship_notice', __('scholarship.member_no_available_sessions'));
+            }
+
             return to_route('frontend.scholarship.exams.index')->with('scholarship_notice', __('scholarship.member_no_available_sessions'));
         }
 
-        $requestedSession = $request->old('session_id', $request->query('session'));
+        $requestedSession = $request->old('session_id', $editing['session_id'] ?? $request->query('session'));
         $requestedSessionId = (is_int($requestedSession) || is_string($requestedSession))
             && preg_match('/^[0-9]+$/D', (string) $requestedSession) ? (int) $requestedSession : null;
         $selectedSession = $available->firstWhere('id', $requestedSessionId);
 
         return view('frontend.scholarship.applications.create', [
+            'editing' => $editing,
             'period' => $data,
-            'student' => $request->user()->only(['name', 'email', 'phone']),
-            'schools' => ScholarshipSchool::query()->where('is_active', true)->orderBy('sort_order')->orderBy('name')->get(['id', 'name']),
-            'levels' => ScholarshipStudentLevel::query()->where('is_active', true)->orderBy('sort_order')->orderBy('id')->get(['id', 'name']),
+            'student' => [...$request->user()->only(['name', 'email', 'phone']), 'name' => $editing['student']['name'] ?? $request->user()->name],
+            'schools' => ScholarshipSchool::query()->where(fn ($query) => $query->where('is_active', true)
+                ->when($editing !== null, fn ($query) => $query->orWhere('id', $editing['student']['school_id'])))
+                ->orderBy('sort_order')->orderBy('name')->get(['id', 'name'])
+                ->each(function ($school) use ($editing): void {
+                    if ($school->id === ($editing['student']['school_id'] ?? null)) {
+                        $school->name = $editing['student']['school'];
+                    }
+                }),
+            'levels' => ScholarshipStudentLevel::query()->where(fn ($query) => $query->where('is_active', true)
+                ->when($editing !== null, fn ($query) => $query->orWhere('id', $editing['student']['student_level_id'])))
+                ->orderBy('sort_order')->orderBy('id')->get(['id', 'name'])
+                ->each(function ($level) use ($editing): void {
+                    if ($level->id === ($editing['student']['student_level_id'] ?? null)) {
+                        $level->name = $editing['student']['level'];
+                    }
+                }),
             'selectedSession' => $selectedSession,
             'selectionUnavailable' => $requestedSession !== null && $requestedSession !== '' && $selectedSession === null,
         ]);
@@ -108,7 +147,7 @@ class ScholarshipExamController extends Controller
                     ->where('starts_at', '>', $now->format('H:i:s'))));
     }
 
-    private function periodData(ScholarshipExamPeriod $period, CarbonImmutable $now): array
+    private function periodData(ScholarshipExamPeriod $period, CarbonImmutable $now, ?int $reservedSessionId = null): array
     {
         $acceptsApplications = $period->acceptsApplications($now);
         $state = match (true) {
@@ -126,7 +165,7 @@ class ScholarshipExamController extends Controller
             'applications_close_at' => $period->applications_close_at?->format('d.m.Y H:i'),
             'state' => $state,
             'has_application' => (bool) $period->has_application,
-            'sessions' => $period->sessions->map(function (ScholarshipExamSession $session) use ($period, $acceptsApplications) {
+            'sessions' => $period->sessions->map(function (ScholarshipExamSession $session) use ($period, $acceptsApplications, $reservedSessionId) {
                 $remaining = max(0, $session->capacity - $session->applications_count);
 
                 return [
@@ -143,7 +182,7 @@ class ScholarshipExamController extends Controller
                     'remaining' => $remaining,
                     'state' => match (true) {
                         ! $session->is_active => 'suspended',
-                        $remaining === 0 => 'full',
+                        $remaining === 0 && $session->id !== $reservedSessionId => 'full',
                         ! $acceptsApplications => 'closed',
                         (bool) $period->has_application => 'applied',
                         default => 'available',

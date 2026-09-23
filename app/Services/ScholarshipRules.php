@@ -111,7 +111,7 @@ class ScholarshipRules
     public static function memberWritable(ScholarshipApplication $application, ScholarshipExamPeriod $period, ScholarshipExamSession $session): void
     {
         if (self::memberBlock($application, $period, $session) !== null) {
-            self::fail('application', 'Bu başvuruda şu anda düzenleme veya silme yapılamaz.');
+            self::fail('application', __('scholarship.member_changes_unavailable'));
         }
     }
 

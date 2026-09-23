@@ -6,6 +6,10 @@
             <a href="{{ route('frontend.scholarship.applications.index') }}" class="btn btn-outline-primary">{{ __('scholarship.member_applications_title') }}</a>
         </div>
 
+        @if (session('scholarship_notice'))
+            <div class="alert alert-info" role="status">{{ session('scholarship_notice') }}</div>
+        @endif
+
         <section class="bg-light rounded p-3 p-md-4 mb-4" aria-labelledby="application-period">
             <h2 class="h4 mb-3 text-break" id="application-period">{{ $application['period']['title'] }}</h2>
             @include('frontend.scholarship.applications.partials.status')
@@ -21,6 +25,28 @@
             <div class="alert {{ $application['restriction'] === 'suspended' ? 'alert-warning' : 'alert-info' }}" role="status">
                 <p class="mb-2">{{ __('scholarship.member_restriction_'.$application['restriction']) }}</p>
                 <a href="{{ route('frontend.contact') }}" class="alert-link">{{ __('scholarship.member_contact_admin') }}</a>
+            </div>
+        @elseif (! $application['can_edit'] && ! $application['can_delete'])
+            <div class="alert alert-info" role="status">{{ __('scholarship.member_changes_unavailable') }}</div>
+        @endif
+
+        @if ($application['can_edit'] || $application['can_delete'])
+            <div class="d-flex flex-wrap gap-2 mb-4">
+                @if ($application['can_edit'])
+                    <a href="{{ route('frontend.scholarship.applications.edit', $application['id']) }}" class="btn btn-outline-primary">{{ __('scholarship.application_edit') }}</a>
+                @endif
+                @if ($application['can_delete'])
+                    <form id="member-application-delete" method="POST" action="{{ route('frontend.scholarship.applications.destroy', $application['id']) }}">
+                        @csrf @method('DELETE')
+                        <button type="button" class="btn btn-outline-danger" data-action-confirmation
+                            data-confirm-form="member-application-delete" data-confirm-title="{{ __('scholarship.application_delete') }}"
+                            data-confirm-content="{{ __('scholarship.member_delete_confirm', ['number' => $application['application_number']]) }}"
+                            data-confirm-action="{{ __('scholarship.application_delete') }}" data-confirm-icon="fa-trash" data-confirm-tone="danger">{{ __('scholarship.application_delete') }}</button>
+                    </form>
+                    @push('modals')
+                        <div class="position-relative" style="z-index: 1055;"><x-action-confirmation-modal /></div>
+                    @endpush
+                @endif
             </div>
         @endif
 
@@ -40,7 +66,7 @@
             </div>
             <div class="col-12 col-lg-6">
                 <section class="bg-light rounded h-100 p-3 p-md-4" aria-labelledby="exam-details">
-                    <h2 class="h4 mb-3" id="exam-details">{{ __('scholarship.member_exam_selection') }}</h2>
+                    <h2 class="h4 mb-3" id="exam-details">{{ __('scholarship.member_exam_details') }}</h2>
                     <dl class="mb-0">
                         <dt>{{ __('scholarship.branch') }}</dt>
                         <dd class="text-break">{{ $application['session']['branch'] }}</dd>

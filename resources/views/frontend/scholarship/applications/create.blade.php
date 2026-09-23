@@ -1,4 +1,4 @@
-<x-frontend-profile-layout :header="__('scholarship.member_form_title')">
+<x-frontend-profile-layout :header="__($editing ? 'scholarship.application_edit' : 'scholarship.member_form_title')">
     @php
         $sessions = collect($period['sessions']);
         $branchId = $selectedSession['branch_id'] ?? null;
@@ -7,8 +7,8 @@
     @endphp
     <div class="container py-4">
         <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-4">
-            <h1 class="h2 mb-0">{{ __('scholarship.member_form_title') }}</h1>
-            <a href="{{ route('frontend.scholarship.exams.index') }}" class="btn btn-outline-secondary">{{ __('scholarship.member_exams_title') }}</a>
+            <h1 class="h2 mb-0">{{ __($editing ? 'scholarship.application_edit' : 'scholarship.member_form_title') }}</h1>
+            <a href="{{ $editing ? route('frontend.scholarship.applications.show', $editing['id']) : route('frontend.scholarship.exams.index') }}" class="btn btn-outline-secondary">{{ __($editing ? 'scholarship.application_detail' : 'scholarship.member_exams_title') }}</a>
         </div>
         <div class="bg-light rounded p-3 p-md-4">
             <h2 class="h4 text-break">{{ $period['title'] }}</h2>
@@ -24,8 +24,9 @@
             @endif
 
             <form id="scholarship-application-form" data-scholarship-form method="POST"
-                action="{{ route('frontend.scholarship.applications.store', $period['id']) }}">
+                action="{{ $editing ? route('frontend.scholarship.applications.update', $editing['id']) : route('frontend.scholarship.applications.store', $period['id']) }}">
                 @csrf
+                @if ($editing) @method('PUT') @endif
                 <div class="mb-3">
                     <label for="student_name" class="form-label">{{ __('scholarship.student_name') }}</label>
                     <input id="student_name" class="form-control" value="{{ $student['name'] }}" readonly aria-describedby="student-help">
@@ -35,13 +36,14 @@
                     @foreach (['school_id' => [$schools, 'current_school'], 'student_level_id' => [$levels, 'current_level']] as $field => [$options, $label])
                         <div class="col-md-6 mb-3">
                             <label for="{{ $field }}" class="form-label">{{ __('scholarship.'.$label) }}</label>
-                            <select id="{{ $field }}" name="{{ $field }}" required class="form-select @error($field) is-invalid @enderror">
+                            <select id="{{ $field }}" name="{{ $field }}" required class="form-select @error($field) is-invalid @enderror"
+                                @error($field) aria-invalid="true" aria-describedby="{{ $field }}-error" @enderror>
                                 <option value="">{{ __('scholarship.member_choose') }}</option>
                                 @foreach ($options as $option)
-                                    <option value="{{ $option->id }}" @selected(old($field) == $option->id)>{{ $option->name }}</option>
+                                    <option value="{{ $option->id }}" @selected(old($field, $editing['student'][$field] ?? null) == $option->id)>{{ $option->name }}</option>
                                 @endforeach
                             </select>
-                            @error($field)<div class="invalid-feedback">{{ $message }}</div>@enderror
+                            @error($field)<div id="{{ $field }}-error" class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>
                     @endforeach
                 </div>
@@ -84,7 +86,8 @@
                         </div>
                         <div class="col-12 mb-3">
                             <label for="session_id" class="form-label">{{ __('scholarship.sessions') }}</label>
-                            <select id="session_id" name="session_id" required class="form-select @error('session_id') is-invalid @enderror" @disabled($examTitle === null)>
+                            <select id="session_id" name="session_id" required class="form-select @error('session_id') is-invalid @enderror" @disabled($examTitle === null)
+                                @error('session_id') aria-invalid="true" aria-describedby="session_id-error" @enderror>
                                 <option value="">{{ __('scholarship.member_choose_session') }}</option>
                                 @foreach ($sessions as $session)
                                     @php($matchesExam = $branchId === $session['branch_id'] && $groupId === $session['exam_group_id'] && $examTitle === $session['exam_title'])
@@ -98,11 +101,11 @@
                                     </option>
                                 @endforeach
                             </select>
-                            @error('session_id')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                            @error('session_id')<div id="session_id-error" class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>
                     </div>
                     <div class="alert alert-info" data-no-sessions hidden role="status">{{ __('scholarship.member_no_available_sessions') }}</div>
-                    <div class="alert alert-warning" data-suspended-sessions hidden>
+                    <div class="alert alert-warning" data-suspended-sessions hidden role="status">
                         {{ __('scholarship.member_suspended_help') }}
                         <a href="{{ route('frontend.contact') }}" class="alert-link">{{ __('scholarship.member_contact_admin') }}</a>
                     </div>
@@ -131,8 +134,8 @@
                         <a href="{{ route('profile.show') }}" class="alert-link" target="_blank" rel="noopener">{{ __('scholarship.member_update_profile') }}</a>
                     </div>
                 </fieldset>
-                <p id="submission-help" class="text-muted">{{ __('scholarship.member_submission_help') }}</p>
-                <button type="submit" class="btn btn-primary" @disabled($schools->isEmpty() || $levels->isEmpty()) aria-describedby="submission-help">{{ __('scholarship.member_submit') }}</button>
+                <p id="submission-help" class="text-muted">{{ __($editing ? 'scholarship.member_edit_help' : 'scholarship.member_submission_help') }}</p>
+                <button type="submit" class="btn btn-primary" @disabled($schools->isEmpty() || $levels->isEmpty()) aria-describedby="submission-help">{{ __($editing ? 'scholarship.member_save_changes' : 'scholarship.member_submit') }}</button>
             </form>
         </div>
     </div>

@@ -167,7 +167,9 @@ class ScholarshipExamCatalogTest extends ScholarshipTestCase
         $this->applications->publish($this->admin, [$application->id], 'result', true);
         $resultOnly = $this->get($url)->assertOk()->assertSee(__('scholarship.member_result_published'))
             ->assertDontSee(__('scholarship.delivery_accepted'));
-        self::assertSame(['published' => true], $resultOnly->viewData('applications')->first()['result']);
+        self::assertSame(['published' => true, 'attendance_status' => 'unmarked', 'score' => 73,
+            'correct_count' => 60001, 'wrong_count' => 60002, 'blank_count' => 60003, 'scholarship_percentage' => 90],
+            $resultOnly->viewData('applications')->first()['result']);
 
         $this->applications->publish($this->admin, [$application->id], 'application', true);
         $this->get($url)->assertOk()->assertSee(__('scholarship.delivery_accepted'))
@@ -207,9 +209,11 @@ class ScholarshipExamCatalogTest extends ScholarshipTestCase
             ->assertDontSee(__('scholarship.delivery_accepted'))->assertDontSee(__('scholarship.member_restriction_read_only'))
             ->assertDontSee(__('scholarship.member_arrival_deadline'))
             ->assertDontSee('60001')->assertDontSee('60002')->assertDontSee('60003');
+        $pending['can_edit'] = $pending['can_delete'] = false;
         self::assertSame($pending, $page->viewData('application'));
+        $page->assertDontSee(__('scholarship.application_edit'))->assertDontSee('data-confirm-form="member-application-delete"', false);
         foreach (['score', 'scholarship_percentage', 'correct_count', 'wrong_count', 'blank_count',
-            'attendance_status', 'application_contact_status', 'result_contact_status', 'user_id', 'can_edit', 'can_delete'] as $field) {
+            'attendance_status', 'application_contact_status', 'result_contact_status', 'user_id'] as $field) {
             self::assertStringNotContainsString('"'.$field.'"', json_encode($page->viewData('application')));
         }
         $this->get(route('frontend.scholarship.applications.index'))->assertOk()->assertSee('href="'.$url.'"', false);
@@ -232,7 +236,9 @@ class ScholarshipExamCatalogTest extends ScholarshipTestCase
         $page = $this->get($url)->assertOk()->assertSee($this->otherBranch->name)
             ->assertSee('16:00–18:00')->assertSee('25.01.2035 15:30')->assertDontSee('25.01.2035 07:30')
             ->assertSee(__('scholarship.member_result_published'))->assertDontSee(__('scholarship.application_edit'));
-        self::assertSame(['published' => true], $page->viewData('application')['result']);
+        self::assertSame(['published' => true, 'attendance_status' => 'unmarked', 'score' => null,
+            'correct_count' => null, 'wrong_count' => null, 'blank_count' => null, 'scholarship_percentage' => 0],
+            $page->viewData('application')['result']);
         $dom = new DOMDocument;
         $dom->loadHTML($page->getContent(), LIBXML_NOERROR | LIBXML_NOWARNING);
         self::assertCount(0, (new DOMXPath($dom))->query('//main//form'));
@@ -253,6 +259,239 @@ class ScholarshipExamCatalogTest extends ScholarshipTestCase
             ->assertSee(__('scholarship.member_result_published'))->assertDontSee(__('scholarship.delivery_accepted'))
             ->assertDontSee(__('scholarship.member_arrival_deadline'));
         self::assertSame(0, ScholarshipNotification::query()->count());
+    }
+
+    public function test_member_edit_keeps_its_full_session_and_saves_allowed_changes_without_replacing_identity(): void
+    {
+        $this->session->update(['capacity' => 1]);
+        $application = $this->applications->create($this->student, $this->data());
+        $edit = route('frontend.scholarship.applications.edit', $application->id);
+        $update = route('frontend.scholarship.applications.update', $application->id);
+        $show = route('frontend.scholarship.applications.show', $application->id);
+        $this->school->update(['is_active' => false, 'name' => 'Renamed school']);
+        $this->level->update(['is_active' => false]);
+        $this->student->update(['name' => 'New profile name']);
+        $page = $this->actingAs($this->student)->get($edit)->assertOk()
+            ->assertSee($application->school_name_snapshot)->assertSee($application->student_name_snapshot);
+        self::assertSame(0, $page->viewData('selectedSession')['remaining']);
+        $dom = new DOMDocument;
+        $dom->loadHTML($page->getContent(), LIBXML_NOERROR | LIBXML_NOWARNING);
+        $xpath = new DOMXPath($dom);
+        self::assertCount(1, $xpath->query('//select[@name="session_id"]/option[@selected and not(@disabled) and @value="'.$this->session->id.'"]'));
+        self::assertCount(1, $xpath->query('//select[@name="school_id"]/option[@selected and @value="'.$this->school->id.'"]'));
+        self::assertCount(1, $xpath->query('//form[@id="scholarship-application-form"]/input[@name="_method" and @value="PUT"]'));
+        $this->put($update, $this->data())->assertRedirect($show)->assertSessionHasNoErrors();
+        self::assertSame(1, $this->session->applications()->count());
+
+        $school = $this->catalog->saveDefinition($this->admin, 'school', ['name' => 'New school']);
+        $level = $this->catalog->saveDefinition($this->admin, 'student_level', ['code' => 'grade-12', 'name' => '12. Sınıf']);
+        $this->put($update, [
+            'session_id' => $this->alternative->id, 'school_id' => $school->id, 'student_level_id' => $level->id,
+            'user_id' => $this->other->id, 'student_name' => 'Forged name', 'period_id' => 9999999,
+            'status' => 'approved', 'result_published' => true, 'score' => 100, 'correct_count' => 100, 'asMember' => false,
+        ])->assertRedirect($show)->assertSessionHasNoErrors();
+        $fresh = $application->fresh();
+        self::assertSame([$application->application_number, $this->student->id, $this->period->id, $application->student_name_snapshot, 'pending', null, null, false], [
+            $fresh->application_number, $fresh->user_id, $fresh->period_id, $fresh->student_name_snapshot,
+            $fresh->status, $fresh->score, $fresh->correct_count, $fresh->result_published,
+        ]);
+        self::assertSame([$this->alternative->id, $school->id, $level->id], [$fresh->session_id, $fresh->school_id, $fresh->student_level_id]);
+        self::assertSame(0, $this->session->applications()->count());
+        self::assertSame(1, $this->alternative->applications()->count());
+        $this->get($show)->assertOk()->assertSee($school->name)->assertSee($level->name)->assertSee(__('scholarship.application_updated'));
+    }
+
+    public function test_member_edit_revalidates_target_and_keeps_the_original_seat_on_failure(): void
+    {
+        $application = $this->applications->create($this->student, $this->data());
+        $edit = route('frontend.scholarship.applications.edit', $application->id);
+        $update = route('frontend.scholarship.applications.update', $application->id);
+        $this->actingAs($this->student)->get($edit)->assertOk();
+        $this->alternative->update(['capacity' => 1]);
+        $occupant = $this->applications->create($this->other, $this->data($this->alternative));
+        $this->put($update, ['session_id' => $this->alternative->id])->assertRedirect($edit)->assertSessionHasErrors('session_id');
+        $this->get($edit)->assertOk()->assertSee(__('scholarship.member_selection_unavailable'));
+        $this->applications->delete($this->other, $occupant->id);
+        $this->alternative->update(['is_active' => false]);
+        $this->put($update, ['session_id' => $this->alternative->id])->assertSessionHasErrors('session_id');
+        $this->alternative->update(['is_active' => true]);
+        $period = $this->period->replicate();
+        $period->save();
+        $session = $this->alternative->replicate();
+        $session->period_id = $period->id;
+        $session->save();
+        $this->put($update, ['session_id' => $session->id])->assertSessionHasErrors('session_id');
+        $this->put($update, ['session_id' => ['invalid']])->assertSessionHasErrors('session_id');
+        $this->get($edit)->assertOk();
+        self::assertSame($this->session->id, $application->fresh()->session_id);
+        self::assertSame(1, $this->session->applications()->count());
+        self::assertSame(0, $this->alternative->applications()->count());
+    }
+
+    public function test_member_write_routes_enforce_ownership_and_all_locks_even_for_admin_accounts(): void
+    {
+        $application = $this->applications->create($this->student, $this->data());
+        $edit = route('frontend.scholarship.applications.edit', $application->id);
+        $update = route('frontend.scholarship.applications.update', $application->id);
+        $delete = route('frontend.scholarship.applications.destroy', $application->id);
+        $show = route('frontend.scholarship.applications.show', $application->id);
+        $this->get($edit)->assertRedirect(route('login'));
+        $this->put($update, ['session_id' => $this->alternative->id])->assertRedirect(route('login'));
+        $this->delete($delete)->assertRedirect(route('login'));
+        foreach ([$this->other, $this->admin] as $foreign) {
+            $this->actingAs($foreign)->get($edit)->assertForbidden();
+            $this->put($update, ['session_id' => $this->alternative->id])->assertForbidden();
+            $this->delete($delete)->assertForbidden();
+        }
+        // The same account still uses member rules after becoming an admin.
+        $this->student->forceFill(['type' => 'admin'])->save();
+        $this->actingAs($this->student)->get($edit)->assertOk();
+        foreach (['approval', 'closed', 'expired', 'suspended', 'archived'] as $lock) {
+            $application->update(['status' => $lock === 'approval' ? 'approved' : 'pending']);
+            $this->period->update(['applications_open' => $lock !== 'closed', 'applications_close_at' => $lock === 'expired' ? '2035-01-09 23:59:59' : '2035-01-20 23:59:59']);
+            $this->session->update(['is_active' => $lock !== 'suspended', 'archived_at' => $lock === 'archived' ? now() : null]);
+            $this->get($edit)->assertRedirect($show);
+            $this->put($update, ['session_id' => $this->alternative->id, 'asMember' => false])->assertRedirect($edit)->assertSessionHasErrors('application');
+            $this->delete($delete)->assertRedirect($show)->assertSessionHasErrors('application');
+            $this->get($show)->assertOk()->assertDontSee('data-confirm-form="member-application-delete"', false)
+                ->assertDontSee('href="'.$edit.'"', false)->assertDontSee(__('scholarship.delivery_accepted'));
+            self::assertSame($this->session->id, $application->fresh()->session_id);
+        }
+        self::assertSame(1, $this->session->applications()->count());
+        self::assertSame(0, $this->alternative->applications()->count());
+    }
+
+    public function test_member_permanent_delete_uses_confirmation_releases_seat_and_allows_reapplication(): void
+    {
+        $application = $this->applications->create($this->student, $this->data());
+        $other = $this->applications->create($this->other, $this->data());
+        $delete = route('frontend.scholarship.applications.destroy', $application->id);
+        $show = route('frontend.scholarship.applications.show', $application->id);
+        $page = $this->actingAs($this->student)->get($show)->assertOk()
+            ->assertSee('data-confirm-form="member-application-delete"', false)
+            ->assertSee('role="dialog"', false)->assertDontSee('wire:confirm')->assertDontSee('confirm(', false);
+        $dom = new DOMDocument;
+        $dom->loadHTML($page->getContent(), LIBXML_NOERROR | LIBXML_NOWARNING);
+        self::assertCount(1, (new DOMXPath($dom))->query('//form[@id="member-application-delete"]//button[@type="button" and @data-action-confirmation]'));
+        $this->delete($delete)->assertRedirect(route('frontend.scholarship.applications.index'))->assertSessionHasNoErrors();
+        self::assertNull($application->fresh());
+        self::assertNotNull($this->student->fresh());
+        self::assertNotNull($other->fresh());
+        self::assertSame(1, $this->session->applications()->count());
+        $this->get(route('frontend.scholarship.applications.index'))->assertOk()->assertSee(__('scholarship.application_deleted'));
+        $this->get($show)->assertNotFound();
+        $this->post(route('frontend.scholarship.applications.store', $this->period->id), $this->data($this->alternative))
+            ->assertSessionHasNoErrors();
+        $replacement = ScholarshipApplication::query()->where('user_id', $this->student->id)->sole();
+        self::assertNotSame($application->application_number, $replacement->application_number);
+        self::assertSame($this->alternative->id, $replacement->session_id);
+        self::assertSame(0, ScholarshipNotification::query()->count());
+    }
+
+    public function test_member_results_distinguish_missing_values_zero_and_absence_on_list_and_detail(): void
+    {
+        $application = $this->applications->create($this->student, $this->data());
+        $list = route('frontend.scholarship.applications.index');
+        $detail = route('frontend.scholarship.applications.show', $application->id);
+        $this->actingAs($this->student);
+        $publication = $this->applications->publish($this->admin, [$application->id], 'result');
+        self::assertSame([], $publication['updated']);
+        $page = $this->get($detail)->assertOk()->assertSee(__('scholarship.member_result_unpublished'));
+        self::assertSame([], $this->displayedResult($page->getContent(), $application->id));
+        self::assertSame(['published' => false], $page->viewData('application')['result']);
+
+        $this->applications->updateResult($this->admin, $application->id, [
+            'scholarship_percentage' => 0, 'correct_count' => 0, 'blank_count' => 3,
+        ]);
+        $this->applications->publish($this->admin, [$application->id], 'result');
+        $expected = [
+            'Burs Oranı' => '%0 / Burs Yok', 'Not' => 'Girilmedi', 'Katılım Durumu' => 'İşaretlenmedi',
+            'Doğru Sayısı' => '0', 'Yanlış Sayısı' => 'Girilmedi', 'Boş Sayısı' => '3',
+        ];
+        foreach ([$list, $detail] as $url) {
+            $page = $this->get($url)->assertOk()->assertSee(__('scholarship.member_result_published'))
+                ->assertDontSee(__('scholarship.delivery_accepted'));
+            self::assertSame($expected, $this->displayedResult($page->getContent(), $application->id));
+        }
+
+        $this->applications->updateResult($this->admin, $application->id, [
+            'attendance_status' => 'attended', 'score' => 0, 'wrong_count' => 0, 'blank_count' => null,
+        ]);
+        $page = $this->get($detail)->assertOk();
+        self::assertSame([...$expected, 'Not' => '0', 'Katılım Durumu' => 'Katıldı', 'Yanlış Sayısı' => '0', 'Boş Sayısı' => 'Girilmedi'],
+            $this->displayedResult($page->getContent(), $application->id));
+
+        $this->applications->updateResult($this->admin, $application->id, ['attendance_status' => 'absent']);
+        $page = $this->get($detail)->assertOk();
+        self::assertSame([
+            'Burs Oranı' => '%0 / Burs Yok', 'Not' => '0', 'Katılım Durumu' => 'Katılmadı',
+            'Doğru Sayısı' => 'Uygulanamaz', 'Yanlış Sayısı' => 'Uygulanamaz', 'Boş Sayısı' => 'Uygulanamaz',
+        ], $this->displayedResult($page->getContent(), $application->id));
+        self::assertSame(0, ScholarshipNotification::query()->count());
+    }
+
+    public function test_member_results_update_immediately_keep_history_and_disappear_when_unpublished(): void
+    {
+        $historical = $this->applications->create($this->student, $this->data());
+        $this->applications->updateResult($this->admin, $historical->id, [
+            'attendance_status' => 'attended', 'score' => 72, 'scholarship_percentage' => 40,
+            'correct_count' => 60001, 'wrong_count' => 60002, 'blank_count' => 60003,
+        ]);
+        $this->applications->publish($this->admin, [$historical->id], 'result');
+        $period = $this->period->replicate();
+        $period->save();
+        $session = $this->session->replicate();
+        $session->period_id = $period->id;
+        $session->save();
+        $current = $this->applications->create($this->student, $this->data($session));
+        $this->period->update([
+            'is_active' => false, 'applications_open' => false,
+            'applications_open_at' => '2034-01-01', 'applications_close_at' => '2034-01-20',
+            'exam_starts_on' => '2034-01-25', 'exam_ends_on' => '2034-01-26',
+        ]);
+        $this->session->update(['exam_date' => '2034-01-25', 'archived_at' => now()]);
+        $this->applications->updateResult($this->admin, $current->id, [
+            'score' => 99, 'scholarship_percentage' => 100, 'correct_count' => 60004, 'wrong_count' => 60005, 'blank_count' => 60006,
+        ]);
+        $this->applications->publish($this->admin, [$current->id], 'result');
+        $list = route('frontend.scholarship.applications.index');
+        $detail = route('frontend.scholarship.applications.show', $current->id);
+        $before = $this->actingAs($this->student)->get($list)->assertOk();
+        $pastResult = $this->displayedResult($before->getContent(), $historical->id);
+        self::assertSame('%40', $pastResult['Burs Oranı']);
+        $this->applications->updateResult($this->admin, $current->id, [
+            'score' => null, 'scholarship_percentage' => 70, 'correct_count' => null, 'wrong_count' => 12, 'blank_count' => 0,
+        ]);
+        $changed = $this->get($list)->assertOk();
+        self::assertSame($pastResult, $this->displayedResult($changed->getContent(), $historical->id));
+        $expected = [
+            'Burs Oranı' => '%70', 'Not' => 'Girilmedi', 'Katılım Durumu' => 'İşaretlenmedi',
+            'Doğru Sayısı' => 'Girilmedi', 'Yanlış Sayısı' => '12', 'Boş Sayısı' => '0',
+        ];
+        self::assertSame($expected, $this->displayedResult($changed->getContent(), $current->id));
+        self::assertSame($expected, $this->displayedResult($this->get($detail)->assertOk()->getContent(), $current->id));
+
+        $this->applications->publish($this->admin, [$historical->id, $current->id], 'result', false);
+        foreach ([$list, $detail] as $url) {
+            $hidden = $this->get($url)->assertOk()->assertSee(__('scholarship.member_result_unpublished'))
+                ->assertDontSee('60001')->assertDontSee('60002')->assertDontSee('60003');
+            self::assertSame([], $this->displayedResult($hidden->getContent(), $current->id));
+            $data = $url === $list ? $hidden->viewData('applications')->first() : $hidden->viewData('application');
+            self::assertSame(['published' => false], $data['result']);
+        }
+        self::assertSame(0, ScholarshipNotification::query()->count());
+    }
+
+    private function displayedResult(string $html, int $applicationId): array
+    {
+        $dom = new DOMDocument;
+        $dom->loadHTML($html, LIBXML_NOERROR | LIBXML_NOWARNING);
+        $values = [];
+        foreach ((new DOMXPath($dom))->query('//dl[@id="application-result-'.$applicationId.'"]/div') as $field) {
+            $values[trim($field->getElementsByTagName('dt')->item(0)->textContent)] = trim($field->getElementsByTagName('dd')->item(0)->textContent);
+        }
+
+        return $values;
     }
 
     public function test_period_switch_and_application_window_control_displayed_availability(): void

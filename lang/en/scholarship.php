@@ -1,6 +1,10 @@
 <?php
 
 return [
+    'member_changes_unavailable' => 'This application cannot be edited or deleted at this time.',
+    'member_edit_help' => 'Your application and reserved seat are kept until changes are saved. You can keep your seat even if your current session is full; switching sessions requires an available seat.',
+    'member_save_changes' => 'Save Changes',
+    'member_delete_confirm' => 'Application :number will be permanently deleted and your exam seat released. This cannot be undone. While applications are open, you may apply again to an available session. Your account will be kept. Continue?',
     'member_applications_title' => 'My Applications',
     'member_applications_help' => 'Track your scholarship applications for this and previous periods here.',
     'member_applications_empty' => 'You have no scholarship applications yet.',
@@ -29,6 +33,7 @@ return [
     'member_student_help' => 'This application is for the student account you are signed in to.',
     'member_choose' => 'Please select',
     'member_exam_selection' => 'Exam and Session Selection',
+    'member_exam_details' => 'Exam and Session Details',
     'member_group_help' => 'Your current grade and exam group are separate. Please choose the exam group yourself.',
     'member_choose_exam' => 'Choose an exam',
     'member_choose_session' => 'Choose a date and time',
@@ -176,6 +181,7 @@ return [
     'award_help' => 'Select and save the scholarship percentage for the student’s application in this exam period. Not Determined and 0% / No Scholarship are different. Changes reset result contact to Not Reached; no notification is sent automatically.',
     'award_total' => 'Matching applications: :total',
     'award_none' => '0% / No Scholarship',
+    'award_percentage' => ':percentage%',
     'award_unset' => 'Not Determined',
     'award_for' => 'Scholarship percentage for application :number',
     'award_updated' => 'Scholarship percentage saved for application :number.',

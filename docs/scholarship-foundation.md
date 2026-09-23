@@ -36,14 +36,16 @@ Controller, Livewire ve ilerideki import işlemleri başvuru/sonuç/katalog değ
 | Metot | Sözleşme |
 | --- | --- |
 | `create(actor, data)` | Actor'ın kendi hesabına başvuru; `period_id`, `session_id`, `school_id`, `student_level_id`; isteğe bağlı `student_name` |
-| `update(actor, id, data)` | `session_id`, `school_id`, `student_level_id`, `student_name`; üye sahipliği ve işlem kilitleri veya admin yetkisi |
-| `delete(actor, id)` | Yetkili kalıcı silme, yer açma ve aynı dönemde yeniden başvuru imkânı |
+| `update(actor, id, data, asMember = false)` | `session_id`, `school_id`, `student_level_id`, `student_name`; üye sahipliği ve işlem kilitleri veya admin yetkisi |
+| `delete(actor, id, asMember = false)` | Yetkili kalıcı silme, yer açma ve aynı dönemde yeniden başvuru imkânı |
 | `approve(admin, id)` | Onay; yayın anahtarını kendiliğinden açmaz |
 | `updateResult(admin, id, data)` | `attendance_status`, `score`, `correct_count`, `wrong_count`, `blank_count`, `scholarship_percentage` için ortak doğrulama |
 | `publish(admin, ids, phase, published = true)` | `application` veya `result` aşamasında kayıt bazlı yayın; tek kayıt için tek elemanlı dizi |
 | `markContact(admin, id, phase, reached)` | İlgili aşamanın manuel ulaşılma durumunu değiştirir |
 
 `publish` sonucu `updated` ID listesi ve `skipped` ID/hata eşlemesidir. Eksik sonuç veya silinmiş kayıt diğer geçerli kayıtları durdurmaz. Seçim kapsamı ekranda gösterilir; toplu onay aynı `approve` metodunu her seçili kayda uygular.
+
+Üye controller'ı `update` ve `delete` çağrılarında koddan sabit `asMember: true` verir; bu değer istekten alınmaz. Böylece yönetici hesabı üye ekranını kullanırken de sahiplik, onay, dönem ve oturum kilitleri aynı transaction içinde uygulanır. Admin ekranları mevcut varsayılan davranışla çalışır. Üye formu yalnız `session_id`, `school_id`, `student_level_id` aktarır; hesap, dönem, öğrenci adı ve yönetici/sonuç alanlarını değiştirmez.
 
 Not, burs ve doğru/yanlış/boş girdileri veritabanına yazılmadan önce tam sayı olarak doğrulanır; ondalıklı PHP değeri veya `"12.0"` kabul edilmez. NULL ve gerçek sıfır ayrıdır. Katılmadı seçimi `0/0` atar. Bu seçimi geri almak otomatik sıfırları temizler; aynı istekte yeni not/burs verilebilir. Yayın için yalnız burs oranı gerekir; not ve sayaçlar NULL kalabilir. Yayındaki burs oranını temizlemek için önce sonuç yayını kapatılır. Katılmadı durumunda sayaçlar NULL / Uygulanamaz olur.
 
@@ -71,7 +73,7 @@ Tanım türleri `branch`, `school`, `student_level`, `exam_group` değerleridir.
 
 `forMember(user, id)` ve `listForMember(user)` yalnız ilgili hesabın kayıtlarını, izin verilen alanlardan oluşan diziler olarak döndürür. Admin modeli doğrudan üye HTML/Livewire/API verisi yapılmaz.
 
-`listForMember(user, perPage)` aynı hesap/yayın kurallarıyla veritabanında sayfalama yapar; sayfa boyutu verilmezse mevcut Collection sözleşmesi korunur. Başvurularım listesi 10 kayıtlık sayfalar kullanır ve sonuç değerlerini ayrıca çıkarıp yalnız sonuç yayın durumunu görünüm verisine taşır.
+`listForMember(user, perPage)` aynı hesap/yayın kurallarıyla veritabanında sayfalama yapar; sayfa boyutu verilmezse mevcut Collection sözleşmesi korunur. Başvurularım listesi 10 kayıtlık sayfalar kullanır. Liste ve detay, ortak servisin güvenli `result` dizisini görünüm verisine taşır; yalnız yayınlanmış sonuçta değerler bulunur.
 
 Sonuç yayını kapalıyken `result` içinde yalnız `published: false` bulunur; not, burs, doğru/yanlış/boş ve sonuç katılım alanları eklenmez. Onay yayınlanana kadar kabul kararı döndürülmez. Onay yayını açılınca `arrival_at` oturumdan 30 dakika öncesini gösterir. `can_edit`, `can_delete` ve `restriction`, ortak üye işlem kurallarını yansıtır. Modelin hassas alanlarının ham JSON çıktısında gizlenmesi ek korumadır.
 
@@ -336,7 +338,7 @@ Kısa doğrulama: form ve gönderim için **5 hedefli HTTP testi**, son koltuğa
 
 - `ScholarshipApplicationService::listForMember(user, 10)` yalnız oturumdaki hesabın kayıtlarını, en son oluşturulandan başlayarak sayfalar. İstekteki `user_id` gibi değerler kapsamı değiştirmez; yönetici hesabı da üye listesinde yalnız kendi kayıtlarını görür. Dönem veya oturumun kapalı, pasif, geçmiş, askıda ya da arşivli olması mevcut başvuruyu listeden kaldırmaz.
 - Kartlarda başvuru numarası, dönemde saklanan öğrenci adı, dönem/sınav, şube, sınav grubu ve tarih/başlangıç-bitiş saati bulunur. Başvuru onaylanmış olsa da yayını açılana kadar **Başvurunuz değerlendiriliyor** gösterilir. Başvuru yayını kapalıysa yayınlanmadığı ayrıca belirtilir. Yayınlanmış onayda kabul ve en az 30 dakika erken gelme uyarısı görünür.
-- Başvuru kararı ile sonuç yayını bağımsızdır. Liste sonuç değerlerini sunmaz; yalnız **Sonuç yayınlandı / henüz yayınlanmadı** bilgisi gösterir. Ham modeller, yönetici iletişim/teknik alanları ve düzenleme kısıtları görünüm verisine aktarılmaz. Yayınlanmamış onaylı kayıt ile bekleyen kaydın liste verisi aynıdır. Detay 3F, düzenleme/silme 3G, not/burs/sayaç gösterimi 3H kapsamındadır.
+- Başvuru kararı ile sonuç yayını bağımsızdır. 3E sırasında yalnız **Sonuç yayınlandı / henüz yayınlanmadı** bilgisi gösteriliyordu; yayınlanmış sonuç değerleri 3H'de eklendi. Ham modeller, yönetici iletişim/teknik alanları ve düzenleme kısıtları liste verisine aktarılmaz. Onay kararının listeye yansıması yalnız başvuru yayınıyla mümkündür. Detay 3F, düzenleme/silme 3G kapsamındadır.
 
 Kısa doğrulama: izole MariaDB üzerinde **iki yeni liste HTTP testi ve mevcut katalog erişim testi** geçti. Giriş zorunluluğu, boş liste, hesap kapsamı ve yönetici hesabında da sahiplik, geçmiş/arşivli kayıtlar, HTML kaçışları, menü bağlantıları, sayfalama toplamı, gizli onay/sonuç verilerinin görünüm çıktısından çıkarılması ve iki yayının bağımsız açılıp kapanması doğrulandı. Yeni testte yayın servisinin ID dizisi parametresi düzeltildi; yalnız ilgili test yeniden çalıştırılıp geçti. PHP sözdizimi, hedefli Pint ve diff kontrolleri geçti.
 
@@ -352,10 +354,54 @@ Kısa doğrulama: izole MariaDB üzerinde **iki yeni liste HTTP testi ve mevcut 
 - Öğrencinin dönemde saklanan adı, okulu ve sınıf/durumu, sınav şubesi/grubundan ayrı gösterilir. Profil veya okul tanımındaki sonraki değişiklikler bu bilgileri değiştirmez. Şube adresi varsa gösterilir; sınav tarihi ve başlangıç/bitiş saatleri güncel oturumdan gelir.
 - Kabul kararı yalnız başvuru yayını açıksa görünür. Yayınlanmış onayda en az 30 dakika erken gelme uyarısı ve ortak servisin hesapladığı son varış tarih/saati gösterilir. Yönetici oturumu değiştirdiğinde bilgiler ve varış zamanı hemen yenilenir.
 - Askıda, arşivli ve başvurulara kapalı durumlar ortak kısıtın önceliğine göre açıklanır; yöneticiyle iletişim bağlantısı bulunur. Yayınlanmış onay için düzenleme/silmenin kapalı olduğu belirtilir. Yayınlanmamış onayın `read_only` kısıtı görünüm verisinde gizlenir; henüz açıklanmayan karar uyarıdan dolaylı olarak sızmaz.
-- Sonuç için yalnız bağımsız yayın durumu gösterilir; sonuç değerleri 3H'de eklenir. Ham yönetici modeli, iletişim/teknik durumlar ve yazma izinleri şablona aktarılmaz. Düzenleme/silme işlemleri bu adımda eklenmedi; 3G kapsamındadır.
+- 3F sırasında sonuç için yalnız bağımsız yayın durumu gösteriliyordu; yayınlanmış sonuç değerleri 3H'de eklendi. Ham yönetici modeli ve iletişim/teknik durumlar şablona aktarılmaz. 3F sırasında yazma izinleri ve işlemler gösterilmiyordu; 3G'de ortak `can_edit`/`can_delete` izinleri uygun eylemleri sunmak için eklendi.
 
 Kısa doğrulama: izole MariaDB üzerinde **iki yeni detay HTTP testi ve mevcut liste yayın testi** geçti. Sahiplik, kayıt bulunamaması, öğrenci bilgilerinin korunması, HTML kaçışı, gizli onay ve sonuç alanlarının görünüm verisine alınmaması, listeden geçiş, bağımsız yayın durumları, yayın sonrası oturum değişikliği ve varış zamanının yenilenmesi, askı/arşiv/kapanış uyarıları ile yazma formu bulunmaması doğrulandı. Hedefli Pint, PHP sözdizimi ve diff kontrolleri geçti.
 
 **3J'ye bırakılanlar:** Liste–detay geri dönüşü, uzun okul/şube adresi ve sınav metinleri, TR/EN ve cihaz görünümleri; düzenleme/silme ve sonuç gösterimi tamamlandıktan sonraki bütünleşik akış. Tarayıcı ortamı, demo veri, migration veya gerçek bildirim eklenmedi.
 
-Sıradaki adım **3G — Başvuru değişikliği ve kalıcı silme**; henüz başlatılmadı.
+3F sonunda sıradaki adım olarak belirlenen 3G aşağıda tamamlandı.
+
+## Başvuru değişikliği ve kalıcı silme (3G)
+
+Üye detayındaki uygun başvuruda **Başvuruyu Düzenle** ve **Başvuruyu Kalıcı Sil** eylemleri bulunur. `frontend.scholarship.applications.edit` (`GET /basvurularim/{application}/duzenle`) mevcut sınav controller'ının ortak form hazırlığını kullanır. `update` (`PUT /basvurularim/{application}`) ve `destroy` (`DELETE /basvurularim/{application}`), başvuru controller'ından ortak servise bağlanır. Mevcut auth/web/CSRF yaklaşımı korunur.
+
+- Yeni başvuru ve düzenleme aynı Blade formunu ve bağımlı seçim JavaScript'ini kullanır. Öğrenci adı dönemde saklanan addır; iletişim User kaydından gelir. Mevcut okul/sınıf seçimleri pasifleştirilmiş olsa da aynen korunabilir; başka seçimler aktif tanımlardan yapılır. Ortak üye çıktısına formun ihtiyaç duyduğu okul/sınıf ID'leri eklendi; aynı seçimin ad bilgisi yeniden yazılmaz.
+- Sadece düzenlenen başvurunun mevcut oturumu, ayrılmış kendi yeri sayesinde dolu olsa da seçilebilir; gösterilen boş kontenjan gerçek değerinde kalır. Hedef oturumlar aynı dönemden, aktif şube/gruplardan ve gelecek oturumlardan alınır. Askıda ve dolu hedefler seçilemez. Aktarımda kapasite/uygunluk ortak serviste yeniden kontrol edilir; hata durumunda mevcut kayıt ve yer korunur. Düzenleme başvuru numarasını değiştirmez.
+- Sahiplik ve ortak işlem kilitleri yazma sırasında kilitli satırlarla yeniden doğrulanır. Onaylanmış (yayınlanmamış olsa da), dönemi kapalı/süresi dolmuş veya oturumu askıda/arşivli başvuru değiştirilemez/silinemez. Yönetici hesabı bu üye route'larından yetki istisnası kazanamaz. İzin/kısıt bilgisi yalnız eylemleri yönetir; gizli onay kararı açıklanmaz.
+- Kalıcı silme mevcut `x-action-confirmation-modal` ile onaylanır. Başvuru silinince yer ve hesap/dönem tek mevcut başvuru hakkı açılır; hesap, diğer başvurular ve ortak tanımlar korunur. Yeniden başvuru yeni numara alır. Başarıda düzenleme detaya, silme Başvurularım listesine mesajla döner. Kaydetme hatasında güvenli seçim girdileri korunur; form artık açılamıyorsa açıklamayla detaya dönülür.
+
+Kısa doğrulama: izole MariaDB üzerinde **altı hedefli HTTP testi ve mevcut bir aktarım eşzamanlılık testi** geçti. Dört yeni test düzenleme/kendi dolu oturumu/başarısız aktarım, yetki ve işlem kilitleri, onay modalı bağlantısı, silme ve yeniden başvuruyu kapsar. Ortak formdan etkilenen mevcut oluşturma testi ve detay gizlilik testi de doğrulandı. Silme testindeki geçici başarı mesajı, yönlendirme hedefi önce açılacak şekilde düzeltildi; yalnız bu test yeniden çalıştırıldı. Hedefli Pint, PHP sözdizimi ve diff kontrolleri geçti. JavaScript davranışı ve veritabanı şeması değişmedi.
+
+**3J'ye bırakılanlar:** Tarayıcıda düzenleme/geri dönme, doğrulama sonrası seçimler, modal onay/iptal, çift tıklama ve oturum değişikliğinin diğer açık sekmelere yansıması; TR/EN ve cihaz görünümleri ile başvuruyu silip yeniden oluşturmanın bütünleşik akışı. Yeni demo veri, tarayıcı ortamı, migration veya gerçek mesaj gönderimi yapılmadı.
+
+3G sonunda sıradaki adım olarak belirlenen 3H aşağıda tamamlandı.
+
+## Not ve burs sonucu gösterimi (3H)
+
+Başvurularım listesi ve detayında ortak `applications/partials/result.blade.php` görünümü, yayınlanmış burs oranı, not, doğru/yanlış/boş sayıları ve katılım durumunu gösterir. Mevcut kart/grid ve TR/EN metinleri kullanılır; yüzde gösterimi Türkçede `%70`, İngilizcede `70%` biçimindedir.
+
+- Controller'lar `ScholarshipApplicationService::listForMember` / `forMember` tarafından hazırlanmış güvenli sonuç dizisini kullanır. Sonuç yayını kapalıyken yalnız `published: false` taşınır; not, burs, sayaçlar ve katılım alanları HTML veya görünüm verisine eklenmez. Başvuru onayı/yayını bağımsız kalır. Yeni route, yazma işlemi, model veya migration eklenmedi.
+- Yayın için yalnız burs oranının girilmiş olması yeterlidir; mevcut ortak yayın engeli korunur. `%0 / Burs Yok` geçerlidir. Not ve sayaçlardaki NULL değerler **Girilmedi**, gerçek sıfırlar `0` gösterilir. **Katılmadı** durumunda not `0`, burs `%0 / Burs Yok`, üç sayaç **Uygulanamaz** görünür; katılım ayrıca belirtilir.
+- Yayındaki sonuçta düzeltme veya isteğe bağlı alanları temizleme sonraki sayfa isteğinde güncel değerleri gösterir; yeniden yayınlama gerekmez. Sonuç yayını kapatılırsa değerler tekrar gizlenir. Önceki dönem/ arşivli oturum başvuruları kendi dönem sonuçlarını korur; yeni dönem başvurusu bu verileri değiştirmez. Otomatik bildirim başlatılmaz.
+
+Kısa doğrulama: izole MariaDB üzerinde **beş hedefli HTTP testi** geçti. İki yeni sonuç testi NULL/0/katılmadı sunumunu, notsuz %0 burs yayınını, eksik burs yayın engelini, yayın sonrası güncelleme/temizleme, eski dönem korunumu ve yayından kaldırmada gizlenmeyi kapsar. Mevcut liste yayın testi ile iki detay testi, sahiplik ve yayınlanmamış veri gizliliği için çalıştırıldı. Gerçek liste/detay HTML'sindeki sonuç değerleri doğrulandı; hedefli Pint, PHP sözdizimi ve diff kontrolleri geçti.
+
+**3J'ye bırakılanlar:** Liste/detay sonuç yerleşiminin TR/EN ve cihaz görünümleri, uzun içerikler ve tamamlanan admin–üye sonuç/yayın akışının tarayıcıda bütünleşik kontrolü. Tarayıcı ortamı veya demo veri hazırlanmadı; gerçek mesaj gönderilmedi.
+
+3H sonunda sıradaki adım olarak belirlenen 3I aşağıda tamamlandı.
+
+## Temel responsive/kullanılabilirlik incelemesi (3I)
+
+Üye sınav listesi, oluşturma/düzenleme formu, Başvurularım listesi, detay ve ortak durum/sonuç görünümleri; mevcut profil layout'u, masaüstü/mobil menüler ve onay modalı kullanımıyla birlikte kod/şablon üzerinden incelendi. Kartlarda dar ekranda tek sütun, uygun genişlikte çok sütun; değişken metinlerde `text-break`, rozetlerde `text-wrap`, eylemlerde `flex-wrap` ve mevcut ALA boşluk desenleri kullanılıyor. Okul/sınıf ve sınav grubu ayrımı, seçimlerin birbirini süzmesi, boş/dolu/askıda durumları ve kapalı işlemlerin açıklamaları gözden geçirildi.
+
+Somut düzeltmeler:
+- Okul, sınıf/durum ve oturum doğrulama hataları ilgili select alanına `aria-invalid` ve `aria-describedby` ile bağlandı. Dinamik askı uyarısına mevcut diğer uyarılardaki `role="status"` eklendi.
+- Salt okunur detay bölümündeki **Sınav ve Oturum Seçimi** başlığı **Sınav ve Oturum Bilgileri** olarak düzeltildi; TR/EN metinleri eklendi.
+- Düzenleme/silme kapalı olup özel kısıt açıklaması gizlenen durumda genel **Bu başvuruda şu anda düzenleme veya silme yapılamaz** mesajı gösteriliyor. Yayınlanmamış kabul kararı açıklanmıyor; mevcut yetki ve işlem kuralları değişmedi.
+
+Kısa doğrulama: etkilenen formun hata sonrası açılması/seçimlerin korunması ve detayın sahiplik/yayın gizliliği için **iki mevcut HTTP testi** izole MariaDB üzerinde geçti. PHP çeviri dosyalarının sözdizimi ve diff kontrolleri geçti. Yeni otomatik test yazılmadı; kontrol kapsamı genişletilmedi.
+
+**3J'ye bırakılanlar:** Gerçek tarayıcıda TR/EN ve masaüstü/mobil görünüm, farklı davranış varsa tablet; uzun seçenek/metinlerde taşma, menü yerleşimi, doğal select kontrolleri, klavye sırası ve alan hata bildirimleri, modal onay/iptal ve odak davranışı. Bu adımda tarayıcı ortamı veya demo veri hazırlanmadı; gerçek cihaz kontrolleri yapılmış sayılmıyor. Yeni UI paketi, ortak tasarım değişikliği veya migration eklenmedi.
+
+Sıradaki adım **3J — Genel sistem testi**; henüz başlatılmadı. Kullanıcı kararıyla bekletilen WhatsApp bağlantısı bu test kapsamına tamamlanmış özellik olarak alınmayacak.

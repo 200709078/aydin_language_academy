@@ -643,7 +643,7 @@ Kullanıcı açıkça istemeden mevcut global authorization sistemi değiştiril
 
 # 12. Bursluluk sistemi geliştirme planı
 
-Admin öncesi hazırlık (1A–1E ve 2A), **2B — Sınav dönemi yönetimi**, **2C — Tanımlar, oturum ve kontenjan yönetimi**, **2D — Başvuru yönetimi**, **2E — Katılım**, **2F — Not**, **2G — Burs oranı** ve **2H — Yayınlama** tamamlandı. **2I — İletişim/bildirim:** ayrı manuel iletişim takibi ve mevcut posta altyapısıyla tekli/toplu e-posta gönderimi tamamlandı; WhatsApp bağlantısı kullanıcı kararıyla şimdilik beklemede ve tamamlanmış sayılmıyor. **2K — Admin temel kontrol değerlendirmesi**, **3A — Mevcut üye alanı analizi** ve **3B — Başvuruya açık sınavlar** tamamlandı. **3C — Başvuru formu** da tamamlandı; üye kendi hesap bilgileriyle okul, mevcut sınıf/durum ve bağımsız sınav/oturum seçimini yapabiliyor. **3D — Başvuru iş kurallarını üye akışına bağla** tamamlandı; form gönderimi ortak servise bağlı, başvuru numarası gösteriliyor ve bekleyen kayıt kontenjandan yer ayırıyor. 3D öncesindeki ek geliştirmede doğru/yanlış/boş alanları ve yalnız burs gerektiren sonuç yayın kuralı uygulandı. **3E — Başvurularım listesi** tamamlandı; yalnız hesaba ait güncel/geçmiş başvurular sayfalı listede, onay/yayın ayrımı korunarak gösteriliyor. **3F — Başvuru detayı** tamamlandı; hesap sahipliği ve yayın kurallarıyla öğrenci/sınav bilgileri, erken gelme zamanı ve işlem kısıtı uyarıları gösteriliyor. Sıradaki adım **3G — Başvuru değişikliği ve kalıcı silme**. Mevcut servislerin kullanım sözleşmesi, kilitleme düzeni ve doğrulama komutları [docs/scholarship-foundation.md](docs/scholarship-foundation.md) dosyasındadır; ekranlar bu ortak altyapıyı kullanır.
+Admin öncesi hazırlık (1A–1E ve 2A), **2B — Sınav dönemi yönetimi**, **2C — Tanımlar, oturum ve kontenjan yönetimi**, **2D — Başvuru yönetimi**, **2E — Katılım**, **2F — Not**, **2G — Burs oranı** ve **2H — Yayınlama** tamamlandı. **2I — İletişim/bildirim:** ayrı manuel iletişim takibi ve mevcut posta altyapısıyla tekli/toplu e-posta gönderimi tamamlandı; WhatsApp bağlantısı kullanıcı kararıyla şimdilik beklemede ve tamamlanmış sayılmıyor. **2K — Admin temel kontrol değerlendirmesi**, **3A — Mevcut üye alanı analizi** ve **3B — Başvuruya açık sınavlar** tamamlandı. **3C — Başvuru formu** da tamamlandı; üye kendi hesap bilgileriyle okul, mevcut sınıf/durum ve bağımsız sınav/oturum seçimini yapabiliyor. **3D — Başvuru iş kurallarını üye akışına bağla** tamamlandı; form gönderimi ortak servise bağlı, başvuru numarası gösteriliyor ve bekleyen kayıt kontenjandan yer ayırıyor. 3D öncesindeki ek geliştirmede doğru/yanlış/boş alanları ve yalnız burs gerektiren sonuç yayın kuralı uygulandı. **3E — Başvurularım listesi** tamamlandı; yalnız hesaba ait güncel/geçmiş başvurular sayfalı listede, onay/yayın ayrımı korunarak gösteriliyor. **3F — Başvuru detayı** tamamlandı; hesap sahipliği ve yayın kurallarıyla öğrenci/sınav bilgileri, erken gelme zamanı ve işlem kısıtı uyarıları gösteriliyor. **3G — Başvuru değişikliği ve kalıcı silme** tamamlandı; uygun başvurular ortak formdan düzenlenebilir ve ALA onay modalıyla kalıcı silinebilir. Üye yollarında yönetici hesabı da sahiplik/işlem kilitlerine tabidir; silme yer açar ve yeniden başvuruya izin verir. **3H — Not ve burs sonucu** tamamlandı; yayınlanmış burs, not, doğru/yanlış/boş ve katılım bilgileri liste/detayda gösteriliyor. Boş değer, sıfır ve katılmadı ayrımı korunuyor. **3I — Responsive/kullanılabilirlik** temel kod/şablon incelemesi tamamlandı; alan-hata bağlantıları, detay başlığı ve işlem kısıtı açıklaması iyileştirildi. Sıradaki adım **3J — Genel sistem testi**. Mevcut servislerin kullanım sözleşmesi, kilitleme düzeni ve doğrulama komutları [docs/scholarship-foundation.md](docs/scholarship-foundation.md) dosyasındadır; ekranlar bu ortak altyapıyı kullanır.
 
 Kurallar:
 - Kullanıcı hangi adımı isterse yalnız o adımı uygula.
@@ -941,7 +941,7 @@ Farklı sınav, grup veya şube seçmek aynı dönemde ikinci mevcut başvuru ha
 Dur.
 
 ### 3E — Başvurularım listesi
-**Durum:** Tamamlandı. `/basvurularim` mevcut üye layout ve menülerine eklendi. Ortak servis, yalnız ilgili hesabın başvurularını sayfalıyor; pasif/geçmiş dönemler ve askıda/arşivli oturumların mevcut başvuruları korunuyor. Yayınlanmamış onay ve sonuç değerleri liste çıktısına alınmıyor; sonuç için yalnız yayın durumu gösteriliyor. İki yeni liste HTTP testi ve mevcut katalog erişim testi geçti. Ayrıntılı tarayıcı, TR/EN ve cihaz kontrolleri 3J'dedir.
+**Durum:** Tamamlandı. `/basvurularim` mevcut üye layout ve menülerine eklendi. Ortak servis, yalnız ilgili hesabın başvurularını sayfalıyor; pasif/geçmiş dönemler ve askıda/arşivli oturumların mevcut başvuruları korunuyor. Yayınlanmamış onay ve sonuç değerleri liste çıktısına alınmıyor; 3E sırasında sonuç için yalnız yayın durumu gösteriliyordu; yayınlanmış değerler 3H kapsamında eklendi. İki yeni liste HTTP testi ve mevcut katalog erişim testi geçti. Ayrıntılı tarayıcı, TR/EN ve cihaz kontrolleri 3J'dedir.
 
 Üye `Başvurularım` ekranında en az başvuru no, öğrenci, dönem/sınav, şube, sınav grubu, tarih/başlangıç-bitiş saati, kullanıcıya açık başvuru durumu ve sonuç yayın durumunu görsün.
 
@@ -962,6 +962,8 @@ Duruma göre şunları göster:
 Red/iptal durumu veya admin-only operasyon alanları gösterme. Onaylı başvuruda düzenleme/silme sunma. Dur.
 
 ### 3G — Başvuru değişikliği ve kalıcı silme
+**Durum:** Tamamlandı. Düzenleme ve silme, mevcut ortak serviste kilit altında yeniden doğrulanır. Dolu mevcut oturumdaki ayrılmış yer korunabilir; dolu/uygunsuz hedefe geçişte başvuru kaybedilmez. Başvuru numarası düzenlemede korunur; kalıcı silip yeniden başvuruda yenilenir. Üye route'larında yönetici hesabı da üye kurallarına tabidir. Altı hedefli HTTP testi ve mevcut aktarım eşzamanlılık testi geçti; tarayıcı/modal ve cihaz kontrolleri 3J'dedir.
+
 Kullanıcı yalnız başvurular açıkken, başvurusu henüz onaylanmamışken ve mevcut oturumu askıda/arşivde değilken başvurusunu düzenleyebilsin veya kalıcı silebilsin.
 
 Ortak kurallarla hedef oturumun uygunluğunu, duplicate ve kapasiteyi yeniden doğrula. Farklı şube, grup, sınıf/durum veya sınav seçimine otomatik eğitim seviyesi kısıtı ekleme. İşlem başarısızsa mevcut başvuru ve yeri korunsun.
@@ -973,6 +975,8 @@ Onaylanan, dönemi başvurulara kapanmış veya oturumu askıya/arşive alınmı
 Dur.
 
 ### 3H — Not ve burs sonucu
+**Durum:** Tamamlandı. Liste ve detay aynı sonuç görünümünü kullanır; ortak servisin yayınlanmış sonuç dizisi gösterilir. Yayın kapalıyken sonuç alanları şablon verisine alınmaz. %0 burs, girilmemiş not/sayaçlar, gerçek sıfır ve katılmayanın Uygulanamaz sayaçları ayrılır. Yayındaki değişiklik ve geçmiş dönem korunumu dahil beş hedefli HTTP testi geçti. Ayrıntılı tarayıcı/TR–EN/cihaz kontrolleri 3J'dedir.
+
 Sonuç yayını açıldıktan sonra ilgili dönem başvurusunun burs oranını, notunu ve doğru/yanlış/boş sayılarını göster. Yayınlanmadan önce veri sızdırma.
 
 `%0 / Burs Yok` ile belirlenmemiş/yayınlanmamış sonucu ayır; katılmadı işaretlenen öğrencinin `0/0` sonucunda katılım bilgisini koru. Burs oranı boşken sonuç yayınlanamasın; not ve doğru/yanlış/boş alanları boş olabilir ve sıfırdan ayrı gösterilsin.
@@ -982,6 +986,8 @@ Yayınlanmış not/burs veya doğru/yanlış/boş sayıları admin tarafından d
 Dur.
 
 ### 3I — Responsive/kullanılabilirlik
+**Durum:** Tamamlandı. Mevcut grid, metin sarma, form, menü, durum/sonuç ve onay modalı kullanımı kod/şablon üzerinden incelendi. Form hataları alanlara `aria-invalid`/`aria-describedby` ile bağlandı; dinamik askı uyarısı durum bildirimi oldu. Detay başlığı ve gizli onayı açıklamayan genel işlem kısıtı mesajı düzeltildi. İki mevcut hedefli HTTP testi geçti; yeni test, tarayıcı ortamı veya demo veri eklenmedi. Ayrıntılı TR/EN, cihaz, klavye ve modal etkileşimi kontrolleri 3J'dedir.
+
 Mevcut ALA responsive desenlerinin kullanımını kod/şablon üzerinden temel düzeyde incele; görülen somut sorunları düzelt ve yalnız ilgili kısa kontrolü yap. Geçici tarayıcı ortamı ve demo veri hazırlama. Ayrıntılı TR/EN ve cihaz kontrollerini 3J'ye bırak.
 
 Formlar, okul/sınıf/grup ayrımı, oturum seçimleri, listeler/kartlar, badge'ler, hata/başarı mesajları, başvuru detayı, askı/arşiv uyarıları ve işlem yapılamayan durumlar mevcut ALA tasarımına uygun olsun.

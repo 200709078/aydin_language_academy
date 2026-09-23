@@ -6,6 +6,10 @@
             <a href="{{ route('frontend.scholarship.exams.index') }}" class="btn btn-outline-primary">{{ __('scholarship.member_exams_title') }}</a>
         </div>
 
+        @if (session('scholarship_notice'))
+            <div class="alert alert-info" role="status">{{ session('scholarship_notice') }}</div>
+        @endif
+
         @forelse ($applications as $application)
             <article class="bg-light rounded p-3 p-md-4 mb-4" aria-labelledby="application-{{ $application['id'] }}">
                 <h2 class="h4 mb-3 text-break" id="application-{{ $application['id'] }}">{{ $application['period']['title'] }}</h2>

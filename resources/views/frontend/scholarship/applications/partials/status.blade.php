@@ -16,3 +16,6 @@
         {{ __('scholarship.member_result_'.($application['result']['published'] ? 'published' : 'unpublished')) }}
     </span>
 </p>
+@if ($application['result']['published'])
+    @include('frontend.scholarship.applications.partials.result', ['result' => $application['result']])
+@endif

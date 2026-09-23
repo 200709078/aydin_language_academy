@@ -425,6 +425,18 @@ Route::get('/basvurularim/{application}', [ScholarshipApplicationController::cla
     ->middleware('auth')
     ->whereNumber('application')
     ->name('frontend.scholarship.applications.show');
+Route::get('/basvurularim/{application}/duzenle', [ScholarshipExamController::class, 'editApplication'])
+    ->middleware('auth')
+    ->whereNumber('application')
+    ->name('frontend.scholarship.applications.edit');
+Route::put('/basvurularim/{application}', [ScholarshipApplicationController::class, 'update'])
+    ->middleware('auth')
+    ->whereNumber('application')
+    ->name('frontend.scholarship.applications.update');
+Route::delete('/basvurularim/{application}', [ScholarshipApplicationController::class, 'destroy'])
+    ->middleware('auth')
+    ->whereNumber('application')
+    ->name('frontend.scholarship.applications.destroy');
 Route::get('/bursluluk-sinavlari/{period}/basvuru', [ScholarshipExamController::class, 'createApplication'])
     ->middleware('auth')
     ->whereNumber('period')

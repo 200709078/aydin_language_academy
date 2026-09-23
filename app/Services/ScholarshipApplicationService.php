@@ -50,13 +50,13 @@ class ScholarshipApplicationService
         });
     }
 
-    public function update(User $actor, int $applicationId, array $data): ScholarshipApplication
+    public function update(User $actor, int $applicationId, array $data, bool $asMember = false): ScholarshipApplication
     {
         $actor = ScholarshipRules::actor($actor);
         $data = ScholarshipRules::validate($data, $this->studentRules(false));
 
-        return ScholarshipRules::application($applicationId, function (ScholarshipApplication $application, ScholarshipExamPeriod $period) use ($actor, $data): ScholarshipApplication {
-            $admin = $actor->type === 'admin';
+        return ScholarshipRules::application($applicationId, function (ScholarshipApplication $application, ScholarshipExamPeriod $period) use ($actor, $data, $asMember): ScholarshipApplication {
+            $admin = ! $asMember && $actor->type === 'admin';
             $current = $this->session($period, $application->session_id);
             if (! $admin) {
                 ScholarshipRules::owns($actor, $application);
@@ -81,11 +81,11 @@ class ScholarshipApplicationService
         });
     }
 
-    public function delete(User $actor, int $applicationId): void
+    public function delete(User $actor, int $applicationId, bool $asMember = false): void
     {
         $actor = ScholarshipRules::actor($actor);
-        ScholarshipRules::application($applicationId, function (ScholarshipApplication $application, ScholarshipExamPeriod $period) use ($actor): void {
-            if ($actor->type !== 'admin') {
+        ScholarshipRules::application($applicationId, function (ScholarshipApplication $application, ScholarshipExamPeriod $period) use ($actor, $asMember): void {
+            if ($asMember || $actor->type !== 'admin') {
                 ScholarshipRules::owns($actor, $application);
                 ScholarshipRules::memberWritable($application, $period, $this->session($period, $application->session_id));
             }
@@ -223,7 +223,8 @@ class ScholarshipApplicationService
         return [
             'id' => $application->id,
             'application_number' => $application->application_number,
-            'student' => ['name' => $application->student_name_snapshot, 'school' => $application->school_name_snapshot, 'level' => $application->student_level_name_snapshot],
+            'student' => ['name' => $application->student_name_snapshot, 'school' => $application->school_name_snapshot, 'level' => $application->student_level_name_snapshot,
+                'school_id' => $application->school_id, 'student_level_id' => $application->student_level_id],
             'period' => ['id' => $application->period_id, 'title' => $application->period->title],
             'session' => [
                 'id' => $session->id, 'branch' => $session->branch->name, 'address' => $session->branch->address,
