@@ -603,8 +603,8 @@ body.frontend-home * {
     display: none;
 }
 
-/* Navbar-xl eşiğiyle aynı: 1200px altında mobil header gösterilir. */
-@media (max-width: 1199.98px) {
+/* Giriş sonrası bağlantılar 1400px altında tek satıra sığmadığı için mobil başlık kullanılır. */
+@media (max-width: 1399.98px) {
     .frontend-header__desktop {
         display: none;
     }
@@ -647,7 +647,7 @@ body.frontend-home * {
     color: var(--primary);
 }
 
-@media (max-width: 1199.98px) {
+@media (max-width: 1399.98px) {
     .navbar .navbar-nav .nav-link  {
         margin-right: 0;
         padding: 10px 0;
@@ -866,7 +866,7 @@ body.frontend-home * {
 }
 
 /* Mobildeki hamburger barı scroll boyunca ekranda kalır. */
-@media (max-width: 1199.98px) {
+@media (max-width: 1399.98px) {
     .frontend-header {
         position: sticky;
         top: 0;
@@ -902,8 +902,30 @@ body.frontend-home * {
 
 @media (min-width: 1400px) and (max-width: 1599.98px) {
     .frontend-header__desktop .frontend-header-brand-logo {
-        height: 68px;
-        max-width: 354px;
+        height: 44px;
+        max-width: 220px;
+    }
+
+    .frontend-header__desktop .navbar .navbar-brand {
+        padding-right: 1rem !important;
+        padding-left: 1rem !important;
+    }
+
+    .frontend-header__desktop .navbar .navbar-nav .nav-link {
+        margin-right: 4px;
+        font-size: 12px;
+    }
+
+    .frontend-header__desktop .navbar .btn {
+        padding-right: 0.75rem !important;
+        padding-left: 0.75rem !important;
+    }
+}
+
+@media (min-width: 1600px) and (max-width: 1799.98px) {
+    .frontend-header__desktop .frontend-header-brand-logo {
+        height: 50px;
+        max-width: 260px;
     }
 
     .frontend-header__desktop .navbar .navbar-brand {
@@ -922,14 +944,14 @@ body.frontend-home * {
     }
 }
 
-@media (min-width: 1600px) {
+@media (min-width: 1800px) {
     .frontend-header__desktop .frontend-header-brand-logo {
         height: 68px;
         max-width: 354px;
     }
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 1400px) {
     .frontend-header {
         position: sticky;
         top: 0;

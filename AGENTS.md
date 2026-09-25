@@ -643,7 +643,7 @@ Kullanıcı açıkça istemeden mevcut global authorization sistemi değiştiril
 
 # 12. Bursluluk sistemi geliştirme planı
 
-Admin öncesi hazırlık (1A–1E ve 2A), **2B — Sınav dönemi yönetimi**, **2C — Tanımlar, oturum ve kontenjan yönetimi**, **2D — Başvuru yönetimi**, **2E — Katılım**, **2F — Not**, **2G — Burs oranı** ve **2H — Yayınlama** tamamlandı. **2I — İletişim/bildirim:** ayrı manuel iletişim takibi ve mevcut posta altyapısıyla tekli/toplu e-posta gönderimi tamamlandı; WhatsApp bağlantısı kullanıcı kararıyla şimdilik beklemede ve tamamlanmış sayılmıyor. **2K — Admin temel kontrol değerlendirmesi**, **3A — Mevcut üye alanı analizi** ve **3B — Başvuruya açık sınavlar** tamamlandı. **3C — Başvuru formu** da tamamlandı; üye kendi hesap bilgileriyle okul, mevcut sınıf/durum ve bağımsız sınav/oturum seçimini yapabiliyor. **3D — Başvuru iş kurallarını üye akışına bağla** tamamlandı; form gönderimi ortak servise bağlı, başvuru numarası gösteriliyor ve bekleyen kayıt kontenjandan yer ayırıyor. 3D öncesindeki ek geliştirmede doğru/yanlış/boş alanları ve yalnız burs gerektiren sonuç yayın kuralı uygulandı. **3E — Başvurularım listesi** tamamlandı; yalnız hesaba ait güncel/geçmiş başvurular sayfalı listede, onay/yayın ayrımı korunarak gösteriliyor. **3F — Başvuru detayı** tamamlandı; hesap sahipliği ve yayın kurallarıyla öğrenci/sınav bilgileri, erken gelme zamanı ve işlem kısıtı uyarıları gösteriliyor. **3G — Başvuru değişikliği ve kalıcı silme** tamamlandı; uygun başvurular ortak formdan düzenlenebilir ve ALA onay modalıyla kalıcı silinebilir. Üye yollarında yönetici hesabı da sahiplik/işlem kilitlerine tabidir; silme yer açar ve yeniden başvuruya izin verir. **3H — Not ve burs sonucu** tamamlandı; yayınlanmış burs, not, doğru/yanlış/boş ve katılım bilgileri liste/detayda gösteriliyor. Boş değer, sıfır ve katılmadı ayrımı korunuyor. **3I — Responsive/kullanılabilirlik** temel kod/şablon incelemesi tamamlandı; alan-hata bağlantıları, detay başlığı ve işlem kısıtı açıklaması iyileştirildi. Sıradaki adım **3J — Genel sistem testi**. Mevcut servislerin kullanım sözleşmesi, kilitleme düzeni ve doğrulama komutları [docs/scholarship-foundation.md](docs/scholarship-foundation.md) dosyasındadır; ekranlar bu ortak altyapıyı kullanır.
+İlk sürümün **1A–3J adımları tamamlandı**. Admin ve üye akışları, e-posta gönderimi ve **3J — Genel sistem testi** bitirildi. WhatsApp bağlantısı kullanıcı kararıyla beklemededir ve tamamlanmış özellik sayılmaz; Excel içe/dışa aktarma ilk sürüm dışındadır. Mevcut servis sözleşmesi, kilitleme düzeni ve 3J doğrulama sonuçları [docs/scholarship-foundation.md](docs/scholarship-foundation.md) dosyasındadır.
 
 Kurallar:
 - Kullanıcı hangi adımı isterse yalnız o adımı uygula.
@@ -734,7 +734,7 @@ Mevcut migration/auth/fillable davranışını bozma. Controller/route/admin/fro
 Raporla ve dur.
 
 ### 1D — Seed/geliştirme verileri
-Bu adımın mevcut seed altyapısı tamamlandı ve korunur. Bundan sonraki demo veri ekleme, seed genişletme veya çalıştırma işleri sistem geliştirmesi bittikten sonraki 3J'ye ertelenmiştir. Aşağıdaki liste o aşamada kullanılabilecek örnek veri kapsamıdır.
+Bu adımın seed altyapısı tamamlandı ve korunur. Mevcut seed 3J'de yalnız izole test ortamında çalıştırıldı; kalıcı demo kullanıcı veya başvuru eklenmedi. Aşağıdaki liste seed'in örnek veri kapsamıdır.
 
 Gerekliyse idempotent geliştirme seed'leri oluştur:
 - Ortaca, Dalaman, Köyceğiz şubeleri,
@@ -986,7 +986,7 @@ Yayınlanmış not/burs veya doğru/yanlış/boş sayıları admin tarafından d
 Dur.
 
 ### 3I — Responsive/kullanılabilirlik
-**Durum:** Tamamlandı. Mevcut grid, metin sarma, form, menü, durum/sonuç ve onay modalı kullanımı kod/şablon üzerinden incelendi. Form hataları alanlara `aria-invalid`/`aria-describedby` ile bağlandı; dinamik askı uyarısı durum bildirimi oldu. Detay başlığı ve gizli onayı açıklamayan genel işlem kısıtı mesajı düzeltildi. İki mevcut hedefli HTTP testi geçti; yeni test, tarayıcı ortamı veya demo veri eklenmedi. Ayrıntılı TR/EN, cihaz, klavye ve modal etkileşimi kontrolleri 3J'dedir.
+**Durum:** Tamamlandı. Mevcut grid, metin sarma, form, menü, durum/sonuç ve onay modalı kullanımı kod/şablon üzerinden incelendi. Form hataları alanlara `aria-invalid`/`aria-describedby` ile bağlandı; dinamik askı uyarısı durum bildirimi oldu. Detay başlığı ve gizli onayı açıklamayan genel işlem kısıtı mesajı düzeltildi. İki mevcut hedefli HTTP testi geçti; ayrıntılı TR/EN, cihaz, klavye ve modal etkileşimi kontrolleri 3J'de tamamlandı.
 
 Mevcut ALA responsive desenlerinin kullanımını kod/şablon üzerinden temel düzeyde incele; görülen somut sorunları düzelt ve yalnız ilgili kısa kontrolü yap. Geçici tarayıcı ortamı ve demo veri hazırlama. Ayrıntılı TR/EN ve cihaz kontrollerini 3J'ye bırak.
 
@@ -995,6 +995,8 @@ Formlar, okul/sınıf/grup ayrımı, oturum seçimleri, listeler/kartlar, badge'
 Yeni paralel tasarım oluşturma. Dur.
 
 ### 3J — Genel sistem testi
+**Durum:** 24 Eylül 2026'da tamamlandı. İzole MariaDB, mevcut seed, sentetik başvurular, geçici Chromium ortamı, yerel SMTP yakalayıcı ve gerçek kuyruk işçisiyle admin–üye uçtan uca akışları; TR/EN ve responsive görünümler; tekli/toplu onay, yayın ve e-posta; sahiplik, kontenjan, askı/arşiv, dönem kapanışı, yayın gizliliği ve onay modalı doğrulandı. Bursluluk paketi **95 test / 2208 doğrulama**, bağımlı seçim JavaScript kontrolü **1 test** ile geçti. Temiz migration, test izolasyonu, modal odak/scroll davranışı ve frontend başlık taşması sorunları düzeltildi. Ayrıntılı kanıt ve kapsam [docs/scholarship-foundation.md](docs/scholarship-foundation.md) dosyasındadır.
+
 Admin geliştirmesi (2B–2I) ve üye geliştirmesi (3B–3I) tamamlandıktan sonra, 2K/3I ve alt adımlardan ertelenen ayrıntılı kontrolleri birlikte yap. Plan [docs/scholarship-foundation.md](docs/scholarship-foundation.md) dosyasındadır.
 
 Önce mevcut seed'i kullanarak gerektiği kadar demo veriyi izole test ortamında hazırla; eksik örnek veri kapsamını bu aşamada tamamla. Ardından geçici tarayıcı test ortamını kur ve genel test boyunca yeniden kullan. Gerçek kullanıcı verisini değiştirme; testlerde gerçek kişilere bildirim gönderme.

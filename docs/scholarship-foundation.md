@@ -81,9 +81,9 @@ Sonuç yayını kapalıyken `result` içinde yalnız `published: false` bulunur;
 
 Alt adımlarda temel akış ve değişen kritik iş kuralları kısa, hedefli kontrollerle doğrulanır. Ekranın açılması ve temel kaydetme işlemi HTTP/şablon düzeyinde kontrol edilir; geçici tarayıcı test ortamı veya cihaz/dil matrisi hazırlanmaz. Mevcut testler korunur; aşağıdaki komutlar her değişiklikte çalıştırılması zorunlu bir liste değildir.
 
-**2K admin temel kontrollerinin değerlendirilmesi, 3I temel responsive/kullanılabilirlik incelemesidir.** Admin ve üye geliştirmesinin tamamı bittikten sonra **3J — Genel sistem testi** aşamasında demo veri ve geçici tarayıcı ortamı hazırlanır; ayrıntılı TR/EN, cihaz, filtre/mesaj ve uçtan uca kontroller birlikte yapılır. Yetki, veri kaybı, kapasite/duplicate ve yayın görünürlüğü gibi değişen kritik kuralların temel kontrolleri ilgili alt adımda yapılmaya devam eder. Ertelenen ek kontrol ihtiyaçları aşağıdaki genel test planına kısa not edilir.
+**2K admin temel kontrollerinin değerlendirilmesi, 3I temel responsive/kullanılabilirlik incelemesidir.** Bunlardan ertelenen ayrıntılı TR/EN, cihaz, filtre/mesaj ve uçtan uca kontroller 3J genel sistem testinde tamamlandı. Yetki, veri kaybı, kapasite/duplicate ve yayın görünürlüğü gibi kritik kuralların hedefli otomatik kontrolleri korunur.
 
-Mevcut demo seed'i korunur; yeni demo veri ekleme, seed genişletme veya çalıştırma işi 3J'ye bırakılır. Temel otomatik kontroller yalnız ihtiyaç duydukları en az sayıda geçici kaydı izole test veritabanında oluşturabilir; bunlar uygulamaya demo veri ekleme işlemi değildir.
+Mevcut demo seed'i korunur. 3J'de seed ve ek sentetik kayıtlar yalnız izole, geçici veritabanlarında kullanıldı; uygulamanın yapılandırılmış veritabanına demo kullanıcı veya başvuru eklenmedi.
 
 2C ve 2D için aşağıda kayıtlı ayrıntılı sonuçlar daha önce tamamlanan kontrollerdir; sonraki alt adımlar için zorunlu kontrol şablonu değildir.
 
@@ -96,16 +96,18 @@ Seed yalnız `local/testing` ortamında ve henüz bursluluk dönemi yoksa çalı
 
 Test komutu yerel MariaDB araçlarıyla `/tmp` içinde geçici, ağ bağlantısı kapalı bir sunucu kurar. Sentetik kullanıcı şeması ve bursluluk migrationlarıyla yalnız bu modülü test eder, bitince sunucuyu ve test verilerini kaldırır. Uygulamanın yapılandırılmış veritabanına test yazısı göndermez. İki bağımsız PHP süreciyle son kontenjan, çift başvuru, aktarım ve kapasite yarışı doğrulanır.
 
-## 3J: sistem tamamlandıktan sonraki genel test planı
+## 3J — Genel sistem testi (tamamlandı)
 
-Bu plan şimdi uygulanmaz. Admin 2B–2I'nin etkin kapsamı ve üye 3B–3I geliştirmeleri tamamlandıktan sonra uygulanır; 2K ve 3I bu plan için ayrı tarayıcı ortamı kurmaz. Kullanıcı kararıyla bekletilen WhatsApp entegrasyonu yeniden başlatılmadıkça genel test kapsamına tamamlanmış bir özellik olarak alınmaz.
+Genel test 24 Eylül 2026'da gerçek veriden ayrılmış MariaDB veritabanları, mevcut `ScholarshipDemoSeeder`, sentetik `.invalid` hesaplar ve geçici Chromium ortamıyla tamamlandı. Geçici veri ve servisler test sonunda kaldırıldı; uygulamanın yapılandırılmış veritabanına veya gerçek alıcılara yazılmadı.
 
-1. **Demo veri ve ortam:** Mevcut seed'i izole test ortamında yeniden kullan; farklı hesaplar/dönemler, boş/dolu/askıda/arşivli oturumlar, bekleyen/onaylı başvurular, farklı katılım/yayın/iletişim durumları ve NULL/0 sonuçlar için eksik sentetik örnekleri tamamla. Ardından geçici tarayıcı test ortamını kur ve genel test boyunca kullan. Mevcut gerçek verileri değiştirme.
-2. **Otomatik kontroller:** Mevcut bursluluk testlerini topluca çalıştır. Alt adımlardan kalan kapsam eksiklerini gözden geçir; somut eksikleri tamamla. Geçen ortak iş kurallarının bütün varyasyonlarını tarayıcıda yeniden üretme.
-3. **Admin–üye akışı:** Üye başvurusu → admin onayı/yayını → üyede görünürlük → katılım/not/burs → sonuç yayını → üyede sonuç akışını tamamla. Düzenleme/aktarım, kalıcı silme ve yeniden başvuru, kapasite ve dönem/askı/arşiv kilitleri, hesap sahipliği, gizli sonuçların çıktıya sızmaması, yayın sonrası güncelleme ve geçmiş dönemlerin korunmasını kontrol et. Toplu işlemlerde seçili kayıtlar ile tüm filtre sonucunun kapsamını doğrula.
-4. **Admin etkileşimleri ve görünüm:** Dönem/tanım/oturum yönetimi, başvuru onayı/aktarımı/silmesi; katılım seçimi, not/burs ve doğru/yanlış/boş temizleme, radio seçimi, yayın ve iletişim anahtarları ile modal onay/iptal akışlarını tarayıcıda incele. Kaydetme sonrasında filtre/sıralama/sayfa ve satır konumunu; ortak seçim formundaki onay/yayın/bildirim düğmelerini, çok sayfalı ve büyük toplu seçimleri kontrol et. Admin ve üye ekranlarında TR/EN, masaüstü/mobil ve ayrı davranış varsa tablet; filtre/arama, hata/boş durum mesajları ve sayfalama incelensin. 2C/2D'nin geçmiş tarayıcı sonuçları son bütünleşik görünümün test edildiği anlamına gelmez.
-5. **E-posta ve iletişim:** İzole ortamda gerçek alıcılara teslim etmeyen posta yakalayıcı/test taşıyıcısı ve kuyruk işçisiyle tekli/toplu gönderim, teknik durum ve manuel Ulaşıldı ayrımı, güvenli tekrar deneme, belirsiz teslim, mükerrer gönderim koruması ve ulaşıldı kayıtlarının atlanmasını incele. Kuyrukta beklerken yayın/alıcı/içerik değişimi, eski değere dönüş, başvuru silme ve sayfalı teknik kayıtlar genel akışta kontrol edilsin. 2I'nin array taşıyıcıyla geçen kontrolleri canlı SMTP teslim testi olarak raporlanmaz; gerçek kişilere mesaj gönderme. WhatsApp kapalı kalır; yeniden geliştirilirse sağlayıcıya özgü kontroller o adımda belirlenir.
-6. **Kapanış:** Bulunan hataları düzelt ve yalnız etkilenen kontrolleri tekrarla. Yapılan kontrolleri, sonuçlarını ve varsa açık sorunları raporla; geçici tarayıcı/test sunucularını kapat ve bu test ortamının geçici verilerini temizle. Excel ilk sürüm kapsamı dışındadır.
+- Bursluluk otomatik paketi **95 test / 2208 doğrulama**, bağımlı oturum seçimi JavaScript kontrolü **1 test** ile geçti. Test sınıfları arasında kalan posta fake'i ortak test tabanında geri yüklenerek sıra bağımlılığı giderildi.
+- Bütün migration zinciri boş MariaDB şemasında çalıştı. Tarihsel başarı snapshot'ı düzeltilerek 3 başarı ve 60 başarı girdisi taşındı; sonraki migration sonunda kaldırılması gereken `achievements.year` alanının kalmadığı doğrulandı.
+- Üyenin başvuru oluşturması, doğrulama hatası, düzenleme, kalıcı silme ve yeniden başvurusu; admin onayı, aktarımı, silmesi, katılım/not/doğru-yanlış-boş/burs girişi ve iki ayrı yayın akışı tarayıcıda tamamlandı. Dolu/askıda/arşivli oturum, dönem kapanışı, onay kilidi, başka hesap ve ziyaretçi engellerinde kayıt ve kontenjanın korunduğu görüldü.
+- Yayınlanmamış kabul ve sonuç alanlarının gerçek Blade HTML'ine sızmadığı; yayın sonrası değişikliklerin üyeye hemen yansıdığı ve yalnız ilgili iletişimi yeniden Ulaşılmadı yaptığı doğrulandı. Bursluluk modülünde ayrıca test edilecek bir Livewire veya API çıktısı bulunmadığından gerçek liste/detay HTML'i esas alındı.
+- Seçili kayıtlar ve bütün filtre sonucu için tekli/toplu onay, başvuru yayını, sonuç yayını ve çok sayfalı bildirim kapsamı doğrulandı. Yerel SMTP yakalayıcı ve gerçek kuyruk işçisi 26 başvuru, 3 sonuç e-postası olmak üzere 29 mesaj yakaladı; Ulaşıldı kayıtları atlandı ve aynı işlem tekrarlandığında yeni mesaj oluşmadı.
+- Onay modalında Tab/Shift+Tab odak kilidi, Escape ve İptal, onay, tetikleyiciye odak dönüşü ve sayfa scroll kilidi kontrol edildi. Eksik odak/scroll kilidi `x-trap.inert.noscroll` ile tamamlandı.
+- Üye katalog/liste/detay ve admin başvuru/not ekranları TR/EN olarak 390, 820, 1280, 1440 ve 1600 px'te; başlık geçişleri ayrıca 1799/1800 px sınırında kontrol edildi. Kök yatay taşma, yerel asset hatası veya tarayıcı JavaScript hatası kalmadı. Giriş sonrası başlığın 1440–1600 px taşması ve 1280 px mobil dropdown aralığı düzeltildi.
+- WhatsApp bağlantısı kullanıcı kararıyla beklemede olduğu için tamamlanmış özellik olarak test edilmedi. Excel içe/dışa aktarma ilk sürüm kapsamı dışındadır.
 
 ## 2A: mevcut admin yapısıyla bağlantı
 
@@ -404,4 +406,4 @@ Kısa doğrulama: etkilenen formun hata sonrası açılması/seçimlerin korunma
 
 **3J'ye bırakılanlar:** Gerçek tarayıcıda TR/EN ve masaüstü/mobil görünüm, farklı davranış varsa tablet; uzun seçenek/metinlerde taşma, menü yerleşimi, doğal select kontrolleri, klavye sırası ve alan hata bildirimleri, modal onay/iptal ve odak davranışı. Bu adımda tarayıcı ortamı veya demo veri hazırlanmadı; gerçek cihaz kontrolleri yapılmış sayılmıyor. Yeni UI paketi, ortak tasarım değişikliği veya migration eklenmedi.
 
-Sıradaki adım **3J — Genel sistem testi**; henüz başlatılmadı. Kullanıcı kararıyla bekletilen WhatsApp bağlantısı bu test kapsamına tamamlanmış özellik olarak alınmayacak.
+Bu alt adımlardan 3J'ye aktarılan kontroller tamamlandı; sonuçlar belgenin **3J — Genel sistem testi (tamamlandı)** bölümündedir. Kullanıcı kararıyla bekletilen WhatsApp bağlantısı tamamlanmış özellik sayılmaz.

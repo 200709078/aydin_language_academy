@@ -11,20 +11,6 @@ use RuntimeException;
 
 class ScholarshipAnswerCountsTest extends ScholarshipTestCase
 {
-    private mixed $originalMail;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->originalMail = Mail::getFacadeRoot();
-    }
-
-    protected function tearDown(): void
-    {
-        Mail::swap($this->originalMail);
-        parent::tearDown();
-    }
-
     public function test_counts_preserve_null_zero_visibility_contact_and_absence_rules(): void
     {
         Mail::fake();

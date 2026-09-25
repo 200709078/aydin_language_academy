@@ -12,11 +12,14 @@ use App\Models\User;
 use App\Services\ScholarshipApplicationService;
 use App\Services\ScholarshipCatalogService;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use PHPUnit\Framework\TestCase;
 use Throwable;
 
 abstract class ScholarshipTestCase extends TestCase
 {
+    private mixed $originalMail;
+
     protected User $admin;
 
     protected User $student;
@@ -48,6 +51,7 @@ abstract class ScholarshipTestCase extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+        $this->originalMail = Mail::getFacadeRoot();
         \Illuminate\Support\Carbon::setTestNow('2035-01-10 12:00:00');
         \Carbon\CarbonImmutable::setTestNow('2035-01-10 12:00:00');
         $this->clearFixtures();
@@ -70,6 +74,14 @@ abstract class ScholarshipTestCase extends TestCase
             'exam_title' => 'Test exam', 'exam_date' => '2035-01-25', 'starts_at' => '08:00:00', 'ends_at' => '10:00:00', 'capacity' => 2];
         $this->session = $this->catalog->saveSession($this->admin, $session);
         $this->alternative = $this->catalog->saveSession($this->admin, [...$session, 'branch_id' => $this->otherBranch->id, 'starts_at' => '16:00:00', 'ends_at' => '18:00:00']);
+    }
+
+    protected function tearDown(): void
+    {
+        // These tests share one Laravel application; fakes must not leak to
+        // subsequent tests that exercise the actual mail transport.
+        Mail::swap($this->originalMail);
+        parent::tearDown();
     }
 
     protected function data(?ScholarshipExamSession $session = null): array
