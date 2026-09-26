@@ -27,7 +27,7 @@
                     value="{{ old('name', $currentDefinition?->name) }}" class="form-control @error('name') is-invalid @enderror">
                 @error('name')<div class="invalid-feedback">{{ $message }}</div>@enderror
             </div>
-            @if ($type !== 'school')
+            @if (! in_array($type, ['school', 'branch'], true))
                 <div class="mb-3">
                     <label for="code" class="form-label">{{ __('scholarship.definition_code') }}</label>
                     <input id="code" name="code" type="text" maxlength="64" required aria-describedby="definition-code-help"
@@ -43,22 +43,24 @@
                     @error('address')<div class="invalid-feedback">{{ $message }}</div>@enderror
                 </div>
             @endif
-            <div class="mb-3">
-                <label for="sort_order" class="form-label">{{ __('scholarship.definition_sort_order') }}</label>
-                <input id="sort_order" name="sort_order" type="number" min="0" max="4294967295" step="1" required
-                    value="{{ old('sort_order', $currentDefinition?->sort_order ?? 0) }}" class="form-control @error('sort_order') is-invalid @enderror">
-                @error('sort_order')<div class="invalid-feedback">{{ $message }}</div>@enderror
-            </div>
-            <div class="mb-3">
-                <input type="hidden" name="is_active" value="0">
-                <div class="form-check form-switch">
-                    <input id="is_active" name="is_active" type="checkbox" value="1" role="switch" aria-describedby="definition-active-help"
-                        class="form-check-input @error('is_active') is-invalid @enderror" @checked(old('is_active', $currentDefinition?->is_active ?? true))>
-                    <label for="is_active" class="form-check-label">{{ __('scholarship.definition_active') }}</label>
-                    @error('is_active')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            @if ($type !== 'branch')
+                <div class="mb-3">
+                    <label for="sort_order" class="form-label">{{ __('scholarship.definition_sort_order') }}</label>
+                    <input id="sort_order" name="sort_order" type="number" min="0" max="4294967295" step="1" required
+                        value="{{ old('sort_order', $currentDefinition?->sort_order ?? 0) }}" class="form-control @error('sort_order') is-invalid @enderror">
+                    @error('sort_order')<div class="invalid-feedback">{{ $message }}</div>@enderror
                 </div>
-            </div>
-            <p id="definition-active-help" class="text-muted small mb-0">{{ __('scholarship.definition_active_help') }}</p>
+                <div class="mb-3">
+                    <input type="hidden" name="is_active" value="0">
+                    <div class="form-check form-switch">
+                        <input id="is_active" name="is_active" type="checkbox" value="1" role="switch" aria-describedby="definition-active-help"
+                            class="form-check-input @error('is_active') is-invalid @enderror" @checked(old('is_active', $currentDefinition?->is_active ?? true))>
+                        <label for="is_active" class="form-check-label">{{ __('scholarship.definition_active') }}</label>
+                        @error('is_active')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                    </div>
+                </div>
+                <p id="definition-active-help" class="text-muted small mb-0">{{ __('scholarship.definition_active_help') }}</p>
+            @endif
         </form>
     </div>
 </div>

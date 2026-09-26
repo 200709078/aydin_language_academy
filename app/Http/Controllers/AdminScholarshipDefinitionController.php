@@ -96,14 +96,14 @@ class AdminScholarshipDefinitionController extends Controller
 
     private function definitionData(Request $request, string $type): array
     {
+        if ($type === 'branch') {
+            return array_replace(['name' => null, 'address' => null], $request->only(['name', 'address']));
+        }
+
         $defaults = ['name' => null, 'sort_order' => 0, 'is_active' => false];
         if ($type !== 'school') {
             $defaults['code'] = null;
         }
-        if ($type === 'branch') {
-            $defaults['address'] = null;
-        }
-
         return array_replace($defaults, $request->only(array_keys($defaults)));
     }
 

@@ -11,6 +11,7 @@ use App\Models\ScholarshipSchool;
 use App\Models\ScholarshipStudentLevel;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
 class ScholarshipCatalogService
@@ -143,6 +144,10 @@ class ScholarshipCatalogService
             // Definitions span periods. Lock periods in the same order before
             // locking a shared definition, matching application/session writes.
             ScholarshipExamPeriod::query()->orderBy('id')->lockForUpdate()->get(['id']);
+            // Branch codes and append positions must be chosen from locked, current rows.
+            $branches = $type === 'branch'
+                ? ScholarshipBranch::query()->orderBy('id')->lockForUpdate()->get(['id', 'sort_order'])
+                : null;
             $definition = $id === null ? new $model : $model::query()->lockForUpdate()->findOrFail($id);
             $rules = [
                 'name' => ['required', 'string', 'max:'.match ($type) {
@@ -156,6 +161,18 @@ class ScholarshipCatalogService
             }
             if ($type === 'branch') {
                 $rules['address'] = ['nullable', 'string'];
+                if (! array_key_exists('code', $data)
+                    && (! $definition->exists || (array_key_exists('name', $data) && $data['name'] !== $definition->name))) {
+                    $name = ScholarshipRules::validate(
+                        ['name' => $data['name'] ?? $definition->name],
+                        ['name' => $rules['name']],
+                        ['name' => __('scholarship.branch_name')],
+                    )['name'];
+                    $data['code'] = $this->uniqueBranchCode($name, $id);
+                }
+                if (! $definition->exists && ! array_key_exists('sort_order', $data)) {
+                    $data['sort_order'] = ((int) $branches->max('sort_order')) + 1;
+                }
             }
             $definition->fill(ScholarshipRules::validate($this->merge($definition, $data, $rules), $rules, [
                 'name' => __('scholarship.'.match ($type) {
@@ -202,6 +219,21 @@ class ScholarshipCatalogService
             'exam_group' => ScholarshipExamGroup::class,
             default => throw \Illuminate\Validation\ValidationException::withMessages(['type' => 'Geçersiz tanım türü.']),
         };
+    }
+
+    private function uniqueBranchCode(string $name, ?int $id): string
+    {
+        $base = Str::slug($name, '-', 'tr') ?: 'sube';
+        $code = Str::substr($base, 0, 64);
+        $number = 2;
+        while (ScholarshipBranch::query()->where('code', $code)
+            ->when($id !== null, fn ($query) => $query->where('id', '!=', $id))
+            ->lockForUpdate()->first(['id']) !== null) {
+            $suffix = '-'.$number++;
+            $code = Str::substr($base, 0, 64 - strlen($suffix)).$suffix;
+        }
+
+        return $code;
     }
 
     /** Merge only supported current attributes; submitted unknown keys still fail. */
