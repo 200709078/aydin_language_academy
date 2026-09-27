@@ -63,12 +63,11 @@
                     <thead><tr>
                         <th scope="col"><input type="checkbox" class="form-check-input" aria-label="{{ __('scholarship.select_all_page') }}"
                             x-on:change="selected = $event.target.checked ? @js($applications->pluck('id')->map(fn ($id) => (string) $id)->values()) : []"></th>
-                        <th scope="col">{{ __('scholarship.student_name') }} / {{ __('scholarship.application_number') }}</th>
-                        <th scope="col">{{ __('scholarship.current_school') }} / {{ __('scholarship.current_level') }}</th>
-                        <th scope="col">{{ __('scholarship.account_contact') }}</th>
-                        <th scope="col">{{ __('scholarship.sessions') }}</th>
-                        <th scope="col">{{ __('scholarship.approval_status') }}</th>
-                        <th scope="col">{{ __('scholarship.publication_management') }}</th>
+                        <th scope="col">{{ __('scholarship.applicant_name') }}</th>
+                        <th scope="col">{{ __('scholarship.application_info') }}</th>
+                        <th scope="col">{{ __('scholarship.notification_status') }}</th>
+                        <th scope="col">{{ __('scholarship.session_info') }}</th>
+                        <th scope="col">{{ __('scholarship.approval_publications') }}</th>
                         <th scope="col">{{ __('dictt.operations') }}</th>
                     </tr></thead>
                     <tbody>
@@ -76,27 +75,29 @@
                             <tr>
                                 <td><input type="checkbox" name="ids[]" value="{{ $application->id }}" form="bulk-approval" x-model="selected" class="form-check-input"
                                     aria-label="{{ __('scholarship.select_application', ['number' => $application->application_number]) }}"></td>
-                                <td class="text-break"><a href="{{ route('admin.scholarship.applications.show', $application) }}">{{ $application->student_name_snapshot }}</a><div class="small">{{ $application->application_number }}</div></td>
+                                <td class="text-break"><a href="{{ route('admin.scholarship.applications.show', $application) }}">{{ $application->student_name_snapshot }}</a></td>
                                 <td class="text-break">{{ $application->school_name_snapshot }}<div class="small">{{ $application->student_level_name_snapshot }}</div></td>
-                                <td class="text-break">{{ $application->user?->email ?? __('scholarship.account_deleted') }}<div class="small mb-2">{{ $application->user?->phone ?? '—' }}</div>@include('admin.scholarship.applications._contact-switches')</td>
+                                <td class="text-break"><div class="small">{{ $application->user?->email ?? __('scholarship.account_deleted') }}</div><div class="small mb-2">{{ $application->user?->phone ?? '—' }}</div>@include('admin.scholarship.applications._contact-switches')</td>
                                 <td class="text-break"><div>{{ $application->period->title }}</div><div>{{ $application->session->branch->name }} / {{ $application->session->examGroup->name }}</div><div class="small">{{ $application->session->exam_title }}</div><div class="small">{{ $application->session->exam_date->format('d.m.Y') }} {{ $application->session->starts_at }}–{{ $application->session->ends_at }}</div></td>
-                                <td><span class="badge {{ $application->status === 'approved' ? 'text-bg-success' : 'text-bg-warning' }}">{{ __('scholarship.approval_'.$application->status) }}</span><div class="small mt-1">{{ __('scholarship.'.($application->application_published ? 'published' : 'unpublished')) }}</div>
-                                    <form method="POST" action="{{ route('admin.scholarship.applications.approval.update', $application) }}" class="mt-2">
-                                        @csrf @method('PATCH')
-                                        <input type="hidden" name="approved" value="0">
-                                        <div class="form-check form-switch">
-                                            <input type="checkbox" id="approval-{{ $application->id }}" name="approved" value="1" class="form-check-input" role="switch"
-                                                @checked($application->status === 'approved') onchange="this.form.submit()" aria-label="{{ __('scholarship.approval_status') }}">
-                                            <label for="approval-{{ $application->id }}" class="form-check-label small">{{ __('scholarship.approval_status') }}</label>
-                                        </div>
-                                        <noscript><button class="btn btn-sm btn-primary" type="submit">{{ __('dictt.save') }}</button></noscript>
-                                    </form>
+                                <td>
+                                    <div class="d-flex align-items-center gap-2">
+                                        <form method="POST" action="{{ route('admin.scholarship.applications.approval.update', $application) }}">
+                                            @csrf @method('PATCH')
+                                            <input type="hidden" name="approved" value="0">
+                                            <div class="form-check form-switch mb-0">
+                                                <input type="checkbox" id="approval-{{ $application->id }}" name="approved" value="1" class="form-check-input" role="switch"
+                                                    @checked($application->status === 'approved') onchange="this.form.submit()" aria-label="{{ __('scholarship.approval_status') }}">
+                                            </div>
+                                            <noscript><button class="btn btn-sm btn-primary" type="submit">{{ __('dictt.save') }}</button></noscript>
+                                        </form>
+                                        <span class="badge {{ $application->status === 'approved' ? 'text-bg-success' : 'text-bg-warning' }}">{{ __('scholarship.approval_'.$application->status) }}</span>
+                                    </div>
+                                    <div class="mt-2">@include('admin.scholarship.applications._publication-switches')</div>
                                 </td>
-                                <td>@include('admin.scholarship.applications._publication-switches')</td>
                                 <td>@include('admin.scholarship.applications._actions')</td>
                             </tr>
                         @empty
-                            <tr><td colspan="8" class="text-center text-muted py-4">{{ __('scholarship.applications_empty') }}</td></tr>
+                            <tr><td colspan="7" class="text-center text-muted py-4">{{ __('scholarship.applications_empty') }}</td></tr>
                         @endforelse
                     </tbody>
                 </table>

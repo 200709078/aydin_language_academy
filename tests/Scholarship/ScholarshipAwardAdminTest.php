@@ -70,12 +70,14 @@ class ScholarshipAwardAdminTest extends ScholarshipTestCase
         $dom = new DOMDocument;
         $dom->loadHTML($page->getContent(), LIBXML_NOERROR | LIBXML_NOWARNING);
         $xpath = new DOMXPath($dom);
-        foreach ([$high->id => '', $zero->id => '0'] as $id => $value) {
-            $radios = $xpath->query('//form[@id="award-'.$id.'"]//input[@type="radio"]');
-            self::assertCount(12, $radios);
-            $checked = $xpath->query('//form[@id="award-'.$id.'"]//input[@type="radio" and @checked]');
-            self::assertCount(1, $checked);
-            self::assertSame($value, $checked->item(0)->getAttribute('value'));
+        foreach ([$high->id => -10, $zero->id => 0] as $id => $value) {
+            $ranges = $xpath->query('//form[@id="award-'.$id.'"]//input[@type="range"]');
+            self::assertCount(1, $ranges);
+            $range = $ranges->item(0);
+            self::assertSame('-10', $range->getAttribute('min'));
+            self::assertSame('100', $range->getAttribute('max'));
+            self::assertSame('10', $range->getAttribute('step'));
+            self::assertSame((string) $value, $range->getAttribute('value'));
         }
         $zeroPage = $this->get(route('admin.scholarship.awards.index', [
             'branch_id' => $this->branch->id, 'exam_group_id' => $this->group->id,
@@ -118,6 +120,10 @@ class ScholarshipAwardAdminTest extends ScholarshipTestCase
         $this->patch($update, ['scholarship_percentage' => '0'])->assertRedirect()->assertSessionHasNoErrors();
         self::assertSame(0, $application->fresh()->scholarship_percentage);
         $this->patch($update, ['scholarship_percentage' => ''])->assertRedirect()->assertSessionHasNoErrors();
+        self::assertNull($application->fresh()->scholarship_percentage);
+        $this->patch($update, ['scholarship_percentage' => 70])->assertRedirect()->assertSessionHasNoErrors();
+        self::assertSame(70, $application->fresh()->scholarship_percentage);
+        $this->patch($update, ['scholarship_percentage' => -10])->assertRedirect()->assertSessionHasNoErrors();
         self::assertNull($application->fresh()->scholarship_percentage);
         self::assertSame(70, $otherApplication->fresh()->scholarship_percentage);
         Mail::assertNothingSent();

@@ -42,19 +42,32 @@
             <div class="table-responsive position-relative">
                 <table class="table table-striped table-sm align-middle mb-0">
                     <thead><tr>
-                        <th scope="col">{{ __('scholarship.student_name') }} / {{ __('scholarship.application_number') }}</th>
-                        <th scope="col">{{ __('scholarship.current_school') }} / {{ __('scholarship.current_level') }}</th>
-                        <th scope="col">{{ __('scholarship.sessions') }}</th>
+                        <th scope="col">{{ __('scholarship.applicant_name') }}</th>
+                        <th scope="col">{{ __('scholarship.application_info') }}</th>
+                        <th scope="col">{{ __('scholarship.session_info') }}</th>
                         <th scope="col">{{ __('scholarship.approval_status') }}</th>
                         <th scope="col">{{ __('scholarship.attendance') }}</th>
                     </tr></thead>
                     <tbody>
                         @forelse ($applications as $application)
                             <tr id="attendance-row-{{ $application->id }}">
-                                <td class="text-break"><a href="{{ route('admin.scholarship.applications.show', $application) }}">{{ $application->student_name_snapshot }}</a><div class="small">{{ $application->application_number }}</div></td>
+                                <td class="text-break"><a href="{{ route('admin.scholarship.applications.show', $application) }}">{{ $application->student_name_snapshot }}</a></td>
                                 <td class="text-break">{{ $application->school_name_snapshot }}<div class="small">{{ $application->student_level_name_snapshot }}</div></td>
                                 <td class="text-break"><div>{{ $application->period->title }}</div><div>{{ $application->session->branch->name }} / {{ $application->session->examGroup->name }}</div><div class="small">{{ $application->session->exam_title }}</div><div class="small">{{ $application->session->exam_date->format('d.m.Y') }} {{ $application->session->starts_at }}–{{ $application->session->ends_at }}</div></td>
-                                <td><span class="badge {{ $application->status === 'approved' ? 'text-bg-success' : 'text-bg-warning' }}">{{ __('scholarship.approval_'.$application->status) }}</span></td>
+                                <td>
+                                    <div class="d-flex align-items-center gap-2">
+                                        <form method="POST" action="{{ route('admin.scholarship.applications.approval.update', $application) }}">
+                                            @csrf @method('PATCH')
+                                            <input type="hidden" name="approved" value="0">
+                                            <div class="form-check form-switch mb-0">
+                                                <input type="checkbox" id="attendance-approval-{{ $application->id }}" name="approved" value="1" class="form-check-input" role="switch"
+                                                    @checked($application->status === 'approved') onchange="this.form.submit()" aria-label="{{ __('scholarship.approval_status') }}">
+                                            </div>
+                                            <noscript><button class="btn btn-sm btn-primary" type="submit">{{ __('dictt.save') }}</button></noscript>
+                                        </form>
+                                        <span class="badge {{ $application->status === 'approved' ? 'text-bg-success' : 'text-bg-warning' }}">{{ __('scholarship.approval_'.$application->status) }}</span>
+                                    </div>
+                                </td>
                                 <td>
                                     <form id="attendance-{{ $application->id }}" method="POST"
                                         action="{{ route('admin.scholarship.attendance.update', ['application' => $application->id, ...$filters]) }}"
@@ -73,10 +86,10 @@
                                         @csrf @method('PATCH')
                                         <label for="attendance-status-{{ $application->id }}" class="visually-hidden">{{ __('scholarship.attendance_for', ['number' => $application->application_number]) }}</label>
                                         <div class="d-flex flex-wrap gap-2">
-                                            <select id="attendance-status-{{ $application->id }}" name="attendance_status" x-model="attendance" class="form-select form-select-sm w-auto" required>
+                                            <select id="attendance-status-{{ $application->id }}" name="attendance_status" x-model="attendance" class="form-select form-select-sm w-auto" required onchange="this.form.requestSubmit()">
                                                 @foreach (['unmarked', 'attended', 'absent'] as $status)<option value="{{ $status }}" @selected($application->attendance_status === $status)>{{ __('scholarship.attendance_'.$status) }}</option>@endforeach
                                             </select>
-                                            <button type="submit" class="btn btn-sm btn-primary">{{ __('dictt.save') }}</button>
+                                            <noscript><button type="submit" class="btn btn-sm btn-primary">{{ __('dictt.save') }}</button></noscript>
                                         </div>
                                         @if ($application->attendance_status === 'absent' && $application->result_published)
                                             <p class="small text-muted mt-2 mb-0">{{ __('scholarship.attendance_published_help') }}</p>

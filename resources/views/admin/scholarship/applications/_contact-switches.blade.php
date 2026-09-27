@@ -5,7 +5,7 @@
         <div class="form-check form-switch">
             <input type="checkbox" id="contact-{{ $application->id }}-{{ $contactPhase }}" name="reached" value="1" class="form-check-input" role="switch"
                 @checked($application->getAttribute($contactPhase.'_contact_status') === 'reached') onchange="this.form.submit()">
-            <label for="contact-{{ $application->id }}-{{ $contactPhase }}" class="form-check-label small">{{ __('scholarship.'.$contactPhase.'_contact') }}: {{ __('scholarship.contact_'.$application->getAttribute($contactPhase.'_contact_status')) }}</label>
+            <label for="contact-{{ $application->id }}-{{ $contactPhase }}" class="form-check-label"><span class="badge {{ $application->getAttribute($contactPhase.'_contact_status') === 'reached' ? 'text-bg-success' : 'text-bg-warning' }}">{{ __('scholarship.'.$contactPhase.'_short') }}: {{ __('scholarship.contact_'.$application->getAttribute($contactPhase.'_contact_status')) }}</span></label>
         </div>
         <noscript><button class="btn btn-sm btn-primary" type="submit">{{ __('dictt.save') }}</button></noscript>
     </form>

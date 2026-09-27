@@ -64,7 +64,7 @@ class AdminScholarshipAttendanceController extends Controller
 
         return redirect()->to(route('admin.scholarship.attendance.index', $filters).'#attendance-row-'.$application->id)
             ->with('modalSuccessTitle', __('scholarship.attendance_management'))
-            ->with('modalSuccessContent', __('scholarship.attendance_updated', ['number' => $application->application_number]));
+            ->with('modalSuccessContent', __('scholarship.attendance_updated', ['name' => $application->student_name_snapshot]));
     }
 
     private function filters(Request $request): array

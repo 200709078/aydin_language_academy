@@ -9,16 +9,16 @@
             <div class="table-responsive position-relative">
                 <table class="table table-striped table-sm align-middle mb-0">
                     <thead><tr>
-                        <th scope="col">{{ __('scholarship.student_name') }} / {{ __('scholarship.application_number') }}</th>
-                        <th scope="col">{{ __('scholarship.current_school') }} / {{ __('scholarship.current_level') }}</th>
-                        <th scope="col">{{ __('scholarship.sessions') }}</th>
+                        <th scope="col">{{ __('scholarship.applicant_name') }}</th>
+                        <th scope="col">{{ __('scholarship.application_info') }}</th>
+                        <th scope="col">{{ __('scholarship.session_info') }}</th>
                         <th scope="col">{{ __('scholarship.attendance') }}</th>
                         <th scope="col">{{ __('scholarship.score_and_counts') }}</th>
                     </tr></thead>
                     <tbody>
                         @forelse ($applications as $application)
                             <tr id="score-row-{{ $application->id }}">
-                                <td class="text-break"><a href="{{ route('admin.scholarship.applications.show', $application) }}">{{ $application->student_name_snapshot }}</a><div class="small">{{ $application->application_number }}</div></td>
+                                <td class="text-break"><a href="{{ route('admin.scholarship.applications.show', $application) }}">{{ $application->student_name_snapshot }}</a></td>
                                 <td class="text-break">{{ $application->school_name_snapshot }}<div class="small">{{ $application->student_level_name_snapshot }}</div></td>
                                 <td class="text-break"><div>{{ $application->period->title }}</div><div>{{ $application->session->branch->name }} / {{ $application->session->examGroup->name }}</div><div class="small">{{ $application->session->exam_title }}</div><div class="small">{{ $application->session->exam_date->format('d.m.Y') }} {{ $application->session->starts_at }}–{{ $application->session->ends_at }}</div></td>
                                 <td><span class="badge {{ $application->attendance_status === 'attended' ? 'text-bg-success' : ($application->attendance_status === 'absent' ? 'text-bg-secondary' : 'text-bg-warning') }}">{{ __('scholarship.attendance_'.$application->attendance_status) }}</span></td>

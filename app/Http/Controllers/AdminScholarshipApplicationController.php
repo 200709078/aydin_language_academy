@@ -182,9 +182,8 @@ class AdminScholarshipApplicationController extends Controller
         }
 
         return redirect()->back()->with('modalSuccessTitle', __('scholarship.publication_management'))
-            ->with('modalSuccessContent', __('scholarship.publication_updated', [
-                'number' => $application->application_number, 'phase' => __('scholarship.'.$phase.'_publication'),
-                'state' => __('scholarship.'.($data['published'] ? 'published' : 'unpublished')),
+            ->with('modalSuccessContent', __('scholarship.'.$phase.'_publication_'.((bool) $data['published'] ? 'updated' : 'withdrawn'), [
+                'name' => $application->student_name_snapshot,
             ]));
     }
 

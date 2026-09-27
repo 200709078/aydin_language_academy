@@ -15,7 +15,7 @@
                 'account_phone' => $application->user?->phone ?? '—',
                 'period' => $application->period->title,
                 'approval_status' => __('scholarship.approval_'.$application->status),
-                'application_publication' => __('scholarship.'.($application->application_published ? 'published' : 'unpublished')),
+                'application_publication' => __('scholarship.'.($application->application_published ? 'application_published' : 'application_unpublished')),
                 'application_contact' => __('scholarship.contact_'.$application->application_contact_status),
                 'attendance' => __('scholarship.attendance_'.$application->attendance_status),
                 'score' => $application->score ?? __('scholarship.not_entered'),
@@ -23,7 +23,7 @@
                 'wrong_count' => $application->attendance_status === 'absent' ? __('scholarship.not_applicable') : ($application->wrong_count ?? __('scholarship.not_entered')),
                 'blank_count' => $application->attendance_status === 'absent' ? __('scholarship.not_applicable') : ($application->blank_count ?? __('scholarship.not_entered')),
                 'scholarship_percentage' => $application->scholarship_percentage === null ? __('scholarship.not_entered') : '%'.$application->scholarship_percentage,
-                'result_publication' => __('scholarship.'.($application->result_published ? 'published' : 'unpublished')),
+                'result_publication' => __('scholarship.'.($application->result_published ? 'result_published' : 'result_unpublished')),
                 'result_contact' => __('scholarship.contact_'.$application->result_contact_status),
             ] as $label => $value)
                 <dt class="col-sm-4 mb-1">{{ __('scholarship.'.$label) }}</dt><dd class="col-sm-8 text-break">{{ $value }}</dd>

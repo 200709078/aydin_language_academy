@@ -77,9 +77,13 @@ class AdminScholarshipAwardController extends Controller
     {
         $filters = $this->filters($request);
         // A filter cannot supply a missing selection; only the selected rate reaches the service.
+        // The slider reports -10 for an undetermined rate, which the service stores as null.
         $data = Validator::make($request->post(), [
-            'scholarship_percentage' => ['bail', 'present', 'nullable', ScholarshipRules::integer(), 'integer', Rule::in(range(0, 100, 10))],
+            'scholarship_percentage' => ['bail', 'present', 'nullable', ScholarshipRules::integer(), 'integer', Rule::in([-10, ...range(0, 100, 10)])],
         ], [], ['scholarship_percentage' => __('scholarship.scholarship_percentage')])->validate();
+        if ((int) ($data['scholarship_percentage'] ?? 0) === -10) {
+            $data['scholarship_percentage'] = null;
+        }
         $applications->updateResult($request->user(), $application->id, $data);
 
         return redirect()->to(route('admin.scholarship.awards.index', $filters).'#award-row-'.$application->id)
