@@ -12,8 +12,8 @@
                         <th scope="col">{{ __('scholarship.applicant_name') }}</th>
                         <th scope="col">{{ __('scholarship.application_info') }}</th>
                         <th scope="col">{{ __('scholarship.session_info') }}</th>
-                        <th scope="col">{{ __('scholarship.score') }} / {{ __('scholarship.attendance') }}</th>
-                        <th scope="col">{{ __('scholarship.scholarship_percentage') }}</th>
+                        <th scope="col" style="width: 10%;">{{ __('scholarship.score') }} / {{ __('scholarship.attendance') }}</th>
+                        <th scope="col" style="width: 30%;">{{ __('scholarship.scholarship_percentage') }}</th>
                     </tr></thead>
                     <tbody>
                         @forelse ($applications as $application)
@@ -43,14 +43,14 @@
                                                 ]));
                                             }">
                                             @csrf @method('PATCH')
-                                            <div class="mb-2">
-                                                <label for="award-{{ $application->id }}-range" class="form-label small mb-1">
+                                            <div class="mb-2 pe-4">
+                                                <label for="award-{{ $application->id }}-range" class="form-label small d-block mb-1">
                                                     {{ __('scholarship.scholarship_percentage') }}:
                                                     <span x-text="percentage === -10 ? @js(__('scholarship.award_unset')) : (percentage === 0 ? @js(__('scholarship.award_none')) : '%' + percentage)">{{ $application->scholarship_percentage === null ? __('scholarship.award_unset') : ($application->scholarship_percentage === 0 ? __('scholarship.award_none') : '%'.$application->scholarship_percentage) }}</span>
                                                 </label>
                                                 <input id="award-{{ $application->id }}-range" type="range" name="scholarship_percentage" x-model.number="percentage"
                                                     min="{{ $application->result_published ? 0 : -10 }}" max="100" step="10" value="{{ $application->scholarship_percentage ?? -10 }}"
-                                                    class="form-range w-100" aria-label="{{ __('scholarship.award_for', ['number' => $application->application_number]) }}">
+                                                    class="form-range d-block w-100" aria-label="{{ __('scholarship.award_for', ['number' => $application->application_number]) }}">
                                             </div>
                                             <button type="submit" class="btn btn-sm btn-primary mt-2">{{ __('dictt.save') }}</button>
                                         </form>

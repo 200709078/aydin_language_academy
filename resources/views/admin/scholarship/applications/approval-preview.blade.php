@@ -14,7 +14,7 @@
         @if ($count > $applications->count())<p class="small text-muted">{{ __('scholarship.preview_first_records', ['count' => $applications->count(), 'total' => $count]) }}</p>@endif
         <form id="confirm-bulk-approval" method="POST" action="{{ route('admin.scholarship.applications.approve.bulk') }}" class="d-flex flex-wrap gap-2">
             @csrf <input type="hidden" name="token" value="{{ $token }}">
-            <a href="{{ route('admin.scholarship.applications.index', $filters) }}" class="btn btn-sm btn-secondary">{{ __('dictt.back_short') }}</a>
+            <a href="{{ route('admin.scholarship.applications.index', $filters) }}" class="btn btn-sm btn-secondary"><i class="fa fa-arrow-left" aria-hidden="true"></i> {{ __('dictt.back_short') }}</a>
             <button type="button" class="btn btn-sm btn-success" data-action-confirmation data-confirm-form="confirm-bulk-approval"
                 data-confirm-title="{{ __('scholarship.application_approve') }}" data-confirm-content="{{ __('scholarship.bulk_approve_confirm', ['count' => $count]) }}"
                 data-confirm-action="{{ __('scholarship.application_approve') }}" data-confirm-icon="fa-check" data-confirm-tone="success">{{ __('scholarship.application_approve') }} ({{ $count }})</button>

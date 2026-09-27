@@ -20,7 +20,7 @@
         @if ($count > $applications->count())<p class="small text-muted">{{ __('scholarship.preview_first_records', ['count' => $applications->count(), 'total' => $count]) }}</p>@endif
         <form id="confirm-bulk-publication" method="POST" action="{{ route('admin.scholarship.applications.publication.bulk') }}" class="d-flex flex-wrap gap-2">
             @csrf <input type="hidden" name="token" value="{{ $token }}">
-            <a href="{{ route('admin.scholarship.applications.index', $filters) }}" class="btn btn-sm btn-secondary">{{ __('dictt.back_short') }}</a>
+            <a href="{{ route('admin.scholarship.applications.index', $filters) }}" class="btn btn-sm btn-secondary"><i class="fa fa-arrow-left" aria-hidden="true"></i> {{ __('dictt.back_short') }}</a>
             <button type="button" class="btn btn-sm btn-primary" @disabled($eligibleCount === 0) data-action-confirmation data-confirm-form="confirm-bulk-publication"
                 data-confirm-title="{{ __('scholarship.publication_management') }}"
                 data-confirm-content="{{ __('scholarship.publication_confirm', ['count' => $count, 'phase' => __('scholarship.'.$phase.'_publication'), 'state' => __('scholarship.'.($published ? 'publication_enable' : 'publication_disable'))]) }}"

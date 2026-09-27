@@ -2,7 +2,7 @@
     <x-slot name="header">{{ __('scholarship.application_edit') }}</x-slot>
     <div class="card"><div class="card-body">
         <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
-            <a href="{{ route('admin.scholarship.applications.show', $application) }}" class="btn btn-sm btn-secondary">{{ __('dictt.back_short') }}</a>
+            <a href="{{ route('admin.scholarship.applications.show', $application) }}" class="btn btn-sm btn-secondary"><i class="fa fa-arrow-left" aria-hidden="true"></i> {{ __('dictt.back_short') }}</a>
             <button type="submit" form="application-edit" class="btn btn-sm btn-success">{{ __('dictt.save') }}</button>
             <h5 class="card-title mb-0">{{ __('scholarship.application_edit') }}</h5>
         </div>

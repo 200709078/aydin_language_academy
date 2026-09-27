@@ -50,7 +50,7 @@
                                                         <label for="{{ $field }}-value-{{ $application->id }}" class="form-label small mb-1">{{ __('scholarship.'.$field) }}</label>
                                                         <input id="{{ $field }}-value-{{ $application->id }}" name="{{ $field }}" type="number" min="0" max="{{ $maximum }}" step="1"
                                                             value="{{ $application->$field ?? '' }}" x-model="values.{{ $field }}"
-                                                            placeholder="{{ __('scholarship.not_entered') }}" class="form-control form-control-sm" style="width: 7rem;">
+                                                            placeholder="{{ __('scholarship.not_entered') }}" class="form-control form-control-sm" style="width: 4rem; font-size: 0.72rem;">
                                                     </div>
                                                 @endforeach
                                                 <button type="submit" class="btn btn-sm btn-primary">{{ __('dictt.save') }}</button>
