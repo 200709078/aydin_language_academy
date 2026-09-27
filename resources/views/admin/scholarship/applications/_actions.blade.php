@@ -1,6 +1,6 @@
 <div class="d-flex flex-wrap align-items-start gap-2">
     <a href="{{ route('admin.scholarship.applications.edit', $application) }}" class="btn btn-sm btn-outline-primary" title="{{ __('dictt.edit') }}"><i class="fa fa-pen" aria-hidden="true"></i><span class="visually-hidden">{{ __('dictt.edit') }}</span></a>
-    @if ($application->status === 'pending')
+    @if ($application->status === 'pending' && ! ($hideApprove ?? false))
         <form id="application-approve-{{ $application->id }}" method="POST" action="{{ route('admin.scholarship.applications.approve', $application) }}">
             @csrf @method('PATCH')
             <button type="button" class="btn btn-sm btn-outline-success" data-action-confirmation

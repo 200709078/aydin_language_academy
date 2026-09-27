@@ -87,6 +87,24 @@ class AdminScholarshipApplicationController extends Controller
         return $this->success('application_approved', $application);
     }
 
+    public function updateApproval(Request $request, ScholarshipApplication $application): RedirectResponse
+    {
+        $data = $request->validate(['approved' => ['required', 'boolean']]);
+        if ((bool) $data['approved']) {
+            $this->applications->approve($request->user(), $application->id);
+
+            $message = 'application_approved';
+        } else {
+            $this->applications->unapprove($request->user(), $application->id);
+
+            $message = 'application_unapproved';
+        }
+
+        return redirect()->back()
+            ->with('modalSuccessTitle', __('scholarship.applications'))
+            ->with('modalSuccessContent', __('scholarship.'.$message));
+    }
+
     public function destroy(Request $request, ScholarshipApplication $application): RedirectResponse
     {
         $this->applications->delete($request->user(), $application->id);

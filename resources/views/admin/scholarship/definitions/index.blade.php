@@ -22,28 +22,11 @@
                 @endforeach
             </div>
 
-            @if (! in_array($type, ['branch', 'school', 'exam_group'], true))
-                <form method="GET" action="{{ route('admin.scholarship.definitions.index', ['type' => $type]) }}" class="row g-2 align-items-end mb-3">
-                    <input type="hidden" name="status" value="{{ $status }}">
-                    <div class="col-12 col-md-6">
-                        <label for="definition-search" class="form-label">{{ __('scholarship.definition_search') }}</label>
-                        <input id="definition-search" name="q" type="search" maxlength="255" value="{{ $search }}" class="form-control">
-                    </div>
-                    <div class="col-12 col-md-auto d-flex gap-2">
-                        <button type="submit" class="btn btn-outline-primary">{{ __('scholarship.filter_apply') }}</button>
-                        <a href="{{ route('admin.scholarship.definitions.index', ['type' => $type]) }}" class="btn btn-outline-secondary">{{ __('scholarship.filter_clear') }}</a>
-                    </div>
-                </form>
-            @endif
-
             <div class="table-responsive position-relative">
                 <table class="table table-striped table-sm align-middle mb-0">
                     <thead>
                         <tr>
                             <th scope="col">{{ __('scholarship.'.$meta['name']) }}</th>
-                            @if (! in_array($type, ['branch', 'school'], true))
-                                <th scope="col">{{ __('scholarship.definition_sort_order') }}</th>
-                            @endif
                             <th scope="col">{{ __('scholarship.definition_references') }}</th>
                             <th scope="col">{{ __('scholarship.definition_status') }}</th>
                             <th scope="col">{{ __('dictt.operations') }}</th>
@@ -62,9 +45,6 @@
                                         <div class="text-muted small">{{ $definition->address }}</div>
                                     @endif
                                 </td>
-                                @if (! in_array($type, ['branch', 'school'], true))
-                                    <td>{{ $definition->sort_order }}</td>
-                                @endif
                                 <td class="text-nowrap">{{ __('scholarship.definition_'.$meta['relation'].'_count', ['count' => $definition->references_count]) }}</td>
                                 <td>
                                     <form method="POST" action="{{ route('admin.scholarship.definitions.status.update', $params) }}">
@@ -87,7 +67,7 @@
                                         </a>
                                         @if ($definition->references_count > 0)
                                             <span title="{{ __('scholarship.definition_has_dependents') }}">
-                                                <button type="button" class="btn btn-sm {{ in_array($type, ['branch', 'school', 'exam_group'], true) ? 'btn-secondary' : 'btn-outline-danger' }}" disabled aria-label="{{ __('scholarship.definition_has_dependents') }}">
+                                                <button type="button" class="btn btn-sm btn-secondary" disabled aria-label="{{ __('scholarship.definition_has_dependents') }}">
                                                     <i class="fa fa-trash" aria-hidden="true"></i>
                                                 </button>
                                             </span>
@@ -127,7 +107,7 @@
                                 </td>
                             </tr>
                         @empty
-                            <tr><td colspan="{{ in_array($type, ['branch', 'school'], true) ? 4 : 5 }}" class="text-center text-muted py-4">{{ __('scholarship.definitions_empty') }}</td></tr>
+                            <tr><td colspan="4" class="text-center text-muted py-4">{{ __('scholarship.definitions_empty') }}</td></tr>
                         @endforelse
                     </tbody>
                 </table>

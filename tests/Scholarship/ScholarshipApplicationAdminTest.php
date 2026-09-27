@@ -264,6 +264,27 @@ class ScholarshipApplicationAdminTest extends ScholarshipTestCase
         self::assertSame($this->period->id, $again->period_id);
     }
 
+    public function test_approval_switch_approves_unapproves_and_hides_the_detail_button(): void
+    {
+        $application = $this->applications->create($this->student, $this->data());
+        $this->actingAs($this->admin);
+        $this->get($this->url('index'))->assertOk()->assertSee('approval-'.$application->id, false);
+        $this->get($this->url('show', $application->id))->assertOk()->assertDontSee('application-approve-', false);
+
+        $this->from($this->url('index'))->patch($this->url('approval.update', $application->id), ['approved' => '1'])
+            ->assertRedirect($this->url('index'))->assertSessionHas('modalSuccessContent');
+        self::assertSame('approved', $application->fresh()->status);
+
+        $this->applications->markContact($this->admin, $application->id, 'application', true);
+        $this->from($this->url('index'))->patch($this->url('approval.update', $application->id), ['approved' => '0'])
+            ->assertRedirect($this->url('index'))->assertSessionHas('modalSuccessContent');
+        self::assertSame('pending', $application->fresh()->status);
+        self::assertSame('unreached', $application->fresh()->application_contact_status);
+
+        $this->from($this->url('index'))->patch($this->url('approval.update', $application->id), ['approved' => 'invalid'])
+            ->assertRedirect($this->url('index'))->assertSessionHasErrors(['approved']);
+    }
+
     private function url(string $action, ?int $id = null): string
     {
         return route('admin.scholarship.applications.'.$action, $id === null ? [] : ['application' => $id]);

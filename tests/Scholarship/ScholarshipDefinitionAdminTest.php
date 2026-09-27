@@ -79,22 +79,14 @@ class ScholarshipDefinitionAdminTest extends ScholarshipTestCase
             $edit = $this->get($this->url('edit', $type, $created->id))
                 ->assertOk()->assertSee($this->url('update', $type, $created->id), false)
                 ->assertSee('name="_token"', false)->assertSee('value="PUT"', false);
-            if ($type === 'student_level') {
-                $edit->assertSee('name="code"', false);
-            } else {
-                $edit->assertDontSee('name="code"', false);
-            }
+            $edit->assertDontSee('name="code"', false);
             if ($type === 'branch') {
                 $edit->assertSee('name="address"', false);
                 self::assertSame('Synthetic branch address', $created->address);
             } else {
                 $edit->assertDontSee('name="address"', false);
             }
-            if ($type === 'student_level') {
-                $edit->assertSee('name="sort_order"', false)->assertSee('name="is_active"', false);
-            } else {
-                $edit->assertDontSee('name="sort_order"', false)->assertDontSee('name="is_active"', false);
-            }
+            $edit->assertDontSee('name="sort_order"', false)->assertDontSee('name="is_active"', false);
             $this->put($this->url('update', $type, $created->id), [...$data, 'name' => 'Updated '.$type, 'is_active' => '0'])
                 ->assertRedirect($this->url('index', $type));
             self::assertSame('Updated '.$type, $created->fresh()->name);

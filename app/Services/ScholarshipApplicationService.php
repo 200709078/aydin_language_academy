@@ -107,6 +107,19 @@ class ScholarshipApplicationService
         });
     }
 
+    public function unapprove(User $admin, int $applicationId): ScholarshipApplication
+    {
+        ScholarshipRules::actor($admin, true);
+
+        return ScholarshipRules::application($applicationId, function (ScholarshipApplication $application): ScholarshipApplication {
+            if ($application->status !== 'pending') {
+                $application->fill(['status' => 'pending', 'application_contact_status' => 'unreached'])->save();
+            }
+
+            return $application;
+        });
+    }
+
     public function updateResult(User $admin, int $applicationId, array $data): ScholarshipApplication
     {
         ScholarshipRules::actor($admin, true);

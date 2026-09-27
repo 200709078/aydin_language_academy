@@ -27,7 +27,7 @@
                 @foreach (['period_id' => [$periods, 'period', 'title'], 'branch_id' => [$branches, 'branch', 'name'], 'exam_group_id' => [$groups, 'exam_group', 'name']] as $field => [$options, $label, $textField])
                     <div class="col-md-4">
                         <label for="filter-{{ $field }}" class="form-label">{{ __('scholarship.'.$label) }}</label>
-                        <select id="filter-{{ $field }}" name="{{ $field }}" class="form-select @error($field) is-invalid @enderror">
+                        <select id="filter-{{ $field }}" name="{{ $field }}" class="form-select @error($field) is-invalid @enderror" onchange="this.form.submit()">
                             <option value="">{{ __('dictt.filter_all') }}</option>
                             @foreach ($options as $option)
                                 <option value="{{ $option->id }}" @selected(($filters[$field] ?? '') == $option->id)>{{ $option->{$textField} }}{{ $option->is_active ? '' : ' ('.__('dictt.passive').')' }}</option>
@@ -36,10 +36,6 @@
                         @error($field)<div class="invalid-feedback">{{ $message }}</div>@enderror
                     </div>
                 @endforeach
-                <div class="col-md-4 d-flex align-items-end gap-2">
-                    <button type="submit" class="btn btn-sm btn-primary">{{ __('scholarship.filter_apply') }}</button>
-                    <a href="{{ route('admin.scholarship.sessions.index') }}" class="btn btn-sm btn-outline-secondary">{{ __('scholarship.filter_clear') }}</a>
-                </div>
             </form>
 
             <p class="text-muted small">{{ __('scholarship.session_totals', $totals) }}</p>

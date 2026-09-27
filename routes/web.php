@@ -231,6 +231,7 @@ Route::group(['middleware' => ['auth', isAdmin_middle::class], 'prefix' => 'admi
         Route::get('/{application}/edit', [AdminScholarshipApplicationController::class, 'edit'])->whereNumber('application')->name('edit');
         Route::put('/{application}', [AdminScholarshipApplicationController::class, 'update'])->whereNumber('application')->name('update');
         Route::patch('/{application}/approve', [AdminScholarshipApplicationController::class, 'approve'])->whereNumber('application')->name('approve');
+        Route::patch('/{application}/approval', [AdminScholarshipApplicationController::class, 'updateApproval'])->whereNumber('application')->name('approval.update');
         Route::delete('/{application}', [AdminScholarshipApplicationController::class, 'destroy'])->whereNumber('application')->name('destroy');
     });
 

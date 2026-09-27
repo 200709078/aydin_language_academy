@@ -3,7 +3,7 @@
     <div class="card"><div class="card-body">
         <div class="d-flex flex-wrap justify-content-between gap-3 mb-4">
             <div><a href="{{ route('admin.scholarship.applications.index') }}" class="btn btn-sm btn-secondary mb-2">{{ __('dictt.back_short') }}</a><h5 class="card-title">{{ __('scholarship.application_detail') }}</h5><div class="text-break">{{ $application->application_number }}</div></div>
-            @include('admin.scholarship.applications._actions')
+            @include('admin.scholarship.applications._actions', ['hideApprove' => true])
         </div>
         <dl class="row">
             @foreach ([

@@ -144,10 +144,8 @@ class ScholarshipCatalogService
             // Definitions span periods. Lock periods in the same order before
             // locking a shared definition, matching application/session writes.
             ScholarshipExamPeriod::query()->orderBy('id')->lockForUpdate()->get(['id']);
-            // Branch codes and append positions must be chosen from locked, current rows.
-            $appendScope = in_array($type, ['branch', 'school', 'exam_group'], true)
-                ? $model::query()->orderBy('id')->lockForUpdate()->get(['id', 'sort_order'])
-                : null;
+            // Codes and append positions must be chosen from locked, current rows.
+            $appendScope = $model::query()->orderBy('id')->lockForUpdate()->get(['id', 'sort_order']);
             $definition = $id === null ? new $model : $model::query()->lockForUpdate()->findOrFail($id);
             $rules = [
                 'name' => ['required', 'string', 'max:'.match ($type) {
@@ -156,12 +154,12 @@ class ScholarshipCatalogService
                 'is_active' => ['boolean'],
                 'sort_order' => [ScholarshipRules::integer(), 'integer', 'between:0,4294967295'],
             ];
-            if ($type === 'student_level') {
-                $rules['code'] = ['required', 'string', 'max:64', 'not_regex:/^\s*$/u', Rule::unique($definition->getTable(), 'code')->ignore($id)];
-            } elseif (in_array($type, ['branch', 'exam_group'], true)) {
+            if ($type === 'school') {
+                if (! $definition->exists && ! array_key_exists('sort_order', $data)) {
+                    $data['sort_order'] = ((int) $appendScope->max('sort_order')) + 1;
+                }
+            } else {
                 $rules['code'] = ['string', 'max:64', 'not_regex:/^\s*$/u', Rule::unique($definition->getTable(), 'code')->ignore($id)];
-            }
-            if (in_array($type, ['branch', 'exam_group'], true)) {
                 if ($type === 'branch') {
                     $rules['address'] = ['nullable', 'string'];
                 }
@@ -170,16 +168,16 @@ class ScholarshipCatalogService
                     $name = ScholarshipRules::validate(
                         ['name' => $data['name'] ?? $definition->name],
                         ['name' => $rules['name']],
-                        ['name' => __('scholarship.'.($type === 'branch' ? 'branch_name' : 'exam_group_name'))],
+                        ['name' => __('scholarship.'.match ($type) {
+                            'branch' => 'branch_name', 'exam_group' => 'exam_group_name',
+                            default => 'student_level_name',
+                        })],
                     )['name'];
                     $data['code'] = $this->uniqueDefinitionCode($model, $name, $id);
                 }
                 if (! $definition->exists && ! array_key_exists('sort_order', $data)) {
                     $data['sort_order'] = ((int) $appendScope->max('sort_order')) + 1;
                 }
-            }
-            if ($type === 'school' && ! $definition->exists && ! array_key_exists('sort_order', $data)) {
-                $data['sort_order'] = ((int) $appendScope->max('sort_order')) + 1;
             }
             $definition->fill(ScholarshipRules::validate($this->merge($definition, $data, $rules), $rules, [
                 'name' => __('scholarship.'.match ($type) {
@@ -260,7 +258,11 @@ class ScholarshipCatalogService
 
     private function uniqueDefinitionCode(string $model, string $name, ?int $id): string
     {
-        $base = Str::slug($name, '-', 'tr') ?: ($model === ScholarshipExamGroup::class ? 'grup' : 'sube');
+        $base = Str::slug($name, '-', 'tr') ?: match ($model) {
+            ScholarshipExamGroup::class => 'grup',
+            ScholarshipStudentLevel::class => 'seviye',
+            default => 'sube',
+        };
         $code = Str::substr($base, 0, 64);
         $number = 2;
         while ($model::query()->where('code', $code)

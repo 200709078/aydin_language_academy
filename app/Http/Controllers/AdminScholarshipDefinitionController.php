@@ -128,15 +128,7 @@ class AdminScholarshipDefinitionController extends Controller
             return array_replace(['name' => null, 'address' => null], $request->only(['name', 'address']));
         }
 
-        if (in_array($type, ['school', 'exam_group'], true)) {
-            return array_replace(['name' => null], $request->only(['name', 'sort_order', 'is_active']));
-        }
-
-        $defaults = ['name' => null, 'sort_order' => 0, 'is_active' => false];
-        if ($type !== 'school') {
-            $defaults['code'] = null;
-        }
-        return array_replace($defaults, $request->only(array_keys($defaults)));
+        return array_replace(['name' => null], $request->only(['name', 'sort_order', 'is_active']));
     }
 
     private function success(string $type, string $message): RedirectResponse
