@@ -23,10 +23,17 @@ class AdminScholarshipSessionController extends Controller
             'period_id' => ['nullable', 'integer', 'exists:scholarship_exam_periods,id'],
             'branch_id' => ['nullable', 'integer', 'exists:scholarship_branches,id'],
             'exam_group_id' => ['nullable', 'integer', 'exists:scholarship_exam_groups,id'],
+            'status' => ['nullable', Rule::in(['all', 'active', 'inactive', 'archived'])],
             'state' => ['nullable', Rule::in(['active', 'suspended', 'archived'])],
             'q' => ['nullable', 'string', 'max:150'],
         ]);
+        $status = $filters['status'] ?? 'all';
         $query = ScholarshipExamSession::query();
+        if ($status === 'archived') {
+            $query->whereNotNull('archived_at');
+        } elseif ($status !== 'all') {
+            $query->where('is_active', $status === 'active');
+        }
         foreach (['period_id', 'branch_id', 'exam_group_id'] as $field) {
             if (isset($filters[$field])) {
                 $query->where($field, $filters[$field]);
@@ -52,7 +59,7 @@ class AdminScholarshipSessionController extends Controller
             ->paginate(20)->withQueryString();
 
         return view('admin.scholarship.sessions.index', [
-            ...$this->choices(), ...compact('sessions', 'filters', 'totals'),
+            ...$this->choices(), ...compact('sessions', 'filters', 'status', 'totals'),
         ]);
     }
 
@@ -122,7 +129,6 @@ class AdminScholarshipSessionController extends Controller
             'starts_at' => null,
             'ends_at' => null,
             'capacity' => null,
-            'is_active' => false,
         ], $request->only([
             'period_id', 'branch_id', 'exam_group_id', 'exam_title', 'exam_date',
             'starts_at', 'ends_at', 'capacity', 'is_active',

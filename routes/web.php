@@ -244,6 +244,8 @@ Route::group(['middleware' => ['auth', isAdmin_middle::class], 'prefix' => 'admi
             ->whereNumber('period')->name('update');
         Route::patch('/{period}/applications', [AdminScholarshipPeriodController::class, 'updateApplications'])
             ->whereNumber('period')->name('applications.update');
+        Route::patch('/{period}/status', [AdminScholarshipPeriodController::class, 'updateStatus'])
+            ->whereNumber('period')->name('status.update');
         Route::delete('/{period}', [AdminScholarshipPeriodController::class, 'destroy'])
             ->whereNumber('period')->name('destroy');
     });
@@ -259,6 +261,8 @@ Route::group(['middleware' => ['auth', isAdmin_middle::class], 'prefix' => 'admi
                 ->whereNumber('definition')->name('update');
             Route::patch('/{definition}/status', [AdminScholarshipDefinitionController::class, 'updateStatus'])
                 ->whereNumber('definition')->name('status.update');
+            Route::post('/{definition}/move', [AdminScholarshipDefinitionController::class, 'move'])
+                ->whereNumber('definition')->name('move');
             Route::delete('/{definition}', [AdminScholarshipDefinitionController::class, 'destroy'])
                 ->whereNumber('definition')->name('destroy');
         });

@@ -79,12 +79,14 @@ class ScholarshipSessionAdminTest extends ScholarshipTestCase
                 ->assertSee($this->url('store'), false)->assertSee('name="_token"', false)
                 ->assertSee('min="2035-01-25"', false)->assertSee('max="2035-01-26"', false)
                 ->assertSee('type="time" step="1"', false)
-                ->assertSee('Branch B ('.__('dictt.passive').')');
+                ->assertSee('Branch B ('.__('dictt.passive').')')
+                ->assertDontSee('name="is_active"', false);
             $this->get($this->url('edit', $this->session->id))
                 ->assertOk()->assertSee($this->url('update', $this->session->id), false)
                 ->assertSee('value="PUT"', false)->assertSee('name="period_id" value="'.$this->period->id.'"', false)
                 ->assertSee('value="08:00:00"', false)->assertSee(__('scholarship.session_period_fixed'))
-                ->assertSee($title)->assertDontSee($title, false);
+                ->assertSee($title)->assertDontSee($title, false)
+                ->assertDontSee('name="is_active"', false);
         }
     }
 
@@ -115,7 +117,7 @@ class ScholarshipSessionAdminTest extends ScholarshipTestCase
         $this->actingAs($this->admin);
         $create = $this->url('create');
         foreach ([
-            'exam_date' => '2035-01-27', 'ends_at' => '09:00', 'capacity' => '1.5', 'is_active' => 'invalid',
+            'is_active' => 'invalid', 'exam_date' => '2035-01-27', 'ends_at' => '09:00', 'capacity' => '1.5',
         ] as $field => $invalid) {
             $this->from($create)->post($this->url('store'), [...$this->sessionForm(), $field => $invalid])
                 ->assertRedirect($create)->assertSessionHasErrors([$field])
@@ -233,6 +235,23 @@ class ScholarshipSessionAdminTest extends ScholarshipTestCase
             ->assertViewHas('totals', ['sessions' => 0, 'capacity' => 0, 'applications' => 0]);
         $this->from($this->url('index'))->get($this->url('index').'?state=unknown&branch_id=99999999')
             ->assertRedirect($this->url('index'))->assertSessionHasErrors(['state', 'branch_id']);
+    }
+
+    public function test_status_tabs_filter_active_and_suspended_sessions(): void
+    {
+        $this->actingAs($this->admin);
+        $this->catalog->saveSession($this->admin, ['exam_title' => 'Suspended exam', 'is_active' => false], $this->alternative->id);
+        $this->get($this->url('index'))
+            ->assertOk()->assertSee('Test exam')->assertSee('Suspended exam');
+        $this->get($this->url('index').'?status=active')
+            ->assertOk()->assertSee('Test exam')->assertDontSee('Suspended exam')
+            ->assertViewHas('totals', ['sessions' => 1, 'capacity' => 2, 'applications' => 0]);
+        $this->get($this->url('index').'?status=inactive')
+            ->assertOk()->assertSee('Suspended exam')->assertDontSee('Test exam')
+            ->assertViewHas('totals', ['sessions' => 1, 'capacity' => 2, 'applications' => 0]);
+        $this->catalog->archiveSession($this->admin, $this->alternative->id);
+        $this->get($this->url('index').'?status=archived')
+            ->assertOk()->assertSee('Suspended exam')->assertDontSee('Test exam');
     }
 
     private function url(string $action, ?int $id = null): string

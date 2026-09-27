@@ -14,7 +14,16 @@
                 </a>
             </div>
 
+            <div class="d-flex flex-wrap gap-2 mb-4">
+                @foreach (['all' => 'filter_all', 'active' => 'filter_active', 'inactive' => 'filter_inactive', 'archived' => 'filter_archived'] as $value => $label)
+                    <a href="{{ route('admin.scholarship.sessions.index', ['status' => $value, 'period_id' => $filters['period_id'] ?? null, 'branch_id' => $filters['branch_id'] ?? null, 'exam_group_id' => $filters['exam_group_id'] ?? null]) }}"
+                        class="btn btn-sm {{ $status === $value ? 'btn-primary' : 'btn-outline-primary' }}"
+                        @if ($status === $value) aria-current="page" @endif>{{ __('scholarship.'.$label) }}</a>
+                @endforeach
+            </div>
+
             <form method="GET" action="{{ route('admin.scholarship.sessions.index') }}" class="row g-3 mb-4">
+                <input type="hidden" name="status" value="{{ $status }}">
                 @foreach (['period_id' => [$periods, 'period', 'title'], 'branch_id' => [$branches, 'branch', 'name'], 'exam_group_id' => [$groups, 'exam_group', 'name']] as $field => [$options, $label, $textField])
                     <div class="col-md-4">
                         <label for="filter-{{ $field }}" class="form-label">{{ __('scholarship.'.$label) }}</label>
@@ -27,21 +36,6 @@
                         @error($field)<div class="invalid-feedback">{{ $message }}</div>@enderror
                     </div>
                 @endforeach
-                <div class="col-md-4">
-                    <label for="filter-state" class="form-label">{{ __('scholarship.session_state') }}</label>
-                    <select id="filter-state" name="state" class="form-select @error('state') is-invalid @enderror">
-                        <option value="">{{ __('dictt.filter_all') }}</option>
-                        @foreach (['active', 'suspended', 'archived'] as $state)
-                            <option value="{{ $state }}" @selected(($filters['state'] ?? '') === $state)>{{ __('scholarship.session_'.$state) }}</option>
-                        @endforeach
-                    </select>
-                    @error('state')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                </div>
-                <div class="col-md-4">
-                    <label for="filter-q" class="form-label">{{ __('scholarship.exam_title') }}</label>
-                    <input id="filter-q" name="q" value="{{ $filters['q'] ?? '' }}" type="search" maxlength="150" class="form-control @error('q') is-invalid @enderror">
-                    @error('q')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                </div>
                 <div class="col-md-4 d-flex align-items-end gap-2">
                     <button type="submit" class="btn btn-sm btn-primary">{{ __('scholarship.filter_apply') }}</button>
                     <a href="{{ route('admin.scholarship.sessions.index') }}" class="btn btn-sm btn-outline-secondary">{{ __('scholarship.filter_clear') }}</a>
@@ -131,7 +125,7 @@
                                         </form>
                                         @if ($session->applications_count > 0)
                                             <span title="{{ __('scholarship.session_has_applications') }}">
-                                                <button type="button" class="btn btn-sm btn-outline-danger" disabled aria-label="{{ __('scholarship.session_has_applications') }}"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                                                <button type="button" class="btn btn-sm btn-secondary" disabled aria-label="{{ __('scholarship.session_has_applications') }}"><i class="fa fa-trash" aria-hidden="true"></i></button>
                                             </span>
                                         @else
                                             <form id="session-delete-{{ $session->id }}" method="POST" action="{{ route('admin.scholarship.sessions.destroy', $session) }}">

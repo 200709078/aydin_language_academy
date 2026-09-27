@@ -27,7 +27,7 @@
                     value="{{ old('name', $currentDefinition?->name) }}" class="form-control @error('name') is-invalid @enderror">
                 @error('name')<div class="invalid-feedback">{{ $message }}</div>@enderror
             </div>
-            @if (! in_array($type, ['school', 'branch'], true))
+            @if (! in_array($type, ['school', 'branch', 'exam_group'], true))
                 <div class="mb-3">
                     <label for="code" class="form-label">{{ __('scholarship.definition_code') }}</label>
                     <input id="code" name="code" type="text" maxlength="64" required aria-describedby="definition-code-help"
@@ -43,7 +43,7 @@
                     @error('address')<div class="invalid-feedback">{{ $message }}</div>@enderror
                 </div>
             @endif
-            @if ($type !== 'branch')
+            @if (! in_array($type, ['branch', 'school', 'exam_group'], true))
                 <div class="mb-3">
                     <label for="sort_order" class="form-label">{{ __('scholarship.definition_sort_order') }}</label>
                     <input id="sort_order" name="sort_order" type="number" min="0" max="4294967295" step="1" required

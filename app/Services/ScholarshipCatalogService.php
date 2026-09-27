@@ -145,8 +145,8 @@ class ScholarshipCatalogService
             // locking a shared definition, matching application/session writes.
             ScholarshipExamPeriod::query()->orderBy('id')->lockForUpdate()->get(['id']);
             // Branch codes and append positions must be chosen from locked, current rows.
-            $branches = $type === 'branch'
-                ? ScholarshipBranch::query()->orderBy('id')->lockForUpdate()->get(['id', 'sort_order'])
+            $appendScope = in_array($type, ['branch', 'school', 'exam_group'], true)
+                ? $model::query()->orderBy('id')->lockForUpdate()->get(['id', 'sort_order'])
                 : null;
             $definition = $id === null ? new $model : $model::query()->lockForUpdate()->findOrFail($id);
             $rules = [
@@ -156,23 +156,30 @@ class ScholarshipCatalogService
                 'is_active' => ['boolean'],
                 'sort_order' => [ScholarshipRules::integer(), 'integer', 'between:0,4294967295'],
             ];
-            if ($type !== 'school') {
+            if ($type === 'student_level') {
                 $rules['code'] = ['required', 'string', 'max:64', 'not_regex:/^\s*$/u', Rule::unique($definition->getTable(), 'code')->ignore($id)];
+            } elseif (in_array($type, ['branch', 'exam_group'], true)) {
+                $rules['code'] = ['string', 'max:64', 'not_regex:/^\s*$/u', Rule::unique($definition->getTable(), 'code')->ignore($id)];
             }
-            if ($type === 'branch') {
-                $rules['address'] = ['nullable', 'string'];
+            if (in_array($type, ['branch', 'exam_group'], true)) {
+                if ($type === 'branch') {
+                    $rules['address'] = ['nullable', 'string'];
+                }
                 if (! array_key_exists('code', $data)
                     && (! $definition->exists || (array_key_exists('name', $data) && $data['name'] !== $definition->name))) {
                     $name = ScholarshipRules::validate(
                         ['name' => $data['name'] ?? $definition->name],
                         ['name' => $rules['name']],
-                        ['name' => __('scholarship.branch_name')],
+                        ['name' => __('scholarship.'.($type === 'branch' ? 'branch_name' : 'exam_group_name'))],
                     )['name'];
-                    $data['code'] = $this->uniqueBranchCode($name, $id);
+                    $data['code'] = $this->uniqueDefinitionCode($model, $name, $id);
                 }
                 if (! $definition->exists && ! array_key_exists('sort_order', $data)) {
-                    $data['sort_order'] = ((int) $branches->max('sort_order')) + 1;
+                    $data['sort_order'] = ((int) $appendScope->max('sort_order')) + 1;
                 }
+            }
+            if ($type === 'school' && ! $definition->exists && ! array_key_exists('sort_order', $data)) {
+                $data['sort_order'] = ((int) $appendScope->max('sort_order')) + 1;
             }
             $definition->fill(ScholarshipRules::validate($this->merge($definition, $data, $rules), $rules, [
                 'name' => __('scholarship.'.match ($type) {
@@ -189,6 +196,36 @@ class ScholarshipCatalogService
             }
 
             return $definition->refresh();
+        });
+    }
+
+    public function moveDefinition(User $admin, string $type, int $id, string $direction): void
+    {
+        ScholarshipRules::actor($admin, true);
+        $model = $this->definitionModel($type);
+        ScholarshipRules::transaction(function () use ($model, $id, $direction): void {
+            // Same locking order as other definition writes: periods first.
+            ScholarshipExamPeriod::query()->orderBy('id')->lockForUpdate()->get(['id']);
+            $items = $model::query()->orderBy('sort_order')->orderBy('name')->orderBy('id')
+                ->lockForUpdate()->get();
+            $this->normalizeDefinitionSortOrders($items);
+
+            $currentIndex = $items->search(fn (Model $item): bool => (int) $item->id === $id);
+            if ($currentIndex === false) {
+                return;
+            }
+            $neighbor = $items->get($direction === 'up' ? $currentIndex - 1 : $currentIndex + 1);
+            if ($neighbor === null) {
+                return;
+            }
+            $current = $items->get($currentIndex);
+            $currentSortOrder = (int) $current->sort_order;
+            $neighborSortOrder = (int) $neighbor->sort_order;
+            $temporarySortOrder = ((int) $items->max('sort_order')) + 1;
+
+            $current->update(['sort_order' => $temporarySortOrder]);
+            $neighbor->update(['sort_order' => $currentSortOrder]);
+            $current->update(['sort_order' => $neighborSortOrder]);
         });
     }
 
@@ -221,12 +258,12 @@ class ScholarshipCatalogService
         };
     }
 
-    private function uniqueBranchCode(string $name, ?int $id): string
+    private function uniqueDefinitionCode(string $model, string $name, ?int $id): string
     {
-        $base = Str::slug($name, '-', 'tr') ?: 'sube';
+        $base = Str::slug($name, '-', 'tr') ?: ($model === ScholarshipExamGroup::class ? 'grup' : 'sube');
         $code = Str::substr($base, 0, 64);
         $number = 2;
-        while (ScholarshipBranch::query()->where('code', $code)
+        while ($model::query()->where('code', $code)
             ->when($id !== null, fn ($query) => $query->where('id', '!=', $id))
             ->lockForUpdate()->first(['id']) !== null) {
             $suffix = '-'.$number++;
@@ -234,6 +271,28 @@ class ScholarshipCatalogService
         }
 
         return $code;
+    }
+
+    /** Renumber duplicate sort orders in current display order so a swap is always visible. */
+    private function normalizeDefinitionSortOrders(\Illuminate\Database\Eloquent\Collection $items): void
+    {
+        $seen = [];
+        foreach ($items as $item) {
+            $sortOrder = (int) $item->sort_order;
+            if (isset($seen[$sortOrder])) {
+                $temporaryStart = ((int) $items->max('sort_order')) + $items->count() + 1;
+                foreach ($items->values() as $index => $numbered) {
+                    $numbered->update(['sort_order' => $temporaryStart + $index]);
+                }
+                foreach ($items->values() as $index => $numbered) {
+                    $numbered->update(['sort_order' => $index + 1]);
+                    $numbered->setAttribute('sort_order', $index + 1);
+                }
+
+                return;
+            }
+            $seen[$sortOrder] = true;
+        }
     }
 
     /** Merge only supported current attributes; submitted unknown keys still fail. */

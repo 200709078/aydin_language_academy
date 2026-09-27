@@ -48,6 +48,7 @@ class ScholarshipPeriodAdminTest extends ScholarshipTestCase
             ['POST', $this->url('store')],
             ['GET', $this->url('edit', $this->period->id)],
             ['PUT', $this->url('update', $this->period->id)],
+            ['PATCH', $this->url('status.update', $this->period->id)],
             ['PATCH', $this->url('applications.update', $this->period->id)],
             ['DELETE', $this->url('destroy', $this->period->id)],
         ];
@@ -80,7 +81,9 @@ class ScholarshipPeriodAdminTest extends ScholarshipTestCase
                 ->assertOk()
                 ->assertSee($this->url('store'), false)
                 ->assertSee('name="_token"', false)
-                ->assertSee('type="datetime-local"', false);
+                ->assertSee('type="datetime-local"', false)
+                ->assertDontSee('name="is_active"', false)
+                ->assertDontSee('name="applications_open"', false);
             $this->get($this->url('edit', $this->period->id))
                 ->assertOk()
                 ->assertSee($this->url('update', $this->period->id), false)
@@ -88,7 +91,9 @@ class ScholarshipPeriodAdminTest extends ScholarshipTestCase
                 ->assertSee('value="2035-01-20T23:59:59"', false)
                 ->assertSee('value="2035-01-25"', false)
                 ->assertSee($title)
-                ->assertDontSee($title, false);
+                ->assertDontSee($title, false)
+                ->assertDontSee('name="is_active"', false)
+                ->assertDontSee('name="applications_open"', false);
         }
     }
 
@@ -170,6 +175,22 @@ class ScholarshipPeriodAdminTest extends ScholarshipTestCase
         self::assertTrue($this->applications->forMember($this->student, $application->id)['can_edit']);
     }
 
+    public function test_period_active_switch_only_updates_the_status(): void
+    {
+        $this->actingAs($this->admin);
+        $url = $this->url('status.update', $this->period->id);
+        $this->get($this->url('index'))->assertOk()->assertSee('period-active-', false);
+        $this->from($this->url('index'))->patch($url, ['is_active' => '0', 'title' => 'Forged title'])
+            ->assertRedirect($this->url('index'))
+            ->assertSessionHas('modalSuccessContent');
+        self::assertFalse($this->period->fresh()->is_active);
+        self::assertSame('Test period', $this->period->fresh()->title);
+        $this->from($this->url('index'))->patch($url, ['is_active' => 'invalid'])
+            ->assertRedirect($this->url('index'))->assertSessionHasErrors(['is_active']);
+        $this->patch($url, ['is_active' => '1'])->assertRedirect($this->url('index'));
+        self::assertTrue($this->period->fresh()->is_active);
+    }
+
     public function test_period_dependencies_and_missing_records_are_reported_without_deletion(): void
     {
         $this->actingAs($this->admin);
@@ -177,7 +198,7 @@ class ScholarshipPeriodAdminTest extends ScholarshipTestCase
             ->assertRedirect($this->url('index'))->assertSessionHasErrors(['period_id']);
         self::assertNotNull($this->period->fresh());
         self::assertNotNull($this->session->fresh());
-        foreach ([['GET', 'edit'], ['PUT', 'update'], ['PATCH', 'applications.update'], ['DELETE', 'destroy']] as [$method, $action]) {
+        foreach ([['GET', 'edit'], ['PUT', 'update'], ['PATCH', 'status.update'], ['PATCH', 'applications.update'], ['DELETE', 'destroy']] as [$method, $action]) {
             $this->call($method, $this->url($action, 99999999))->assertNotFound();
         }
     }

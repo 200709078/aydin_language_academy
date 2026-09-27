@@ -935,6 +935,7 @@ return [
     'scholarship_period_status' => 'Period Status',
     'scholarship_period_active' => 'Period active',
     'scholarship_period_inactive' => 'Period inactive',
+    'scholarship_period_active_for' => ':title — Period active',
     'scholarship_application_window' => 'Application Dates',
     'scholarship_exam_window' => 'Exam Dates',
     'scholarship_applications_open_at' => 'Applications Start',

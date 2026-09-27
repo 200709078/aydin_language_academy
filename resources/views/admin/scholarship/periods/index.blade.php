@@ -54,7 +54,20 @@
                                     <div>{{ $period->exam_starts_on->format('d.m.Y') }}</div>
                                     <div>{{ $period->exam_ends_on->format('d.m.Y') }}</div>
                                 </td>
-                                <td><span class="badge {{ $period->is_active ? 'text-bg-success' : 'text-bg-secondary' }}">{{ __($period->is_active ? 'dictt.active' : 'dictt.passive') }}</span></td>
+                                <td>
+                                    <form method="POST" action="{{ route('admin.scholarship.periods.status.update', $period) }}">
+                                        @csrf
+                                        @method('PATCH')
+                                        <input type="hidden" name="is_active" value="0">
+                                        <div class="form-check form-switch admin-list-switch mb-1">
+                                            <input id="period-active-{{ $period->id }}" type="checkbox" name="is_active" value="1"
+                                                class="form-check-input" role="switch" @checked($period->is_active)
+                                                onchange="this.form.submit()" aria-label="{{ __('dictt.scholarship_period_active_for', ['title' => $period->title]) }}">
+                                        </div>
+                                        <noscript><button type="submit" class="btn btn-sm btn-outline-secondary">{{ __('dictt.update') }}</button></noscript>
+                                    </form>
+                                    <span class="badge {{ $period->is_active ? 'text-bg-success' : 'text-bg-secondary' }}">{{ __($period->is_active ? 'dictt.active' : 'dictt.passive') }}</span>
+                                </td>
                                 <td>
                                     <form method="POST" action="{{ route('admin.scholarship.periods.applications.update', $period) }}">
                                         @csrf
@@ -81,7 +94,7 @@
                                         </a>
                                         @if ($hasDependents)
                                             <span title="{{ __('dictt.scholarship_period_has_dependents') }}">
-                                                <button type="button" class="btn btn-sm btn-outline-danger" disabled aria-label="{{ __('dictt.scholarship_period_has_dependents') }}">
+                                                <button type="button" class="btn btn-sm btn-secondary" disabled aria-label="{{ __('dictt.scholarship_period_has_dependents') }}">
                                                     <i class="fa fa-trash" aria-hidden="true"></i>
                                                 </button>
                                             </span>

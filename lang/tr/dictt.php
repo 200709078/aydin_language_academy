@@ -935,6 +935,7 @@ return [
     'scholarship_period_status' => 'Dönem Durumu',
     'scholarship_period_active' => 'Dönem aktif',
     'scholarship_period_inactive' => 'Dönem pasif',
+    'scholarship_period_active_for' => ':title — Dönem aktif',
     'scholarship_application_window' => 'Başvuru Tarihleri',
     'scholarship_exam_window' => 'Sınav Tarihleri',
     'scholarship_applications_open_at' => 'Başvuru Başlangıcı',

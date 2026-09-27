@@ -31,8 +31,11 @@ class AdminScholarshipDefinitionController extends Controller
             ->when($status !== 'all', fn ($query) => $query->where('is_active', $status === 'active'))
             ->orderBy('sort_order')->orderBy('name')->orderBy('id')
             ->paginate(20)->withQueryString();
+        $moveAvailability = in_array($type, ['school', 'exam_group'], true) && $status === 'all' && $search === ''
+            ? $this->definitionMoveAvailability($meta['model'])
+            : [];
 
-        return view('admin.scholarship.definitions.index', compact('type', 'meta', 'definitions', 'search', 'status'));
+        return view('admin.scholarship.definitions.index', compact('type', 'meta', 'definitions', 'search', 'status', 'moveAvailability'));
     }
 
     public function create(string $type): View
@@ -83,6 +86,19 @@ class AdminScholarshipDefinitionController extends Controller
         return $this->success($type, 'definition_deleted');
     }
 
+    public function move(Request $request, string $type, int $definition): RedirectResponse
+    {
+        $meta = $this->metadata($type);
+        if (! in_array($type, ['school', 'exam_group'], true)) {
+            abort(404);
+        }
+        $meta['model']::query()->findOrFail($definition);
+        $direction = $request->validate(['direction' => ['required', Rule::in(['up', 'down'])]])['direction'];
+        $this->catalog->moveDefinition($request->user(), $type, $definition, $direction);
+
+        return redirect()->back();
+    }
+
     private function metadata(string $type): array
     {
         return match ($type) {
@@ -94,10 +110,26 @@ class AdminScholarshipDefinitionController extends Controller
         };
     }
 
+    private function definitionMoveAvailability(string $model): array
+    {
+        $ids = $model::query()->orderBy('sort_order')->orderBy('name')->orderBy('id')->pluck('id')->all();
+        $lastIndex = count($ids) - 1;
+        $availability = [];
+        foreach ($ids as $index => $id) {
+            $availability[(int) $id] = ['up' => $index > 0, 'down' => $index < $lastIndex];
+        }
+
+        return $availability;
+    }
+
     private function definitionData(Request $request, string $type): array
     {
         if ($type === 'branch') {
             return array_replace(['name' => null, 'address' => null], $request->only(['name', 'address']));
+        }
+
+        if (in_array($type, ['school', 'exam_group'], true)) {
+            return array_replace(['name' => null], $request->only(['name', 'sort_order', 'is_active']));
         }
 
         $defaults = ['name' => null, 'sort_order' => 0, 'is_active' => false];

@@ -54,6 +54,14 @@ class AdminScholarshipPeriodController extends Controller
         return $this->success('scholarship_period_updated');
     }
 
+    public function updateStatus(Request $request, ScholarshipExamPeriod $period): RedirectResponse
+    {
+        $data = $request->validate(['is_active' => ['required', 'boolean']]);
+        $this->catalog->savePeriod($request->user(), $data, $period->id);
+
+        return $this->success('scholarship_period_updated');
+    }
+
     public function destroy(Request $request, ScholarshipExamPeriod $period): RedirectResponse
     {
         $this->catalog->deletePeriod($request->user(), $period->id);
@@ -72,8 +80,6 @@ class AdminScholarshipPeriodController extends Controller
             'applications_close_at' => null,
             'exam_starts_on' => null,
             'exam_ends_on' => null,
-            'is_active' => false,
-            'applications_open' => false,
         ], $request->only([
             'title', 'description', 'applications_open_at', 'applications_close_at',
             'exam_starts_on', 'exam_ends_on', 'is_active', 'applications_open',

@@ -79,13 +79,21 @@ class ScholarshipDefinitionAdminTest extends ScholarshipTestCase
             $edit = $this->get($this->url('edit', $type, $created->id))
                 ->assertOk()->assertSee($this->url('update', $type, $created->id), false)
                 ->assertSee('name="_token"', false)->assertSee('value="PUT"', false);
-            if ($type === 'school') {
-                $edit->assertDontSee('name="code"', false)->assertDontSee('name="address"', false);
-            } elseif ($type === 'branch') {
-                $edit->assertSee('name="code"', false)->assertSee('name="address"', false);
+            if ($type === 'student_level') {
+                $edit->assertSee('name="code"', false);
+            } else {
+                $edit->assertDontSee('name="code"', false);
+            }
+            if ($type === 'branch') {
+                $edit->assertSee('name="address"', false);
                 self::assertSame('Synthetic branch address', $created->address);
             } else {
-                $edit->assertSee('name="code"', false)->assertDontSee('name="address"', false);
+                $edit->assertDontSee('name="address"', false);
+            }
+            if ($type === 'student_level') {
+                $edit->assertSee('name="sort_order"', false)->assertSee('name="is_active"', false);
+            } else {
+                $edit->assertDontSee('name="sort_order"', false)->assertDontSee('name="is_active"', false);
             }
             $this->put($this->url('update', $type, $created->id), [...$data, 'name' => 'Updated '.$type, 'is_active' => '0'])
                 ->assertRedirect($this->url('index', $type));
@@ -153,7 +161,7 @@ class ScholarshipDefinitionAdminTest extends ScholarshipTestCase
         $this->actingAs($this->admin);
         $unsafe = '<script>alert("definition")</script>';
         $this->catalog->saveDefinition($this->admin, 'branch', ['name' => $unsafe, 'address' => $unsafe], $this->branch->id);
-        foreach (['tr' => 'ALA Şubeleri', 'en' => 'ALA Branches'] as $locale => $label) {
+        foreach (['tr' => 'Şubeler', 'en' => 'Branches'] as $locale => $label) {
             $this->withSession(['locale' => $locale]);
             $this->get($this->url('index', 'branch'))
                 ->assertOk()->assertSee($label)->assertSee($unsafe)->assertDontSee($unsafe, false)
@@ -185,6 +193,33 @@ class ScholarshipDefinitionAdminTest extends ScholarshipTestCase
             ->assertSee('page=2', false)->assertSee('status=active', false)->assertSee('q=Paged', false)
             ->assertDontSee('Paged branch 21')->assertDontSee('Branch B');
         $this->get($index.'?status=active&q=Paged&page=2')->assertOk()->assertSee('Paged branch 21')->assertDontSee('Branch B');
+    }
+
+    public function test_school_records_can_be_reordered_with_move_buttons(): void
+    {
+        $this->actingAs($this->admin);
+        $first = $this->catalog->saveDefinition($this->admin, 'school', ['name' => 'Move school A']);
+        $second = $this->catalog->saveDefinition($this->admin, 'school', ['name' => 'Move school B']);
+        self::assertGreaterThan($first->sort_order, $second->sort_order);
+        $this->get($this->url('index', 'school'))->assertOk()->assertSee('name="direction"', false);
+
+        $this->post($this->url('move', 'school', $second->id), ['direction' => 'up'])->assertRedirect();
+        self::assertSame($first->sort_order, $second->fresh()->sort_order);
+        self::assertSame($second->sort_order, $first->fresh()->sort_order);
+
+        $topSortOrder = $this->school->fresh()->sort_order;
+        $this->post($this->url('move', 'school', $this->school->id), ['direction' => 'up'])->assertRedirect();
+        self::assertSame($topSortOrder, $this->school->fresh()->sort_order);
+
+        $this->post($this->url('move', 'school', $second->id), ['direction' => 'sideways'])->assertSessionHasErrors(['direction']);
+        $this->post($this->url('move', 'branch', $this->branch->id), ['direction' => 'up'])->assertNotFound();
+
+        $firstGroup = $this->catalog->saveDefinition($this->admin, 'exam_group', ['name' => 'Move group A']);
+        $secondGroup = $this->catalog->saveDefinition($this->admin, 'exam_group', ['name' => 'Move group B']);
+        $this->get($this->url('index', 'exam_group'))->assertOk()->assertSee('name="direction"', false);
+        $this->post($this->url('move', 'exam_group', $secondGroup->id), ['direction' => 'up'])->assertRedirect();
+        self::assertSame($firstGroup->sort_order, $secondGroup->fresh()->sort_order);
+        self::assertSame($secondGroup->sort_order, $firstGroup->fresh()->sort_order);
     }
 
     private function fixtures(): array

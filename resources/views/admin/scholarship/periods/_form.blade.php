@@ -56,22 +56,6 @@
                     </div>
                 @endforeach
             </div>
-
-            <div class="row">
-                @foreach (['is_active' => 'scholarship_period_active', 'applications_open' => 'scholarship_applications_open'] as $field => $label)
-                    <div class="col-md-6 mb-3">
-                        <input type="hidden" name="{{ $field }}" value="0">
-                        <div class="form-check form-switch">
-                            <input id="{{ $field }}" name="{{ $field }}" type="checkbox" value="1" role="switch"
-                                class="form-check-input @error($field) is-invalid @enderror"
-                                @checked(old($field, $currentPeriod?->{$field} ?? false)) aria-describedby="period-access-help">
-                            <label for="{{ $field }}" class="form-check-label">{{ __('dictt.'.$label) }}</label>
-                            @error($field)<div class="invalid-feedback">{{ $message }}</div>@enderror
-                        </div>
-                    </div>
-                @endforeach
-            </div>
-            <p id="period-access-help" class="text-muted small mb-0">{{ __('dictt.scholarship_period_access_help') }}</p>
         </form>
     </div>
 </div>

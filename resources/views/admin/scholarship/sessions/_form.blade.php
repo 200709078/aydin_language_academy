@@ -98,17 +98,7 @@
                     <div id="capacity-help" class="form-text">{{ __('scholarship.capacity_help') }} @if ($currentSession) {{ __('scholarship.current_occupancy', ['count' => $currentSession->applications_count]) }} @endif</div>
                     @error('capacity')<div class="invalid-feedback">{{ $message }}</div>@enderror
                 </div>
-                <div class="col-md-6 mb-3">
-                    <input type="hidden" name="is_active" value="0">
-                    <div class="form-check form-switch">
-                        <input id="is_active" name="is_active" type="checkbox" value="1" role="switch" @checked(old('is_active', $currentSession?->is_active ?? true))
-                            class="form-check-input @error('is_active') is-invalid @enderror" aria-describedby="session-state-help">
-                        <label for="is_active" class="form-check-label">{{ __('scholarship.session_active') }}</label>
-                        @error('is_active')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                    </div>
-                </div>
             </div>
-            <p id="session-state-help" class="text-muted small">{{ __('scholarship.session_states_help') }}</p>
             <p class="text-muted small mb-0">{{ __('dictt.scholarship_timezone', ['timezone' => config('app.timezone')]) }}</p>
         </form>
     </div>
